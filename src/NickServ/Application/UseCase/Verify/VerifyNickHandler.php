@@ -9,9 +9,8 @@ use App\NickServ\Application\Port\Out\Clock;
 use App\NickServ\Application\Port\Out\IdentifiedSessionTracker;
 use App\NickServ\Application\Port\Out\NicknameAuthenticationModeQuery;
 use App\NickServ\Application\Port\Out\RegisteredNickRepositoryInterface;
-use App\NickServ\Application\Port\Out\RegistrationEventPublisher;
 use App\NickServ\Application\Port\Out\VerificationTokenConsumer;
-use App\NickServ\Application\PublishedEvent\NickPasswordHashAvailable;
+use App\NickServ\Application\Service\NickActivationPublisher;
 
 final readonly class VerifyNickHandler implements VerifyNickHandlerInterface
 {
@@ -21,7 +20,7 @@ final readonly class VerifyNickHandler implements VerifyNickHandlerInterface
         private IdentifiedSessionTracker $identifiedRegistry,
         private Clock $clock,
         private NicknameAuthenticationModeQuery $authenticationMode,
-        private RegistrationEventPublisher $eventPublisher,
+        private NickActivationPublisher $activation,
     ) {}
 
     public function handle(VerifyNick $command): VerifyNickResult
@@ -38,11 +37,7 @@ final readonly class VerifyNickHandler implements VerifyNickHandlerInterface
 
         $account->activate();
         $this->nickRepository->save($account);
-        $this->eventPublisher->publish(new NickPasswordHashAvailable(
-            nickId: $account->getId(),
-            nickname: $account->getNickname(),
-            passwordHash: $account->getPasswordHash(),
-        ));
+        $this->activation->passwordHashAvailable($account);
 
         if (NicknameAuthenticationMode::NativeNick === $this->authenticationMode->current()) {
             return VerifyNickResult::successNativeAuthenticationRequired($account->getNickname());

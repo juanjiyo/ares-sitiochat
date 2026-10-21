@@ -7,6 +7,9 @@ namespace App\Tests\NickServ\Application\UseCase\Saregister;
 use App\NickServ\Application\Port\Out\Clock;
 use App\NickServ\Application\Port\Out\PasswordHasher;
 use App\NickServ\Application\Port\Out\RegisterNickRepository;
+use App\NickServ\Application\Port\Out\RegistrationEventPublisher;
+use App\NickServ\Application\PublishedEvent\NickPasswordHashAvailable;
+use App\NickServ\Application\Service\NickActivationPublisher;
 use App\NickServ\Application\UseCase\Saregister\Saregister;
 use App\NickServ\Application\UseCase\Saregister\SaregisterHandler;
 use App\NickServ\Application\UseCase\Saregister\SaregisterOutcome;
@@ -17,7 +20,9 @@ use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use ReflectionProperty;
 
+#[CoversClass(NickActivationPublisher::class)]
 #[CoversClass(SaregisterHandler::class)]
 #[CoversClass(Saregister::class)]
 #[CoversClass(SaregisterResult::class)]
@@ -40,7 +45,7 @@ final class SaregisterHandlerTest extends TestCase
         $repository->method('findByNick')->willReturn(null);
         $repository->expects(self::once())->method('save')->willReturnCallback(
             static function (RegisteredNick $nick) use (&$saved): void {
-                $saved = $nick;
+                $saved = self::withId($nick, 7);
             },
         );
 
@@ -66,7 +71,7 @@ final class SaregisterHandlerTest extends TestCase
         $repository->method('findByNick')->willReturn(null);
         $repository->expects(self::once())->method('save')->willReturnCallback(
             static function (RegisteredNick $nick) use (&$saved): void {
-                $saved = $nick;
+                $saved = self::withId($nick, 7);
             },
         );
 
@@ -132,15 +137,67 @@ final class SaregisterHandlerTest extends TestCase
         return $this->handler($repository)->handle($this->command());
     }
 
-    private function handler(RegisterNickRepository $repository): SaregisterHandler
+    #[Test]
+    public function publishesThePasswordHashSoTheNetworkProjectionIsWritten(): void
     {
+        $saved = null;
+
+        $repository = $this->createMock(RegisterNickRepository::class);
+        $repository->method('findByNick')->willReturn(null);
+        $repository->expects(self::once())->method('save')->willReturnCallback(
+            static function (RegisteredNick $nick) use (&$saved): void {
+                $saved = self::withId($nick, 7);
+            },
+        );
+
+        $publisher = $this->createMock(RegistrationEventPublisher::class);
+        $publisher->expects(self::once())->method('publish')->with(self::callback(
+            static fn (NickPasswordHashAvailable $event): bool => 7 === $event->nickId
+                && 'NewNick' === $event->nickname
+                && 'hashed-password' === $event->passwordHash,
+        ));
+
+        $this->handler($repository, $publisher)->handle($this->command());
+    }
+
+    #[Test]
+    public function doesNotPublishWhenTheNicknameAlreadyExists(): void
+    {
+        $repository = $this->createMock(RegisterNickRepository::class);
+        $existing = $this->createStub(RegisteredNick::class);
+        $existing->method('getStatus')->willReturn(NickStatus::Registered);
+        $repository->method('findByNick')->willReturn($existing);
+        $repository->expects(self::never())->method('save');
+
+        $publisher = $this->createMock(RegistrationEventPublisher::class);
+        $publisher->expects(self::never())->method('publish');
+
+        $this->handler($repository, $publisher)->handle($this->command());
+    }
+
+    private static function withId(RegisteredNick $nick, int $id): RegisteredNick
+    {
+        new ReflectionProperty($nick, 'id')->setValue($nick, $id);
+
+        return $nick;
+    }
+
+    private function handler(
+        RegisterNickRepository $repository,
+        ?RegistrationEventPublisher $publisher = null,
+    ): SaregisterHandler {
         $hasher = $this->createStub(PasswordHasher::class);
         $hasher->method('hash')->willReturn('hashed-password');
 
         $clock = $this->createStub(Clock::class);
         $clock->method('now')->willReturn($this->now);
 
-        return new SaregisterHandler($repository, $hasher, $clock);
+        return new SaregisterHandler(
+            $repository,
+            $hasher,
+            $clock,
+            new NickActivationPublisher($publisher ?? $this->createStub(RegistrationEventPublisher::class)),
+        );
     }
 
     private function command(string $email = 'user@example.com'): Saregister

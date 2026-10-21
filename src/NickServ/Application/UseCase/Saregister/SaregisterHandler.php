@@ -7,6 +7,7 @@ namespace App\NickServ\Application\UseCase\Saregister;
 use App\NickServ\Application\Port\Out\Clock;
 use App\NickServ\Application\Port\Out\PasswordHasher;
 use App\NickServ\Application\Port\Out\RegisterNickRepository;
+use App\NickServ\Application\Service\NickActivationPublisher;
 use App\NickServ\Domain\Entity\RegisteredNick;
 use App\NickServ\Domain\ValueObject\NickStatus;
 
@@ -29,6 +30,7 @@ final readonly class SaregisterHandler implements SaregisterHandlerInterface
         private RegisterNickRepository $nickRepository,
         private PasswordHasher $passwordHasher,
         private Clock $clock,
+        private NickActivationPublisher $activation,
     ) {}
 
     public function handle(Saregister $command): SaregisterResult
@@ -55,6 +57,9 @@ final readonly class SaregisterHandler implements SaregisterHandlerInterface
             registeredAt: $this->clock->now(),
         );
         $this->nickRepository->save($nick);
+        // Without this the UDB record is never written and native
+        // authentication fails until the snapshot is rebuilt.
+        $this->activation->passwordHashAvailable($nick);
 
         return SaregisterResult::registered($command->nickname);
     }

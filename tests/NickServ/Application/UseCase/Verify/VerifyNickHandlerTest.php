@@ -12,6 +12,7 @@ use App\NickServ\Application\Port\Out\RegisteredNickRepositoryInterface;
 use App\NickServ\Application\Port\Out\RegistrationEventPublisher;
 use App\NickServ\Application\Port\Out\VerificationTokenConsumer;
 use App\NickServ\Application\PublishedEvent\NickPasswordHashAvailable;
+use App\NickServ\Application\Service\NickActivationPublisher;
 use App\NickServ\Application\UseCase\Verify\VerifyNick;
 use App\NickServ\Application\UseCase\Verify\VerifyNickHandler;
 use App\NickServ\Application\UseCase\Verify\VerifyNickOutcome;
@@ -22,6 +23,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(NickActivationPublisher::class)]
 #[CoversClass(VerifyNickHandler::class)]
 #[CoversClass(VerifyNick::class)]
 #[CoversClass(VerifyNickResult::class)]
@@ -41,7 +43,7 @@ final class VerifyNickHandlerTest extends TestCase
             $this->createStub(IdentifiedSessionTracker::class),
             $this->fixedClock(),
             $this->authenticationMode(),
-            $publisher,
+            new NickActivationPublisher($publisher),
         );
 
         $result = $handler->handle(new VerifyNick(nickname: 'alice', token: 'token123', senderUid: 'UID1'));
@@ -67,7 +69,7 @@ final class VerifyNickHandlerTest extends TestCase
             $this->createStub(IdentifiedSessionTracker::class),
             $this->fixedClock(),
             $this->authenticationMode(),
-            $publisher,
+            new NickActivationPublisher($publisher),
         );
 
         $result = $handler->handle(new VerifyNick(nickname: 'alice', token: 'token123', senderUid: 'UID1'));
@@ -95,7 +97,7 @@ final class VerifyNickHandlerTest extends TestCase
             $this->createStub(IdentifiedSessionTracker::class),
             $this->fixedClock(),
             $this->authenticationMode(),
-            $publisher,
+            new NickActivationPublisher($publisher),
         );
 
         $result = $handler->handle(new VerifyNick(nickname: 'alice', token: 'bad-token', senderUid: 'UID1'));
@@ -135,7 +137,7 @@ final class VerifyNickHandlerTest extends TestCase
             $sessionTracker,
             $this->fixedClock(),
             $this->authenticationMode(),
-            $publisher,
+            new NickActivationPublisher($publisher),
         );
 
         $result = $handler->handle(new VerifyNick(nickname: 'Alice', token: 'good-token', senderUid: 'UID1'));
@@ -176,7 +178,7 @@ final class VerifyNickHandlerTest extends TestCase
             $sessionTracker,
             $this->fixedClock(),
             $this->authenticationMode(NicknameAuthenticationMode::NativeNick),
-            $publisher,
+            new NickActivationPublisher($publisher),
         );
 
         $result = $handler->handle(new VerifyNick(nickname: 'Alice', token: 'good-token', senderUid: 'UID1'));
