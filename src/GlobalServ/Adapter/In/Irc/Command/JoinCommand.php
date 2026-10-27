@@ -99,11 +99,18 @@ final readonly class JoinCommand implements GlobalServCommandInterface
 
     private function present(GlobalServContext $context, BroadcastResult $result): void
     {
-        match ($result->outcome) {
-            BroadcastOutcome::Sent => $context->reply('join.done', ['count' => (string) ($result->recipientCount ?? 0)]),
-            BroadcastOutcome::JoinUnsupported => $context->reply('join.unsupported'),
-            BroadcastOutcome::NetworkUnavailable => $context->reply('error.network_unavailable'),
-            default => $context->reply('error.broadcast_failed'),
-        };
+        if (BroadcastOutcome::Sent === $result->outcome) {
+            $context->reply('join.done', ['count' => (string) ($result->recipientCount ?? 0)]);
+
+            return;
+        }
+
+        if (BroadcastOutcome::JoinUnsupported === $result->outcome) {
+            $context->reply('join.unsupported');
+
+            return;
+        }
+
+        $context->reply('error.network_unavailable');
     }
 }

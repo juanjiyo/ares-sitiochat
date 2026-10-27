@@ -108,6 +108,26 @@ final class SetTopicNoexpireHandlerTest extends TestCase
         self::assertSame(['set.topic.cleared'], $messages);
     }
 
+    #[Test]
+    public function bothHandlersDoNothingWithoutASender(): void
+    {
+        $channel = RegisteredChannel::register(new DateTimeImmutable(), '#test', 1, 'Test');
+        $repository = $this->createMock(RegisteredChannelRepositoryInterface::class);
+        $repository->expects(self::never())->method('save');
+        $applier = $this->createMock(ApplyStoredChannelTopicHandlerInterface::class);
+        $applier->expects(self::never())->method('handle');
+        $messages = [];
+
+        new SetNoexpireHandler($this->updater($repository))
+            ->handle($this->context($messages, 'NOEXPIRE', 'ON', withSender: false), $channel, 'ON');
+        new SetTopicHandler($this->updater($repository), $applier)
+            ->handle($this->context($messages, 'TOPIC', 'text', withSender: false), $channel, 'text');
+
+        self::assertFalse($channel->isNoExpire());
+        self::assertNull($channel->getTopic());
+        self::assertSame([], $messages);
+    }
+
     private function updater(RegisteredChannelRepositoryInterface $channels): UpdateChannelSettingHandler
     {
         return new UpdateChannelSettingHandler(

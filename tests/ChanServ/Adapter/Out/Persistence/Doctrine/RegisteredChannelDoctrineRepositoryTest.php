@@ -446,4 +446,36 @@ final class RegisteredChannelDoctrineRepositoryTest extends DoctrineIntegrationT
 
         self::assertSame([], $result);
     }
+
+    #[Test]
+    public function findSuspendedChannelsReturnsOnlySuspendedChannels(): void
+    {
+        $suspended = RegisteredChannel::register(new DateTimeImmutable(), '#suspended1', 1, 'Suspended channel');
+        $suspended->suspend('Abuse');
+        $suspended2 = RegisteredChannel::register(new DateTimeImmutable(), '#suspended2', 2, 'Another suspended channel');
+        $suspended2->suspend('Flood');
+        $active = RegisteredChannel::register(new DateTimeImmutable(), '#active', 3, 'Active channel');
+
+        $this->repository->save($suspended);
+        $this->repository->save($suspended2);
+        $this->repository->save($active);
+        $this->flushAndClear();
+
+        $result = $this->repository->findSuspendedChannels();
+
+        self::assertCount(2, $result);
+        $names = array_map(static fn (RegisteredChannel $c): string => $c->getName(), $result);
+        self::assertContains('#suspended1', $names);
+        self::assertContains('#suspended2', $names);
+    }
+
+    #[Test]
+    public function findSuspendedChannelsReturnsEmptyArrayWhenNoneSuspended(): void
+    {
+        $active = RegisteredChannel::register(new DateTimeImmutable(), '#active', 1, 'Active channel');
+        $this->repository->save($active);
+        $this->flushAndClear();
+
+        self::assertSame([], $this->repository->findSuspendedChannels());
+    }
 }

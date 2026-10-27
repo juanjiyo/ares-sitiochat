@@ -143,6 +143,76 @@ final class GlobalServServiceTest extends TestCase
         };
     }
 
+    #[Test]
+    public function dispatchesToAnAuthorizedCommandAndClearsTheContext(): void
+    {
+        $messages = [];
+        $executed = false;
+        $command = $this->createMock(GlobalServCommandInterface::class);
+        $command->method('getName')->willReturn('STUB');
+        $command->method('getAliases')->willReturn([]);
+        $command->method('getMinArgs')->willReturn(0);
+        $command->method('getSyntaxKey')->willReturn('stub.syntax');
+        $command->method('getHelpKey')->willReturn('stub.help');
+        $command->method('getOrder')->willReturn(1);
+        $command->method('getShortDescKey')->willReturn('stub.short');
+        $command->method('getSubCommandHelp')->willReturn([]);
+        $command->method('isOperOnly')->willReturn(false);
+        $command->method('getRequiredPermission')->willReturn('globalserv.stub');
+        $command->expects(self::once())->method('execute')->willReturnCallback(
+            static function (GlobalServContext $context) use (&$executed): void {
+                $executed = true;
+            },
+        );
+
+        $context = $this->createMock(GlobalServAuthorizationContextInterface::class);
+        $context->expects(self::once())->method('setCurrentUser');
+        $context->expects(self::once())->method('clear');
+
+        $service = new GlobalServService(
+            commandRegistry: new GlobalServCommandRegistry([$command]),
+            notifier: $this->createNotifier($messages),
+            translator: $this->createTranslator(),
+            serviceNicks: $this->createServiceNicks(),
+            authorizationContext: $context,
+            authorizationChecker: $this->createGrantedChecker(),
+            userAccountPort: $this->createStub(GlobalServNickAccountPort::class),
+            logger: new NullLogger(),
+        );
+
+        $service->dispatch('STUB', $this->sender());
+
+        self::assertTrue($executed);
+    }
+
+    #[Test]
+    public function logsAndRethrowsADispatchFailure(): void
+    {
+        $messages = [];
+        $command = $this->createStub(GlobalServCommandInterface::class);
+        $command->method('getName')->willReturn('STUB');
+        $command->method('getAliases')->willReturn([]);
+        $command->method('getMinArgs')->willReturn(0);
+        $command->method('getSyntaxKey')->willReturn('stub.syntax');
+        $command->method('getHelpKey')->willReturn('stub.help');
+        $command->method('getOrder')->willReturn(1);
+        $command->method('getShortDescKey')->willReturn('stub.short');
+        $command->method('getSubCommandHelp')->willReturn([]);
+        $command->method('isOperOnly')->willReturn(false);
+        $command->method('getRequiredPermission')->willReturn(null);
+        $command->method('execute')->willThrowException(new RuntimeException('boom'));
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects(self::once())->method('error')
+            ->with('GlobalServ dispatch error: boom');
+
+        $service = $this->createService($command, $messages, logger: $logger);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('boom');
+        $service->dispatch('STUB', $this->sender());
+    }
+
     /**
      * @param list<string> $messages
      */

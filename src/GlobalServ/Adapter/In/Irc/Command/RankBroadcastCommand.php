@@ -107,11 +107,18 @@ final readonly class RankBroadcastCommand implements GlobalServCommandInterface
 
     private function present(GlobalServContext $context, BroadcastResult $result): void
     {
-        match ($result->outcome) {
-            BroadcastOutcome::Sent => $context->reply($this->replyKey, ['count' => (string) ($result->recipientCount ?? 0)]),
-            BroadcastOutcome::RankUnsupported => $context->reply('rank.unsupported'),
-            BroadcastOutcome::NetworkUnavailable => $context->reply('error.network_unavailable'),
-            default => $context->reply('error.broadcast_failed'),
-        };
+        if (BroadcastOutcome::Sent === $result->outcome) {
+            $context->reply($this->replyKey, ['count' => (string) ($result->recipientCount ?? 0)]);
+
+            return;
+        }
+
+        if (BroadcastOutcome::RankUnsupported === $result->outcome) {
+            $context->reply('rank.unsupported');
+
+            return;
+        }
+
+        $context->reply('error.network_unavailable');
     }
 }

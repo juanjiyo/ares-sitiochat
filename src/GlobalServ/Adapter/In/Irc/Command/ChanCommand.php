@@ -99,11 +99,18 @@ final readonly class ChanCommand implements GlobalServCommandInterface
 
     private function present(GlobalServContext $context, BroadcastResult $result): void
     {
-        match ($result->outcome) {
-            BroadcastOutcome::Sent => $context->reply('chan.done', ['count' => (string) ($result->recipientCount ?? 0)]),
-            BroadcastOutcome::ChannelNotFound => $context->reply('chan.not_found', ['channel' => (string) $result->channelName]),
-            BroadcastOutcome::NetworkUnavailable => $context->reply('error.network_unavailable'),
-            default => $context->reply('error.broadcast_failed'),
-        };
+        if (BroadcastOutcome::Sent === $result->outcome) {
+            $context->reply('chan.done', ['count' => (string) ($result->recipientCount ?? 0)]);
+
+            return;
+        }
+
+        if (BroadcastOutcome::ChannelNotFound === $result->outcome) {
+            $context->reply('chan.not_found', ['channel' => (string) $result->channelName]);
+
+            return;
+        }
+
+        $context->reply('error.network_unavailable');
     }
 }

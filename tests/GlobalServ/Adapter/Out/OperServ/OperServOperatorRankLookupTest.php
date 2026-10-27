@@ -63,6 +63,17 @@ final class OperServOperatorRankLookupTest extends TestCase
         self::assertNull($lookup->hasAtLeastRank(self::UID, GlobalServRank::OPER));
     }
 
+    #[Test]
+    public function returnsNullWhenTheProjectionIsMissing(): void
+    {
+        $projections = $this->createStub(OperatorNetworkProjectionQuery::class);
+        $projections->method('findForNick')->willReturn(null);
+
+        $lookup = new OperServOperatorRankLookup($this->createUsers(), $this->createAccounts(), $projections);
+
+        self::assertNull($lookup->hasAtLeastRank(self::UID, GlobalServRank::OPER));
+    }
+
     /**
      * @return iterable<string, array{string, GlobalServRank, bool}>
      */

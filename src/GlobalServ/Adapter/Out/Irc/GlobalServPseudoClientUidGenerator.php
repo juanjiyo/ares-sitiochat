@@ -24,7 +24,9 @@ final class GlobalServPseudoClientUidGenerator
             return null;
         }
 
-        $uid = $serverSid . 'Z' . $this->base36Encode($this->counter);
+        // 'Y' keeps temporary clients out of the 'Z' block already used by the
+        // GlobalServ and HelpServ service UIDs, so they can never collide.
+        $uid = $serverSid . 'Y' . $this->base36Encode($this->counter);
         ++$this->counter;
 
         return $uid;

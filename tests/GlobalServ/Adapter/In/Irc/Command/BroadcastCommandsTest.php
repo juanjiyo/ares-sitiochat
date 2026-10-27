@@ -45,11 +45,110 @@ final class BroadcastCommandsTest extends TestCase
 {
     private const string SENDER_UID = '001ABC';
 
+    #[Test]
+    public function commandsDoNothingWithoutASender(): void
+    {
+        $replies = [];
+        $context = $this->createContext($replies, ['#room', 'hi'], withSender: false);
+
+        new NickCommand(new SendNickBroadcastHandler($this->createStub(PseudoClientBroadcastPort::class)))->execute($context);
+        new ChanCommand(new SendChannelMessageHandler($this->createStub(ChannelLookupPort::class), $this->createStub(ChannelMemberNoticePort::class)))->execute($context);
+        new JoinCommand(new MassJoinChannelHandler($this->createStub(MassChannelJoinPort::class), $this->createStub(MassBroadcastPort::class)))->execute($context);
+        new RankBroadcastCommand(
+            new SendRankBroadcastHandler(
+                $this->createStub(NetworkUserLookupPort::class),
+                $this->createStub(OperatorRankLookupPort::class),
+                $this->createStub(RankFilteredBroadcastPort::class),
+            ),
+            'OPER',
+            GlobalServRank::OPER,
+            GlobalServPermission::OPER,
+            'oper.done',
+            6,
+        )->execute($context);
+
+        self::assertSame([], $replies);
+    }
+
+    #[Test]
+    public function chanReportsAnUnavailableNetwork(): void
+    {
+        $channels = $this->createStub(ChannelLookupPort::class);
+        $channels->method('findByChannelName')->willReturn(new ChannelView('#room', '+nt', null, 1));
+
+        $notice = $this->createStub(ChannelMemberNoticePort::class);
+        $notice->method('sendToChannelMembers')->willReturn(null);
+
+        $command = new ChanCommand(new SendChannelMessageHandler($channels, $notice));
+        $replies = [];
+        $command->execute($this->createContext($replies, ['#room', 'hello']));
+
+        self::assertSame([self::SENDER_UID => ['error.network_unavailable']], $replies);
+    }
+
+    #[Test]
+    public function joinReportsAnUnavailableNetworkAfterASuccessfulJoin(): void
+    {
+        $join = $this->createStub(MassChannelJoinPort::class);
+        $join->method('joinAllUsersToChannel')->willReturn(MassChannelJoinResult::supported(2));
+
+        $broadcast = $this->createStub(MassBroadcastPort::class);
+        $broadcast->method('broadcastToAll')->willReturn(null);
+
+        $command = new JoinCommand(new MassJoinChannelHandler($join, $broadcast));
+        $replies = [];
+        $command->execute($this->createContext($replies, ['#room', 'please', 'join']));
+
+        self::assertSame([self::SENDER_UID => ['error.network_unavailable']], $replies);
+    }
+
+    #[Test]
+    public function rankBroadcastReportsAnUnavailableNetwork(): void
+    {
+        $users = $this->createStub(NetworkUserLookupPort::class);
+        $users->method('listConnectedUids')->willReturn(['001AAA']);
+
+        $ranks = $this->createStub(OperatorRankLookupPort::class);
+        $ranks->method('hasAtLeastRank')->willReturn(true);
+
+        $broadcast = $this->createStub(RankFilteredBroadcastPort::class);
+        $broadcast->method('broadcastToUids')->willReturn(null);
+
+        $command = new RankBroadcastCommand(
+            new SendRankBroadcastHandler($users, $ranks, $broadcast),
+            'ADMIN',
+            GlobalServRank::ADMIN,
+            GlobalServPermission::ADMIN,
+            'admin.done',
+            8,
+        );
+        $replies = [];
+        $command->execute($this->createContext($replies, ['staff']));
+
+        self::assertSame([self::SENDER_UID => ['error.network_unavailable']], $replies);
+    }
+
+    #[Test]
+    public function joinReportsTheImpactCountWhenEverythingWorks(): void
+    {
+        $join = $this->createStub(MassChannelJoinPort::class);
+        $join->method('joinAllUsersToChannel')->willReturn(MassChannelJoinResult::supported(3));
+
+        $broadcast = $this->createStub(MassBroadcastPort::class);
+        $broadcast->method('broadcastToAll')->willReturn(3);
+
+        $command = new JoinCommand(new MassJoinChannelHandler($join, $broadcast));
+        $replies = [];
+        $command->execute($this->createContext($replies, ['#room', 'please', 'join']));
+
+        self::assertSame([self::SENDER_UID => ['join.done count=3']], $replies);
+    }
+
     /**
      * @param array<string, list<string>> $replies
      * @param list<string>                $args
      */
-    private function createContext(array &$replies, array $args): GlobalServContext
+    private function createContext(array &$replies, array $args, bool $withSender = true): GlobalServContext
     {
         $notifier = $this->createStub(GlobalServNotifierInterface::class);
         $notifier->method('getNick')->willReturn('GlobalServ');
@@ -73,7 +172,7 @@ final class BroadcastCommandsTest extends TestCase
         );
 
         return new GlobalServContext(
-            sender: new SenderView(self::SENDER_UID, 'Alice', 'i', 'h', 'c', 'ip', isIdentified: true, isOper: true),
+            sender: $withSender ? new SenderView(self::SENDER_UID, 'Alice', 'i', 'h', 'c', 'ip', isIdentified: true, isOper: true) : null,
             senderAccountId: 7,
             command: 'CMD',
             args: $args,

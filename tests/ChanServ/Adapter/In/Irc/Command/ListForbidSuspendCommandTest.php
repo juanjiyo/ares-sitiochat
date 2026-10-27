@@ -87,6 +87,43 @@ final class ListForbidSuspendCommandTest extends TestCase
         self::assertSame(['listsuspend.header', 'listsuspend.line'], $messages);
     }
 
+    #[Test]
+    public function listingsExposeTheirMetadataAndAuditData(): void
+    {
+        $repository = $this->createStub(RegisteredChannelRepositoryInterface::class);
+        $messages = [];
+
+        $forbid = new ListforbidCommand($repository);
+        self::assertSame([], $forbid->getAliases());
+        self::assertTrue($forbid->isOperOnly());
+        self::assertSame(0, $forbid->getMinArgs());
+        self::assertSame('listforbid.syntax', $forbid->getSyntaxKey());
+        self::assertSame('listforbid.help', $forbid->getHelpKey());
+        self::assertSame('listforbid.short', $forbid->getShortDescKey());
+        self::assertSame('listforbid.example', $forbid->getExampleKey());
+        self::assertSame(81, $forbid->getOrder());
+        self::assertSame([], $forbid->getSubCommandHelp());
+        self::assertFalse($forbid->usesLevelFounder());
+        self::assertTrue($forbid->allowsSuspendedChannel());
+        self::assertTrue($forbid->allowsForbiddenChannel());
+        self::assertSame('*', $forbid->auditData($this->context($messages))->target);
+
+        $suspend = new ListsuspendCommand($repository);
+        self::assertSame([], $suspend->getAliases());
+        self::assertTrue($suspend->isOperOnly());
+        self::assertSame(0, $suspend->getMinArgs());
+        self::assertSame('listsuspend.syntax', $suspend->getSyntaxKey());
+        self::assertSame('listsuspend.help', $suspend->getHelpKey());
+        self::assertSame('listsuspend.short', $suspend->getShortDescKey());
+        self::assertSame('listsuspend.example', $suspend->getExampleKey());
+        self::assertSame(80, $suspend->getOrder());
+        self::assertSame([], $suspend->getSubCommandHelp());
+        self::assertFalse($suspend->usesLevelFounder());
+        self::assertTrue($suspend->allowsSuspendedChannel());
+        self::assertTrue($suspend->allowsForbiddenChannel());
+        self::assertSame('*', $suspend->auditData($this->context($messages))->target);
+    }
+
     /**
      * @param list<string> $messages
      */
