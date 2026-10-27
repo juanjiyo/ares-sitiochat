@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\ChanServ\Adapter\Out\Network;
 
 use App\ChanServ\Adapter\Out\Network\IrcChanNetworkUserLookup;
+use App\ChanServ\Application\Model\ChanNetworkUserView;
 use App\Irc\Application\Port\In\NetworkUserLookupPort;
 use App\Irc\Application\Port\In\SenderView;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -12,6 +13,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(IrcChanNetworkUserLookup::class)]
+#[CoversClass(ChanNetworkUserView::class)]
 final class IrcChanNetworkUserLookupTest extends TestCase
 {
     #[Test]

@@ -9,6 +9,7 @@ use App\ChanServ\Adapter\In\Irc\ChanServContext;
 use App\ChanServ\Adapter\In\Irc\ChanServNotifierInterface;
 use App\ChanServ\Adapter\In\Irc\Command\KickCommand;
 use App\ChanServ\Application\Model\ChanAccountView;
+use App\ChanServ\Application\Model\ChanNetworkUserView;
 use App\ChanServ\Application\Port\Out\ChanNetworkActions;
 use App\ChanServ\Application\Port\Out\ChanNetworkUserLookup;
 use App\ChanServ\Application\Port\Out\RegisteredChannelRepositoryInterface;
@@ -59,7 +60,7 @@ final class KickCommandTest extends TestCase
         $network->expects(self::once())->method('kickFromChannel')->with('#room', 'UID1', 'bye');
 
         $users = $this->createStub(ChanNetworkUserLookup::class);
-        $users->method('findByNick')->willReturn(new SenderView('UID1', 'Bob', 'i', 'h', 'c', 'ip'));
+        $users->method('findByNick')->willReturn(new ChanNetworkUserView('UID1', 'Bob', 'i', 'h'));
 
         $command = new KickCommand($this->handler($repository, $network, $users));
         $messages = [];
