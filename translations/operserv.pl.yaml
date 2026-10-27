@@ -277,18 +277,6 @@ geoip:
     empty:          "Nie ma zablokowanych krajów."
     entry:          "\x0310%index%.\x03 \x02%country%\x02 - %reason% (\x0314%nickname%\x03, zarejestrowano: %registered%)"
 
-# --- GLOBAL -------------------------------------------------------------------
-global:
-  syntax:           "GLOBAL {serwis|nick!ident@vhost} {PRIVMSG|NOTICE} <wiadomość>"
-  short:            "Wyślij globalną wiadomość do wszystkich połączonych użytkowników."
-  help:             "Wysyła wiadomość do wszystkich połączonych użytkowników.\n\nJeśli pierwszy argument jest nazwą serwisu, wiadomość zostanie wysłana przy użyciu\ntego istniejącego serwisu.\n\nJeśli nie jest serwisem, tymczasowy pseudo-klient zostanie utworzony z podaną\nmaską. Maska musi być w formacie: nick!ident@vhost\n- nick: prawidłowy nick IRC (litery, []{}|\\`, cyfry, zaczyna się od litery)\n- ident: alfanumeryczny z . _ ~ -\n- vhost: prawidłowa nazwa hosta\n\nDla pseudo-klientów, nick nie może być połączony ani zarejestrowany.\nPseudo-klient pozostanie połączony podczas wysyłania i rozłączy się\nautomatycznie (nick będzie zablokowany na 24h przez SQLINE/QLINE).\n\nPRIVMSG wysyła jako prywatną wiadomość, NOTICE wysyła jako notice.\nTa komenda wymaga uprawnienia operserv.global."
-  example:          "/msg %bot% GLOBAL Network!staff@staff.example.com NOTICE Konserwacja sieci za 10 minut"
-  mask_invalid:    "\x0304✗\x03 Nieprawidłowy format maski: %error%"
-  nick_connected: "\x0304✗\x03 Nick \x02%nickname%\x02 jest obecnie połączony."
-  nick_registered: "\x0304✗\x03 Nick \x02%nickname%\x02 jest zarejestrowany."
-  type_invalid:    "\x0304✗\x03 Typ wiadomości musi być PRIVMSG lub NOTICE."
-  done:            "\x0303✓\x03 Globalna wiadomość wysłana z \x02%nickname%\x02 do %count% użytkowników."
-
 # --- RAW ---------------------------------------------------------------------
 raw:
   syntax:           "RAW <linia>"
@@ -313,7 +301,6 @@ raw:
 debug:
   action_message:   "%operator% wykonuje komendę %command% na %target%. %reason%"
   actionWithDuration: "%operator% wykonuje komendę %command% na %target%. Czas trwania: %duration%. %reason%"
-  action_global:    "%operator% wykonuje komendę GLOBAL z nickiem %target% przez %type% do %count% użytkowników. Wiadomość: %message%"
   prefix_reason:    "Powód: %reason%"
   prefix_message:   "Wiadomość: %reason%"
 
@@ -363,4 +350,3 @@ motd:
     none:           "\x0303✓\x03 Brak wygasłych wpisów MOTD do usunięcia."
   debug:
     finalized:      "Wiadomość MOTD #%id% zakończyła się: [%type%] %message% | %date% | %shown_count%"
-

@@ -277,18 +277,6 @@ geoip:
     empty:          "Nu există țări blocate."
     entry:          "\x0310%index%.\x03 \x02%country%\x02 - %reason% (\x0314%nickname%\x03, înregistrat: %registered%)"
 
-# --- GLOBAL -------------------------------------------------------------------
-global:
-  syntax:           "GLOBAL {serviciu|poreclă!ident@vhost} {PRIVMSG|NOTICE} <mesaj>"
-  short:            "Trimiteți un mesaj global tuturor utilizatorilor conectați."
-  help:             "Trimite un mesaj tuturor utilizatorilor conectați.\n\nDacă primul argument este un nume de serviciu, mesajul va fi trimis folosind acel serviciu existent.\n\nDacă nu este un serviciu, se va crea un pseudo-client temporar cu\nmasca specificată. Masca trebuie să fie în format: poreclă!ident@vhost\n- poreclă: poreclă IRC validă (litere, []{}|\\`, cifre, începe cu literă)\n- ident: alfanumerice cu . _ ~ -\n- vhost: hostname valid\n\nPentru pseudo-clienți, porecla nu poate fi conectată sau înregistrată.\nPseudo-clientul va rămâne conectat în timpul trimiterii și se va deconecta\nautomat (porecla va fi blocată timp de 24h prin SQLINE/QLINE).\n\nPRIVMSG trimite ca mesaj privat, NOTICE trimite ca notificare.\nAceastă comandă necesită permisiunea operserv.global."
-  example:          "/msg %bot% GLOBAL Network!staff@staff.example.com NOTICE Întreținerea rețelei în 10 minute"
-  mask_invalid:    "\x0304✗\x03 Format de mască invalid: %error%"
-  nick_connected: "\x0304✗\x03 Porecla \x02%nickname%\x02 este conectată în prezent."
-  nick_registered: "\x0304✗\x03 Porecla \x02%nickname%\x02 este înregistrată."
-  type_invalid:    "\x0304✗\x03 Tipul mesajului trebuie să fie PRIVMSG sau NOTICE."
-  done:            "\x0303✓\x03 Mesaj global trimis de la \x02%nickname%\x02 către %count% utilizatori."
-
 # --- RAW ---------------------------------------------------------------------
 raw:
   syntax:           "RAW <linie>"
@@ -313,7 +301,6 @@ raw:
 debug:
   action_message:   "%operator% execută comanda %command% asupra %target%. %reason%"
   actionWithDuration: "%operator% execută comanda %command% asupra %target%. Durată: %duration%. %reason%"
-  action_global:    "%operator% execută comanda GLOBAL cu porecla %target% via %type% către %count% utilizatori. Mesaj: %message%"
   prefix_reason:    "Motiv: %reason%"
   prefix_message:   "Mesaj: %reason%"
 
@@ -363,4 +350,3 @@ motd:
     none:           "\x0303✓\x03 Nu există intrări MOTD expirate de eliminat."
   debug:
     finalized:      "Mesajul MOTD #%id% s-a încheiat: [%type%] %message% | %date% | %shown_count%"
-

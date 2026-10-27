@@ -277,18 +277,6 @@ geoip:
     empty:          "Engelli ülke bulunmuyor."
     entry:          "\x0310%index%.\x03 \x02%country%\x02 - %reason% (\x0314%nickname%\x03, kayıt: %registered%)"
 
-# --- GLOBAL -------------------------------------------------------------------
-global:
-  syntax:           "GLOBAL {service|nick!ident@vhost} {PRIVMSG|NOTICE} <mesaj>"
-  short:            "Tüm bağlı kullanıcılara genel bir mesaj gönderin."
-  help:             "Tüm bağlı kullanıcılara bir mesaj gönderir.\n\nİlk argüman bir hizmet adıysa, mesaj mevcut hizmet kullanılarak gönderilir.\n\nHizmet değilse, belirtilen maskeyle geçici bir sözde istemci oluşturulur.\nMaske formatı: nick!ident@vhost\n- nick: IRC geçerli rumuz (harfler, []{}|\\`, rakamlar, harfle başlar)\n- ident: alfanümerik, . _ ~ - ile\n- vhost: geçerli host adı\n\nSözde istemciler için, rumuz bağlı veya kayıtlı olamaz.\nSözde istemci gönderme sırasında bağlı kalır ve otomatik olarak ayrılır\n(rumuz 24s boyunca SQLINE/QLINE ile engellenir).\n\nPRIVMSG özel mesaj olarak, NOTICE bildirim olarak gönderir.\nBu komut operserv.global iznini gerektirir."
-  example:          "/msg %bot% GLOBAL Network!staff@staff.example.com NOTICE 10 dakika içinde ağ bakımı"
-  mask_invalid:    "\x0304✗\x03 Geçersiz maske formatı: %error%"
-  nick_connected: "\x0304✗\x03 \x02%nickname%\x02 rumuzu şu anda bağlı."
-  nick_registered: "\x0304✗\x03 \x02%nickname%\x02 rumuzu kayıtlı."
-  type_invalid:    "\x0304✗\x03 Mesaj türü PRIVMSG veya NOTICE olmalıdır."
-  done:            "\x0303✓\x03 Genel mesaj \x02%nickname%\x02 adresinden %count% kullanıcıya gönderildi."
-
 # --- RAW ---------------------------------------------------------------------
 raw:
   syntax:           "RAW <satır>"
@@ -313,7 +301,6 @@ raw:
 debug:
   action_message:   "%operator%, %target% üzerinde %command% komutunu çalıştırıyor. %reason%"
   actionWithDuration: "%operator%, %target% üzerinde %command% komutunu çalıştırıyor. Süre: %duration%. %reason%"
-  action_global:    "%operator%, %type% aracılığıyla %target% rumuzu ile %count% kullanıcıya GLOBAL komutunu çalıştırıyor. Mesaj: %message%"
   prefix_reason:    "Sebep: %reason%"
   prefix_message:   "Mesaj: %reason%"
 
@@ -363,4 +350,3 @@ motd:
     none:           "\x0303✓\x03 Kaldırılacak süresi dolmuş MOTD girişi yok."
   debug:
     finalized:      "MOTD mesajı #%id% sona erdi: [%type%] %message% | %date% | %shown_count%"
-

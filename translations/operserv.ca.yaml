@@ -277,18 +277,6 @@ geoip:
     empty:          "No hi ha països bloquejats."
     entry:          "\x0310%index%.\x03 \x02%country%\x02 - %reason% (\x0314%nickname%\x03, registrat: %registered%)"
 
-# --- GLOBAL -------------------------------------------------------------------
-global:
-  syntax:           "GLOBAL {service|nick!ident@vhost} {PRIVMSG|NOTICE} <message>"
-  short:            "Enviar un missatge global a tots els usuaris connectats."
-  help:             "Envia un missatge a tots els usuaris connectats.\n\nSi el primer argument és un nom de servei, el missatge s'enviarà utilitzant aquest servei existent.\n\nSi no és un servei, es crearà un pseudoclient temporal amb la\nmàscara especificada. La màscara ha de tenir el format: nick!ident@vhost\n- sobrenom: sobrenom vàlid d'IRC (lletres, []{}|\\`, dígits, comença amb lletra)\n- ident: alfanumèric amb . _ ~ -\n- vhost: nom d'amfitrió vàlid\n\nPer a pseudoclients, el sobrenom no pot estar connectat ni registrat.\nEl pseudoclient romandrà connectat durant l'enviament i es desconnectarà\nautomàticament (el sobrenom es bloquejarà durant 24h via SQLINE/QLINE).\n\nPRIVMSG envia com a missatge privat, NOTICE envia com a avís.\nAquesta ordre requereix el permís operserv.global."
-  example:          "/msg %bot% GLOBAL Network!staff@staff.example.com NOTICE Manteniment de la xarxa en 10 minuts"
-  mask_invalid:    "\x0304✗\x03 Format de màscara no vàlid: %error%"
-  nick_connected: "\x0304✗\x03 El sobrenom \x02%nickname%\x02 està connectat actualment."
-  nick_registered: "\x0304✗\x03 El sobrenom \x02%nickname%\x02 està registrat."
-  type_invalid:    "\x0304✗\x03 El tipus de missatge ha de ser PRIVMSG o NOTICE."
-  done:            "\x0303✓\x03 Missatge global enviat des de \x02%nickname%\x02 a %count% usuaris."
-
 # --- RAW ---------------------------------------------------------------------
 raw:
   syntax:           "RAW <line>"
@@ -313,7 +301,6 @@ raw:
 debug:
   action_message:   "%operator% executa l'ordre %command% sobre %target%. %reason%"
   actionWithDuration: "%operator% executa l'ordre %command% sobre %target%. Durada: %duration%. %reason%"
-  action_global:    "%operator% executa l'ordre GLOBAL amb el sobrenom %target% via %type% a %count% usuaris. Missatge: %message%"
   prefix_reason:    "Motiu: %reason%"
   prefix_message:   "Missatge: %reason%"
 
@@ -363,4 +350,3 @@ motd:
     none:           "\x0303✓\x03 No hi ha entrades MOTD expirades per treure."
   debug:
     finalized:      "El missatge MOTD #%id% ha finalitzat: [%type%] %message% | %date% | %shown_count%"
-

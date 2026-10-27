@@ -277,18 +277,6 @@ geoip:
     empty:          "Aucun pays n'est bloqué."
     entry:          "\x0310%index%.\x03 \x02%country%\x02 - %reason% (\x0314%nickname%\x03, enregistré : %registered%)"
 
-# --- GLOBAL -------------------------------------------------------------------
-global:
-  syntax:           "GLOBAL {service|surnom!ident@vhôte} {PRIVMSG|NOTICE} <message>"
-  short:            "Envoyer un message global à tous les utilisateurs connectés."
-  help:             "Envoie un message à tous les utilisateurs connectés.\n\nSi le premier argument est un nom de service, le message sera envoyé\nen utilisant ce service existant.\n\nSi ce n'est pas un service, un pseudo-client temporaire sera créé avec le\nmasque spécifié. Le masque doit être au format : surnom!ident@vhôte\n- surnom : surnom IRC valide (lettres, []{}|\\`, chiffres, commence par une lettre)\n- ident : alphanumérique avec . _ ~ -\n- vhôte : nom d'hôte valide\n\nPour les pseudo-clients, le surnom ne peut pas être connecté ni enregistré.\nLe pseudo-client restera connecté pendant l'envoi et se déconnectera\nautomatiquement (le surnom sera bloqué pendant 24h via SQLINE/QLINE).\n\nPRIVMSG envoie comme message privé, NOTICE envoie comme notice.\nCette commande nécessite la permission operserv.global."
-  example:          "/msg %bot% GLOBAL Network!staff@staff.example.com NOTICE Maintenance du réseau dans 10 minutes"
-  mask_invalid:    "\x0304✗\x03 Format de masque invalide : %error%"
-  nick_connected: "\x0304✗\x03 Le surnom \x02%nickname%\x02 est actuellement connecté."
-  nick_registered: "\x0304✗\x03 Le surnom \x02%nickname%\x02 est enregistré."
-  type_invalid:    "\x0304✗\x03 Le type de message doit être PRIVMSG ou NOTICE."
-  done:            "\x0303✓\x03 Message global envoyé de \x02%nickname%\x02 à %count% utilisateurs."
-
 # --- RAW ---------------------------------------------------------------------
 raw:
   syntax:           "RAW <ligne>"
@@ -313,7 +301,6 @@ raw:
 debug:
   action_message:   "%operator% exécute la commande %command% sur %target%. %reason%"
   actionWithDuration: "%operator% exécute la commande %command% sur %target%. Durée : %duration%. %reason%"
-  action_global:    "%operator% exécute la commande GLOBAL avec le surnom %target% via %type% vers %count% utilisateurs. Message : %message%"
   prefix_reason:    "Raison : %reason%"
   prefix_message:   "Message : %reason%"
 
@@ -363,4 +350,3 @@ motd:
     none:           "\x0303✓\x03 Aucune entrée MOTD expirée à supprimer."
   debug:
     finalized:      "Le message MOTD #%id% est terminé : [%type%] %message% | %date% | %shown_count%"
-

@@ -277,18 +277,6 @@ geoip:
     empty:          "Δεν υπάρχουν απαγορευμένες χώρες."
     entry:          "\x0310%index%.\x03 \x02%country%\x02 - %reason% (\x0314%nickname%\x03, καταχωρήθηκε: %registered%)"
 
-# --- GLOBAL -------------------------------------------------------------------
-global:
-  syntax:           "GLOBAL {service|nick!ident@vhost} {PRIVMSG|NOTICE} <message>"
-  short:            "Αποστολή καθολικού μηνύματος σε όλους τους συνδεδεμένους χρήστες."
-  help:             "Στέλνει ένα μήνυμα σε όλους τους συνδεδεμένους χρήστες.\n\nΑν το πρώτο όρισμα είναι όνομα υπηρεσίας, το μήνυμα θα σταλεί\nχρησιμοποιώντας αυτήν την υπάρχουσα υπηρεσία.\n\nΑν δεν είναι υπηρεσία, θα δημιουργηθεί ένας προσωρινός ψευδο-πελάτης\nμε την καθορισμένη μάσκα. Η μάσκα πρέπει να είναι στη μορφή: nick!ident@vhost\n- nick: έγκυρο ψευδώνυμο IRC (γράμματα, []{}|\\`, ψηφία, ξεκινά με γράμμα)\n- ident: αλφαριθμητικό με . _ ~ -\n- vhost: έγκυρο hostname\n\nΓια ψευδο-πελάτες, το ψευδώνυμο δεν μπορεί να είναι συνδεδεμένο ή καταχωρημένο.\nΟ ψευδο-πελάτης θα παραμείνει συνδεδεμένος κατά την αποστολή και θα\nαποσυνδεθεί αυτόματα (το nick θα μπλοκαριστεί για 24 ώρες μέσω SQLINE/QLINE).\n\nPRIVMSG στέλνει ως ιδιωτικό μήνυμα, NOTICE στέλνει ως notice.\nΑυτή η εντολή απαιτεί την άδεια operserv.global."
-  example:          "/msg %bot% GLOBAL Network!staff@staff.example.com NOTICE Συντήρηση δικτύου σε 10 λεπτά"
-  mask_invalid:    "\x0304✗\x03 Μη έγκυρη μορφή μάσκας: %error%"
-  nick_connected: "\x0304✗\x03 Το ψευδώνυμο \x02%nickname%\x02 είναι τρέχοντα συνδεδεμένο."
-  nick_registered: "\x0304✗\x03 Το ψευδώνυμο \x02%nickname%\x02 είναι καταχωρημένο."
-  type_invalid:    "\x0304✗\x03 Ο τύπος μηνύματος πρέπει να είναι PRIVMSG ή NOTICE."
-  done:            "\x0303✓\x03 Καθολικό μήνυμα στάλθηκε από \x02%nickname%\x02 σε %count% χρήστες."
-
 # --- RAW ---------------------------------------------------------------------
 raw:
   syntax:           "RAW <line>"
@@ -313,7 +301,6 @@ raw:
 debug:
   action_message:   "%operator% εκτελεί την εντολή %command% σε %target%. %reason%"
   actionWithDuration: "%operator% εκτελεί την εντολή %command% σε %target%. Διάρκεια: %duration%. %reason%"
-  action_global:    "%operator% εκτελεί την εντολή GLOBAL με ψευδώνυμο %target% μέσω %type% σε %count% χρήστες. Μήνυμα: %message%"
   prefix_reason:    "Αιτία: %reason%"
   prefix_message:   "Μήνυμα: %reason%"
 
@@ -363,4 +350,3 @@ motd:
     none:           "\x0303✓\x03 Δεν υπάρχουν ληγμένες καταχωρήσεις MOTD προς αφαίρεση."
   debug:
     finalized:      "Το μήνυμα MOTD #%id% ολοκληρώθηκε: [%type%] %message% | %date% | %shown_count%"
-

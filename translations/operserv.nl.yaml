@@ -277,18 +277,6 @@ geoip:
     empty:          "Er zijn geen geblokkeerde landen."
     entry:          "\x0310%index%.\x03 \x02%country%\x02 - %reason% (\x0314%nickname%\x03, geregistreerd: %registered%)"
 
-# --- GLOBAL -------------------------------------------------------------------
-global:
-  syntax:           "GLOBAL {service|nick!ident@vhost} {PRIVMSG|NOTICE} <bericht>"
-  short:            "Stuur een globaal bericht naar alle verbonden gebruikers."
-  help:             "Stuurt een bericht naar alle verbonden gebruikers.\n\nAls het eerste argument een servicenaam is, wordt het bericht verzonden via die bestaande service.\n\nAls het geen service is, wordt een tijdelijke pseudo-client aangemaakt met het\nopgegeven masker. Het masker moet in formaat zijn: nick!ident@vhost\n- nick: IRC-geldige bijnaam (letters, []{}|\\`, cijfers, begint met letter)\n- ident: alfanumeriek met . _ ~ -\n- vhost: geldige hostnaam\n\nVoor pseudo-clients mag de bijnaam niet verbonden of geregistreerd zijn.\nDe pseudo-client blijft verbonden tijdens het verzenden en verbreekt\nautomatisch (de nick wordt 24u geblokkeerd via SQLINE/QLINE).\n\nPRIVMSG verzendt als privébericht, NOTICE verzendt als notice.\nDit commando vereist de operserv.global-permissie."
-  example:          "/msg %bot% GLOBAL Network!staff@staff.example.com NOTICE Netwerkonderhoud over 10 minuten"
-  mask_invalid:    "\x0304✗\x03 Ongeldig maskerformaat: %error%"
-  nick_connected: "\x0304✗\x03 Bijnaam \x02%nickname%\x02 is momenteel verbonden."
-  nick_registered: "\x0304✗\x03 Bijnaam \x02%nickname%\x02 is geregistreerd."
-  type_invalid:    "\x0304✗\x03 Berichttype moet PRIVMSG of NOTICE zijn."
-  done:            "\x0303✓\x03 Globaal bericht verzonden van \x02%nickname%\x02 naar %count% gebruikers."
-
 # --- RAW ---------------------------------------------------------------------
 raw:
   syntax:           "RAW <regel>"
@@ -313,7 +301,6 @@ raw:
 debug:
   action_message:   "%operator% voert commando %command% uit op %target%. %reason%"
   actionWithDuration: "%operator% voert commando %command% uit op %target%. Duur: %duration%. %reason%"
-  action_global:    "%operator% voert commando GLOBAL uit met bijnaam %target% via %type% naar %count% gebruikers. Bericht: %message%"
   prefix_reason:    "Reden: %reason%"
   prefix_message:   "Bericht: %reason%"
 
@@ -363,4 +350,3 @@ motd:
     none:           "\x0303✓\x03 Geen verlopen MOTD-vermeldingen om te verwijderen."
   debug:
     finalized:      "MOTD-bericht #%id% is beëindigd: [%type%] %message% | %date% | %shown_count%"
-

@@ -277,18 +277,6 @@ geoip:
     empty:          "Ez dago herrialde debekaturik."
     entry:          "\x0310%index%.\x03 \x02%country%\x02 - %reason% (\x0314%nickname%\x03, erregistratua: %registered%)"
 
-# --- GLOBAL -------------------------------------------------------------------
-global:
-  syntax:           "GLOBAL {zerbitzua|nick!ident@vhost} {PRIVMSG|NOTICE} <mezua>"
-  short:            "Bidali mezu global bat konektatutako erabiltzaile guztiei."
-  help:             "Konektatutako erabiltzaile guztiei mezu bat bidaltzen die.\n\nLehen argumentua zerbitzu izen bat bada, mezua existitzen den zerbitzu hori\nerabiliz bidaliko da.\n\nZerbitzu bat ez bada, aldi baterako pseudo-bezero bat sortuko da\nzehaztutako maskararekin. Maskarak formatu honetan egon behar du: nick!ident@vhost\n- ezizena: IRC ezizen baliozkoa (letrak, []{}|\\`, digituak, letraz hasten da)\n- ident: alfanumerikoa . _ ~ - karaktereekin\n- vhost: ostalari izen baliozkoa\n\nPseudo-bezeroentzat, ezizena ezin da konektatuta edo erregistratuta egon.\nPseudo-bezeroa konektatuta egongo da bidalketan zehar eta automatikoki\ndeskonektatuko da (ezizena 24 orduz blokeatuko da SQLINE/QLINE bidez).\n\nPRIVMSGek mezu pribatu gisa bidaltzen du, NOTICEk ohar gisa.\nKomando honek operserv.global baimena behar du."
-  example:          "/msg %bot% GLOBAL Network!staff@staff.example.com NOTICE Sarearen mantentze-lanak 10 minutu barru"
-  mask_invalid:    "\x0304✗\x03 Maskara formatu baliogabea: %error%"
-  nick_connected: "\x0304✗\x03 \x02%nickname%\x02 ezizena unean konektatuta dago."
-  nick_registered: "\x0304✗\x03 \x02%nickname%\x02 ezizena erregistratuta dago."
-  type_invalid:    "\x0304✗\x03 Mezu motak PRIVMSG edo NOTICE izan behar du."
-  done:            "\x0303✓\x03 Mezu globala \x02%nickname%\x02-(e)tik bidali zaie %count% erabiltzaileri."
-
 # --- RAW ---------------------------------------------------------------------
 raw:
   syntax:           "RAW <lerroa>"
@@ -313,7 +301,6 @@ raw:
 debug:
   action_message:   "%operator%(e)k %command% komandoa exekutatzen du %target% helburuan. %reason%"
   actionWithDuration: "%operator%(e)k %command% komandoa exekutatzen du %target% helburuan. Iraupena: %duration%. %reason%"
-  action_global:    "%operator%(e)k GLOBAL komandoa exekutatzen du %target% ezizenarekin %type% bidez %count% erabiltzaileri. Mezua: %message%"
   prefix_reason:    "Arrazoia: %reason%"
   prefix_message:   "Mezua: %reason%"
 
@@ -363,4 +350,3 @@ motd:
     none:           "\x0303✓\x03 Ez dago kentzeko iraungitako MOTD sarrerarik."
   debug:
     finalized:      "#%id% MOTD mezua amaitu da: [%type%] %message% | %date% | %shown_count%"
-
