@@ -184,6 +184,18 @@ set:
     help:           "Gdy ON, informacje o kanale widzą tylko założyciel i użytkownicy z dostępem."
     on:             "\x0303✔\x03 Informacje o kanale są teraz prywatne."
     off:            "\x0303✔\x03 Informacje o kanale są teraz publiczne."
+  topic:
+    syntax:         "SET <#channel> TOPIC [text]"
+    short:          "Set the channel official topic."
+    help:           "Stores the text as the channel official topic and applies it on the network. An empty value clears it. Requires the SET level."
+    changed:        "\x0303\u2714\x03 Channel topic updated."
+    cleared:        "\x0303\u2714\x03 Channel topic cleared."
+  noexpire:
+    syntax:         "SET <#channel> NOEXPIRE {ON|OFF}"
+    short:          "Keep the channel out of the inactivity sweep."
+    help:           "ON keeps the channel out of the inactivity sweep; OFF puts it back in. Requires the SET level."
+    on:             "\x0303\u2714\x03 NOEXPIRE enabled."
+    off:            "\x0303\u2714\x03 NOEXPIRE disabled."
   secure:
     syntax:         "SET <#kanał> SECURE {ON|OFF}"
     short:          "Wymagaj listy dostępu dla rang kanału."

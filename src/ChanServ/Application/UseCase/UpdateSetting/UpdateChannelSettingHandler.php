@@ -30,11 +30,36 @@ final readonly class UpdateChannelSettingHandler implements UpdateChannelSetting
             ChannelSetting::Description => $this->description($command),
             ChannelSetting::Email => $this->email($command),
             ChannelSetting::EntryMessage => $this->entryMessage($command),
+            ChannelSetting::NoExpire => $this->noExpire($command),
             ChannelSetting::Private => $this->channelPrivacy($command),
+            ChannelSetting::Topic => $this->topic($command),
             ChannelSetting::Successor => $this->successor($command),
             ChannelSetting::TopicLock => $this->topicLock($command),
             ChannelSetting::Url => $this->url($command),
         };
+    }
+
+    private function noExpire(UpdateChannelSetting $command): UpdateChannelSettingResult
+    {
+        $command->channel->changeNoExpire('ON' === $command->value);
+        $this->channels->save($command->channel);
+
+        return new UpdateChannelSettingResult(UpdateChannelSettingOutcome::Updated);
+    }
+
+    private function topic(UpdateChannelSetting $command): UpdateChannelSettingResult
+    {
+        $topic = trim($command->value);
+        $command->channel->updateTopic(
+            '' === $topic ? null : $topic,
+            $command->occurredAt,
+            $command->actorNickname,
+        );
+        $this->channels->save($command->channel);
+
+        return new UpdateChannelSettingResult(
+            '' === $topic ? UpdateChannelSettingOutcome::Cleared : UpdateChannelSettingOutcome::Updated,
+        );
     }
 
     private function description(UpdateChannelSetting $command): UpdateChannelSettingResult

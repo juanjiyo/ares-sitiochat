@@ -184,6 +184,18 @@ set:
     help:           "Cuando está ON, solo el fundador y los usuarios con acceso pueden ver la información del canal."
     on:             "\x0303✔\x03 La información del canal ahora es privada."
     off:            "\x0303✔\x03 La información del canal ahora es pública."
+  topic:
+    syntax:         "SET <#canal> TOPIC [texto]"
+    short:          "Fijar el tema oficial del canal."
+    help:           "Guarda el texto como tema oficial del canal y lo aplica en la red. Sin texto, borra el tema. Requiere nivel SET."
+    changed:        "\x0303\u2714\x03 Tema del canal actualizado."
+    cleared:        "\x0303\u2714\x03 Tema del canal borrado."
+  noexpire:
+    syntax:         "SET <#canal> NOEXPIRE {ON|OFF}"
+    short:          "Evitar que el canal caduque por inactividad."
+    help:           "ON mantiene el canal fuera del barrido de inactividad; OFF vuelve a someterlo. Requiere nivel SET."
+    on:             "\x0303\u2714\x03 NOEXPIRE activado."
+    off:            "\x0303\u2714\x03 NOEXPIRE desactivado."
   secure:
     syntax:         "SET <#canal> SECURE {ON|OFF}"
     short:          "Exigir rangos de canal solo a lista de acceso."
