@@ -41,6 +41,10 @@ class RegisteredChannel
 
     private bool $topicLock = false;
 
+    private bool $keepTopic = false;
+
+    private ?string $defaultTopic = null;
+
     /** Whether MLOCK is on (true) or off (false). Two explicit states. */
     private bool $mlockActive = false;
 
@@ -280,6 +284,26 @@ class RegisteredChannel
     public function configureTopicLock(bool $on): void
     {
         $this->topicLock = $on;
+    }
+
+    public function isKeepTopic(): bool
+    {
+        return $this->keepTopic;
+    }
+
+    public function configureKeepTopic(bool $on): void
+    {
+        $this->keepTopic = $on;
+    }
+
+    public function getDefaultTopic(): ?string
+    {
+        return $this->defaultTopic;
+    }
+
+    public function configureDefaultTopic(?string $topic): void
+    {
+        $this->defaultTopic = $topic;
     }
 
     /**

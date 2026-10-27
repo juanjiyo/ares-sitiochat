@@ -197,6 +197,18 @@ set:
     help:           "ON keeps the channel out of the inactivity sweep; OFF puts it back in. Requires the SET level."
     on:             "\x0303\u2714\x03 NOEXPIRE enabled."
     off:            "\x0303\u2714\x03 NOEXPIRE disabled."
+  keeptopic:
+    syntax:         "SET <#canal> KEEPTOPIC {ON|OFF}"
+    short:          "Keep the topic when the channel becomes empty."
+    help:           "ON keeps the last topic when the channel is empty; OFF clears it. Requires the SET level."
+    on:             "\x0303\u2714\x03 KEEPTOPIC enabled."
+    off:            "\x0303\u2714\x03 KEEPTOPIC disabled."
+  defaulttopic:
+    syntax:         "SET <#canal> DEFAULTTOPIC <text>"
+    short:          "Set the default topic applied when the channel has none."
+    help:           "Stores a default topic applied to the channel when it has none. Empty value clears it. Requires the SET level."
+    changed:        "\x0303\u2714\x03 Default topic updated."
+    cleared:        "\x0303\u2714\x03 Default topic cleared."
   secure:
     syntax:         "SET <#channel> SECURE {ON|OFF}"
     short:          "Kanal rütbeleri için erişim listesi gerektirin."

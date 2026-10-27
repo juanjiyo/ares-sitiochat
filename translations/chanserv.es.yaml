@@ -197,6 +197,18 @@ set:
     help:           "ON mantiene el canal fuera del barrido de inactividad; OFF vuelve a someterlo. Requiere nivel SET."
     on:             "\x0303\u2714\x03 NOEXPIRE activado."
     off:            "\x0303\u2714\x03 NOEXPIRE desactivado."
+  keeptopic:
+    syntax:         "SET <#canal> KEEPTOPIC {ON|OFF}"
+    short:          "Mantener el tema cuando el canal queda vacío."
+    help:           "ON mantiene el último tema cuando el canal queda vacío; OFF lo borra. Requiere nivel SET."
+    on:             "\x0303\u2714\x03 KEEPTOPIC activado."
+    off:            "\x0303\u2714\x03 KEEPTOPIC desactivado."
+  defaulttopic:
+    syntax:         "SET <#canal> DEFAULTTOPIC <texto>"
+    short:          "Fijar el tema por defecto cuando el canal no tiene tema."
+    help:           "Guarda un tema por defecto que se aplica al canal cuando no tiene tema. Sin texto, lo borra. Requiere nivel SET."
+    changed:        "\x0303\u2714\x03 Tema por defecto actualizado."
+    cleared:        "\x0303\u2714\x03 Tema por defecto borrado."
   secure:
     syntax:         "SET <#canal> SECURE {ON|OFF}"
     short:          "Exigir rangos de canal solo a lista de acceso."

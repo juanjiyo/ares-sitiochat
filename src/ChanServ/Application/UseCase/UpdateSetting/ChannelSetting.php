@@ -6,9 +6,11 @@ namespace App\ChanServ\Application\UseCase\UpdateSetting;
 
 enum ChannelSetting
 {
+    case DefaultTopic;
     case Description;
     case Email;
     case EntryMessage;
+    case KeepTopic;
     case NoExpire;
     case Private;
     case Topic;

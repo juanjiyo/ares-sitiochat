@@ -24,7 +24,7 @@ final readonly class SetCommand implements ChanServCommandInterface
 {
     private const array SUPPORTED_OPTIONS = [
         'FOUNDER', 'SUCCESSOR', 'DESC', 'URL', 'EMAIL', 'ENTRYMSG', 'TOPIC',
-        'TOPICLOCK', 'MLOCK', 'SECURE', 'PRIVATE', 'NOEXPIRE',
+        'TOPICLOCK', 'MLOCK', 'SECURE', 'PRIVATE', 'NOEXPIRE', 'KEEPTOPIC', 'DEFAULTTOPIC',
     ];
 
     /** @var array<string, SetOptionHandlerInterface> */
@@ -44,6 +44,8 @@ final readonly class SetCommand implements ChanServCommandInterface
         SetPrivateHandler $setPrivateHandler,
         SetTopicHandler $setTopicHandler,
         SetNoexpireHandler $setNoexpireHandler,
+        SetKeepTopicHandler $setKeepTopicHandler,
+        SetDefaultTopicHandler $setDefaultTopicHandler,
     ) {
         $this->handlers = [
             'FOUNDER' => $setFounderHandler,
@@ -58,6 +60,8 @@ final readonly class SetCommand implements ChanServCommandInterface
             'PRIVATE' => $setPrivateHandler,
             'TOPIC' => $setTopicHandler,
             'NOEXPIRE' => $setNoexpireHandler,
+            'KEEPTOPIC' => $setKeepTopicHandler,
+            'DEFAULTTOPIC' => $setDefaultTopicHandler,
         ];
     }
 
@@ -111,6 +115,8 @@ final readonly class SetCommand implements ChanServCommandInterface
             ['name' => 'PRIVATE', 'desc_key' => 'set.private.short', 'help_key' => 'set.private.help', 'syntax_key' => 'set.private.syntax'],
             ['name' => 'TOPIC', 'desc_key' => 'set.topic.short', 'help_key' => 'set.topic.help', 'syntax_key' => 'set.topic.syntax'],
             ['name' => 'NOEXPIRE', 'desc_key' => 'set.noexpire.short', 'help_key' => 'set.noexpire.help', 'syntax_key' => 'set.noexpire.syntax'],
+            ['name' => 'KEEPTOPIC', 'desc_key' => 'set.keeptopic.short', 'help_key' => 'set.keeptopic.help', 'syntax_key' => 'set.keeptopic.syntax'],
+            ['name' => 'DEFAULTTOPIC', 'desc_key' => 'set.defaulttopic.short', 'help_key' => 'set.defaulttopic.help', 'syntax_key' => 'set.defaulttopic.syntax'],
         ];
     }
 

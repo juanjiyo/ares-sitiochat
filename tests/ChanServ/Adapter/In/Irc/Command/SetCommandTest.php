@@ -8,10 +8,12 @@ use App\ChanServ\Adapter\In\Irc\ChanServCommandRegistry;
 use App\ChanServ\Adapter\In\Irc\ChanServContext;
 use App\ChanServ\Adapter\In\Irc\ChanServNotifierInterface;
 use App\ChanServ\Adapter\In\Irc\Command\SetCommand;
+use App\ChanServ\Adapter\In\Irc\Command\SetDefaultTopicHandler;
 use App\ChanServ\Adapter\In\Irc\Command\SetDescHandler;
 use App\ChanServ\Adapter\In\Irc\Command\SetEmailHandler;
 use App\ChanServ\Adapter\In\Irc\Command\SetEntrymsgHandler;
 use App\ChanServ\Adapter\In\Irc\Command\SetFounderHandler;
+use App\ChanServ\Adapter\In\Irc\Command\SetKeepTopicHandler;
 use App\ChanServ\Adapter\In\Irc\Command\SetMlockHandler;
 use App\ChanServ\Adapter\In\Irc\Command\SetNoexpireHandler;
 use App\ChanServ\Adapter\In\Irc\Command\SetPrivateHandler;
@@ -113,6 +115,8 @@ final class SetCommandTest extends TestCase
             new SetPrivateHandler($settingUpdater),
             new SetTopicHandler($settingUpdater, $this->createStub(ApplyStoredChannelTopicHandlerInterface::class)),
             new SetNoexpireHandler($settingUpdater),
+            new SetKeepTopicHandler($settingUpdater),
+            new SetDefaultTopicHandler($settingUpdater),
         );
     }
 
@@ -323,12 +327,14 @@ final class SetCommandTest extends TestCase
             ),
         );
         $help = $cmd->getSubCommandHelp();
-        self::assertCount(12, $help);
+        self::assertCount(14, $help);
         self::assertSame('FOUNDER', $help[0]['name']);
         self::assertSame('SUCCESSOR', $help[1]['name']);
         self::assertSame('PRIVATE', $help[9]['name']);
         self::assertSame('TOPIC', $help[10]['name']);
         self::assertSame('NOEXPIRE', $help[11]['name']);
+        self::assertSame('KEEPTOPIC', $help[12]['name']);
+        self::assertSame('DEFAULTTOPIC', $help[13]['name']);
     }
 
     #[Test]

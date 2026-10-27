@@ -850,7 +850,7 @@ final class IrcopsDebugChannelProtectionSubscriberTest extends TestCase
 
     private function projection(bool $ircopOnly = true, bool $suspended = false, bool $pendingDeletion = false): ChannelProjection
     {
-        return new ChannelProjection(1, '#ops', 1, null, false, '', [], false, false, null, $suspended, $pendingDeletion, null, false, $ircopOnly);
+        return new ChannelProjection(1, '#ops', 1, null, false, '', [], false, false, null, false, null, $suspended, $pendingDeletion, null, false, $ircopOnly);
     }
 
     private function query(ChannelProjection $projection): ChannelProjectionQuery
