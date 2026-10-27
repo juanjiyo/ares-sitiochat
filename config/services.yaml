@@ -1441,6 +1441,9 @@ services:
     App\ChanServ\Adapter\In\Irc\Command\NoexpireCommand:
         tags: ['chanserv.command']
 
+    App\ChanServ\Adapter\In\Irc\Command\KickCommand:
+        tags: ['chanserv.command']
+
     App\ChanServ\Adapter\In\Irc\Command\IrcoponlyCommand:
         tags: ['chanserv.command']
 

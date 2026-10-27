@@ -24,6 +24,8 @@ final readonly class ChanServPermission
 
     public const string HISTORY = 'chanserv.history';
 
+    public const string KICK = 'chanserv.kick';
+
     public const string CLEARACCESS = 'chanserv.clearaccess';
 
     public const string CLEARUSERS = 'chanserv.clearusers';
