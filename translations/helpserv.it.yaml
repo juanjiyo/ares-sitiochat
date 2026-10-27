@@ -1,0 +1,44 @@
+# HeLPServ translations — it (placeholder)
+# Domain: helpserv
+
+unknown_command: "\x0304✗\x03 Unknown command \x02%command%\x02. Use \x0303/msg %bot% HELP\x03."
+
+help:
+  syntax: "HELP [topic]"
+  short: "Show available help topics."
+  help: "Without arguments lists all help topics. Use \x0303HELP <topic>\x03 for information on a specific topic."
+  header_title: "%bot%"
+  header: "\x02\x0307🤖 %title%\x03\x0F \x0314%separator%\x03\x0F"
+  intro: "Network help service."
+  general_header: "\x02 ■ Available topics:\x02"
+  command_line: "    \x0310›\x03\x0F \x02\x0303%command%\x03\x0F%description%"
+  general_footer: "\x0310ℹ\x03\x0F Use /msg %bot% \x02\x0303HELP <topic>\x03\x0F for more information."
+  footer: "\x0314─────────────────────────────\x03\x0F"
+  unknown_topic: "\x0307✗\x03 Unknown topic \x02%topic%\x02. Use \x0303/msg %bot% HELP\x03."
+  syntax_label: "Syntax: \x02\x0303%syntax%\x03\x0F"
+
+topic:
+  umodes:
+    syntax: "UMODES"
+    short: "User modes documented by the network."
+    help: "User modes documented on this network:\n\n\x02+i\x02 invisible — hides you from the /who list for users who do not share a channel.\n\x02+w\x02 wallops — receives wallop messages from operators.\n\x02+o\x02 operator — IRC operator flag (assigned by the network).\n\x02+r\x02 registered — identifies a registered and identified nickname.\n\nUse \x0303/mode <nick> +mode\x03 to set a mode."
+  cmodes:
+    syntax: "CMODES"
+    short: "Channel modes documented by the network."
+    help: "Channel modes documented on this network:\n\n\x02+n\x02 no external messages.\n\x02+t\x02 topic lock — only channel operators may change the topic.\n\x02+r\x02 registered — channel is registered.\n\x02+m\x02 moderated — only voiced users and operators may speak.\n\x02+i\x02 invite only.\n\x02+p\x02 private — channel does not appear in /list.\n\x02+s\x02 secret — channel is hidden from /whois and /list.\n\nUse \x0303/mode <#channel> +mode\x03 to set a mode."
+  bots:
+    syntax: "BOTS"
+    short: "Services introduced by the daemon."
+    help: "These are the services this daemon introduces:\n\n\x02%nickserv%\x02 — nickname registration and identification.\n\x02%chanserv%\x02 — channel management.\n\x02%memoserv%\x02 — memo delivery.\n\x02%operserv%\x02 — network operations.\n\x02%cregserv%\x02 — channel registration requests.\n\x02%helpserv%\x02 — this help service.\n\nMessage a service with \x0303/msg <service> HELP\x03."
+  nick:
+    syntax: "NICK"
+    short: "How to register a nickname."
+    help: "To register a nickname:\n\n1. Choose a nickname and connect with it.\n2. Use \x0303/msg %nickserv% REGISTER <password> [email]\x03 to create the account.\n3. If email validation is enabled, check your inbox and use \x0303/msg %nickserv% VALIDAR <code>\x03.\n4. Identify later with \x0303/msg %nickserv% IDENTIFY <password>\x03.\n\nChoose a strong password and do not share it."
+  canal:
+    syntax: "CANAL"
+    short: "How to register a channel."
+    help: "To register a channel:\n\n1. Join the channel and make sure you are identified with %nickserv%.\n2. Request registration with \x0303/msg %cregserv% REGISTRA <#channel> <password> [description]\x03.\n3. A services operator will review and approve or deny the request.\n4. Once approved, use \x0303/msg %chanserv% IDENTIFY <#channel> <password>\x03 to manage it.\n\nThe channel must be active and follow the network rules."
+  creditos:
+    syntax: "CREDITOS"
+    short: "Credits."
+    help: "Ares IRC Services — built by the project contributors.\n\nThanks to the dBoTs team and the sitioChat community for the original inspiration and requirements."

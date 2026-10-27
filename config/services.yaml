@@ -123,6 +123,13 @@ parameters:
     cregserv.realname_default: 'Channel Registration Requests'
     cregserv.realname: '%env(string:default:cregserv.realname_default:CREGSERV_REALNAME)%'
 
+    helpserv.nick_default: 'HeLP'
+    helpserv.nick: '%env(string:default:helpserv.nick_default:HELPSERV_NICK)%'
+    helpserv.ident_default: 'HeLP'
+    helpserv.ident: '%env(string:default:helpserv.ident_default:HELPSERV_IDENT)%'
+    helpserv.realname_default: 'Help Service'
+    helpserv.realname: '%env(string:default:helpserv.realname_default:HELPSERV_REALNAME)%'
+
     memoserv.nick_default: 'MemoServ'
     memoserv.nick: '%env(string:default:memoserv.nick_default:MEMOSERV_NICK)%'
     memoserv.ident_default: 'MemoServ'
@@ -2519,3 +2526,36 @@ services:
 
     App\OperServ\Adapter\Out\Irc\DebugChannelCommandAuditSink:
         tags: ['app.command_audit_sink']
+
+    # --- HelpServ pseudo-client -------------------------------------------------
+
+    App\HelpServ\Adapter\In\Irc\Bot\HelpServBot:
+        arguments:
+            $uidGenerator: '@App\Irc\Application\Port\In\ServiceUidGeneratorInterface'
+            $servicesVhost: '%services.vhost%'
+            $helpservNick: '%helpserv.nick%'
+            $helpservIdent: '%helpserv.ident%'
+            $helpservRealname: '%helpserv.realname%'
+            $logger: '@monolog.logger.irc'
+        tags: ['kernel.event_subscriber', { name: 'app.service_nickname_provider' }, { name: 'app.service_uid_provider' }]
+
+    App\HelpServ\Adapter\In\Irc\HelpServNotifierInterface:
+        alias: App\HelpServ\Adapter\In\Irc\Bot\HelpServBot
+
+    App\HelpServ\Adapter\In\Irc\Subscriber\HelpServCommandListener:
+        arguments:
+            $logger: '@monolog.logger.irc'
+        tags: ['service_command_listener']
+
+    App\HelpServ\Adapter\In\Irc\HelpServService:
+        arguments:
+            $serviceNicks: '@App\Irc\Application\Port\In\ServiceNicknameRegistry'
+            $defaultLanguage: '%services.default_language%'
+            $logger: '@monolog.logger.irc'
+
+    App\HelpServ\Adapter\In\Irc\HelpServCommandRegistry:
+        arguments:
+            $commands: !tagged_iterator helpserv.command
+
+    App\HelpServ\Adapter\In\Irc\Command\HelpCommand:
+        tags: ['helpserv.command']
