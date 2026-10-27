@@ -37,7 +37,7 @@ topic:
   canal:
     syntax: "CANAL"
     short: "How to register a channel."
-    help: "To register a channel:\n\n1. Join the channel and make sure you are identified with %nickserv%.\n2. Request registration with \x0303/msg %cregserv% REGISTRA <#channel> <password> [description]\x03.\n3. A services operator will review and approve or deny the request.\n4. Once approved, use \x0303/msg %chanserv% IDENTIFY <#channel> <password>\x03 to manage it.\n\nThe channel must be active and follow the network rules."
+    help: "To register a channel:\n\n1. Join the channel and make sure you are identified with %nickserv%.\n2. Request registration with \x0303/msg %cregserv% REGISTRA <#channel> <description>\x03.\n3. A services operator will review and approve or deny the request.\n4. Once approved, the channel is registered to your %nickserv% account; manage it with \x0303/msg %chanserv% HELP\x03 while identified.\n\nThe channel must be active and follow the network rules."
   creditos:
     syntax: "CREDITOS"
     short: "Credits."

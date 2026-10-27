@@ -1,0 +1,79 @@
+# GlobalServ translations — Placeholder (eu locale — English copy)
+# Domain: globalserv
+
+unknown_command: "\x0304✗\x03 Unknown command \x02%command%\x02. Use \x0303/msg %bot% HELP\x03."
+
+help:
+  syntax: "HELP [command]"
+  short: "Show available commands."
+  help: "Without arguments lists the available commands. Use \x0303HELP <command>\x03 for information on a specific command."
+  header_title: "%bot%"
+  header: "\x02\x0307🤖 %title%\x03\x0F \x0314%separator%\x03\x0F"
+  intro: "Network global announcements service."
+  general_header: "\x02 ■ Available commands:\x02"
+  command_line: "    \x0310›\x03\x0F \x02\x0303%command%\x03\x0F%description%"
+  ircop_header: "\x02 ■ IRCop commands:\x02"
+  general_footer: "\x0310ℹ\x03\x0F Use /msg %bot% \x02\x0303HELP <command>\x03\x0F for more information."
+  footer: "\x0314─────────────────────────────\x03\x0F"
+  unknown_command: "\x0307✗\x03 Unknown command \x02%command%\x02. Use \x0303/msg %bot% HELP\x03."
+  syntax_label: "Syntax: \x02\x0303%syntax%\x03\x0F"
+
+global:
+  syntax: "GLOBAL <message>"
+  short: "Send a global message to all connected users."
+  help: "Sends the message as a NOTICE to every connected user on the network.\n\nThe message is delivered with the \x02[ Global Message ]\x02 prefix on its own line, followed by your text.\n\nThis command requires the globalserv.global permission."
+  prefix: "[ Global Message ]"
+  done: "\x0303✓\x03 Global message sent correctly. Impact count: \x02%count%\x02."
+
+nick:
+  syntax: "NICK <nick> <message>"
+  short: "Broadcast from a temporary pseudo-client."
+  help: "Introduces a temporary client with the given nick, sends the message as a NOTICE to every connected user, and quits the client immediately afterwards.\n\nThis command requires the globalserv.nick permission."
+  done: "\x0303\u2713\x03 Message broadcast from the temporary client. Impact count: \x02%count%\x02."
+
+chan:
+  syntax: "CHAN <#channel> <message>"
+  short: "Send a message to every member of a channel."
+  help: "Sends the message as a NOTICE to every member of the given channel.\n\nThis command requires the globalserv.chan permission."
+  done: "\x0303\u2713\x03 Message sent to the channel. Impact count: \x02%count%\x02."
+  not_found: "\x0304\u2717\x03 Channel \x02%channel%\x02 is not on the network."
+
+join:
+  syntax: "JOIN <#channel> <reason>"
+  short: "Join every user into a channel."
+  help: "Force-joins every connected user into the given channel and broadcasts the reason.\n\nThe active protocol adapter does not expose a force-join capability yet, so the command reports it as unsupported.\n\nThis command requires the globalserv.join permission."
+  done: "\x0303\u2713\x03 Users joined the channel and the reason was broadcast. Impact count: \x02%count%\x02."
+  unsupported: "\x0304\u2717\x03 The active protocol adapter does not support joining every user into a channel."
+
+pre-oper:
+  syntax: "PRE-OPER <message>"
+  short: "Broadcast to Pre-Operador and above."
+  help: "Sends the message as a NOTICE to every connected user holding Pre-Operador rank or above.\n\nThis command requires the globalserv.preoper permission."
+  done: "\x0303\u2713\x03 Message sent to Pre-Operador and above. Impact count: \x02%count%\x02."
+
+oper:
+  syntax: "OPER <message>"
+  short: "Broadcast to Operador and above."
+  help: "Sends the message as a NOTICE to every connected user holding Operador rank or above.\n\nThis command requires the globalserv.oper permission."
+  done: "\x0303\u2713\x03 Message sent to Operador and above. Impact count: \x02%count%\x02."
+
+co-admin:
+  syntax: "CO-ADMIN <message>"
+  short: "Broadcast to Administrador and above."
+  help: "Sends the message as a NOTICE to every connected user holding Administrador rank or above.\n\nThis command requires the globalserv.coadmin permission."
+  done: "\x0303\u2713\x03 Message sent to Administrador and above. Impact count: \x02%count%\x02."
+
+admin:
+  syntax: "ADMIN <message>"
+  short: "Broadcast to Administrador only."
+  help: "Sends the message as a NOTICE to every connected user holding Administrador rank.\n\nThis command requires the globalserv.admin permission."
+  done: "\x0303\u2713\x03 Message sent to Administrador. Impact count: \x02%count%\x02."
+
+rank:
+  unsupported: "\x0304\u2717\x03 The staff rank of the connected users cannot be determined by the active adapter."
+
+error:
+  permission_denied: "\x0304\u2717\x03 You do not have permission to use this command."
+  syntax: "\x0304\u2717\x03 Syntax: %syntax%"
+  network_unavailable: "\x0304\u2717\x03 The network is not available right now."
+  broadcast_failed: "\x0304\u2717\x03 The announcement could not be delivered."

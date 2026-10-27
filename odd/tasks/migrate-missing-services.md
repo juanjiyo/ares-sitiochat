@@ -25,9 +25,9 @@ S10. Los cambios deben pasar `phpstan analyse src/ tests/ --level=max`, `./vendo
 | T1 | S1 | HeLPServ: Domain + Application (help topics, no persistence) | inline | done | 0000000 |
 | T2 | S1 | HeLPServ: Adapter In IRC (commands, HELP, bot) | inline | done | 0000000 |
 | T3 | S1 | HeLPServ: Translations + wiring + tests | inline | done | 0000000 |
-| T4 | S2 | GlobalServ: Domain + Application (broadcast intents) | inline | pending | |
-| T5 | S2 | GlobalServ: Adapter In IRC + network output port | inline | pending | |
-| T6 | S2 | GlobalServ: Translations + wiring + tests | inline | pending | |
+| T4 | S2 | GlobalServ: Domain + Application (broadcast intents) | inline | done | GLOBAL/NICK/CHAN/JOIN/rank use cases + ports |
+| T5 | S2 | GlobalServ: Adapter In IRC + network output port | inline | done | 8 commands, 6 output adapters |
+| T6 | S2 | GlobalServ: Translations + wiring + tests | inline | done | 14 locales, 58 tests green |
 | T7 | S3 | CeNTeRServ: staff ladder Domain/Application | delegated | pending | |
 | T8 | S3 | CeNTeRServ: RAW/NORAW and permission catalog | delegated | pending | |
 | T9 | S3 | CeNTeRServ: IRC adapter + tests + translations | delegated | pending | |

@@ -1,0 +1,79 @@
+# GlobalServ translations — Español
+# Domain: globalserv
+
+unknown_command: "\x0304✗\x03 Comando desconocido \x02%command%\x02. Usa \x0303/msg %bot% HELP\x03."
+
+help:
+  syntax: "HELP [comando]"
+  short: "Muestra los comandos disponibles."
+  help: "Sin argumentos lista los comandos disponibles. Usa \x0303HELP <comando>\x03 para información sobre un comando concreto."
+  header_title: "%bot%"
+  header: "\x02\x0307🤖 %title%\x03\x0F \x0314%separator%\x03\x0F"
+  intro: "Servicio de anuncios globales de la red."
+  general_header: "\x02 ■ Comandos disponibles:\x02"
+  command_line: "    \x0310›\x03\x0F \x02\x0303%command%\x03\x0F%description%"
+  ircop_header: "\x02 ■ Comandos de IRCop:\x02"
+  general_footer: "\x0310ℹ\x03\x0F Usa /msg %bot% \x02\x0303HELP <comando>\x03\x0F para más información."
+  footer: "\x0314─────────────────────────────\x03\x0F"
+  unknown_command: "\x0307✗\x03 Comando desconocido \x02%command%\x02. Usa \x0303/msg %bot% HELP\x03."
+  syntax_label: "Sintaxis: \x02\x0303%syntax%\x03\x0F"
+
+global:
+  syntax: "GLOBAL <mensaje>"
+  short: "Envía un mensaje global a todos los usuarios conectados."
+  help: "Envía el mensaje como NOTICE a todos los usuarios conectados de la red.\n\nEl mensaje se entrega con el prefijo \x02[ Mensaje Global ]\x02 en su propia línea, seguido de tu texto.\n\nEste comando requiere el permiso globalserv.global."
+  prefix: "[ Mensaje Global ]"
+  done: "\x0303✓\x03 Mensaje global enviado correctamente. Número de Impactos: \x02%count%\x02."
+
+nick:
+  syntax: "NICK <nick> <mensaje>"
+  short: "Difunde desde un cliente temporal."
+  help: "Introduce un cliente temporal con el nick indicado, envía el mensaje como NOTICE a todos los usuarios conectados y lo desconecta inmediatamente después.\n\nEste comando requiere el permiso globalserv.nick."
+  done: "\x0303\u2713\x03 Mensaje difundido desde el cliente temporal. Número de Impactos: \x02%count%\x02."
+
+chan:
+  syntax: "CHAN <#canal> <mensaje>"
+  short: "Envía un mensaje a todos los miembros de un canal."
+  help: "Envía el mensaje como NOTICE a todos los miembros del canal indicado.\n\nEste comando requiere el permiso globalserv.chan."
+  done: "\x0303\u2713\x03 Mensaje enviado al canal. Número de Impactos: \x02%count%\x02."
+  not_found: "\x0304\u2717\x03 El canal \x02%channel%\x02 no está en la red."
+
+join:
+  syntax: "JOIN <#canal> <motivo>"
+  short: "Mete a todos los usuarios en un canal."
+  help: "Fuerza la entrada de todos los usuarios conectados al canal indicado y difunde el motivo.\n\nEl adaptador de protocolo activo todavía no expone una capacidad de entrada forzada, así que el comando la reporta como no soportada.\n\nEste comando requiere el permiso globalserv.join."
+  done: "\x0303\u2713\x03 Usuarios introducidos en el canal y motivo difundido. Número de Impactos: \x02%count%\x02."
+  unsupported: "\x0304\u2717\x03 El adaptador de protocolo activo no permite meter a todos los usuarios en un canal."
+
+pre-oper:
+  syntax: "PRE-OPER <mensaje>"
+  short: "Difunde a Pre-Operador y superiores."
+  help: "Envía el mensaje como NOTICE a todos los usuarios conectados con rango Pre-Operador o superior.\n\nEste comando requiere el permiso globalserv.preoper."
+  done: "\x0303\u2713\x03 Mensaje enviado a Pre-Operador y superiores. Número de Impactos: \x02%count%\x02."
+
+oper:
+  syntax: "OPER <mensaje>"
+  short: "Difunde a Operador y superiores."
+  help: "Envía el mensaje como NOTICE a todos los usuarios conectados con rango Operador o superior.\n\nEste comando requiere el permiso globalserv.oper."
+  done: "\x0303\u2713\x03 Mensaje enviado a Operador y superiores. Número de Impactos: \x02%count%\x02."
+
+co-admin:
+  syntax: "CO-ADMIN <mensaje>"
+  short: "Difunde a Administrador y superiores."
+  help: "Envía el mensaje como NOTICE a todos los usuarios conectados con rango Administrador o superior.\n\nEste comando requiere el permiso globalserv.coadmin."
+  done: "\x0303\u2713\x03 Mensaje enviado a Administrador y superiores. Número de Impactos: \x02%count%\x02."
+
+admin:
+  syntax: "ADMIN <mensaje>"
+  short: "Difunde solo a Administrador."
+  help: "Envía el mensaje como NOTICE a todos los usuarios conectados con rango Administrador.\n\nEste comando requiere el permiso globalserv.admin."
+  done: "\x0303\u2713\x03 Mensaje enviado a Administrador. Número de Impactos: \x02%count%\x02."
+
+rank:
+  unsupported: "\x0304\u2717\x03 El adaptador activo no puede determinar el rango de los usuarios conectados."
+
+error:
+  permission_denied: "\x0304\u2717\x03 No tienes permiso para usar este comando."
+  syntax: "\x0304\u2717\x03 Sintaxis: %syntax%"
+  network_unavailable: "\x0304\u2717\x03 La red no está disponible en este momento."
+  broadcast_failed: "\x0304\u2717\x03 No se pudo entregar el anuncio."
