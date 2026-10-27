@@ -210,7 +210,7 @@ final class ManageChannelAkickHandlerTest extends TestCase
     {
         $matching = ChannelAkick::create($this->now, 1, 7, '*!*@bad.host', 'Spammer');
         $other = ChannelAkick::create($this->now, 1, 7, '*!*@good.host', 'Other');
-        $expired = ChannelAkick::create($this->now, 1, 7, '*!*@bad.host', 'Expired', new DateTimeImmutable('-1 day'));
+        $expired = ChannelAkick::create($this->now, 1, 7, '*!*@bad.host', 'Expired', $this->now->modify('-1 day'));
         $akicks = $this->createStub(ChannelAkickRepositoryInterface::class);
         $akicks->method('listByChannel')->willReturn([$matching, $other, $expired]);
 
