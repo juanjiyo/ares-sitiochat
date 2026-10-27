@@ -101,57 +101,39 @@ final readonly class OperServDebugNotifier implements ServiceDebugNotifierInterf
 
         $duration = $extra['duration'] ?? null;
 
-        if ('GLOBAL' === $command) {
-            $messageParams = [
-                '%operator%' => $coloredOperator,
-                '%command%' => $coloredCommand,
-                '%target%' => $coloredTarget,
-                '%type%' => $extra['type'] ?? 'PRIVMSG',
-                '%count%' => $extra['count'] ?? '0',
-                '%message%' => $reason ?? '',
-            ];
-
-            $message = $this->translator->trans(
-                'debug.action_global',
-                $messageParams,
-                'operserv',
-                $this->defaultLanguage,
-            );
-        } else {
-            $formattedReason = '';
-            if (null !== $reason && '' !== $reason) {
-                $reasonType = $extra['reasonType'] ?? 'reason';
-                $prefixKey = 'reason' === $reasonType ? 'debug.prefix_reason' : 'debug.prefix_message';
-                $formattedReason = $this->translator->trans(
-                    $prefixKey,
-                    ['%reason%' => $reason],
-                    'operserv',
-                    $this->defaultLanguage,
-                );
-            }
-
-            $messageParams = [
-                '%operator%' => $coloredOperator,
-                '%command%' => $coloredCommand,
-                '%target%' => $coloredTarget,
-                '%reason%' => $formattedReason,
-            ];
-
-            $translationKey = null !== $duration && '' !== $duration
-                ? 'debug.actionWithDuration'
-                : 'debug.action_message';
-
-            if (null !== $duration && '' !== $duration) {
-                $messageParams['%duration%'] = $duration;
-            }
-
-            $message = $this->translator->trans(
-                $translationKey,
-                $messageParams,
+        $formattedReason = '';
+        if (null !== $reason && '' !== $reason) {
+            $reasonType = $extra['reasonType'] ?? 'reason';
+            $prefixKey = 'reason' === $reasonType ? 'debug.prefix_reason' : 'debug.prefix_message';
+            $formattedReason = $this->translator->trans(
+                $prefixKey,
+                ['%reason%' => $reason],
                 'operserv',
                 $this->defaultLanguage,
             );
         }
+
+        $messageParams = [
+            '%operator%' => $coloredOperator,
+            '%command%' => $coloredCommand,
+            '%target%' => $coloredTarget,
+            '%reason%' => $formattedReason,
+        ];
+
+        $translationKey = null !== $duration && '' !== $duration
+            ? 'debug.actionWithDuration'
+            : 'debug.action_message';
+
+        if (null !== $duration && '' !== $duration) {
+            $messageParams['%duration%'] = $duration;
+        }
+
+        $message = $this->translator->trans(
+            $translationKey,
+            $messageParams,
+            'operserv',
+            $this->defaultLanguage,
+        );
 
         $this->notify($message);
     }

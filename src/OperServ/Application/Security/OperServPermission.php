@@ -12,8 +12,6 @@ final class OperServPermission
 
     public const string GEOIP = 'operserv.geoip';
 
-    public const string GLOBAL = 'operserv.global';
-
     public const string RAW = 'operserv.raw';
 
     public const string MOTD = 'operserv.motd';

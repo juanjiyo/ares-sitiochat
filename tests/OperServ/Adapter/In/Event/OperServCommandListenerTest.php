@@ -536,7 +536,6 @@ final class OperServCommandListenerTest extends TestCase
     public function loggingNeverRetainsRawOrGlobalPayloads(): void
     {
         self::assertSame('RAW', OperServCommandLogSanitizer::commandName('RAW OPAQUE reset-token'));
-        self::assertSame('GLOBAL', OperServCommandLogSanitizer::commandName('GLOBAL * NOTICE private-secret'));
         self::assertSame('UNKNOWN', OperServCommandLogSanitizer::commandName('private-secret payload'));
     }
 }

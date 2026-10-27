@@ -140,6 +140,14 @@ parameters:
     memoserv.ignore_list_limit_channel_default: 100
     memoserv.ignore_list_limit_channel: '%env(int:default:memoserv.ignore_list_limit_channel_default:MEMOSERV_IGNORE_LIST_LIMIT_CHANNEL)%'
 
+    # GlobalServ pseudo-client
+    globalserv.nick_default: 'GlobalServ'
+    globalserv.nick: '%env(string:default:globalserv.nick_default:GLOBALSERV_NICK)%'
+    globalserv.ident_default: 'GlobalServ'
+    globalserv.ident: '%env(string:default:globalserv.ident_default:GLOBALSERV_IDENT)%'
+    globalserv.realname_default: 'Network Global Announcement Services'
+    globalserv.realname: '%env(string:default:globalserv.realname_default:GLOBALSERV_REALNAME)%'
+
     # OperServ pseudo-client
     operserv.nick_default: 'OperServ'
     operserv.nick: '%env(string:default:operserv.nick_default:OPERSERV_NICK)%'
@@ -2354,8 +2362,26 @@ services:
     App\OperServ\Adapter\In\Irc\Command\KillCommand:
         tags: ['operserv.command.new']
 
-    App\OperServ\Adapter\In\Irc\Command\GlobalCommand:
-        tags: ['operserv.command.new']
+    # --- GlobalServ Infrastructure -----------------------------------------------
+
+    App\GlobalServ\Adapter\In\Irc\Bot\GlobalServBot:
+        arguments:
+            $uidGenerator: '@App\Irc\Application\Port\In\ServiceUidGeneratorInterface'
+            $servicesVhost: '%services.vhost%'
+            $globalServNick: '%globalserv.nick%'
+            $globalServIdent: '%globalserv.ident%'
+            $globalServRealname: '%globalserv.realname%'
+            $logger: '@monolog.logger.irc'
+            $sendNoticePort: '@App\Irc\Application\Port\In\SendNoticePort'
+        tags: ['kernel.event_subscriber', { name: 'app.service_nickname_provider' }, { name: 'app.service_uid_provider' }]
+
+    App\GlobalServ\Adapter\In\Irc\GlobalServService: ~
+
+    App\GlobalServ\Adapter\In\Event\GlobalServCommandListener:
+        arguments:
+            $service: '@App\GlobalServ\Adapter\In\Irc\GlobalServService'
+            $logger: '@monolog.logger.irc'
+        tags: ['service_command_listener']
 
     # --- OperServ Infrastructure -------------------------------------------------
 

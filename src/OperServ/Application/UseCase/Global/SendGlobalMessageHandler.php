@@ -75,12 +75,12 @@ final readonly class SendGlobalMessageHandler
     {
         $this->audit->record(new CommandAuditRecord(
             category: CommandAuditCategory::OperatorAction,
-            service: 'OperServ',
+            service: 'GlobalServ',
             actor: $command->actorNickname,
             operation: 'GLOBAL',
             occurredAt: $command->occurredAt,
             target: $nickname,
-            permission: 'operserv.global',
+            permission: 'globalserv.global',
             metadata: [
                 'delivery' => $delivery->value,
                 'recipient_count' => $count,

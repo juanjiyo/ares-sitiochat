@@ -15,7 +15,7 @@ use const PREG_SPLIT_NO_EMPTY;
 /** Produces a bounded command identifier without retaining IRC arguments. */
 final class OperServCommandLogSanitizer
 {
-    private const array COMMANDS = ['GLINE', 'GLOBAL', 'HELP', 'IRCOP', 'KILL', 'MOTD', 'RAW', 'ROLE'];
+    private const array COMMANDS = ['GLINE', 'HELP', 'IRCOP', 'KILL', 'MOTD', 'RAW', 'ROLE'];
 
     private function __construct() {}
 
