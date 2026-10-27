@@ -636,3 +636,21 @@ list:
   status_suspended: "Askıya alındı"
   status_pending_deletion: "Silinmeyi bekliyor"
   status_forbidden: "Yasaklandı"
+
+listforbid:
+  syntax: "LISTFORBID"
+  short: "List forbidden channels."
+  help: "Lists every forbidden channel with its reason. IRCops with the chanserv.listforbid permission only."
+  example: "/msg %bot% LISTFORBID"
+  header: "\x0302Forbidden channels (%count%):\x03"
+  line: "    \x0310›\x03 \x02%channel%\x02 — %reason%"
+  empty: "There are no forbidden channels."
+
+listsuspend:
+  syntax: "LISTSUSPEND"
+  short: "List suspended channels."
+  help: "Lists every suspended channel with its reason and expiry. IRCops with the chanserv.listsuspend permission only."
+  example: "/msg %bot% LISTSUSPEND"
+  header: "\x0302Suspended channels (%count%):\x03"
+  line: "    \x0310›\x03 \x02%channel%\x02 — %reason% (until %until%)"
+  empty: "There are no suspended channels."

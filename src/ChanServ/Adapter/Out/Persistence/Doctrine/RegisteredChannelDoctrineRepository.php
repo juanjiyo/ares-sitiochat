@@ -220,6 +220,21 @@ final readonly class RegisteredChannelDoctrineRepository implements RegisteredCh
             ->execute();
     }
 
+    public function findSuspendedChannels(): array
+    {
+        $qb = $this->em->createQueryBuilder();
+        $qb->select('c')
+            ->from(RegisteredChannel::class, 'c')
+            ->where('c.status = :status')
+            ->setParameter('status', ChannelStatus::Suspended);
+
+        /** @var array<mixed> $result */
+        $result = $qb->getQuery()->getResult();
+
+        /* @var array<RegisteredChannel> */
+        return array_values(array_filter($result, static fn ($row): bool => $row instanceof RegisteredChannel));
+    }
+
     public function findForbiddenChannels(): array
     {
         $qb = $this->em->createQueryBuilder();

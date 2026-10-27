@@ -30,6 +30,10 @@ final readonly class ChanServPermission
 
     public const string LIST = 'chanserv.list';
 
+    public const string LISTSUSPEND = 'chanserv.listsuspend';
+
+    public const string LISTFORBID = 'chanserv.listforbid';
+
     /**
      * @return list<string>
      */
@@ -48,6 +52,8 @@ final readonly class ChanServPermission
             self::HISTORY,
             self::CLEARUSERS,
             self::LIST,
+            self::LISTSUSPEND,
+            self::LISTFORBID,
         ];
     }
 

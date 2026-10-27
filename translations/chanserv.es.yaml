@@ -636,3 +636,21 @@ list:
   status_suspended: "Suspendido"
   status_pending_deletion: "Pendiente de eliminación"
   status_forbidden: "Prohibido"
+
+listforbid:
+  syntax: "LISTFORBID"
+  short: "Listar canales prohibidos."
+  help: "Muestra los canales prohibidos con el motivo de cada uno. Solo IRCops con permiso chanserv.listforbid."
+  example: "/msg %bot% LISTFORBID"
+  header: "\x0302Canales prohibidos (%count%):\x03"
+  line: "    \x0310›\x03 \x02%channel%\x02 — %reason%"
+  empty: "No hay canales prohibidos."
+
+listsuspend:
+  syntax: "LISTSUSPEND"
+  short: "Listar canales suspendidos."
+  help: "Muestra los canales suspendidos con el motivo y la fecha de expiración. Solo IRCops con permiso chanserv.listsuspend."
+  example: "/msg %bot% LISTSUSPEND"
+  header: "\x0302Canales suspendidos (%count%):\x03"
+  line: "    \x0310›\x03 \x02%channel%\x02 — %reason% (hasta %until%)"
+  empty: "No hay canales suspendidos."

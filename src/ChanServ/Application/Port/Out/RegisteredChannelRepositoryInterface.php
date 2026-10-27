@@ -76,4 +76,7 @@ interface RegisteredChannelRepositoryInterface
      * @return RegisteredChannel[] Channels that are currently forbidden
      */
     public function findForbiddenChannels(): array;
+
+    /** @return RegisteredChannel[] */
+    public function findSuspendedChannels(): array;
 }

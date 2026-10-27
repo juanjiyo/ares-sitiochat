@@ -1432,6 +1432,12 @@ services:
     App\ChanServ\Adapter\In\Irc\Command\UnforbidCommand:
         tags: ['chanserv.command']
 
+    App\ChanServ\Adapter\In\Irc\Command\ListsuspendCommand:
+        tags: ['chanserv.command']
+
+    App\ChanServ\Adapter\In\Irc\Command\ListforbidCommand:
+        tags: ['chanserv.command']
+
     App\ChanServ\Adapter\In\Irc\Command\NoexpireCommand:
         tags: ['chanserv.command']
 
