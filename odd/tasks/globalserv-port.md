@@ -69,3 +69,8 @@ All broadcasts carry a two-line payload: a `[ Mensaje Global ]`-style header and
       and InspIRCd. The remaining commands need the full service-bot infrastructure (bot, service,
       registry, notifier, help formatter, listener, DI, translations, tests), which is a multi-session
       change and cannot be completed safely in one turn.
+- L7 — 2026-10-28 integration: `GLOBAL` is gone from OperServ and GlobalServ is wired as a service
+      bot. Full gates on `integration/verify-all`: PHPUnit 6808/6808, PHPStan max 0 errors, Deptrac
+      0 violations, CS-Fixer clean on the touched scopes. The unused `operserv.global.*` translation
+      keys were removed and the service-command count dropped to 72. `JOIN` still only broadcasts:
+      forcing users into a channel needs a `SVSJOIN`/`SAJOIN` action that Ares does not expose yet.
