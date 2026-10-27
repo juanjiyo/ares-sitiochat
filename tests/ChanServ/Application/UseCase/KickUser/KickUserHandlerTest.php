@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Tests\ChanServ\Application\UseCase\KickUser;
 
 use App\ChanServ\Application\Port\Out\ChanNetworkActions;
+use App\ChanServ\Application\Port\Out\ChanNetworkUserLookup;
 use App\ChanServ\Application\Port\Out\RegisteredChannelRepositoryInterface;
 use App\ChanServ\Application\UseCase\KickUser\KickUser;
 use App\ChanServ\Application\UseCase\KickUser\KickUserHandler;
 use App\ChanServ\Application\UseCase\KickUser\KickUserOutcome;
 use App\ChanServ\Application\UseCase\KickUser\KickUserResult;
 use App\ChanServ\Domain\Entity\RegisteredChannel;
-use App\Irc\Application\Port\In\NetworkUserLookupPort;
 use App\Irc\Application\Port\In\SenderView;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -28,7 +28,7 @@ final class KickUserHandlerTest extends TestCase
     {
         $repository = $this->createStub(RegisteredChannelRepositoryInterface::class);
         $repository->method('findByChannelName')->willReturn(null);
-        $result = new KickUserHandler($repository, $this->createStub(ChanNetworkActions::class), $this->createStub(NetworkUserLookupPort::class))
+        $result = new KickUserHandler($repository, $this->createStub(ChanNetworkActions::class), $this->createStub(ChanNetworkUserLookup::class))
             ->handle(new KickUser('#room', 'Bob', 'Oper', 'bye'));
         self::assertSame(KickUserOutcome::ChannelNotRegistered, $result->outcome);
     }
@@ -40,7 +40,7 @@ final class KickUserHandlerTest extends TestCase
         $repository->method('findByChannelName')->willReturn(RegisteredChannel::register(new DateTimeImmutable(), '#room', 1, 'Test'));
         $network = $this->createStub(ChanNetworkActions::class);
         $network->method('isChannelOnNetwork')->willReturn(false);
-        $result = new KickUserHandler($repository, $network, $this->createStub(NetworkUserLookupPort::class))
+        $result = new KickUserHandler($repository, $network, $this->createStub(ChanNetworkUserLookup::class))
             ->handle(new KickUser('#room', 'Bob', 'Oper', 'bye'));
         self::assertSame(KickUserOutcome::ChannelNotOnNetwork, $result->outcome);
     }
@@ -52,7 +52,7 @@ final class KickUserHandlerTest extends TestCase
         $repository->method('findByChannelName')->willReturn(RegisteredChannel::register(new DateTimeImmutable(), '#room', 1, 'Test'));
         $network = $this->createStub(ChanNetworkActions::class);
         $network->method('isChannelOnNetwork')->willReturn(true);
-        $users = $this->createStub(NetworkUserLookupPort::class);
+        $users = $this->createStub(ChanNetworkUserLookup::class);
         $users->method('findByNick')->willReturn(null);
         $result = new KickUserHandler($repository, $network, $users)
             ->handle(new KickUser('#room', 'Ghost', 'Oper', 'bye'));
@@ -67,7 +67,7 @@ final class KickUserHandlerTest extends TestCase
         $network = $this->createMock(ChanNetworkActions::class);
         $network->expects(self::once())->method('isChannelOnNetwork')->with('#room')->willReturn(true);
         $network->expects(self::once())->method('kickFromChannel')->with('#room', 'UID1', 'bye');
-        $users = $this->createStub(NetworkUserLookupPort::class);
+        $users = $this->createStub(ChanNetworkUserLookup::class);
         $users->method('findByNick')->willReturn(new SenderView('UID1', 'Bob', 'i', 'h', 'c', 'ip'));
         $result = new KickUserHandler($repository, $network, $users)
             ->handle(new KickUser('#room', 'Bob', 'Oper', 'bye'));

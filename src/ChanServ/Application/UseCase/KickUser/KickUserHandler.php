@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\ChanServ\Application\UseCase\KickUser;
 
 use App\ChanServ\Application\Port\Out\ChanNetworkActions;
+use App\ChanServ\Application\Port\Out\ChanNetworkUserLookup;
 use App\ChanServ\Application\Port\Out\RegisteredChannelRepositoryInterface;
-use App\Irc\Application\Port\In\NetworkUserLookupPort;
 
 use function strtolower;
 
@@ -15,7 +15,7 @@ final readonly class KickUserHandler
     public function __construct(
         private RegisteredChannelRepositoryInterface $channels,
         private ChanNetworkActions $network,
-        private NetworkUserLookupPort $users,
+        private ChanNetworkUserLookup $users,
     ) {}
 
     public function handle(KickUser $command): KickUserResult
