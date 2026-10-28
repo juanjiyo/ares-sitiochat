@@ -17,7 +17,7 @@ final class Version20261027000001 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE registered_channels ADD COLUMN keep_topic BOOLEAN NOT NULL DEFAULT 0');
+        $this->addSql('ALTER TABLE registered_channels ADD COLUMN keep_topic BOOLEAN NOT NULL DEFAULT false');
         $this->addSql('ALTER TABLE registered_channels ADD COLUMN default_topic VARCHAR(255) DEFAULT NULL');
     }
 

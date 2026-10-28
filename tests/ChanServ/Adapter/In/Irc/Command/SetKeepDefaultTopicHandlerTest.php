@@ -12,7 +12,6 @@ use App\ChanServ\Adapter\In\Irc\Command\SetKeepTopicHandler;
 use App\ChanServ\Application\Model\ChanAccountView;
 use App\ChanServ\Application\Port\Out\ChanUserAccountPort;
 use App\ChanServ\Application\Port\Out\RegisteredChannelRepositoryInterface;
-use App\ChanServ\Application\UseCase\ApplyStoredTopic\ApplyStoredChannelTopicHandlerInterface;
 use App\ChanServ\Application\UseCase\UpdateSetting\ChannelSetting;
 use App\ChanServ\Application\UseCase\UpdateSetting\UpdateChannelSetting;
 use App\ChanServ\Application\UseCase\UpdateSetting\UpdateChannelSettingHandler;
