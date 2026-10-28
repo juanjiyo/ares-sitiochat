@@ -68,7 +68,6 @@ final readonly class GlobalServService
             'JOIN' => $this->onJoin($sender, $parts),
             'PRE-OPER', 'PREOPER' => $this->onRank($sender, $parts, 'PRE-OPER'),
             'OPER' => $this->onRank($sender, $parts, 'OPER'),
-            'CO-ADMIN', 'COADMIN' => $this->onRank($sender, $parts, 'CO-ADMIN'),
             'ADMIN' => $this->onRank($sender, $parts, 'ADMIN'),
             'HELP', 'AYUDA' => $this->onHelp($sender),
             default => $this->reply($sender, sprintf('Comando desconocido %s. /msg %s HELP para ayuda.', $commandName, $this->bot->getNick())),
@@ -222,7 +221,7 @@ final readonly class GlobalServService
     /** @param list<string> $args */
     private function onRank(SenderView $sender, array $args, string $rank): void
     {
-        if (!$this->requireOper($sender)) {
+        if ('ADMIN' === $rank ? !$this->requireRoot($sender) : !$this->requireOper($sender)) {
             return;
         }
 
@@ -233,15 +232,11 @@ final readonly class GlobalServService
             return;
         }
 
-        $uids = match ($rank) {
-            'PRE-OPER', 'OPER' => $this->operatorUids(),
-            default => $this->rootUids(),
-        };
+        $uids = 'ADMIN' === $rank ? $this->rootUids() : $this->operatorUids();
 
         $header = match ($rank) {
             'PRE-OPER' => '[ Mensaje Global para Pre-Operadores (Y superiores) ]',
             'OPER' => '[ Mensaje Global para Operadores (Y superiores) ]',
-            'CO-ADMIN' => '[ Mensaje Global para Co-Administradores (Y superiores) ]',
             'ADMIN' => '[ Mensaje Global para Administradores ]',
             default => '[ Mensaje Global ]',
         };
@@ -251,8 +246,8 @@ final readonly class GlobalServService
 
     private function onHelp(SenderView $sender): void
     {
-        $this->reply($sender, 'Comandos: GLOBAL <mensaje> | NICK <nick> <mensaje> | CHAN <#canal> <mensaje> | JOIN <#canal> <mensaje> | PRE-OPER <mensaje> | OPER <mensaje> | CO-ADMIN <mensaje> | ADMIN <mensaje>');
-        $this->reply($sender, 'GLOBAL, NICK, CHAN, PRE-OPER y OPER requieren ser IRC oper. JOIN, CO-ADMIN y ADMIN requieren root.');
+        $this->reply($sender, 'Comandos: GLOBAL <mensaje> | NICK <nick> <mensaje> | CHAN <#canal> <mensaje> | JOIN <#canal> <mensaje> | PRE-OPER <mensaje> | OPER <mensaje> | ADMIN <mensaje>');
+        $this->reply($sender, 'GLOBAL, NICK, CHAN, PRE-OPER y OPER requieren ser IRC oper. JOIN y ADMIN requieren root.');
     }
 
     /** @param array<array{uid: string, roleLetter: string, prefixLetters?: list<string>}> $members */
