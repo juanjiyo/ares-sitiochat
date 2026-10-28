@@ -1,0 +1,44 @@
+# HeLPServ translations — Español
+# Domain: helpserv
+
+unknown_command: "\x0304✗\x03 Comando desconocido \x02%command%\x02. Usa \x0303/msg %bot% HELP\x03."
+
+help:
+  syntax: "HELP [tema]"
+  short: "Muestra los temas de ayuda disponibles."
+  help: "Sin argumentos lista todos los temas de ayuda. Usa \x0303HELP <tema>\x03 para información sobre un tema concreto."
+  header_title: "%bot%"
+  header: "\x02\x0307🤖 %title%\x03\x0F \x0314%separator%\x03\x0F"
+  intro: "Servicio de ayuda de la red."
+  general_header: "\x02 ■ Temas disponibles:\x02"
+  command_line: "    \x0310›\x03\x0F \x02\x0303%command%\x03\x0F%description%"
+  general_footer: "\x0310ℹ\x03\x0F Usa /msg %bot% \x02\x0303HELP <tema>\x03\x0F para más información."
+  footer: "\x0314─────────────────────────────\x03\x0F"
+  unknown_topic: "\x0307✗\x03 Tema desconocido \x02%topic%\x02. Usa \x0303/msg %bot% HELP\x03."
+  syntax_label: "Sintaxis: \x02\x0303%syntax%\x03\x0F"
+
+topic:
+  umodes:
+    syntax: "UMODES"
+    short: "Modos de usuario documentados por la red."
+    help: "Modos de usuario documentados en esta red:\n\n\x02+i\x02 invisible — te oculta del /who para usuarios que no compartan canal.\n\x02+w\x02 wallops — recibe mensajes wallop de los operadores.\n\x02+o\x02 operador — flag de operador IRC (asignado por la red).\n\x02+r\x02 registrado — identifica un nick registrado e identificado.\n\nUsa \x0303/mode <nick> +modo\x03 para activar un modo."
+  cmodes:
+    syntax: "CMODES"
+    short: "Modos de canal documentados por la red."
+    help: "Modos de canal documentados en esta red:\n\n\x02+n\x02 no mensajes externos.\n\x02+t\x02 topic lock — solo los ops del canal pueden cambiar el tema.\n\x02+r\x02 registrado — el canal está registrado.\n\x02+m\x02 moderado — solo usuarios con voz y ops pueden hablar.\n\x02+i\x02 solo con invitación.\n\x02+p\x02 privado — el canal no aparece en /list.\n\x02+s\x02 secreto — el canal se oculta en /whois y /list.\n\nUsa \x0303/mode <#canal> +modo\x03 para activar un modo."
+  bots:
+    syntax: "BOTS"
+    short: "Servicios que introduce el daemon."
+    help: "Estos son los servicios que introduce este daemon:\n\n\x02%nickserv%\x02 — registro e identificación de nick.\n\x02%chanserv%\x02 — gestión de canales.\n\x02%memoserv%\x02 — envío de memos.\n\x02%operserv%\x02 — operación de la red.\n\x02%cregserv%\x02 — solicitudes de registro de canal.\n\x02%helpserv%\x02 — este servicio de ayuda.\n\nEscribe a un servicio con \x0303/msg <servicio> HELP\x03."
+  nick:
+    syntax: "NICK"
+    short: "Cómo registrar un nick."
+    help: "Para registrar un nick:\n\n1. Elige un nick y conéctate con él.\n2. Usa \x0303/msg %nickserv% REGISTER <contraseña> [email]\x03 para crear la cuenta.\n3. Si la validación por email está activa, revisa tu bandeja y usa \x0303/msg %nickserv% VALIDAR <código>\x03.\n4. Identifícate después con \x0303/msg %nickserv% IDENTIFY <contraseña>\x03.\n\nElige una contraseña segura y no la compartas."
+  canal:
+    syntax: "CANAL"
+    short: "Cómo registrar un canal."
+    help: "Para registrar un canal:\n\n1. Entra al canal y asegúrate de estar identificado con %nickserv%.\n2. Solicita el registro con \x0303/msg %cregserv% REGISTRA <#canal> <descripción>\x03.\n3. Un operador de servicios revisará y aprobará o denegará la solicitud.\n4. Una vez aprobado, el canal queda registrado a nombre de tu cuenta de %nickserv%; gestiónalo con \x0303/msg %chanserv% HELP\x03 estando identificado.\n\nEl canal debe estar activo y cumplir las normas de la red."
+  creditos:
+    syntax: "CREDITOS"
+    short: "Créditos."
+    help: "Ares IRC Services — desarrollado por los colaboradores del proyecto.\n\nGracias al equipo de dBoTs y a la comunidad de sitioChat por la inspiración y los requisitos originales."

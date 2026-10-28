@@ -29,12 +29,48 @@ final readonly class UpdateChannelSettingHandler implements UpdateChannelSetting
         return match ($command->setting) {
             ChannelSetting::Description => $this->description($command),
             ChannelSetting::Email => $this->email($command),
+            ChannelSetting::DefaultTopic => $this->defaultTopic($command),
             ChannelSetting::EntryMessage => $this->entryMessage($command),
+            ChannelSetting::KeepTopic => $this->keepTopic($command),
+            ChannelSetting::NoExpire => $this->noExpire($command),
             ChannelSetting::Private => $this->channelPrivacy($command),
+            ChannelSetting::Topic => $this->topic($command),
             ChannelSetting::Successor => $this->successor($command),
             ChannelSetting::TopicLock => $this->topicLock($command),
             ChannelSetting::Url => $this->url($command),
         };
+    }
+
+    private function noExpire(UpdateChannelSetting $command): UpdateChannelSettingResult
+    {
+        $command->channel->changeNoExpire('ON' === $command->value);
+        $this->channels->save($command->channel);
+
+        return new UpdateChannelSettingResult(UpdateChannelSettingOutcome::Updated);
+    }
+
+    private function topic(UpdateChannelSetting $command): UpdateChannelSettingResult
+    {
+        $topic = trim($command->value);
+        $command->channel->updateTopic(
+            '' === $topic ? null : $topic,
+            $command->occurredAt,
+            $command->actorNickname,
+        );
+        $this->channels->save($command->channel);
+
+        return new UpdateChannelSettingResult(
+            '' === $topic ? UpdateChannelSettingOutcome::Cleared : UpdateChannelSettingOutcome::Updated,
+        );
+    }
+
+    private function defaultTopic(UpdateChannelSetting $command): UpdateChannelSettingResult
+    {
+        $topic = trim($command->value);
+        $command->channel->configureDefaultTopic('' === $topic ? null : $topic);
+        $this->channels->save($command->channel);
+
+        return new UpdateChannelSettingResult('' === $topic ? UpdateChannelSettingOutcome::Cleared : UpdateChannelSettingOutcome::Updated);
     }
 
     private function description(UpdateChannelSetting $command): UpdateChannelSettingResult
@@ -115,6 +151,18 @@ final readonly class UpdateChannelSettingHandler implements UpdateChannelSetting
             performedByHost: $command->actorHost,
             occurredAt: $command->occurredAt,
         ));
+    }
+
+    private function keepTopic(UpdateChannelSetting $command): UpdateChannelSettingResult
+    {
+        $normalized = strtoupper(trim($command->value));
+        if ('ON' !== $normalized && 'OFF' !== $normalized) {
+            return new UpdateChannelSettingResult(UpdateChannelSettingOutcome::MissingValue);
+        }
+        $command->channel->configureKeepTopic('ON' === $normalized);
+        $this->channels->save($command->channel);
+
+        return new UpdateChannelSettingResult(UpdateChannelSettingOutcome::Updated);
     }
 
     private function topicLock(UpdateChannelSetting $command): UpdateChannelSettingResult

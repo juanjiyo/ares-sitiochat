@@ -527,6 +527,8 @@ final class UdbRecordExporterTest extends TestCase
             mlock: $mlock,
             mlockParams: $mlockParams,
             topicLock: $topicLock,
+            keepTopic: false,
+            defaultTopic: null,
             forbidden: $forbidden,
             forbiddenReason: $forbiddenReason,
             suspended: $suspended,

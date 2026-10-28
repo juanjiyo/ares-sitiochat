@@ -43,6 +43,8 @@ final readonly class ChannelProjectionResolver implements ChannelProjectionQuery
             $channel->getMlock(),
             $channel->getMlockParams(),
             $channel->isTopicLock(),
+            $channel->isKeepTopic(),
+            $channel->getDefaultTopic(),
             $channel->isForbidden(),
             $channel->getForbiddenReason(),
             $channel->isSuspended(),

@@ -118,6 +118,8 @@ final class UdbChannelSyncSubscriberTest extends TestCase
             mlock: $mlock,
             mlockParams: $mlockParams,
             topicLock: $topicLock,
+            keepTopic: false,
+            defaultTopic: null,
             forbidden: $forbidden,
             forbiddenReason: $forbidden ? 'forbidden' : null,
             suspended: $suspended,

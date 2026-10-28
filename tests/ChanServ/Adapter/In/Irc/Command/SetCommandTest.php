@@ -8,14 +8,18 @@ use App\ChanServ\Adapter\In\Irc\ChanServCommandRegistry;
 use App\ChanServ\Adapter\In\Irc\ChanServContext;
 use App\ChanServ\Adapter\In\Irc\ChanServNotifierInterface;
 use App\ChanServ\Adapter\In\Irc\Command\SetCommand;
+use App\ChanServ\Adapter\In\Irc\Command\SetDefaultTopicHandler;
 use App\ChanServ\Adapter\In\Irc\Command\SetDescHandler;
 use App\ChanServ\Adapter\In\Irc\Command\SetEmailHandler;
 use App\ChanServ\Adapter\In\Irc\Command\SetEntrymsgHandler;
 use App\ChanServ\Adapter\In\Irc\Command\SetFounderHandler;
+use App\ChanServ\Adapter\In\Irc\Command\SetKeepTopicHandler;
 use App\ChanServ\Adapter\In\Irc\Command\SetMlockHandler;
+use App\ChanServ\Adapter\In\Irc\Command\SetNoexpireHandler;
 use App\ChanServ\Adapter\In\Irc\Command\SetPrivateHandler;
 use App\ChanServ\Adapter\In\Irc\Command\SetSecureHandler;
 use App\ChanServ\Adapter\In\Irc\Command\SetSuccessorHandler;
+use App\ChanServ\Adapter\In\Irc\Command\SetTopicHandler;
 use App\ChanServ\Adapter\In\Irc\Command\SetTopiclockHandler;
 use App\ChanServ\Adapter\In\Irc\Command\SetUrlHandler;
 use App\ChanServ\Adapter\In\Irc\MlockStateFromChannelResolver;
@@ -25,6 +29,7 @@ use App\ChanServ\Application\Port\Out\ChannelLevelRepositoryInterface;
 use App\ChanServ\Application\Port\Out\ChanUserAccountPort;
 use App\ChanServ\Application\Port\Out\RegisteredChannelRepositoryInterface;
 use App\ChanServ\Application\Service\ChanServAccessHelper;
+use App\ChanServ\Application\UseCase\ApplyStoredTopic\ApplyStoredChannelTopicHandlerInterface;
 use App\ChanServ\Application\UseCase\ConfigureMlock\ConfigureChannelMlockHandlerInterface;
 use App\ChanServ\Application\UseCase\ConfigureSecure\ConfigureChannelSecureHandlerInterface;
 use App\ChanServ\Application\UseCase\ResolveSetting\ResolveChannelSetting;
@@ -108,6 +113,10 @@ final class SetCommandTest extends TestCase
             new SetMlockHandler($this->createStub(ConfigureChannelMlockHandlerInterface::class), new MlockStateFromChannelResolver()),
             new SetSecureHandler($this->createStub(ConfigureChannelSecureHandlerInterface::class)),
             new SetPrivateHandler($settingUpdater),
+            new SetTopicHandler($settingUpdater, $this->createStub(ApplyStoredChannelTopicHandlerInterface::class)),
+            new SetNoexpireHandler($settingUpdater),
+            new SetKeepTopicHandler($settingUpdater),
+            new SetDefaultTopicHandler($settingUpdater),
         );
     }
 
@@ -318,10 +327,14 @@ final class SetCommandTest extends TestCase
             ),
         );
         $help = $cmd->getSubCommandHelp();
-        self::assertCount(10, $help);
+        self::assertCount(14, $help);
         self::assertSame('FOUNDER', $help[0]['name']);
         self::assertSame('SUCCESSOR', $help[1]['name']);
         self::assertSame('PRIVATE', $help[9]['name']);
+        self::assertSame('TOPIC', $help[10]['name']);
+        self::assertSame('NOEXPIRE', $help[11]['name']);
+        self::assertSame('KEEPTOPIC', $help[12]['name']);
+        self::assertSame('DEFAULTTOPIC', $help[13]['name']);
     }
 
     #[Test]

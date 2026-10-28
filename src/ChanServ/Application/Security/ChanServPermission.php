@@ -24,11 +24,17 @@ final readonly class ChanServPermission
 
     public const string HISTORY = 'chanserv.history';
 
+    public const string KICK = 'chanserv.kick';
+
     public const string CLEARACCESS = 'chanserv.clearaccess';
 
     public const string CLEARUSERS = 'chanserv.clearusers';
 
     public const string LIST = 'chanserv.list';
+
+    public const string LISTSUSPEND = 'chanserv.listsuspend';
+
+    public const string LISTFORBID = 'chanserv.listforbid';
 
     /**
      * @return list<string>
@@ -48,6 +54,8 @@ final readonly class ChanServPermission
             self::HISTORY,
             self::CLEARUSERS,
             self::LIST,
+            self::LISTSUSPEND,
+            self::LISTFORBID,
         ];
     }
 

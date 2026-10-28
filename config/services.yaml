@@ -123,6 +123,21 @@ parameters:
     cregserv.realname_default: 'Channel Registration Requests'
     cregserv.realname: '%env(string:default:cregserv.realname_default:CREGSERV_REALNAME)%'
 
+    helpserv.nick_default: 'HeLP'
+    helpserv.nick: '%env(string:default:helpserv.nick_default:HELPSERV_NICK)%'
+    helpserv.ident_default: 'HeLP'
+    helpserv.ident: '%env(string:default:helpserv.ident_default:HELPSERV_IDENT)%'
+    helpserv.realname_default: 'Help Service'
+    helpserv.realname: '%env(string:default:helpserv.realname_default:HELPSERV_REALNAME)%'
+
+    # GlobalServ pseudo-client (network announcements)
+    globalserv.nick_default: 'GlobalServ'
+    globalserv.nick: '%env(string:default:globalserv.nick_default:GLOBALSERV_NICK)%'
+    globalserv.ident_default: 'GlobalServ'
+    globalserv.ident: '%env(string:default:globalserv.ident_default:GLOBALSERV_IDENT)%'
+    globalserv.realname_default: 'Global Announcements'
+    globalserv.realname: '%env(string:default:globalserv.realname_default:GLOBALSERV_REALNAME)%'
+
     memoserv.nick_default: 'MemoServ'
     memoserv.nick: '%env(string:default:memoserv.nick_default:MEMOSERV_NICK)%'
     memoserv.ident_default: 'MemoServ'
@@ -139,14 +154,6 @@ parameters:
     memoserv.ignore_list_limit_nick: '%env(int:default:memoserv.ignore_list_limit_nick_default:MEMOSERV_IGNORE_LIST_LIMIT_NICK)%'
     memoserv.ignore_list_limit_channel_default: 100
     memoserv.ignore_list_limit_channel: '%env(int:default:memoserv.ignore_list_limit_channel_default:MEMOSERV_IGNORE_LIST_LIMIT_CHANNEL)%'
-
-    # GlobalServ pseudo-client
-    globalserv.nick_default: 'GlobalServ'
-    globalserv.nick: '%env(string:default:globalserv.nick_default:GLOBALSERV_NICK)%'
-    globalserv.ident_default: 'GlobalServ'
-    globalserv.ident: '%env(string:default:globalserv.ident_default:GLOBALSERV_IDENT)%'
-    globalserv.realname_default: 'Network Global Announcement Services'
-    globalserv.realname: '%env(string:default:globalserv.realname_default:GLOBALSERV_REALNAME)%'
 
     # OperServ pseudo-client
     operserv.nick_default: 'OperServ'
@@ -1425,7 +1432,16 @@ services:
     App\ChanServ\Adapter\In\Irc\Command\UnforbidCommand:
         tags: ['chanserv.command']
 
+    App\ChanServ\Adapter\In\Irc\Command\ListsuspendCommand:
+        tags: ['chanserv.command']
+
+    App\ChanServ\Adapter\In\Irc\Command\ListforbidCommand:
+        tags: ['chanserv.command']
+
     App\ChanServ\Adapter\In\Irc\Command\NoexpireCommand:
+        tags: ['chanserv.command']
+
+    App\ChanServ\Adapter\In\Irc\Command\KickCommand:
         tags: ['chanserv.command']
 
     App\ChanServ\Adapter\In\Irc\Command\IrcoponlyCommand:
@@ -2362,27 +2378,6 @@ services:
     App\OperServ\Adapter\In\Irc\Command\KillCommand:
         tags: ['operserv.command.new']
 
-    # --- GlobalServ Infrastructure -----------------------------------------------
-
-    App\GlobalServ\Adapter\In\Irc\Bot\GlobalServBot:
-        arguments:
-            $uidGenerator: '@App\Irc\Application\Port\In\ServiceUidGeneratorInterface'
-            $servicesVhost: '%services.vhost%'
-            $globalServNick: '%globalserv.nick%'
-            $globalServIdent: '%globalserv.ident%'
-            $globalServRealname: '%globalserv.realname%'
-            $logger: '@monolog.logger.irc'
-            $sendNoticePort: '@App\Irc\Application\Port\In\SendNoticePort'
-        tags: ['kernel.event_subscriber', { name: 'app.service_nickname_provider' }, { name: 'app.service_uid_provider' }]
-
-    App\GlobalServ\Adapter\In\Irc\GlobalServService: ~
-
-    App\GlobalServ\Adapter\In\Event\GlobalServCommandListener:
-        arguments:
-            $service: '@App\GlobalServ\Adapter\In\Irc\GlobalServService'
-            $logger: '@monolog.logger.irc'
-        tags: ['service_command_listener']
-
     # --- OperServ Infrastructure -------------------------------------------------
 
     App\OperServ\Adapter\In\Irc\Bot\OperServBot:
@@ -2545,3 +2540,163 @@ services:
 
     App\OperServ\Adapter\Out\Irc\DebugChannelCommandAuditSink:
         tags: ['app.command_audit_sink']
+
+    # --- HelpServ pseudo-client -------------------------------------------------
+
+    App\HelpServ\Adapter\In\Irc\Bot\HelpServBot:
+        arguments:
+            $uidGenerator: '@App\Irc\Application\Port\In\ServiceUidGeneratorInterface'
+            $servicesVhost: '%services.vhost%'
+            $helpservNick: '%helpserv.nick%'
+            $helpservIdent: '%helpserv.ident%'
+            $helpservRealname: '%helpserv.realname%'
+            $logger: '@monolog.logger.irc'
+        tags: ['kernel.event_subscriber', { name: 'app.service_nickname_provider' }, { name: 'app.service_uid_provider' }]
+
+    App\HelpServ\Adapter\In\Irc\HelpServNotifierInterface:
+        alias: App\HelpServ\Adapter\In\Irc\Bot\HelpServBot
+
+    App\HelpServ\Adapter\In\Irc\Subscriber\HelpServCommandListener:
+        arguments:
+            $logger: '@monolog.logger.irc'
+        tags: ['service_command_listener']
+
+    App\HelpServ\Adapter\In\Irc\HelpServService:
+        arguments:
+            $serviceNicks: '@App\Irc\Application\Port\In\ServiceNicknameRegistry'
+            $defaultLanguage: '%services.default_language%'
+            $logger: '@monolog.logger.irc'
+
+    App\HelpServ\Adapter\In\Irc\HelpServCommandRegistry:
+        arguments:
+            $commands: !tagged_iterator helpserv.command
+
+    App\HelpServ\Adapter\In\Irc\Command\HelpCommand:
+        tags: ['helpserv.command']
+
+    # --- GlobalServ pseudo-client ------------------------------------------------
+
+    App\GlobalServ\Adapter\In\Irc\Bot\GlobalServBot:
+        arguments:
+            $uidGenerator: '@App\Irc\Application\Port\In\ServiceUidGeneratorInterface'
+            $servicesVhost: '%services.vhost%'
+            $globalservNick: '%globalserv.nick%'
+            $globalservIdent: '%globalserv.ident%'
+            $globalservRealname: '%globalserv.realname%'
+            $logger: '@monolog.logger.irc'
+        tags: ['kernel.event_subscriber', { name: 'app.service_nickname_provider' }, { name: 'app.service_uid_provider' }]
+
+    App\GlobalServ\Adapter\In\Irc\GlobalServNotifierInterface:
+        alias: App\GlobalServ\Adapter\In\Irc\Bot\GlobalServBot
+
+    App\GlobalServ\Adapter\In\Irc\Subscriber\GlobalServCommandListener:
+        arguments:
+            $logger: '@monolog.logger.irc'
+        tags: ['service_command_listener']
+
+    App\GlobalServ\Adapter\In\Irc\GlobalServService:
+        arguments:
+            $serviceNicks: '@App\Irc\Application\Port\In\ServiceNicknameRegistry'
+            $authorizationContext: '@App\GlobalServ\Adapter\In\Irc\GlobalServAuthorizationContextInterface'
+            $authorizationChecker: '@App\GlobalServ\Adapter\In\Irc\GlobalServAuthorizationCheckerInterface'
+            $userAccountPort: '@App\GlobalServ\Application\Port\Out\GlobalServNickAccountPort'
+            $defaultLanguage: '%services.default_language%'
+            $logger: '@monolog.logger.irc'
+
+    App\GlobalServ\Adapter\In\Irc\GlobalServAuthorizationContextInterface:
+        alias: App\GlobalServ\Adapter\Out\Security\GlobalServAuthorizationContextAdapter
+
+    App\GlobalServ\Adapter\Out\Security\GlobalServAuthorizationContextAdapter:
+        arguments:
+            $authorizationContext: '@App\NickServ\Application\Port\In\IrcAuthorizationContext'
+
+    App\GlobalServ\Adapter\Out\Security\SymfonyGlobalServAuthorizationCheckerAdapter:
+        arguments:
+            $authorizationChecker: '@Symfony\Component\Security\Core\Authorization\AuthorizationChecker'
+
+    App\GlobalServ\Adapter\In\Irc\GlobalServAuthorizationCheckerInterface:
+        alias: App\GlobalServ\Adapter\Out\Security\SymfonyGlobalServAuthorizationCheckerAdapter
+
+    App\GlobalServ\Adapter\In\Irc\GlobalServCommandRegistry:
+        arguments:
+            $commands: !tagged_iterator globalserv.command
+
+    App\GlobalServ\Application\Port\Out\GlobalServNetworkIdentity:
+        alias: App\GlobalServ\Adapter\Out\Irc\ServiceRegistryGlobalServIdentity
+
+    App\GlobalServ\Application\Port\Out\GlobalServNickAccountPort:
+        alias: App\GlobalServ\Adapter\Out\NickServ\GlobalServNickAccountAdapter
+
+    App\GlobalServ\Application\Port\Out\GlobalBroadcastPort:
+        alias: App\GlobalServ\Adapter\Out\Irc\ActiveConnectionGlobalBroadcast
+
+    App\GlobalServ\Application\Port\Out\ChannelMemberNoticePort:
+        alias: App\GlobalServ\Adapter\Out\Irc\ActiveConnectionChannelMemberNotice
+
+    App\GlobalServ\Application\Port\Out\MassBroadcastPort:
+        alias: App\GlobalServ\Adapter\Out\Irc\ActiveConnectionMassBroadcast
+
+    App\GlobalServ\Application\Port\Out\RankFilteredBroadcastPort:
+        alias: App\GlobalServ\Adapter\Out\Irc\ActiveConnectionRankFilteredBroadcast
+
+    App\GlobalServ\Application\Port\Out\PseudoClientBroadcastPort:
+        alias: App\GlobalServ\Adapter\Out\Irc\ActiveConnectionPseudoClientBroadcast
+
+    App\GlobalServ\Adapter\Out\Irc\ActiveConnectionPseudoClientBroadcast:
+        arguments:
+            $servicesVhost: '%services.vhost%'
+
+    App\GlobalServ\Application\Port\Out\MassChannelJoinPort:
+        alias: App\GlobalServ\Adapter\Out\Irc\ActiveConnectionMassChannelJoin
+
+    App\GlobalServ\Application\Port\Out\OperatorRankLookupPort:
+        alias: App\GlobalServ\Adapter\Out\OperServ\OperServOperatorRankLookup
+
+    App\GlobalServ\Adapter\In\Irc\Command\HelpCommand:
+        tags: ['globalserv.command']
+
+    App\GlobalServ\Adapter\In\Irc\Command\GlobalCommand:
+        tags: ['globalserv.command']
+
+    App\GlobalServ\Adapter\In\Irc\Command\NickCommand:
+        tags: ['globalserv.command']
+
+    App\GlobalServ\Adapter\In\Irc\Command\ChanCommand:
+        tags: ['globalserv.command']
+
+    App\GlobalServ\Adapter\In\Irc\Command\JoinCommand:
+        tags: ['globalserv.command']
+
+    App\GlobalServ\Adapter\In\Irc\Command\RankBroadcastCommand.preoper:
+        class: App\GlobalServ\Adapter\In\Irc\Command\RankBroadcastCommand
+        arguments:
+            $name: 'PRE-OPER'
+            $rank: !php/const App\GlobalServ\Domain\ValueObject\GlobalServRank::PREOPER
+            $permission: 'globalserv.preoper'
+            $replyKey: 'pre-oper.done'
+            $order: 5
+        tags: ['globalserv.command']
+
+    App\GlobalServ\Adapter\In\Irc\Command\RankBroadcastCommand.oper:
+        class: App\GlobalServ\Adapter\In\Irc\Command\RankBroadcastCommand
+        arguments:
+            $name: 'OPER'
+            $rank: !php/const App\GlobalServ\Domain\ValueObject\GlobalServRank::OPER
+            $permission: 'globalserv.oper'
+            $replyKey: 'oper.done'
+            $order: 6
+        tags: ['globalserv.command']
+
+    App\GlobalServ\Adapter\In\Irc\Command\RankBroadcastCommand.admin:
+        class: App\GlobalServ\Adapter\In\Irc\Command\RankBroadcastCommand
+        arguments:
+            $name: 'ADMIN'
+            $rank: !php/const App\GlobalServ\Domain\ValueObject\GlobalServRank::ADMIN
+            $permission: 'globalserv.admin'
+            $replyKey: 'admin.done'
+            $order: 7
+        tags: ['globalserv.command']
+
+    # GlobalServ IRCop permissions in the shared operclass catalog
+    App\GlobalServ\Application\Security\GlobalServIrcopPermission:
+        tags: ['permission.provider']

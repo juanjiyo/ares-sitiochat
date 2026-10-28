@@ -8,6 +8,7 @@ error:
   oper_only:      "\x0304✗\x03 Este comando está restringido a operadores de IRC."
   not_identified: "\x0304✗\x03 No estás identificado. Usa \x0303/msg %nickserv% IDENTIFY\x03."
   permission_denied: "\x0304✗\x03 Permiso denegado. No tienes acceso a este comando."
+  channel_not_on_network: "\x0304\u2717\x03 El canal \x02%channel%\x02 no está en la red."
   invalid_channel: "\x0304✗\x03 Nombre de canal no válido. Usa \x02#canal\x02."
   channel_not_registered: "\x0304✗\x03 El canal \x02%channel%\x02 no está registrado."
   generic:        "\x0304✗\x03 Ocurrió un error. Inténtalo de nuevo."
@@ -184,6 +185,30 @@ set:
     help:           "Cuando está ON, solo el fundador y los usuarios con acceso pueden ver la información del canal."
     on:             "\x0303✔\x03 La información del canal ahora es privada."
     off:            "\x0303✔\x03 La información del canal ahora es pública."
+  topic:
+    syntax:         "SET <#canal> TOPIC [texto]"
+    short:          "Fijar el tema oficial del canal."
+    help:           "Guarda el texto como tema oficial del canal y lo aplica en la red. Sin texto, borra el tema. Requiere nivel SET."
+    changed:        "\x0303\u2714\x03 Tema del canal actualizado."
+    cleared:        "\x0303\u2714\x03 Tema del canal borrado."
+  noexpire:
+    syntax:         "SET <#canal> NOEXPIRE {ON|OFF}"
+    short:          "Evitar que el canal caduque por inactividad."
+    help:           "ON mantiene el canal fuera del barrido de inactividad; OFF vuelve a someterlo. Requiere nivel SET."
+    on:             "\x0303\u2714\x03 NOEXPIRE activado."
+    off:            "\x0303\u2714\x03 NOEXPIRE desactivado."
+  keeptopic:
+    syntax:         "SET <#canal> KEEPTOPIC {ON|OFF}"
+    short:          "Mantener el tema cuando el canal queda vacío."
+    help:           "ON mantiene el último tema cuando el canal queda vacío; OFF lo borra. Requiere nivel SET."
+    on:             "\x0303\u2714\x03 KEEPTOPIC activado."
+    off:            "\x0303\u2714\x03 KEEPTOPIC desactivado."
+  defaulttopic:
+    syntax:         "SET <#canal> DEFAULTTOPIC <texto>"
+    short:          "Fijar el tema por defecto cuando el canal no tiene tema."
+    help:           "Guarda un tema por defecto que se aplica al canal cuando no tiene tema. Sin texto, lo borra. Requiere nivel SET."
+    changed:        "\x0303\u2714\x03 Tema por defecto actualizado."
+    cleared:        "\x0303\u2714\x03 Tema por defecto borrado."
   secure:
     syntax:         "SET <#canal> SECURE {ON|OFF}"
     short:          "Exigir rangos de canal solo a lista de acceso."
@@ -624,3 +649,29 @@ list:
   status_suspended: "Suspendido"
   status_pending_deletion: "Pendiente de eliminación"
   status_forbidden: "Prohibido"
+
+listforbid:
+  syntax: "LISTFORBID"
+  short: "Listar canales prohibidos."
+  help: "Muestra los canales prohibidos con el motivo de cada uno. Solo IRCops con permiso chanserv.listforbid."
+  example: "/msg %bot% LISTFORBID"
+  header: "\x0302Canales prohibidos (%count%):\x03"
+  line: "    \x0310›\x03 \x02%channel%\x02 — %reason%"
+  empty: "No hay canales prohibidos."
+
+listsuspend:
+  syntax: "LISTSUSPEND"
+  short: "Listar canales suspendidos."
+  help: "Muestra los canales suspendidos con el motivo y la fecha de expiración. Solo IRCops con permiso chanserv.listsuspend."
+  example: "/msg %bot% LISTSUSPEND"
+  header: "\x0302Canales suspendidos (%count%):\x03"
+  line: "    \x0310›\x03 \x02%channel%\x02 — %reason% (hasta %until%)"
+  empty: "No hay canales suspendidos."
+
+kick:
+  syntax:         "KICK <#canal> <apodo> [motivo]"
+  short:          "Expulsa a un usuario del canal."
+  help:           "Expulsa al apodo indicado del canal. Requiere el nivel FOUNDER o ser operador de servicios."
+  done:           "\x0303\u2714\x03 \x02%nick%\x02 expulsado de \x02%channel%\x02."
+  not_connected:  "\x0304\u2717\x03 El apodo \x02%nick%\x02 no está conectado."
+  default_reason: "Comando KICK de %bot%."

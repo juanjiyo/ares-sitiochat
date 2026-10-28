@@ -1,0 +1,47 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\GlobalServ\Adapter\Out\Irc;
+
+use App\Irc\Application\Port\In\ActiveConnectionHolderInterface;
+
+use const STR_PAD_LEFT;
+
+/** Generates temporary pseudo-client UIDs for GlobalServ NICK broadcasts. */
+final class GlobalServPseudoClientUidGenerator
+{
+    private int $counter = 1;
+
+    public function __construct(
+        private readonly ActiveConnectionHolderInterface $connectionHolder,
+    ) {}
+
+    public function generate(): ?string
+    {
+        $serverSid = $this->connectionHolder->getServerSid();
+        if (null === $serverSid) {
+            return null;
+        }
+
+        // 'Y' keeps temporary clients out of the 'Z' block already used by the
+        // GlobalServ and HelpServ service UIDs, so they can never collide.
+        $uid = $serverSid . 'Y' . $this->base36Encode($this->counter);
+        ++$this->counter;
+
+        return $uid;
+    }
+
+    private function base36Encode(int $number): string
+    {
+        $chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $result = '';
+
+        do {
+            $result = $chars[$number % 36] . $result;
+            $number = (int) ($number / 36);
+        } while ($number > 0);
+
+        return str_pad($result, 5, '0', STR_PAD_LEFT);
+    }
+}

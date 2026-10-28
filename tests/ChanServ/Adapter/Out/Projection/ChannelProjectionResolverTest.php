@@ -46,6 +46,8 @@ final class ChannelProjectionResolverTest extends TestCase
             false,
             null,
             false,
+            null,
+            false,
             false,
             null,
             true,

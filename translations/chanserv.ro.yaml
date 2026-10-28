@@ -8,6 +8,7 @@ error:
   oper_only:      "\x0304✗\x03 Această comandă este rezervată operatorilor IRC."
   not_identified: "\x0304✗\x03 Nu sunteți identificat. Folosiți \x0303/msg %nickserv% IDENTIFY\x03."
   permission_denied: "\x0304✗\x03 Permisiune refuzată. Nu aveți acces la această comandă."
+  channel_not_on_network: "\x0304\u2717\x03 El canal \x02%channel%\x02 no está en la red."
   invalid_channel: "\x0304✗\x03 Nume de canal invalid. Folosiți \x02#canal\x02."
   channel_not_registered: "\x0304✗\x03 Canalul \x02%channel%\x02 nu este înregistrat."
   generic:        "\x0304✗\x03 A apărut o eroare. Vă rugăm să încercați din nou."
@@ -184,6 +185,30 @@ set:
     help:           "Când este ON, doar fondatorul și utilizatorii cu acces pot vedea informațiile canalului."
     on:             "\x0303✔\x03 Informațiile canalului sunt acum private."
     off:            "\x0303✔\x03 Informațiile canalului sunt acum publice."
+  topic:
+    syntax:         "SET <#channel> TOPIC [text]"
+    short:          "Set the channel official topic."
+    help:           "Stores the text as the channel official topic and applies it on the network. An empty value clears it. Requires the SET level."
+    changed:        "\x0303\u2714\x03 Channel topic updated."
+    cleared:        "\x0303\u2714\x03 Channel topic cleared."
+  noexpire:
+    syntax:         "SET <#channel> NOEXPIRE {ON|OFF}"
+    short:          "Keep the channel out of the inactivity sweep."
+    help:           "ON keeps the channel out of the inactivity sweep; OFF puts it back in. Requires the SET level."
+    on:             "\x0303\u2714\x03 NOEXPIRE enabled."
+    off:            "\x0303\u2714\x03 NOEXPIRE disabled."
+  keeptopic:
+    syntax:         "SET <#canal> KEEPTOPIC {ON|OFF}"
+    short:          "Keep the topic when the channel becomes empty."
+    help:           "ON keeps the last topic when the channel is empty; OFF clears it. Requires the SET level."
+    on:             "\x0303\u2714\x03 KEEPTOPIC enabled."
+    off:            "\x0303\u2714\x03 KEEPTOPIC disabled."
+  defaulttopic:
+    syntax:         "SET <#canal> DEFAULTTOPIC <text>"
+    short:          "Set the default topic applied when the channel has none."
+    help:           "Stores a default topic applied to the channel when it has none. Empty value clears it. Requires the SET level."
+    changed:        "\x0303\u2714\x03 Default topic updated."
+    cleared:        "\x0303\u2714\x03 Default topic cleared."
   secure:
     syntax:         "SET <#canal> SECURE {ON|OFF}"
     short:          "Solicitați lista de acces pentru ranguri de canal."
@@ -624,3 +649,29 @@ list:
   status_suspended: "Suspendat"
   status_pending_deletion: "Ștergere în așteptare"
   status_forbidden: "Interzis"
+
+listforbid:
+  syntax: "LISTFORBID"
+  short: "List forbidden channels."
+  help: "Lists every forbidden channel with its reason. IRCops with the chanserv.listforbid permission only."
+  example: "/msg %bot% LISTFORBID"
+  header: "\x0302Forbidden channels (%count%):\x03"
+  line: "    \x0310›\x03 \x02%channel%\x02 — %reason%"
+  empty: "There are no forbidden channels."
+
+listsuspend:
+  syntax: "LISTSUSPEND"
+  short: "List suspended channels."
+  help: "Lists every suspended channel with its reason and expiry. IRCops with the chanserv.listsuspend permission only."
+  example: "/msg %bot% LISTSUSPEND"
+  header: "\x0302Suspended channels (%count%):\x03"
+  line: "    \x0310›\x03 \x02%channel%\x02 — %reason% (until %until%)"
+  empty: "There are no suspended channels."
+
+kick:
+  syntax:         "KICK <#canal> <apodo> [motivo]"
+  short:          "Expulsa a un usuario del canal."
+  help:           "Expulsa al apodo indicado del canal. Requiere el nivel FOUNDER o ser operador de servicios."
+  done:           "\x0303\u2714\x03 \x02%nick%\x02 expulsado de \x02%channel%\x02."
+  not_connected:  "\x0304\u2717\x03 El apodo \x02%nick%\x02 no está conectado."
+  default_reason: "Comando KICK de %bot%."

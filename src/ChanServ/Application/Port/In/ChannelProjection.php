@@ -18,6 +18,8 @@ final readonly class ChannelProjection
         public string $mlock,
         public array $mlockParams,
         public bool $topicLock,
+        public bool $keepTopic,
+        public ?string $defaultTopic,
         public bool $forbidden,
         public ?string $forbiddenReason,
         public bool $suspended,
