@@ -57,6 +57,16 @@ interface ProtocolServiceActionsInterface
     public function joinChannelAsService(string $serverSid, string $channelName, string $serviceUid, string $maxPrefixLetter, ?int $channelTimestamp = null): void;
 
     /**
+     * Force a user into a channel (Unreal: SAJOIN, InspIRCd: SVSJOIN).
+     *
+     * @param string $serverSid   Server SID (source when no service UID is given)
+     * @param string $targetUid   UID of the user to move
+     * @param string $channelName Channel name (e.g., #reunion)
+     * @param string $serviceUid  Optional service UID as source
+     */
+    public function forceJoin(string $serverSid, string $targetUid, string $channelName, string $serviceUid = ''): void;
+
+    /**
      * Set or clear the channel topic. Null = clear.
      *
      * @param string      $serverSid         Server SID (source of the TOPIC/FTOPIC command)

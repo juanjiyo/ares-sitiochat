@@ -49,6 +49,8 @@ final class RecordingOperclassActions implements ProtocolServiceActionsInterface
 
     public function joinChannelAsService(string $serverSid, string $channelName, string $serviceUid, string $maxPrefixLetter, ?int $channelTimestamp = null): void {}
 
+    public function forceJoin(string $serverSid, string $targetUid, string $channelName, string $serviceUid = ''): void {}
+
     public function setChannelTopic(string $serverSid, string $channelName, ?string $topic, string $serviceUid = '', ?int $channelCreationTs = null): void {}
 
     public function kickFromChannel(string $serverSid, string $channelName, string $targetUid, string $reason, string $serviceUid = ''): void {}

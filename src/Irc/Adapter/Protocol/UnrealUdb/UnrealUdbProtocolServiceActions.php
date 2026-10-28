@@ -152,6 +152,12 @@ final readonly class UnrealUdbProtocolServiceActions implements ProtocolServiceA
         }
     }
 
+    public function forceJoin(string $serverSid, string $targetUid, string $channelName, string $serviceUid = ''): void
+    {
+        $prefix = '' !== $serviceUid ? $serviceUid : $serverSid;
+        $this->write(sprintf(':%s SAJOIN %s %s', $prefix, $targetUid, $channelName));
+    }
+
     public function setChannelTopic(string $serverSid, string $channelName, ?string $topic, string $serviceUid = '', ?int $channelCreationTs = null): void
     {
         if (null === $topic || '' === $topic) {

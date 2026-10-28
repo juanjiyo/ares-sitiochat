@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\GlobalServ\Adapter\In\Irc;
 
 use App\GlobalServ\Adapter\In\Irc\Bot\GlobalServBot;
+use App\Irc\Application\Port\In\ActiveProtocolModuleHolderInterface;
 use App\Irc\Application\Port\In\ChannelLookupPort;
 use App\Irc\Application\Port\In\NetworkUserLookupPort;
 use App\Irc\Application\Port\In\SenderView;
@@ -42,6 +43,7 @@ final readonly class GlobalServService
 {
     public function __construct(
         private GlobalServBot $bot,
+        private ActiveProtocolModuleHolderInterface $connection,
         private NetworkUserLookupPort $userLookup,
         private NickAccountQuery $nickAccounts,
         private OperatorAuthorizationQuery $authorization,
@@ -174,9 +176,7 @@ final readonly class GlobalServService
             return;
         }
 
-        $count = $this->broadcast($channel->members, $text, '[ Mensaje Global ]');
-        $this->reply($sender, 'Mensaje global enviado correctamente.');
-        $this->reply($sender, sprintf('Número de impactos: %d', $count));
+        $this->broadcast($channel->members, $text, '[ Mensaje Global ]');
     }
 
     /** @param list<string> $args */
@@ -201,10 +201,22 @@ final readonly class GlobalServService
             return;
         }
 
-        // Forcing users into a channel needs a protocol-level SVSJOIN/SAJOIN
-        // action that Ares does not expose yet; the announcement still goes out.
-        $count = $this->broadcastUids($this->userLookup->listConnectedUids(), $text, '[ Mensaje Global ]');
-        $this->reply($sender, sprintf('Aviso enviado a %d usuarios. (JOIN forzado no soportado todavía)', $count));
+        $module = $this->connection->getProtocolModule();
+        $serverSid = $this->connection->getServerSid();
+
+        if (null === $module || null === $serverSid) {
+            $this->reply($sender, 'La red no está disponible.');
+
+            return;
+        }
+
+        $uids = $this->userLookup->listConnectedUids();
+        foreach ($uids as $uid) {
+            $module->getServiceActions()->forceJoin($serverSid, $uid, $channelName);
+        }
+
+        $this->broadcastUids($uids, $text, '[ Mensaje Global ]');
+        $this->reply($sender, sprintf('Forzada la entrada de todos los usuarios de la red al canal %s.', $channelName));
     }
 
     /** @param list<string> $args */
@@ -226,9 +238,15 @@ final readonly class GlobalServService
             default => $this->rootUids(),
         };
 
-        $count = $this->broadcastUids($uids, $text, sprintf('[ Mensaje Global para %s ]', $rank));
-        $this->reply($sender, 'Mensaje enviado correctamente.');
-        $this->reply($sender, sprintf('Número de impactos: %d', $count));
+        $header = match ($rank) {
+            'PRE-OPER' => '[ Mensaje Global para Pre-Operadores (Y superiores) ]',
+            'OPER' => '[ Mensaje Global para Operadores (Y superiores) ]',
+            'CO-ADMIN' => '[ Mensaje Global para Co-Administradores (Y superiores) ]',
+            'ADMIN' => '[ Mensaje Global para Administradores ]',
+            default => '[ Mensaje Global ]',
+        };
+
+        $this->broadcastUids($uids, $text, $header);
     }
 
     private function onHelp(SenderView $sender): void
@@ -309,10 +327,16 @@ final readonly class GlobalServService
     private function presentGlobal(SenderView $sender, SendGlobalMessageResult $result): void
     {
         match ($result->outcome) {
-            SendGlobalMessageOutcome::Sent => $this->reply($sender, sprintf('Mensaje global enviado a %d usuarios.', $result->recipientCount)),
+            SendGlobalMessageOutcome::Sent => $this->sendGlobalConfirmation($sender, $result->recipientCount ?? 0),
             SendGlobalMessageOutcome::NetworkUnavailable => $this->reply($sender, 'La red no está disponible.'),
             default => $this->reply($sender, 'No se pudo enviar el mensaje global.'),
         };
+    }
+
+    private function sendGlobalConfirmation(SenderView $sender, int $count): void
+    {
+        $this->reply($sender, 'Mensaje global enviado correctamente.');
+        $this->reply($sender, sprintf('Número de Impactos: %d', $count));
     }
 
     private function requireOper(SenderView $sender): bool
