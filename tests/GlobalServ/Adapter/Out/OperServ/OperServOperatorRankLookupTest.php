@@ -85,6 +85,7 @@ final class OperServOperatorRankLookupTest extends TestCase
         yield 'admin reaches admin' => ['admin', GlobalServRank::ADMIN, true];
         yield 'services-admin does not reach admin' => ['services-admin', GlobalServRank::ADMIN, false];
         yield 'netadmin does not match the exact admin tier' => ['netadmin', GlobalServRank::ADMIN, false];
+        yield 'override suffix is stripped before matching' => ['globop-with-override', GlobalServRank::OPER, true];
     }
 
     #[Test]

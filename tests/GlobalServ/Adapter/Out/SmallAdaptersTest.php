@@ -129,6 +129,22 @@ final class SmallAdaptersTest extends TestCase
     }
 
     #[Test]
+    public function massChannelJoinReportsUnsupportedWhenTheProtocolModuleIsMissing(): void
+    {
+        $connection = $this->createStub(ActiveProtocolModuleHolderInterface::class);
+        $connection->method('isConnected')->willReturn(true);
+        $connection->method('getServerSid')->willReturn('003');
+        $connection->method('getProtocolModule')->willReturn(null);
+        $identity = $this->createStub(GlobalServNetworkIdentity::class);
+        $users = $this->createStub(NetworkUserLookupPort::class);
+
+        $result = new ActiveConnectionMassChannelJoin($connection, $identity, $users)
+            ->joinAllUsersToChannel('#room', 'reason');
+
+        self::assertFalse($result->supported);
+    }
+
+    #[Test]
     public function massChannelJoinReportsUnsupportedWhenTheNetworkIsDown(): void
     {
         $connection = $this->createStub(ActiveProtocolModuleHolderInterface::class);

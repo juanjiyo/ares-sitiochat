@@ -538,4 +538,24 @@ final class InspIRCdProtocolServiceActionsTest extends TestCase
         self::assertStringContainsString(':001 UID 001AAAAAA', $this->written[0]);
         self::assertStringContainsString('NickServ services.host', $this->written[0]);
     }
+
+    #[Test]
+    public function forceJoinUsesSVSJOINWithoutServiceUid(): void
+    {
+        $actions = new InspIRCdProtocolServiceActions($this->connectionHolder);
+
+        $actions->forceJoin('001', '001ABCD', '#test');
+
+        self::assertSame([':001 SVSJOIN 001ABCD #test'], $this->written);
+    }
+
+    #[Test]
+    public function forceJoinUsesTheServiceUidAsSource(): void
+    {
+        $actions = new InspIRCdProtocolServiceActions($this->connectionHolder);
+
+        $actions->forceJoin('001', '001ABCD', '#test', '001CSRV');
+
+        self::assertSame([':001CSRV SVSJOIN 001ABCD #test'], $this->written);
+    }
 }

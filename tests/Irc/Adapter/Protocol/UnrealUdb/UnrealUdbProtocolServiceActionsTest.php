@@ -584,4 +584,24 @@ final class UnrealUdbProtocolServiceActionsTest extends TestCase
         self::assertStringContainsString(':001 UID NickServ 1', $this->written[0]);
         self::assertStringContainsString('001AAAAAA', $this->written[0]);
     }
+
+    #[Test]
+    public function forceJoinUsesSajoinWithoutServiceUid(): void
+    {
+        $actions = $this->createActions();
+
+        $actions->forceJoin('001', '001ABCD', '#test');
+
+        self::assertSame([':001 SAJOIN 001ABCD #test'], $this->written);
+    }
+
+    #[Test]
+    public function forceJoinUsesTheServiceUidAsSource(): void
+    {
+        $actions = $this->createActions();
+
+        $actions->forceJoin('001', '001ABCD', '#test', '001CSRV');
+
+        self::assertSame([':001CSRV SAJOIN 001ABCD #test'], $this->written);
+    }
 }
