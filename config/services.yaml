@@ -2384,6 +2384,9 @@ services:
     App\OperServ\Application\Port\Out\ChannelOverrideActions:
         alias: App\OperServ\Adapter\Out\Irc\ActiveConnectionChannelOverrideActions
 
+    App\OperServ\Adapter\In\Irc\Command\KickCommand:
+        tags: ['operserv.command.new']
+
     # --- OperServ Infrastructure -------------------------------------------------
 
     App\OperServ\Adapter\In\Irc\Bot\OperServBot:

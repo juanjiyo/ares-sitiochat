@@ -36,6 +36,7 @@ help:
     network_security: "Ağ güvenliği"
     communication: "İletişim"
     low_level: "Düşük seviye"
+    channels: "Kanallar"
   unknown_command:  "\x0307✗ Bilinmeyen komut\x03\x0F \x02\x0303%command%\x03\x0F. \x0303/msg %bot% HELP\x03\x0F kullanın."
   ircop_header: "\x02 ■ IRC operatörleri için kullanılabilir komutlar:\x02"
 
@@ -350,3 +351,20 @@ motd:
     none:           "\x0303✓\x03 Kaldırılacak süresi dolmuş MOTD girişi yok."
   debug:
     finalized:      "MOTD mesajı #%id% sona erdi: [%type%] %message% | %date% | %shown_count%"
+
+# --- CHANNEL OVERRIDES (shared replies) ------------------------------------------
+channel:
+  invalid_name:         "\x0304✗\x03 \x02%channel%\x02 geçerli bir kanal adı değil; \x02#\x02 ile başlamalıdır."
+  not_found:            "\x0304✗\x03 \x02%channel%\x02 kanalı ağda mevcut değil."
+  user_not_online:      "\x0304✗\x03 \x02%nickname%\x02 rumuzu bağlı değil."
+  user_not_on_channel:  "\x0304✗\x03 \x02%nickname%\x02 rumuzu \x02%channel%\x02 kanalında değil."
+  protected_root:       "\x0304✗\x03 İzin reddedildi: \x02%nickname%\x02 bir Root kullanıcısı."
+  protected_ircop:      "\x0304✗\x03 İzin reddedildi: \x02%nickname%\x02 bir IRC operatörü."
+
+# --- KICK ------------------------------------------------------------------------
+kick:
+  syntax:   "KICK <#kanal> <rumuz> [sebep]"
+  short:    "Bir kullanıcıyı kanaldan atar."
+  help:     "Bir kullanıcıyı ağ operatörü olarak kanaldan atar.\nSebep verilmezse varsayılan bir sebep kullanılır.\nRoot kullanıcılar ve rolü olan IRCop'lar atılamaz.\nBu komut operserv.kick iznini gerektirir."
+  example:  "/msg %bot% KICK #yardim BadUser Flood yapmayı bırak"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 \x02%channel%\x02 kanalından atıldı. Sebep: %reason%"

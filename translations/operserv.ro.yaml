@@ -36,6 +36,7 @@ help:
     network_security: "Securitatea rețelei"
     communication: "Comunicare"
     low_level: "Nivel inferior"
+    channels: "Canale"
   unknown_command:  "\x0307✗ Comandă necunoscută\x03\x0F \x02\x0303%command%\x03\x0F. Folosiți \x0303/msg %bot% HELP\x03\x0F."
   ircop_header: "\x02 ■ Comenzi disponibile pentru IRCops:\x02"
 
@@ -350,3 +351,20 @@ motd:
     none:           "\x0303✓\x03 Nu există intrări MOTD expirate de eliminat."
   debug:
     finalized:      "Mesajul MOTD #%id% s-a încheiat: [%type%] %message% | %date% | %shown_count%"
+
+# --- CHANNEL OVERRIDES (shared replies) ------------------------------------------
+channel:
+  invalid_name:         "\x0304✗\x03 \x02%channel%\x02 nu este un nume de canal valid; trebuie să înceapă cu \x02#\x02."
+  not_found:            "\x0304✗\x03 Canalul \x02%channel%\x02 nu există în rețea."
+  user_not_online:      "\x0304✗\x03 Nickul \x02%nickname%\x02 nu este conectat."
+  user_not_on_channel:  "\x0304✗\x03 Nickul \x02%nickname%\x02 nu este pe \x02%channel%\x02."
+  protected_root:       "\x0304✗\x03 Permisiune refuzată: \x02%nickname%\x02 este un utilizator Root."
+  protected_ircop:      "\x0304✗\x03 Permisiune refuzată: \x02%nickname%\x02 este un operator IRC."
+
+# --- KICK ------------------------------------------------------------------------
+kick:
+  syntax:   "KICK <#canal> <nick> [motiv]"
+  short:    "Elimină un utilizator dintr-un canal."
+  help:     "Elimină un utilizator dintr-un canal ca operator de rețea.\nDacă nu se indică un motiv, se folosește unul implicit.\nUtilizatorii Root și IRCop-ii cu rol nu pot fi eliminați.\nAceastă comandă necesită permisiunea operserv.kick."
+  example:  "/msg %bot% KICK #ajutor BadUser Oprește floodul"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 a fost eliminat din \x02%channel%\x02. Motiv: %reason%"

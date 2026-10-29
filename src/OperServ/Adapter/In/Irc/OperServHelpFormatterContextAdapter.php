@@ -12,6 +12,7 @@ final readonly class OperServHelpFormatterContextAdapter implements HelpFormatte
     private const array HELP_GROUPS = [
         ['group_key' => 'help.group.operators_roles', 'commands' => ['IRCOP', 'ROLE'], 'admin' => false, 'subgroup' => false],
         ['group_key' => 'help.group.network_security', 'commands' => ['GLINE', 'GEOIP', 'KILL'], 'admin' => false, 'subgroup' => false],
+        ['group_key' => 'help.group.channels', 'commands' => ['KICK'], 'admin' => false, 'subgroup' => false],
         ['group_key' => 'help.group.communication', 'commands' => ['MOTD'], 'admin' => false, 'subgroup' => false],
         ['group_key' => 'help.group.low_level', 'commands' => ['RAW'], 'admin' => false, 'subgroup' => false],
     ];

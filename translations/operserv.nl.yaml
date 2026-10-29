@@ -36,6 +36,7 @@ help:
     network_security: "Netwerkbeveiliging"
     communication: "Communicatie"
     low_level: "Laag niveau"
+    channels: "Kanalen"
   unknown_command:  "\x0307✗ Onbekend commando\x03\x0F \x02\x0303%command%\x03\x0F. Gebruik \x0303/msg %bot% HELP\x03\x0F."
   ircop_header: "\x02 ■ Beschikbare opdrachten voor IRC-operators:\x02"
 
@@ -350,3 +351,20 @@ motd:
     none:           "\x0303✓\x03 Geen verlopen MOTD-vermeldingen om te verwijderen."
   debug:
     finalized:      "MOTD-bericht #%id% is beëindigd: [%type%] %message% | %date% | %shown_count%"
+
+# --- CHANNEL OVERRIDES (shared replies) ------------------------------------------
+channel:
+  invalid_name:         "\x0304✗\x03 \x02%channel%\x02 is geen geldige kanaalnaam; deze moet met \x02#\x02 beginnen."
+  not_found:            "\x0304✗\x03 Kanaal \x02%channel%\x02 bestaat niet op het netwerk."
+  user_not_online:      "\x0304✗\x03 Nick \x02%nickname%\x02 is niet verbonden."
+  user_not_on_channel:  "\x0304✗\x03 Nick \x02%nickname%\x02 is niet in \x02%channel%\x02."
+  protected_root:       "\x0304✗\x03 Toegang geweigerd: \x02%nickname%\x02 is een Root-gebruiker."
+  protected_ircop:      "\x0304✗\x03 Toegang geweigerd: \x02%nickname%\x02 is een IRC-operator."
+
+# --- KICK ------------------------------------------------------------------------
+kick:
+  syntax:   "KICK <#kanaal> <nick> [reden]"
+  short:    "Een gebruiker uit een kanaal kicken."
+  help:     "Kickt een gebruiker als netwerkoperator uit een kanaal.\nZonder opgegeven reden wordt een standaardreden gebruikt.\nRoot-gebruikers en IRCops met een rol kunnen niet gekickt worden.\nVoor deze opdracht is de permissie operserv.kick vereist."
+  example:  "/msg %bot% KICK #help BadUser Stop met flooden"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 is uit \x02%channel%\x02 gekickt. Reden: %reason%"

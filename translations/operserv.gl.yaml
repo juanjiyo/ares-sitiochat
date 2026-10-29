@@ -36,6 +36,7 @@ help:
     network_security: "Seguridade da rede"
     communication: "Comunicación"
     low_level: "Baixo nivel"
+    channels: "Canles"
   unknown_command:  "\x0307✗ Comando descoñecido\x03\x0F \x02\x0303%command%\x03\x0F. Use \x0303/msg %bot% HELP\x03\x0F."
   ircop_header: "\x02 ■ Comandos dispoñibles para IRCops:\x02"
 
@@ -350,3 +351,20 @@ motd:
     none:           "\x0303✓\x03 Non hai entradas MOTD caducadas que eliminar."
   debug:
     finalized:      "A mensaxe MOTD #%id% finalizou: [%type%] %message% | %date% | %shown_count%"
+
+# --- CHANNEL OVERRIDES (shared replies) ------------------------------------------
+channel:
+  invalid_name:         "\x0304✗\x03 \x02%channel%\x02 non é un nome de canle válido; debe comezar por \x02#\x02."
+  not_found:            "\x0304✗\x03 A canle \x02%channel%\x02 non existe na rede."
+  user_not_online:      "\x0304✗\x03 O nick \x02%nickname%\x02 non está conectado."
+  user_not_on_channel:  "\x0304✗\x03 O nick \x02%nickname%\x02 non está na canle \x02%channel%\x02."
+  protected_root:       "\x0304✗\x03 Permiso denegado: \x02%nickname%\x02 é un usuario Root."
+  protected_ircop:      "\x0304✗\x03 Permiso denegado: \x02%nickname%\x02 é un operador de rede."
+
+# --- KICK ------------------------------------------------------------------------
+kick:
+  syntax:   "KICK <#canle> <nick> [motivo]"
+  short:    "Expulsa un usuario dunha canle."
+  help:     "Expulsa un usuario dunha canle como operador de rede.\nSe non se indica un motivo, úsase un por defecto.\nOs usuarios Root e os IRCops con rol non poden ser expulsados.\nEste comando require o permiso operserv.kick."
+  example:  "/msg %bot% KICK #axuda BadUser Deixa de facer flood"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 foi expulsado de \x02%channel%\x02. Motivo: %reason%"

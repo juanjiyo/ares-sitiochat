@@ -36,6 +36,7 @@ help:
     network_security: "Sécurité réseau"
     communication: "Communication"
     low_level: "Bas niveau"
+    channels: "Salons"
   unknown_command:  "\x0307✗ Commande inconnue\x03\x0F \x02\x0303%command%\x03\x0F. Utilisez \x0303/msg %bot% HELP\x03\x0F."
   ircop_header: "\x02 ■ Commandes disponibles pour les IRCops :\x02"
 
@@ -350,3 +351,20 @@ motd:
     none:           "\x0303✓\x03 Aucune entrée MOTD expirée à supprimer."
   debug:
     finalized:      "Le message MOTD #%id% est terminé : [%type%] %message% | %date% | %shown_count%"
+
+# --- CHANNEL OVERRIDES (shared replies) ------------------------------------------
+channel:
+  invalid_name:         "\x0304✗\x03 \x02%channel%\x02 n'est pas un nom de salon valide ; il doit commencer par \x02#\x02."
+  not_found:            "\x0304✗\x03 Le salon \x02%channel%\x02 n'existe pas sur le réseau."
+  user_not_online:      "\x0304✗\x03 Le pseudo \x02%nickname%\x02 n'est pas connecté."
+  user_not_on_channel:  "\x0304✗\x03 Le pseudo \x02%nickname%\x02 n'est pas sur \x02%channel%\x02."
+  protected_root:       "\x0304✗\x03 Permission refusée : \x02%nickname%\x02 est un utilisateur Root."
+  protected_ircop:      "\x0304✗\x03 Permission refusée : \x02%nickname%\x02 est un opérateur IRC."
+
+# --- KICK ------------------------------------------------------------------------
+kick:
+  syntax:   "KICK <#salon> <pseudo> [raison]"
+  short:    "Expulse un utilisateur d'un salon."
+  help:     "Expulse un utilisateur d'un salon en tant qu'opérateur réseau.\nUne raison par défaut est utilisée si aucune n'est donnée.\nLes utilisateurs Root et les IRCops ayant un rôle ne peuvent pas être expulsés.\nCette commande nécessite la permission operserv.kick."
+  example:  "/msg %bot% KICK #aide BadUser Arrête de flooder"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 a été expulsé de \x02%channel%\x02. Raison : %reason%"

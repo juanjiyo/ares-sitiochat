@@ -92,6 +92,18 @@ final class OperServHelpFormatterContextAdapterTest extends TestCase
         self::assertSame('help.group.operators_roles', $adapter->getHelpGroups()[0]['group_key']);
     }
 
+    #[Test]
+    public function groupsChannelOverrideCommandsAfterNetworkSecurity(): void
+    {
+        $groups = new OperServHelpFormatterContextAdapter($this->context())->getHelpGroups();
+
+        self::assertSame('help.group.network_security', $groups[1]['group_key']);
+        self::assertSame(
+            ['group_key' => 'help.group.channels', 'commands' => ['KICK'], 'admin' => false, 'subgroup' => false],
+            $groups[2],
+        );
+    }
+
     /** @param list<OperServCommandInterface> $commands */
     private function context(
         array $commands = [],

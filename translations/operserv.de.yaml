@@ -36,6 +36,7 @@ help:
     network_security: "Netzwerksicherheit"
     communication: "Kommunikation"
     low_level: "Niedrige Ebene"
+    channels: "Kanäle"
   unknown_command:  "\x0307✗ Unbekannter Befehl\x03\x0F \x02\x0303%command%\x03\x0F. Verwenden Sie \x0303/msg %bot% HELP\x03\x0F."
   ircop_header: "\x02 ■ Verfügbare Befehle für IRC-Operatoren:\x02"
 
@@ -350,3 +351,20 @@ motd:
     none:           "\x0303✓\x03 Keine abgelaufenen MOTD-Einträge zum Entfernen."
   debug:
     finalized:      "MOTD-Nachricht #%id% wurde beendet: [%type%] %message% | %date% | %shown_count%"
+
+# --- CHANNEL OVERRIDES (shared replies) ------------------------------------------
+channel:
+  invalid_name:         "\x0304✗\x03 \x02%channel%\x02 ist kein gültiger Kanalname; er muss mit \x02#\x02 beginnen."
+  not_found:            "\x0304✗\x03 Der Kanal \x02%channel%\x02 existiert im Netzwerk nicht."
+  user_not_online:      "\x0304✗\x03 Nick \x02%nickname%\x02 ist nicht verbunden."
+  user_not_on_channel:  "\x0304✗\x03 Nick \x02%nickname%\x02 ist nicht in \x02%channel%\x02."
+  protected_root:       "\x0304✗\x03 Zugriff verweigert: \x02%nickname%\x02 ist ein Root-Benutzer."
+  protected_ircop:      "\x0304✗\x03 Zugriff verweigert: \x02%nickname%\x02 ist ein IRC-Operator."
+
+# --- KICK ------------------------------------------------------------------------
+kick:
+  syntax:   "KICK <#kanal> <nick> [grund]"
+  short:    "Einen Benutzer aus einem Kanal werfen."
+  help:     "Wirft einen Benutzer als Netzwerkoperator aus einem Kanal.\nOhne Angabe wird ein Standardgrund verwendet.\nRoot-Benutzer und IRCops mit Rolle können nicht hinausgeworfen werden.\nDieser Befehl erfordert die Berechtigung operserv.kick."
+  example:  "/msg %bot% KICK #hilfe BadUser Hör auf zu fluten"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 wurde aus \x02%channel%\x02 geworfen. Grund: %reason%"
