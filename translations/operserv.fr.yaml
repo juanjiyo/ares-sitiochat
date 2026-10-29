@@ -401,3 +401,12 @@ limpia:
   help:     "Retire les modes -imnpst d'un salon pour le débloquer.\nLes clés (+k) et les limites (+l) ne sont pas modifiées.\nCette commande nécessite la permission operserv.mode."
   example:  "/msg %bot% LIMPIA #aide"
   done:     "\x0303✓\x03 Le salon \x02%channel%\x02 a été nettoyé (modes %modes%)."
+
+# --- INVITE ----------------------------------------------------------------------
+invite:
+  syntax:              "INVITE <#salon>"
+  short:               "Vous invite sur un salon."
+  help:                "Vous invite sur le salon indiqué, même s'il est sur invitation uniquement (+i).\nCette commande nécessite la permission operserv.invite."
+  example:             "/msg %bot% INVITE #aide"
+  done:                "\x0303✓\x03 Invitation pour \x02%channel%\x02 envoyée."
+  already_on_channel:  "\x0304✗\x03 Vous êtes déjà sur \x02%channel%\x02."

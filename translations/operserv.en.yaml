@@ -401,3 +401,12 @@ limpia:
   help:     "Removes the modes -imnpst from a channel to unlock it.\nKeys (+k) and limits (+l) are left untouched.\nThis command requires the operserv.mode permission."
   example:  "/msg %bot% LIMPIA #help"
   done:     "\x0303✓\x03 Channel \x02%channel%\x02 has been cleaned (modes %modes%)."
+
+# --- INVITE ----------------------------------------------------------------------
+invite:
+  syntax:              "INVITE <#channel>"
+  short:               "Invite yourself to a channel."
+  help:                "Invites you to the given channel, even when it is invite-only (+i).\nThis command requires the operserv.invite permission."
+  example:             "/msg %bot% INVITE #help"
+  done:                "\x0303✓\x03 Invitation to \x02%channel%\x02 sent."
+  already_on_channel:  "\x0304✗\x03 You are already on \x02%channel%\x02."

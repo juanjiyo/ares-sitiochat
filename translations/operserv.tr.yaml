@@ -401,3 +401,12 @@ limpia:
   help:     "Kanalın kilidini açmak için -imnpst modlarını kaldırır.\nAnahtarlar (+k) ve limitler (+l) değiştirilmez.\nBu komut operserv.mode iznini gerektirir."
   example:  "/msg %bot% LIMPIA #yardim"
   done:     "\x0303✓\x03 \x02%channel%\x02 kanalı temizlendi (modlar %modes%)."
+
+# --- INVITE ----------------------------------------------------------------------
+invite:
+  syntax:              "INVITE <#kanal>"
+  short:               "Seni bir kanala davet eder."
+  help:                "Seni belirtilen kanala davet eder, kanal yalnızca davetliler için (+i) olsa bile.\nBu komut operserv.invite iznini gerektirir."
+  example:             "/msg %bot% INVITE #yardim"
+  done:                "\x0303✓\x03 \x02%channel%\x02 kanalı için davet gönderildi."
+  already_on_channel:  "\x0304✗\x03 Zaten \x02%channel%\x02 kanalındasın."

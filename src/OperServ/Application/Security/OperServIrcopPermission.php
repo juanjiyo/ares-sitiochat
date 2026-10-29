@@ -22,6 +22,7 @@ final readonly class OperServIrcopPermission implements PermissionProviderInterf
             OperServPermission::KICK,
             OperServPermission::OP,
             OperServPermission::MODE,
+            OperServPermission::INVITE,
         ];
     }
 }

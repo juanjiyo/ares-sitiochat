@@ -2399,6 +2399,9 @@ services:
     App\OperServ\Adapter\In\Irc\Command\LimpiaCommand:
         tags: ['operserv.command.new']
 
+    App\OperServ\Adapter\In\Irc\Command\InviteCommand:
+        tags: ['operserv.command.new']
+
     # --- OperServ Infrastructure -------------------------------------------------
 
     App\OperServ\Adapter\In\Irc\Bot\OperServBot:

@@ -24,5 +24,7 @@ final class OperServPermission
     /** Grants both the MODE and LIMPIA channel overrides. */
     public const string MODE = 'operserv.mode';
 
+    public const string INVITE = 'operserv.invite';
+
     private function __construct() {}
 }

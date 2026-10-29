@@ -402,3 +402,12 @@ limpia:
   help:     "Quita los modos -imnpst de un canal para desbloquearlo.\nLas claves (+k) y los límites (+l) no se modifican.\nEste comando requiere el permiso operserv.mode."
   example:  "/msg %bot% LIMPIA #ayuda"
   done:     "\x0303✓\x03 El canal \x02%channel%\x02 ha sido limpiado (modos %modes%)."
+
+# --- INVITE ----------------------------------------------------------------------
+invite:
+  syntax:              "INVITE <#canal>"
+  short:               "Te invita a un canal."
+  help:                "Te invita al canal indicado, aunque sea solo para invitados (+i).\nEste comando requiere el permiso operserv.invite."
+  example:             "/msg %bot% INVITE #ayuda"
+  done:                "\x0303✓\x03 Invitación al canal \x02%channel%\x02 enviada."
+  already_on_channel:  "\x0304✗\x03 Ya estás en el canal \x02%channel%\x02."

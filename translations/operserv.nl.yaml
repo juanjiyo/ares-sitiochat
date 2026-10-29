@@ -401,3 +401,12 @@ limpia:
   help:     "Verwijdert de modi -imnpst van een kanaal om het te ontgrendelen.\nSleutels (+k) en limieten (+l) blijven ongewijzigd.\nVoor deze opdracht is de permissie operserv.mode vereist."
   example:  "/msg %bot% LIMPIA #help"
   done:     "\x0303✓\x03 Kanaal \x02%channel%\x02 is opgeschoond (modi %modes%)."
+
+# --- INVITE ----------------------------------------------------------------------
+invite:
+  syntax:              "INVITE <#kanaal>"
+  short:               "Jezelf uitnodigen in een kanaal."
+  help:                "Nodigt je uit in het opgegeven kanaal, ook als het alleen op uitnodiging is (+i).\nVoor deze opdracht is de permissie operserv.invite vereist."
+  example:             "/msg %bot% INVITE #help"
+  done:                "\x0303✓\x03 Uitnodiging voor \x02%channel%\x02 verstuurd."
+  already_on_channel:  "\x0304✗\x03 Je bent al in \x02%channel%\x02."

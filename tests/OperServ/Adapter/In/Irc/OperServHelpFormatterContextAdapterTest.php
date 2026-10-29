@@ -99,7 +99,7 @@ final class OperServHelpFormatterContextAdapterTest extends TestCase
 
         self::assertSame('help.group.network_security', $groups[1]['group_key']);
         self::assertSame(
-            ['group_key' => 'help.group.channels', 'commands' => ['KICK', 'OP', 'DEOP', 'MODE', 'LIMPIA'], 'admin' => false, 'subgroup' => false],
+            ['group_key' => 'help.group.channels', 'commands' => ['KICK', 'OP', 'DEOP', 'MODE', 'LIMPIA', 'INVITE'], 'admin' => false, 'subgroup' => false],
             $groups[2],
         );
     }
