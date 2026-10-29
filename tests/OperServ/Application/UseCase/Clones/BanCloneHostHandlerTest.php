@@ -6,6 +6,7 @@ namespace App\Tests\OperServ\Application\UseCase\Clones;
 
 use App\OperServ\Application\Port\In\Audit\CommandAuditCategory;
 use App\OperServ\Application\Port\Out\ConnectedUsersDirectory;
+use App\OperServ\Application\Port\Out\KillNetworkUser;
 use App\OperServ\Application\Port\Out\NetworkUser;
 use App\OperServ\Application\Port\Out\NetworkUserLookup;
 use App\OperServ\Application\Port\Out\OperatorAccountLookup;
@@ -79,6 +80,34 @@ final class BanCloneHostHandlerTest extends TestCase
         self::assertSame(OperServPermission::CLONES, $record->permission);
         self::assertSame(self::HOST, $record->targetHost);
         self::assertSame(['mask' => '*@' . self::HOST, 'duration' => '1h', 'sessions' => 2], $record->metadata);
+    }
+
+    #[Test]
+    public function disconnectsEverySessionOnTheHostAfterTheGlineBecauseAnUdbGlineOnlyStopsNewConnections(): void
+    {
+        $glines = $this->createStub(ManageGlineHandlerInterface::class);
+        $glines->method('handle')->willReturn(new ManageGlineResult(ManageGlineOutcome::Added, '*@' . self::HOST, expiry: '1h', reason: 'Too many clones'));
+        $kills = new RecordingKillNetworkUser();
+
+        $result = $this->handler($glines, kills: $kills)->handle($this->command(CloneHostBan::KillClones, 'Too many clones'));
+
+        self::assertSame(BanCloneHostOutcome::Banned, $result->outcome);
+        self::assertSame([
+            ['U1', 'Killed (OperServ: Oper): Too many clones'],
+            ['U2', 'Killed (OperServ: Oper): Too many clones'],
+        ], $kills->kills);
+    }
+
+    #[Test]
+    public function disconnectsNobodyWhenTheGlineIsRefused(): void
+    {
+        $glines = $this->createStub(ManageGlineHandlerInterface::class);
+        $glines->method('handle')->willReturn(new ManageGlineResult(ManageGlineOutcome::AlreadyExists, '*@' . self::HOST));
+        $kills = new RecordingKillNetworkUser();
+
+        $this->handler($glines, kills: $kills)->handle($this->command(CloneHostBan::Block, 'x'));
+
+        self::assertSame([], $kills->kills);
     }
 
     #[Test]
@@ -230,6 +259,7 @@ final class BanCloneHostHandlerTest extends TestCase
         ?array $connected = null,
         array $roots = [],
         array $operatorsWithRole = [],
+        ?RecordingKillNetworkUser $kills = null,
     ): BanCloneHostHandler {
         $connected ??= [
             $target ?? new NetworkUser('U9', 'Nobody', 'n', 'n.example', 'enc', false, false, '203.0.113.9'),
@@ -252,7 +282,21 @@ final class BanCloneHostHandlerTest extends TestCase
             new ConnectionHosts($directory),
             new ProtectedNetworkTargets($rootRegistry, $accounts, $roles),
             $glines,
+            $kills ?? new RecordingKillNetworkUser(),
             $audit ?? new RecordingCommandAuditRecorder(),
         );
+    }
+}
+
+final class RecordingKillNetworkUser implements KillNetworkUser
+{
+    /** @var list<array{string, string}> */
+    public array $kills = [];
+
+    public function kill(string $targetUid, string $reason): bool
+    {
+        $this->kills[] = [$targetUid, $reason];
+
+        return true;
     }
 }
