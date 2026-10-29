@@ -9,7 +9,7 @@ Documento de traspaso. Todo lo que sigue está verificado contra el repositorio 
 | Elemento | Valor |
 |---|---|
 | Repo local | `/tmp/ares-sitiochat` → `github.com/juanjiyo/ares-sitiochat` (rama `main`) |
-| HEAD al escribir esto | `c7dc489` (pusheado) |
+| HEAD al escribir esto | `c7dc489` (pusheado); actualizado a `a1e6644` el 2026-10-29, desplegado en el VPS |
 | VPS | `/home/irc/ares-sitiochat`, usuario `irc`, SSH `-i ~/.ssh/irc_vps_key` |
 | IRCd | UnrealIRCd 6.2.7 + módulos `third/udb` 4.0.0-rc1 y `third/sacmds` 2.2.3 |
 | Servicios vivos | `NiCK 003A00001`, `CHaN 003B00002`, `MeMo 003C00003`, `CReG 003D00004`, `GlobalServ 003Z00005`, `HeLP 003Z00006`, `OPeR 003E00007` |
@@ -27,7 +27,9 @@ CI fallaba en **todas** las ejecuciones desde antes de esta sesión. Causas enco
 3. **Conteo de comandos** en `tests/Shared/ServicesCommandHelpAlignmentTest.php`: esperaba 73, ahora **75**. Ese test exige además que **toda clave de traducción exista en las 14 locales**.
 4. **Cobertura**: estaba en 98,26% (HeLPServ ya la había roto; GlobalServ y los comandos nuevos añadían más). Restaurada a **100%** en `c7dc489`.
 
-**Pendiente de verificar**: la última ejecución de CI (`gh run list --limit 1`) quedó *in_progress* al cerrar la sesión. Comprobar con:
+**Verificado (2026-10-29)**: en el run `40616471727` (`a1e6644`) pasan `PHP 8.5 — Lint, CS & Tests` y las 4 migraciones (mysql, mariadb, sqlite, postgres). El job `Deploy Ares IRC Services` queda siempre en cola: espera un runner Docker `ares-deploy` que no existe (no se usa Docker). El VPS se despliega a mano y ya corre `a1e6644`.
+
+Para revisar ejecuciones futuras:
 
 ```bash
 cd /tmp/ares-sitiochat && gh run list --limit 1 --json databaseId,status,conclusion
@@ -49,8 +51,8 @@ Si sigue rojo, mirar el paso concreto, no asumir.
 | **MeMo** | Servicio completo |
 | **CReG** | `REGISTRA`, `APROBAR`, `DENEGAR`, `PENDIENTES`, `DENEGADOS`, `ESTADO`, `CANCEL`, `DROP` |
 | **HeLP** | Árbol de ayuda de 6 tópicos (UMODES, CMODES, BOTS, NICK, CANAL, CREDITOS) + `HELP`/`AYUDA` |
-| **GlobalServ** | `GLOBAL`, `NICK`, `CHAN`, `JOIN`, `PRE-OPER`, `OPER`, `CO-ADMIN`, `ADMIN`, `HELP` |
-| **OPeR** | Servicio completo (`KILL`, `GLINE`, `GLOBAL`, `RAW`, `MOTD`, `ROLE`, `IRCOP`, `GEOIP`) |
+| **GlobalServ** | `GLOBAL`, `NICK`, `CHAN`, `JOIN`, `PRE-OPER`, `OPER`, `ADMIN`, `HELP` (`CO-ADMIN` eliminado en `c635f62`: ares no tiene ese rango) |
+| **OPeR** | Servicio completo (`KILL`, `GLINE`, `RAW`, `MOTD`, `ROLE`, `IRCOP`, `GEOIP`); `GLOBAL` movido a GlobalServ en `cbfe2d3` |
 
 ### Commits relevantes
 
@@ -77,9 +79,10 @@ fcbbfd6 feat(globalserv): add GlobalServ network announcement service
 | `NOEXPIRE` | ✅ (comando suelto, como en `ch.mrc`) |
 | `SET FOUNDER/SUCCESSOR/DESC/URL/EMAIL/ENTRYMSG/MLOCK/TOPICLOCK/PRIVATE/SECURE` | ✅ |
 | `SET TOPIC`, `SET NOEXPIRE` | ✅ (nuevos) |
-| `SET KEEPTOPIC/DEFTOPIC/RESTRICTED/SECUREOPS/SECUREHALFOPS/DEBUG/AUTOLIMIT` | ❌ **pendiente** |
+| `SET KEEPTOPIC/DEFTOPIC` | ✅ (`578fa86`; en ares la opción se llama `DEFAULTTOPIC`) |
+| `SET RESTRICTED/SECUREOPS/SECUREHALFOPS/DEBUG/AUTOLIMIT` | ❌ **pendiente** |
 | `CLEAR MODES\|BANS\|OPS\|HALFOPS\|VOICES\|USERS\|TOPIC` | ❌ parcial (`CLEARUSERS`, `CLEARACCESS`; faltan MODES/BANS/OPS/HALFOPS/VOICES/TOPIC) |
-| `KICK` | ❌ pendiente |
+| `KICK` | ✅ (`494668a`) |
 | `BFOUNDER`, `ESPECIAL` | ❌ pendiente / decisión |
 | `IDENTIFY`, `GETPASS`, `SET PASSWORD` | ❌ **no aplica**: ares no usa contraseña de canal, el fundador es la cuenta de NiCK |
 
@@ -93,7 +96,8 @@ fcbbfd6 feat(globalserv): add GlobalServ network announcement service
 
 Requiere, por cada flag: columna + migración + proyección + handler + reactor real. **No publicar flags que no hagan nada.**
 
-- `KEEPTOPIC`, `DEFTOPIC`, `RESTRICTED`, `SECUREOPS`, `SECUREHALFOPS`, `DEBUG`, `AUTOLIMIT`.
+- ~~`KEEPTOPIC`, `DEFTOPIC`~~ ✅ hechos (`578fa86`, migración `Version20261027000001`).
+- Pendientes: `RESTRICTED`, `SECUREOPS`, `SECUREHALFOPS`, `DEBUG`, `AUTOLIMIT`.
 - Columnas actuales en `registered_channels`: `topic_lock`, `mlock_active`, `mlock`, `mlock_params`, `secure`, `topic`, `no_expire`, `private`, `ircop_only`, `suspended_*`, `forbidden_reason`, `status`.
 - `src/ChanServ/Application/Port/In/ChannelProjection.php` expone solo: `topicLock`, `secure`, `ircopOnly`, `private`, etc. Hay que extenderlo.
 - Reactores existentes donde enganchan: `src/ChanServ/Domain/Policy/RankReconciliationPolicy.php` (ya recibe `bool $secure`), `ChanServTopicSyncSubscriber`, `ChanServTopicApplySubscriber`, `IrcChannelTopicActions`.
@@ -102,7 +106,7 @@ Requiere, por cada flag: columna + migración + proyección + handler + reactor 
 ### 4.2. ChanServ — comandos sin migración (más baratos)
 
 - `CLEAR <#canal> MODES|BANS|OPS|HALFOPS|VOICES|TOPIC`: reutiliza `ChannelServiceActionsPort` (`setChannelModes`, `setChannelMemberMode`) y `ChannelView::members`/`bans`.
-- `KICK <#canal> <nick> [motivo]`: `ProtocolServiceActionsInterface::kickFromChannel` ya existe.
+- ~~`KICK <#canal> <nick> [motivo]`~~ ✅ hecho (`494668a`).
 - `BFOUNDER`: decidir si se implementa (en `ch.mrc` es un flujo de "fundador por bot").
 - `ESPECIAL`: en dbots son bots de entrada; probablemente descartar.
 
