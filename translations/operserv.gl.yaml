@@ -430,3 +430,14 @@ ircops:
   entry:    "  \x0310›\x03 \x02%nickname%\x02"
   footer:   "Fin da lista."
   empty:    "\x0310ℹ\x03 Non hai operadores de rede conectados."
+
+# --- LISTCLONES ------------------------------------------------------------------
+listclones:
+  syntax:   "LISTCLONES <nick>"
+  short:    "Lista os clons dun nick."
+  help:     "Amosa o host desde o que está conectado un nick e os demais nicks conectados desde o mesmo host.\nAs conexións agrúpanse pola IP real cando se coñece e, se non, polo host.\nEste comando require o permiso operserv.clones."
+  example:  "/msg %bot% LISTCLONES BadUser"
+  header:   "Clons de \x02%nickname%\x02 (\x02%host%\x02), %count% conexións:"
+  entry:    "  \x0310›\x03 \x02%nickname%\x02 (%ident%)"
+  footer:   "Fin da lista."
+  none:     "\x0310ℹ\x03 \x02%nickname%\x02 non ten clons (%host%)."

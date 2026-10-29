@@ -2411,6 +2411,9 @@ services:
     App\OperServ\Adapter\In\Irc\Command\IrcopsCommand:
         tags: ['operserv.command.new']
 
+    App\OperServ\Adapter\In\Irc\Command\ListclonesCommand:
+        tags: ['operserv.command.new']
+
     # --- OperServ Infrastructure -------------------------------------------------
 
     App\OperServ\Adapter\In\Irc\Bot\OperServBot:

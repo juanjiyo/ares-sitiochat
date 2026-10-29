@@ -430,3 +430,14 @@ ircops:
   entry:    "  \x0310›\x03 \x02%nickname%\x02"
   footer:   "End of list."
   empty:    "\x0310ℹ\x03 No IRC operators are online."
+
+# --- LISTCLONES ------------------------------------------------------------------
+listclones:
+  syntax:   "LISTCLONES <nickname>"
+  short:    "List the clones of a nickname."
+  help:     "Shows the host a nickname connects from and the other nicknames connected from the same host.\nSessions are grouped by real IP when it is known, otherwise by hostname.\nThis command requires the operserv.clones permission."
+  example:  "/msg %bot% LISTCLONES BadUser"
+  header:   "Clones of \x02%nickname%\x02 (\x02%host%\x02), %count% sessions:"
+  entry:    "  \x0310›\x03 \x02%nickname%\x02 (%ident%)"
+  footer:   "End of list."
+  none:     "\x0310ℹ\x03 \x02%nickname%\x02 has no clones (%host%)."

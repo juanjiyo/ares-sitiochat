@@ -430,3 +430,14 @@ ircops:
   entry:    "  \x0310›\x03 \x02%nickname%\x02"
   footer:   "Τέλος λίστας."
   empty:    "\x0310ℹ\x03 Δεν υπάρχουν συνδεδεμένοι IRC operators."
+
+# --- LISTCLONES ------------------------------------------------------------------
+listclones:
+  syntax:   "LISTCLONES <ψευδώνυμο>"
+  short:    "Λίστα των κλώνων ενός ψευδωνύμου."
+  help:     "Εμφανίζει το host από το οποίο συνδέεται ένα ψευδώνυμο και τα άλλα ψευδώνυμα που συνδέονται από το ίδιο host.\nΟι συνδέσεις ομαδοποιούνται κατά πραγματική IP όταν είναι γνωστή, αλλιώς κατά hostname.\nΑυτή η εντολή απαιτεί την άδεια operserv.clones."
+  example:  "/msg %bot% LISTCLONES BadUser"
+  header:   "Κλώνοι του \x02%nickname%\x02 (\x02%host%\x02), %count% συνδέσεις:"
+  entry:    "  \x0310›\x03 \x02%nickname%\x02 (%ident%)"
+  footer:   "Τέλος λίστας."
+  none:     "\x0310ℹ\x03 Ο \x02%nickname%\x02 δεν έχει κλώνους (%host%)."

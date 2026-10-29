@@ -431,3 +431,14 @@ ircops:
   entry:    "  \x0310›\x03 \x02%nickname%\x02"
   footer:   "Fine dell'elenco."
   empty:    "\x0310ℹ\x03 Nessun operatore IRC è connesso."
+
+# --- LISTCLONES ------------------------------------------------------------------
+listclones:
+  syntax:   "LISTCLONES <nick>"
+  short:    "Elenca i cloni di un nick."
+  help:     "Mostra l'host da cui è connesso un nick e gli altri nick connessi dallo stesso host.\nLe connessioni sono raggruppate per IP reale quando è noto, altrimenti per hostname.\nQuesto comando richiede il permesso operserv.clones."
+  example:  "/msg %bot% LISTCLONES BadUser"
+  header:   "Cloni di \x02%nickname%\x02 (\x02%host%\x02), %count% connessioni:"
+  entry:    "  \x0310›\x03 \x02%nickname%\x02 (%ident%)"
+  footer:   "Fine dell'elenco."
+  none:     "\x0310ℹ\x03 \x02%nickname%\x02 non ha cloni (%host%)."

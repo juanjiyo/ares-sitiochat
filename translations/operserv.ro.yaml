@@ -430,3 +430,14 @@ ircops:
   entry:    "  \x0310›\x03 \x02%nickname%\x02"
   footer:   "Sfârșitul listei."
   empty:    "\x0310ℹ\x03 Niciun operator IRC nu este conectat."
+
+# --- LISTCLONES ------------------------------------------------------------------
+listclones:
+  syntax:   "LISTCLONES <nick>"
+  short:    "Listează clonele unui nick."
+  help:     "Afișează hostul de pe care este conectat un nick și celelalte nickuri conectate de pe același host.\nConexiunile sunt grupate după IP-ul real când este cunoscut, altfel după hostname.\nAceastă comandă necesită permisiunea operserv.clones."
+  example:  "/msg %bot% LISTCLONES BadUser"
+  header:   "Clonele lui \x02%nickname%\x02 (\x02%host%\x02), %count% conexiuni:"
+  entry:    "  \x0310›\x03 \x02%nickname%\x02 (%ident%)"
+  footer:   "Sfârșitul listei."
+  none:     "\x0310ℹ\x03 \x02%nickname%\x02 nu are clone (%host%)."

@@ -430,3 +430,14 @@ ircops:
   entry:    "  \x0310›\x03 \x02%nickname%\x02"
   footer:   "Fin de la liste."
   empty:    "\x0310ℹ\x03 Aucun opérateur IRC n'est connecté."
+
+# --- LISTCLONES ------------------------------------------------------------------
+listclones:
+  syntax:   "LISTCLONES <pseudo>"
+  short:    "Lister les clones d'un pseudo."
+  help:     "Affiche l'hôte depuis lequel un pseudo est connecté et les autres pseudos connectés depuis le même hôte.\nLes connexions sont regroupées par IP réelle lorsqu'elle est connue, sinon par nom d'hôte.\nCette commande requiert la permission operserv.clones."
+  example:  "/msg %bot% LISTCLONES BadUser"
+  header:   "Clones de \x02%nickname%\x02 (\x02%host%\x02), %count% connexions :"
+  entry:    "  \x0310›\x03 \x02%nickname%\x02 (%ident%)"
+  footer:   "Fin de la liste."
+  none:     "\x0310ℹ\x03 \x02%nickname%\x02 n'a pas de clones (%host%)."

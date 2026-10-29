@@ -430,3 +430,14 @@ ircops:
   entry:    "  \x0310›\x03 \x02%nickname%\x02"
   footer:   "Listenin sonu."
   empty:    "\x0310ℹ\x03 Bağlı IRC operatörü yok."
+
+# --- LISTCLONES ------------------------------------------------------------------
+listclones:
+  syntax:   "LISTCLONES <rumuz>"
+  short:    "Bir rumuzun klonlarını listeler."
+  help:     "Bir rumuzun bağlandığı hostu ve aynı hosttan bağlanan diğer rumuzları gösterir.\nBağlantılar biliniyorsa gerçek IP'ye, aksi halde host adına göre gruplanır.\nBu komut operserv.clones iznini gerektirir."
+  example:  "/msg %bot% LISTCLONES BadUser"
+  header:   "\x02%nickname%\x02 klonları (\x02%host%\x02), %count% bağlantı:"
+  entry:    "  \x0310›\x03 \x02%nickname%\x02 (%ident%)"
+  footer:   "Listenin sonu."
+  none:     "\x0310ℹ\x03 \x02%nickname%\x02 rumuzunun klonu yok (%host%)."
