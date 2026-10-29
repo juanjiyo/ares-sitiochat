@@ -2378,6 +2378,12 @@ services:
     App\OperServ\Adapter\In\Irc\Command\KillCommand:
         tags: ['operserv.command.new']
 
+    App\OperServ\Application\Port\Out\NetworkChannelLookup:
+        alias: App\OperServ\Adapter\Out\Irc\IrcNetworkChannelLookup
+
+    App\OperServ\Application\Port\Out\ChannelOverrideActions:
+        alias: App\OperServ\Adapter\Out\Irc\ActiveConnectionChannelOverrideActions
+
     # --- OperServ Infrastructure -------------------------------------------------
 
     App\OperServ\Adapter\In\Irc\Bot\OperServBot:
