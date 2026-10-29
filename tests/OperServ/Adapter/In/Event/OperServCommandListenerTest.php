@@ -538,4 +538,17 @@ final class OperServCommandListenerTest extends TestCase
         self::assertSame('RAW', OperServCommandLogSanitizer::commandName('RAW OPAQUE reset-token'));
         self::assertSame('UNKNOWN', OperServCommandLogSanitizer::commandName('private-secret payload'));
     }
+
+    #[Test]
+    public function loggingNamesEveryRegisteredOperServCommandWithoutItsArguments(): void
+    {
+        $commands = [
+            'BLOCK', 'CONEXIONES', 'DEOP', 'GEOIP', 'GLINE', 'HELP', 'INVITE', 'IRCOP', 'IRCOPS', 'KICK',
+            'KILL', 'KILLCLONES', 'LIMPIA', 'LISTCLONES', 'MODE', 'MOTD', 'OP', 'RAW', 'ROLE', 'STATS',
+        ];
+
+        foreach ($commands as $command) {
+            self::assertSame($command, OperServCommandLogSanitizer::commandName(strtolower($command) . ' #canal secret-argument'));
+        }
+    }
 }
