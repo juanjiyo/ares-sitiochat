@@ -484,5 +484,5 @@ conexiones:
     help:       "Shows how many simultaneous sessions are active from an IP or hostname."
     syntax:     "CONEXIONES VIEW <host>"
     example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
-    result:     "\x0310ℹ\x03 \x02%host%\x02 currently has \x02%count%\x02 simultaneous active sessions."
+    result:     "\x0310ℹ\x03 Simultaneous active sessions from \x02%host%\x02: \x02%count%\x02."
     not_found:  "\x0304✗\x03 No sessions found for \x02%host%\x02."

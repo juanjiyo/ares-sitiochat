@@ -484,5 +484,5 @@ conexiones:
     help:       "Εμφανίζει πόσες ταυτόχρονες συνδέσεις είναι ενεργές από μια IP ή ένα hostname."
     syntax:     "CONEXIONES VIEW <host>"
     example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
-    result:     "\x0310ℹ\x03 Το \x02%host%\x02 έχει αυτή τη στιγμή \x02%count%\x02 ταυτόχρονες ενεργές συνδέσεις."
+    result:     "\x0310ℹ\x03 Ταυτόχρονες ενεργές συνδέσεις του \x02%host%\x02: \x02%count%\x02."
     not_found:  "\x0304✗\x03 Δεν βρέθηκαν συνδέσεις για το \x02%host%\x02."

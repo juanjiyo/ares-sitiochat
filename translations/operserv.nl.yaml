@@ -484,5 +484,5 @@ conexiones:
     help:       "Toont hoeveel gelijktijdige verbindingen er vanaf een IP-adres of hostnaam actief zijn."
     syntax:     "CONEXIONES VIEW <host>"
     example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
-    result:     "\x0310ℹ\x03 \x02%host%\x02 heeft momenteel \x02%count%\x02 gelijktijdige actieve verbindingen."
+    result:     "\x0310ℹ\x03 Gelijktijdige actieve verbindingen van \x02%host%\x02: \x02%count%\x02."
     not_found:  "\x0304✗\x03 Geen verbindingen gevonden voor \x02%host%\x02."

@@ -484,5 +484,5 @@ conexiones:
     help:       "Mostra quantes connexions simultànies hi ha actives des d'una IP o un host."
     syntax:     "CONEXIONES VIEW <IP>"
     example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
-    result:     "\x0310ℹ\x03 La IP \x02%host%\x02 té actualment \x02%count%\x02 connexions simultànies actives."
+    result:     "\x0310ℹ\x03 Connexions simultànies actives de la IP \x02%host%\x02: \x02%count%\x02."
     not_found:  "\x0304✗\x03 No s'han trobat connexions per a \x02%host%\x02."

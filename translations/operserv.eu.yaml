@@ -484,5 +484,5 @@ conexiones:
     help:       "IP edo host batetik zenbat aldibereko konexio aktibo dauden erakusten du."
     syntax:     "CONEXIONES VIEW <host>"
     example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
-    result:     "\x0310ℹ\x03 \x02%host%\x02 hostak une honetan \x02%count%\x02 aldibereko konexio aktibo ditu."
+    result:     "\x0310ℹ\x03 \x02%host%\x02 hostaren aldibereko konexio aktiboak: \x02%count%\x02."
     not_found:  "\x0304✗\x03 Ez da konexiorik aurkitu \x02%host%\x02 hostarentzat."

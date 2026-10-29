@@ -484,5 +484,5 @@ conexiones:
     help:       "Mostra quantas ligações simultâneas estão ativas a partir de um IP ou host."
     syntax:     "CONEXIONES VIEW <IP>"
     example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
-    result:     "\x0310ℹ\x03 O IP \x02%host%\x02 tem atualmente \x02%count%\x02 ligações simultâneas ativas."
+    result:     "\x0310ℹ\x03 Ligações simultâneas ativas do IP \x02%host%\x02: \x02%count%\x02."
     not_found:  "\x0304✗\x03 Não foram encontradas ligações para \x02%host%\x02."

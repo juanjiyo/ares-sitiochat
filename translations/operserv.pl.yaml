@@ -484,5 +484,5 @@ conexiones:
     help:       "Pokazuje, ile jednoczesnych połączeń jest aktywnych z IP lub nazwy hosta."
     syntax:     "CONEXIONES VIEW <host>"
     example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
-    result:     "\x0310ℹ\x03 \x02%host%\x02 ma obecnie \x02%count%\x02 jednoczesnych aktywnych połączeń."
+    result:     "\x0310ℹ\x03 Jednoczesne aktywne połączenia z \x02%host%\x02: \x02%count%\x02."
     not_found:  "\x0304✗\x03 Nie znaleziono połączeń dla \x02%host%\x02."

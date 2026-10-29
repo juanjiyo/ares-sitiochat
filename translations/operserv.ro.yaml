@@ -484,5 +484,5 @@ conexiones:
     help:       "Afișează câte conexiuni simultane sunt active de pe un IP sau hostname."
     syntax:     "CONEXIONES VIEW <host>"
     example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
-    result:     "\x0310ℹ\x03 \x02%host%\x02 are în prezent \x02%count%\x02 conexiuni simultane active."
+    result:     "\x0310ℹ\x03 Conexiuni simultane active de la \x02%host%\x02: \x02%count%\x02."
     not_found:  "\x0304✗\x03 Nu s-au găsit conexiuni pentru \x02%host%\x02."

@@ -484,5 +484,5 @@ conexiones:
     help:       "Bir IP veya host adından kaç eşzamanlı bağlantının etkin olduğunu gösterir."
     syntax:     "CONEXIONES VIEW <host>"
     example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
-    result:     "\x0310ℹ\x03 \x02%host%\x02 şu anda \x02%count%\x02 eşzamanlı etkin bağlantıya sahip."
+    result:     "\x0310ℹ\x03 \x02%host%\x02 adresinden eşzamanlı etkin bağlantılar: \x02%count%\x02."
     not_found:  "\x0304✗\x03 \x02%host%\x02 için bağlantı bulunamadı."

@@ -484,5 +484,5 @@ conexiones:
     help:       "Affiche combien de connexions simultanées sont actives depuis une IP ou un nom d'hôte."
     syntax:     "CONEXIONES VIEW <hôte>"
     example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
-    result:     "\x0310ℹ\x03 \x02%host%\x02 a actuellement \x02%count%\x02 connexions simultanées actives."
+    result:     "\x0310ℹ\x03 Connexions simultanées actives de \x02%host%\x02 : \x02%count%\x02."
     not_found:  "\x0304✗\x03 Aucune connexion trouvée pour \x02%host%\x02."
