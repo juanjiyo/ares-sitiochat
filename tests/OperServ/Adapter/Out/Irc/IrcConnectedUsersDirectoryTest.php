@@ -9,6 +9,7 @@ use App\Irc\Application\Port\In\SenderView;
 use App\OperServ\Adapter\Out\Irc\IrcConnectedUsersDirectory;
 use App\OperServ\Adapter\Out\Irc\NetworkUserMapper;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -39,6 +40,28 @@ final class IrcConnectedUsersDirectoryTest extends TestCase
         self::assertFalse($connected[0]->ircOperator);
         self::assertSame('Oper', $connected[1]->nickname);
         self::assertTrue($connected[1]->ircOperator);
+    }
+
+    /** @return iterable<string, array{string, string}> */
+    public static function encodedAddresses(): iterable
+    {
+        yield 'IPv4' => ['xjNkBw==', '198.51.100.7'];
+        yield 'IPv6' => ['IAENuAAAAAAAAAAAAAAABQ==', '2001:db8::5'];
+        yield 'loopback' => ['fwAAAQ==', '127.0.0.1'];
+        yield 'unknown address marker' => ['*', '*'];
+        yield 'not base64' => ['%%invalid%%', '%%invalid%%'];
+        yield 'base64 of a non-address' => ['YWJj', 'YWJj'];
+    }
+
+    #[Test]
+    #[DataProvider('encodedAddresses')]
+    public function decodesTheRealIpAddressLikeTheIrcNetworkUser(string $ipBase64, string $expected): void
+    {
+        $users = $this->createStub(NetworkUserLookupPort::class);
+        $users->method('listConnectedUids')->willReturn(['U1']);
+        $users->method('findByUid')->willReturn(new SenderView('U1', 'Alice', 'alice', 'host', '', $ipBase64));
+
+        self::assertSame($expected, new IrcConnectedUsersDirectory($users)->listConnected()[0]->ipAddress);
     }
 
     #[Test]
