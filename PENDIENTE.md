@@ -20,6 +20,11 @@ Estado a 2026-10-29.
 
 ### Cómo continuar desde el PC Linux
 
+0. **No hace falta copiar la carpeta `ares-sitiochat` desde Windows.** Comprobado el 2026-10-29: el `main` de Windows es idéntico a GitHub (sin commits sin subir, sin cambios sin guardar y sin `stash`). Lo único que no está en GitHub son cachés que se regeneran solos (`vendor/`, `var/`, `.phpunit.cache/`, `.php-cs-fixer.cache`, `.atl/`).
+   Lo que **no** está en el repo y sí hace falta en Linux:
+   - **Clave SSH del VPS**: debería estar ya en el PC Linux como `~/.ssh/irc_vps_key` (se creó allí). Si no está, copiarla desde Windows (`C:\IRC\Code-Sessions\irc_vps_key`), dejarla con `chmod 600 ~/.ssh/irc_vps_key` y **borrar después la copia de Windows** (`C:\IRC\Code-Sessions\irc_vps_key`), que es una clave privada suelta en una carpeta de proyecto.
+   - **Scripts originales de mIRC** (fuente de verdad de mensajes y comportamiento): en Linux deberían estar en `/home/juanjo/irc/sitiochat/sistema/`. Si falta alguno (sobre todo `de.mrc`, necesario para §2.4), copiarlo desde `C:\IRC\services\sistema\`.
+   - **pulsar** (referencia de `JAIL`, `UMODE`, `ELINE`, `SERVERMAP`, `CONEXIONES`): está en `C:\IRC\services\pulsar\`; copiarlo si se van a hacer T4–T7.
 1. **Obtener el código** (recomendado: clon limpio, porque `/opt/ares` mezcla otro remoto y tiene trabajo sin commitear de sesiones anteriores):
    ```bash
    git clone https://github.com/juanjiyo/ares-sitiochat.git ~/ares-sitiochat   # o: cd /opt/ares && git fetch sitiochat && git status
