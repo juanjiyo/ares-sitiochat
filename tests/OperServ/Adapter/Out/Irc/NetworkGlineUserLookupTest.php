@@ -33,6 +33,18 @@ final class NetworkGlineUserLookupTest extends TestCase
     }
 
     #[Test]
+    public function exposesTheRealIpSoIpMasksMatchTheConnection(): void
+    {
+        $network = $this->createStub(NetworkUserLookupPort::class);
+        $network->method('findByNick')->willReturn(new SenderView('001AAA', 'Nick', 'ident', 'host.test', 'cloak', 'wAACAQ==', true, false));
+
+        $user = new NetworkGlineUserLookup($network, $this->createStub(NickAccountQuery::class))->findByNickname('Nick');
+
+        self::assertNotNull($user);
+        self::assertSame('192.0.2.1', $user->ipAddress);
+    }
+
+    #[Test]
     public function returnsNullForDisconnectedUser(): void
     {
         $network = $this->createStub(NetworkUserLookupPort::class);

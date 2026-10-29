@@ -6,5 +6,6 @@ namespace App\OperServ\Application\Port\Out;
 
 final readonly class GlineUser
 {
-    public function __construct(public string $nickname, public string $ident, public string $hostname) {}
+    /** @param string $ipAddress real IP of the connection, '' when unknown */
+    public function __construct(public string $nickname, public string $ident, public string $hostname, public string $ipAddress = '') {}
 }

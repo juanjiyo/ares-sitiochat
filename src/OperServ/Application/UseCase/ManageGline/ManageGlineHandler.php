@@ -7,17 +7,19 @@ namespace App\OperServ\Application\UseCase\ManageGline;
 use App\OperServ\Application\Port\In\Audit\CommandAuditCategory;
 use App\OperServ\Application\Port\In\Audit\CommandAuditRecord;
 use App\OperServ\Application\Port\In\CommandAuditRecorder;
+use App\OperServ\Application\Port\Out\ConnectedUsersDirectory;
 use App\OperServ\Application\Port\Out\GlineEntry;
 use App\OperServ\Application\Port\Out\GlineNetworkActions;
 use App\OperServ\Application\Port\Out\GlineRepository;
-use App\OperServ\Application\Port\Out\GlineUser;
 use App\OperServ\Application\Port\Out\GlineUserLookup;
+use App\OperServ\Application\Port\Out\KillNetworkUser;
 use App\OperServ\Application\Port\Out\ProtectedGlineSubjects;
 use App\OperServ\Domain\Policy\GlineMaskPolicy;
 use App\Shared\Application\Time\RelativeExpiryParser;
 
 use function ctype_digit;
 use function fnmatch;
+use function sprintf;
 use function strpos;
 use function strtolower;
 use function substr;
@@ -30,6 +32,8 @@ final readonly class ManageGlineHandler implements ManageGlineHandlerInterface
         private ProtectedGlineSubjects $protectedSubjects,
         private GlineNetworkActions $network,
         private CommandAuditRecorder $audit,
+        private ConnectedUsersDirectory $connectedUsers,
+        private KillNetworkUser $kills,
         private int $maxGlines = 1000,
     ) {}
 
@@ -93,6 +97,7 @@ final readonly class ManageGlineHandler implements ManageGlineHandlerInterface
 
         $this->glines->save($resolvedMask, $command->actorAccountId, $reason, $command->occurredAt, $expiresAt);
         $this->network->add($resolvedMask, $expiresAt, $reason);
+        $this->disconnectMatchingUsers($resolvedMask, $command->actor, $reason);
         $this->recordAudit($command, 'GLINE ADD', $resolvedMask, $reason, ['duration' => null === $expiresAt ? 'permanent' : $expiry]);
 
         return new ManageGlineResult(ManageGlineOutcome::Added, $resolvedMask, expiry: $expiry, reason: $reason);
@@ -142,7 +147,7 @@ final readonly class ManageGlineHandler implements ManageGlineHandlerInterface
     {
         foreach ($this->protectedSubjects->nicknames() as $nickname) {
             $user = $this->users->findByNickname($nickname);
-            if (null !== $user && $this->matches($mask, $user)) {
+            if (null !== $user && $this->matches($mask, $user->ident, $user->hostname, $user->ipAddress)) {
                 return $nickname;
             }
         }
@@ -150,7 +155,22 @@ final readonly class ManageGlineHandler implements ManageGlineHandlerInterface
         return null;
     }
 
-    private function matches(string $glineMask, GlineUser $user): bool
+    /**
+     * A G-Line published through UDB only refuses new connections, so the users already connected
+     * from the banned mask are killed here, as a classic TKL G-Line would do.
+     */
+    private function disconnectMatchingUsers(string $mask, string $actor, string $reason): void
+    {
+        $killReason = sprintf('G-Lined (%s): %s', $actor, $reason);
+        foreach ($this->connectedUsers->listConnected() as $user) {
+            if ($this->matches($mask, $user->ident, $user->hostname, $user->ipAddress)) {
+                $this->kills->kill($user->uid, $killReason);
+            }
+        }
+    }
+
+    /** The host part of the mask matches either the real hostname or the real IP of the connection. */
+    private function matches(string $glineMask, string $ident, string $hostname, string $ipAddress): bool
     {
         $at = strpos(strtolower($glineMask), '@');
         if (false === $at) {
@@ -159,8 +179,12 @@ final readonly class ManageGlineHandler implements ManageGlineHandlerInterface
 
         $userPattern = substr(strtolower($glineMask), 0, $at);
         $hostPattern = substr(strtolower($glineMask), $at + 1);
+        if (!fnmatch($userPattern, strtolower($ident))) {
+            return false;
+        }
 
-        return fnmatch($userPattern, strtolower($user->ident)) && fnmatch($hostPattern, strtolower($user->hostname));
+        return fnmatch($hostPattern, strtolower($hostname))
+            || ('' !== $ipAddress && '*' !== $ipAddress && fnmatch($hostPattern, strtolower($ipAddress)));
     }
 
     private function findByItem(string $item): ?GlineEntry

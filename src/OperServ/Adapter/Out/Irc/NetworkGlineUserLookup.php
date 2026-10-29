@@ -20,7 +20,7 @@ final readonly class NetworkGlineUserLookup implements GlineUserLookup
     {
         $user = $this->networkUsers->findByNick($nickname);
 
-        return null === $user ? null : new GlineUser($user->nick, $user->ident, $user->hostname);
+        return null === $user ? null : new GlineUser($user->nick, $user->ident, $user->hostname, NetworkUserMapper::fromSenderView($user)->ipAddress);
     }
 
     public function findNicknameByAccountId(int $accountId): ?string

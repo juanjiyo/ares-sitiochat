@@ -16,7 +16,6 @@ use App\OperServ\Application\UseCase\Clones\BanCloneHostHandler;
 use App\OperServ\Application\UseCase\Clones\ConnectionHosts;
 use App\OperServ\Application\UseCase\ManageGline\ManageGlineHandlerInterface;
 use App\Tests\OperServ\Application\UseCase\ChannelOverride\RecordingCommandAuditRecorder;
-use App\Tests\OperServ\Application\UseCase\Clones\RecordingKillNetworkUser;
 
 use function strtolower;
 
@@ -73,7 +72,6 @@ trait CloneCommandFixtures
             $this->cloneHosts(),
             new ProtectedNetworkTargets($roots, $this->createStub(OperatorAccountLookup::class), $this->createStub(OperatorRoleAccess::class)),
             $glines,
-            new RecordingKillNetworkUser(),
             $audit ?? new RecordingCommandAuditRecorder(),
         );
     }

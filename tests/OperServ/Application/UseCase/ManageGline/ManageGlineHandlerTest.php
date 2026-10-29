@@ -7,11 +7,14 @@ namespace App\Tests\OperServ\Application\UseCase\ManageGline;
 use App\OperServ\Application\Port\In\Audit\CommandAuditCategory;
 use App\OperServ\Application\Port\In\Audit\CommandAuditRecord;
 use App\OperServ\Application\Port\In\CommandAuditRecorder;
+use App\OperServ\Application\Port\Out\ConnectedUsersDirectory;
 use App\OperServ\Application\Port\Out\GlineEntry;
 use App\OperServ\Application\Port\Out\GlineNetworkActions;
 use App\OperServ\Application\Port\Out\GlineRepository;
 use App\OperServ\Application\Port\Out\GlineUser;
 use App\OperServ\Application\Port\Out\GlineUserLookup;
+use App\OperServ\Application\Port\Out\KillNetworkUser;
+use App\OperServ\Application\Port\Out\NetworkUser;
 use App\OperServ\Application\Port\Out\ProtectedGlineSubjects;
 use App\OperServ\Application\UseCase\ManageGline\GlineAction;
 use App\OperServ\Application\UseCase\ManageGline\GlineListEntry;
@@ -64,6 +67,66 @@ final class ManageGlineHandlerTest extends TestCase
         self::assertSame('GLINE ADD', $audit->records[0]->operation);
         self::assertSame('operserv.gline', $audit->records[0]->permission);
         self::assertSame(['duration' => '1d'], $audit->records[0]->metadata);
+    }
+
+    #[Test]
+    public function addDisconnectsEveryConnectedUserMatchingTheMaskByHostOrRealIp(): void
+    {
+        $kills = new RecordingGlineKills();
+        $connected = [
+            new NetworkUser('U1', 'ByHost', 'irc', 'clones.example.test', '', false, false, '198.51.100.20'),
+            new NetworkUser('U2', 'ByIp', 'irc', 'dsl-46.example.net', '', false, false, '46.39.209.77'),
+            new NetworkUser('U3', 'Other', 'irc', 'other.example.org', '', false, false, '203.0.113.9'),
+        ];
+        $handler = $this->handler(new RecordingGlineRepository(), new RecordingGlineNetworkActions(), new RecordingGlineAuditRecorder(), connected: $connected, kills: $kills);
+
+        $first = $handler->handle(new ManageGline(GlineAction::Add, 'Oper', 44, new DateTimeImmutable(), '*@46.39.209.77', '1h', 'clones'));
+        $second = $handler->handle(new ManageGline(GlineAction::Add, 'Oper', 44, new DateTimeImmutable(), '*@*.example.test', '1h', 'spam'));
+
+        self::assertSame(ManageGlineOutcome::Added, $first->outcome);
+        self::assertSame(ManageGlineOutcome::Added, $second->outcome);
+        self::assertSame([['U2', 'G-Lined (Oper): clones'], ['U1', 'G-Lined (Oper): spam']], $kills->kills);
+    }
+
+    #[Test]
+    public function addLeavesConnectedUsersWhoseIdentDoesNotMatchTheMask(): void
+    {
+        $kills = new RecordingGlineKills();
+        $connected = [new NetworkUser('U1', 'Other', 'webchat', 'clones.example.test', '', false, false, '46.39.209.77')];
+        $handler = $this->handler(new RecordingGlineRepository(), new RecordingGlineNetworkActions(), new RecordingGlineAuditRecorder(), connected: $connected, kills: $kills);
+
+        $result = $handler->handle(new ManageGline(GlineAction::Add, 'Oper', 44, new DateTimeImmutable(), 'irc@46.39.209.77', '1h', 'clones'));
+
+        self::assertSame(ManageGlineOutcome::Added, $result->outcome);
+        self::assertSame([], $kills->kills);
+    }
+
+    #[Test]
+    public function refusedAddDisconnectsNobody(): void
+    {
+        $kills = new RecordingGlineKills();
+        $connected = [new NetworkUser('U1', 'Root', 'rootident', 'host.test', '', true, true, '192.0.2.1')];
+        $handler = $this->handler(new RecordingGlineRepository(), new RecordingGlineNetworkActions(), new RecordingGlineAuditRecorder(), ['Root' => new GlineUser('Root', 'rootident', 'host.test', '192.0.2.1')], ['Root'], connected: $connected, kills: $kills);
+
+        $result = $handler->handle(new ManageGline(GlineAction::Add, 'Oper', 44, new DateTimeImmutable(), '*@host.test', '1h', 'reason'));
+
+        self::assertSame(ManageGlineOutcome::ProtectedUser, $result->outcome);
+        self::assertSame([], $kills->kills);
+    }
+
+    #[Test]
+    public function refusesAnIpMaskMatchingTheRealIpOfAProtectedUser(): void
+    {
+        $repository = new RecordingGlineRepository();
+        $network = new RecordingGlineNetworkActions();
+        $handler = $this->handler($repository, $network, new RecordingGlineAuditRecorder(), ['Root' => new GlineUser('Root', 'rootident', 'cloak.host.test', '192.0.2.1')], ['Root']);
+
+        $result = $handler->handle(new ManageGline(GlineAction::Add, 'Oper', 44, new DateTimeImmutable(), '*@192.0.2.1', '0', 'reason'));
+
+        self::assertSame(ManageGlineOutcome::ProtectedUser, $result->outcome);
+        self::assertSame('Root', $result->protectedNickname);
+        self::assertSame([], $repository->saved);
+        self::assertSame([], $network->added);
     }
 
     #[Test]
@@ -177,6 +240,8 @@ final class ManageGlineHandlerTest extends TestCase
             new GlineTestProtectedSubjects([]),
             new RecordingGlineNetworkActions(),
             new RecordingGlineAuditRecorder(),
+            new GlineTestConnectedUsers([]),
+            new RecordingGlineKills(),
             1,
         );
 
@@ -223,7 +288,7 @@ final class ManageGlineHandlerTest extends TestCase
         $handler = $this->handler(new RecordingGlineRepository(), new RecordingGlineNetworkActions(), new RecordingGlineAuditRecorder());
         $method = new ReflectionMethod($handler, 'matches');
 
-        self::assertFalse($method->invoke($handler, 'nickname', new GlineUser('Nick', 'ident', 'host.test')));
+        self::assertFalse($method->invoke($handler, 'nickname', 'ident', 'host.test', '192.0.2.1'));
     }
 
     /**
@@ -231,9 +296,47 @@ final class ManageGlineHandlerTest extends TestCase
      * @param list<string>             $protected
      * @param array<int, string>       $accountNicknames
      */
-    private function handler(RecordingGlineRepository $repository, RecordingGlineNetworkActions $network, RecordingGlineAuditRecorder $audit, array $users = [], array $protected = [], array $accountNicknames = []): ManageGlineHandler
+    /**
+     * @param array<string, GlineUser> $users
+     * @param list<string>             $protected
+     * @param array<int, string>       $accountNicknames
+     * @param list<NetworkUser>        $connected
+     */
+    private function handler(RecordingGlineRepository $repository, RecordingGlineNetworkActions $network, RecordingGlineAuditRecorder $audit, array $users = [], array $protected = [], array $accountNicknames = [], array $connected = [], ?RecordingGlineKills $kills = null): ManageGlineHandler
     {
-        return new ManageGlineHandler($repository, new GlineTestUserLookup($users, $accountNicknames), new GlineTestProtectedSubjects($protected), $network, $audit);
+        return new ManageGlineHandler(
+            $repository,
+            new GlineTestUserLookup($users, $accountNicknames),
+            new GlineTestProtectedSubjects($protected),
+            $network,
+            $audit,
+            new GlineTestConnectedUsers($connected),
+            $kills ?? new RecordingGlineKills(),
+        );
+    }
+}
+
+final readonly class GlineTestConnectedUsers implements ConnectedUsersDirectory
+{
+    /** @param list<NetworkUser> $users */
+    public function __construct(private array $users) {}
+
+    public function listConnected(): array
+    {
+        return $this->users;
+    }
+}
+
+final class RecordingGlineKills implements KillNetworkUser
+{
+    /** @var list<array{string, string}> */
+    public array $kills = [];
+
+    public function kill(string $targetUid, string $reason): bool
+    {
+        $this->kills[] = [$targetUid, $reason];
+
+        return true;
     }
 }
 
