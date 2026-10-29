@@ -37,6 +37,7 @@ help:
     communication: "Comunicazione"
     low_level: "Basso livello"
     channels: "Canali"
+    information: "Informazioni di rete"
   unknown_command:  "\x0307✗ Comando sconosciuto\x03\x0F \x02\x0303%command%\x03\x0F. Usi \x0303/msg %bot% HELP\x03\x0F."
   ircop_header: "\x02 ■ Comandi disponibili per gli IRCop:\x02"
 
@@ -411,3 +412,22 @@ invite:
   example:             "/msg %bot% INVITE #aiuto"
   done:                "\x0303✓\x03 Invito per \x02%channel%\x02 inviato."
   already_on_channel:  "\x0304✗\x03 Sei già in \x02%channel%\x02."
+
+# --- STATS -----------------------------------------------------------------------
+stats:
+  syntax:   "STATS"
+  short:    "Mostra le statistiche della rete."
+  help:     "Mostra il numero di utenti attualmente connessi alla rete.\nDisponibile per tutti gli operatori IRC."
+  example:  "/msg %bot% STATS"
+  users:    "\x0310ℹ\x03 Utenti online: \x02%count%\x02"
+
+# --- IRCOPS ----------------------------------------------------------------------
+ircops:
+  syntax:   "IRCOPS"
+  short:    "Elenca gli operatori IRC connessi."
+  help:     "Elenca, per nick, gli operatori IRC attualmente connessi alla rete.\nDisponibile per tutti gli operatori IRC."
+  example:  "/msg %bot% IRCOPS"
+  header:   "\x02Operatori IRC connessi (%count%):\x02"
+  entry:    "  \x0310›\x03 \x02%nickname%\x02"
+  footer:   "Fine dell'elenco."
+  empty:    "\x0310ℹ\x03 Nessun operatore IRC è connesso."

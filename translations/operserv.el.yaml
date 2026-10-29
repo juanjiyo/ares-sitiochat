@@ -37,6 +37,7 @@ help:
     communication: "Επικοινωνία"
     low_level: "Χαμηλό επίπεδο"
     channels: "Κανάλια"
+    information: "Πληροφορίες δικτύου"
   unknown_command:  "\x0307✗ Άγνωστη εντολή\x03\x0F \x02\x0303%command%\x03\x0F. Χρησιμοποιήστε \x0303/msg %bot% HELP\x03\x0F."
   ircop_header: "\x02 ■ Διαθέσιμες εντολές για IRC operators:\x02"
 
@@ -410,3 +411,22 @@ invite:
   example:             "/msg %bot% INVITE #help"
   done:                "\x0303✓\x03 Η πρόσκληση στο \x02%channel%\x02 στάλθηκε."
   already_on_channel:  "\x0304✗\x03 Βρίσκεσαι ήδη στο \x02%channel%\x02."
+
+# --- STATS -----------------------------------------------------------------------
+stats:
+  syntax:   "STATS"
+  short:    "Εμφάνιση στατιστικών του δικτύου."
+  help:     "Εμφανίζει τον αριθμό των χρηστών που είναι συνδεδεμένοι στο δίκτυο αυτή τη στιγμή.\nΔιαθέσιμη σε όλους τους IRC operators."
+  example:  "/msg %bot% STATS"
+  users:    "\x0310ℹ\x03 Συνδεδεμένοι χρήστες: \x02%count%\x02"
+
+# --- IRCOPS ----------------------------------------------------------------------
+ircops:
+  syntax:   "IRCOPS"
+  short:    "Λίστα των συνδεδεμένων IRC operators."
+  help:     "Εμφανίζει, ανά ψευδώνυμο, τους IRC operators που είναι συνδεδεμένοι αυτή τη στιγμή.\nΔιαθέσιμη σε όλους τους IRC operators."
+  example:  "/msg %bot% IRCOPS"
+  header:   "\x02Συνδεδεμένοι IRC operators (%count%):\x02"
+  entry:    "  \x0310›\x03 \x02%nickname%\x02"
+  footer:   "Τέλος λίστας."
+  empty:    "\x0310ℹ\x03 Δεν υπάρχουν συνδεδεμένοι IRC operators."

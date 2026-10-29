@@ -37,6 +37,7 @@ help:
     communication: "Komunikazioa"
     low_level: "Behe-maila"
     channels: "Kanalak"
+    information: "Sareko informazioa"
   unknown_command:  "\x0307✗ Komando ezezaguna\x03\x0F \x02\x0303%command%\x03\x0F. Erabili \x0303/msg %bot% HELP\x03\x0F."
   ircop_header: "\x02 ■ IRC operadoreentzako komando erabilgarriak:\x02"
 
@@ -410,3 +411,22 @@ invite:
   example:             "/msg %bot% INVITE #laguntza"
   done:                "\x0303✓\x03 \x02%channel%\x02 kanalerako gonbidapena bidali da."
   already_on_channel:  "\x0304✗\x03 Dagoeneko \x02%channel%\x02 kanalean zaude."
+
+# --- STATS -----------------------------------------------------------------------
+stats:
+  syntax:   "STATS"
+  short:    "Sareko estatistikak erakusten ditu."
+  help:     "Une honetan sarera konektatuta dauden erabiltzaileen kopurua erakusten du.\nIRC operadore guztientzat erabilgarri."
+  example:  "/msg %bot% STATS"
+  users:    "\x0310ℹ\x03 Konektatutako erabiltzaileak: \x02%count%\x02"
+
+# --- IRCOPS ----------------------------------------------------------------------
+ircops:
+  syntax:   "IRCOPS"
+  short:    "Konektatutako IRC operadoreak zerrendatzen ditu."
+  help:     "Une honetan konektatuta dauden IRC operadoreak zerrendatzen ditu, nick-aren arabera.\nIRC operadore guztientzat erabilgarri."
+  example:  "/msg %bot% IRCOPS"
+  header:   "\x02Konektatutako operadoreak (%count%):\x02"
+  entry:    "  \x0310›\x03 \x02%nickname%\x02"
+  footer:   "Zerrendaren amaiera."
+  empty:    "\x0310ℹ\x03 Ez dago IRC operadorerik konektatuta."

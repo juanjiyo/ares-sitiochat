@@ -37,6 +37,7 @@ help:
     communication: "Comunicació"
     low_level: "Baix nivell"
     channels: "Canals"
+    information: "Informació de xarxa"
   unknown_command:  "\x0307✗ Ordre desconeguda\x03\x0F \x02\x0303%command%\x03\x0F. Utilitzeu \x0303/msg %bot% HELP\x03\x0F."
   ircop_header: "\x02 ■ Comandes disponibles per als IRCops:\x02"
 
@@ -410,3 +411,22 @@ invite:
   example:             "/msg %bot% INVITE #ajuda"
   done:                "\x0303✓\x03 Invitació al canal \x02%channel%\x02 enviada."
   already_on_channel:  "\x0304✗\x03 Ja ets al canal \x02%channel%\x02."
+
+# --- STATS -----------------------------------------------------------------------
+stats:
+  syntax:   "STATS"
+  short:    "Mostra les estadístiques de la xarxa."
+  help:     "Mostra el nombre d'usuaris connectats a la xarxa en aquest moment.\nDisponible per a tots els operadors de xarxa."
+  example:  "/msg %bot% STATS"
+  users:    "\x0310ℹ\x03 Usuaris a l'IRC: \x02%count%\x02"
+
+# --- IRCOPS ----------------------------------------------------------------------
+ircops:
+  syntax:   "IRCOPS"
+  short:    "Llista els operadors de xarxa connectats."
+  help:     "Llista, per nick, els operadors de xarxa connectats en aquest moment.\nDisponible per a tots els operadors de xarxa."
+  example:  "/msg %bot% IRCOPS"
+  header:   "\x02Operadors connectats (%count%):\x02"
+  entry:    "  \x0310›\x03 \x02%nickname%\x02"
+  footer:   "Fi de la llista."
+  empty:    "\x0310ℹ\x03 No hi ha cap operador de xarxa connectat."

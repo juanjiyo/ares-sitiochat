@@ -37,6 +37,7 @@ help:
     communication: "Communicatie"
     low_level: "Laag niveau"
     channels: "Kanalen"
+    information: "Netwerkinformatie"
   unknown_command:  "\x0307✗ Onbekend commando\x03\x0F \x02\x0303%command%\x03\x0F. Gebruik \x0303/msg %bot% HELP\x03\x0F."
   ircop_header: "\x02 ■ Beschikbare opdrachten voor IRC-operators:\x02"
 
@@ -410,3 +411,22 @@ invite:
   example:             "/msg %bot% INVITE #help"
   done:                "\x0303✓\x03 Uitnodiging voor \x02%channel%\x02 verstuurd."
   already_on_channel:  "\x0304✗\x03 Je bent al in \x02%channel%\x02."
+
+# --- STATS -----------------------------------------------------------------------
+stats:
+  syntax:   "STATS"
+  short:    "Netwerkstatistieken tonen."
+  help:     "Toont het aantal gebruikers dat momenteel met het netwerk verbonden is.\nBeschikbaar voor alle IRC-operators."
+  example:  "/msg %bot% STATS"
+  users:    "\x0310ℹ\x03 Gebruikers online: \x02%count%\x02"
+
+# --- IRCOPS ----------------------------------------------------------------------
+ircops:
+  syntax:   "IRCOPS"
+  short:    "Verbonden IRC-operators weergeven."
+  help:     "Toont, per nick, de IRC-operators die momenteel met het netwerk verbonden zijn.\nBeschikbaar voor alle IRC-operators."
+  example:  "/msg %bot% IRCOPS"
+  header:   "\x02Verbonden IRC-operators (%count%):\x02"
+  entry:    "  \x0310›\x03 \x02%nickname%\x02"
+  footer:   "Einde van de lijst."
+  empty:    "\x0310ℹ\x03 Er zijn geen IRC-operators online."

@@ -37,6 +37,7 @@ help:
     communication: "İletişim"
     low_level: "Düşük seviye"
     channels: "Kanallar"
+    information: "Ağ bilgileri"
   unknown_command:  "\x0307✗ Bilinmeyen komut\x03\x0F \x02\x0303%command%\x03\x0F. \x0303/msg %bot% HELP\x03\x0F kullanın."
   ircop_header: "\x02 ■ IRC operatörleri için kullanılabilir komutlar:\x02"
 
@@ -410,3 +411,22 @@ invite:
   example:             "/msg %bot% INVITE #yardim"
   done:                "\x0303✓\x03 \x02%channel%\x02 kanalı için davet gönderildi."
   already_on_channel:  "\x0304✗\x03 Zaten \x02%channel%\x02 kanalındasın."
+
+# --- STATS -----------------------------------------------------------------------
+stats:
+  syntax:   "STATS"
+  short:    "Ağ istatistiklerini gösterir."
+  help:     "Şu anda ağa bağlı olan kullanıcı sayısını gösterir.\nTüm IRC operatörleri kullanabilir."
+  example:  "/msg %bot% STATS"
+  users:    "\x0310ℹ\x03 Çevrimiçi kullanıcılar: \x02%count%\x02"
+
+# --- IRCOPS ----------------------------------------------------------------------
+ircops:
+  syntax:   "IRCOPS"
+  short:    "Bağlı IRC operatörlerini listeler."
+  help:     "Şu anda ağa bağlı olan IRC operatörlerini rumuza göre listeler.\nTüm IRC operatörleri kullanabilir."
+  example:  "/msg %bot% IRCOPS"
+  header:   "\x02Bağlı IRC operatörleri (%count%):\x02"
+  entry:    "  \x0310›\x03 \x02%nickname%\x02"
+  footer:   "Listenin sonu."
+  empty:    "\x0310ℹ\x03 Bağlı IRC operatörü yok."

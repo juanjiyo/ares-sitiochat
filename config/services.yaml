@@ -2405,6 +2405,12 @@ services:
     App\OperServ\Application\Port\Out\ConnectedUsersDirectory:
         alias: App\OperServ\Adapter\Out\Irc\IrcConnectedUsersDirectory
 
+    App\OperServ\Adapter\In\Irc\Command\StatsCommand:
+        tags: ['operserv.command.new']
+
+    App\OperServ\Adapter\In\Irc\Command\IrcopsCommand:
+        tags: ['operserv.command.new']
+
     # --- OperServ Infrastructure -------------------------------------------------
 
     App\OperServ\Adapter\In\Irc\Bot\OperServBot:

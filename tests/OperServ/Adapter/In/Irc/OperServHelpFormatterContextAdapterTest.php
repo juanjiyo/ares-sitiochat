@@ -104,6 +104,18 @@ final class OperServHelpFormatterContextAdapterTest extends TestCase
         );
     }
 
+    #[Test]
+    public function groupsNetworkInformationCommandsAfterChannels(): void
+    {
+        $groups = new OperServHelpFormatterContextAdapter($this->context())->getHelpGroups();
+
+        self::assertSame(
+            ['group_key' => 'help.group.information', 'commands' => ['STATS', 'IRCOPS'], 'admin' => false, 'subgroup' => false],
+            $groups[3],
+        );
+        self::assertSame('help.group.communication', $groups[4]['group_key']);
+    }
+
     /** @param list<OperServCommandInterface> $commands */
     private function context(
         array $commands = [],
