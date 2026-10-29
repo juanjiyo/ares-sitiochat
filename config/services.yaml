@@ -2393,6 +2393,12 @@ services:
     App\OperServ\Adapter\In\Irc\Command\DeopCommand:
         tags: ['operserv.command.new']
 
+    App\OperServ\Adapter\In\Irc\Command\ModeCommand:
+        tags: ['operserv.command.new']
+
+    App\OperServ\Adapter\In\Irc\Command\LimpiaCommand:
+        tags: ['operserv.command.new']
+
     # --- OperServ Infrastructure -------------------------------------------------
 
     App\OperServ\Adapter\In\Irc\Bot\OperServBot:

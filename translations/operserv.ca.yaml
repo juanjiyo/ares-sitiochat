@@ -384,3 +384,20 @@ deop:
   help:     "Treu l'OP (-o) a un usuari present en un canal.\nAls usuaris Root i als IRCops amb rol no se'ls pot treure l'OP.\nAquesta ordre requereix el permís operserv.op."
   example:  "/msg %bot% DEOP #ajuda Usuari"
   done:     "\x0303✓\x03 S'ha fet DEOP a \x02%nickname%\x02 a \x02%channel%\x02."
+
+# --- MODE ------------------------------------------------------------------------
+mode:
+  syntax:         "MODE <#canal> <+/-modes> [arguments]"
+  short:          "Estableix modes en un canal."
+  help:           "Estableix els modes indicats en un canal, seguits dels seus arguments si en necessiten.\nEls modes han de començar per + o -.\nAquesta ordre requereix el permís operserv.mode."
+  example:        "/msg %bot% MODE #ajuda +mk clau"
+  done:           "\x0303✓\x03 S'han establert els modes de \x02%channel%\x02 a \x02%modes%\x02."
+  invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 no és un canvi de modes vàlid. Fes servir +modes o -modes."
+
+# --- LIMPIA ----------------------------------------------------------------------
+limpia:
+  syntax:   "LIMPIA <#canal>"
+  short:    "Treu els modes restrictius d'un canal."
+  help:     "Treu els modes -imnpst d'un canal per desbloquejar-lo.\nLes claus (+k) i els límits (+l) no es modifiquen.\nAquesta ordre requereix el permís operserv.mode."
+  example:  "/msg %bot% LIMPIA #ajuda"
+  done:     "\x0303✓\x03 El canal \x02%channel%\x02 s'ha netejat (modes %modes%)."

@@ -384,3 +384,20 @@ deop:
   help:     "Odbiera użytkownikowi kanału status operatora (-o).\nUżytkownikom Root i IRCopom z rolą nie można go odebrać.\nTo polecenie wymaga uprawnienia operserv.op."
   example:  "/msg %bot% DEOP #pomoc Użytkownik"
   done:     "\x0303✓\x03 \x02%nickname%\x02 nie jest już operatorem na \x02%channel%\x02."
+
+# --- MODE ------------------------------------------------------------------------
+mode:
+  syntax:         "MODE <#kanał> <tryby> [argumenty]"
+  short:          "Ustawia tryby na kanale."
+  help:           "Ustawia podane tryby na kanale, wraz z ich argumentami, jeśli są potrzebne.\nTryby muszą zaczynać się od + lub -.\nTo polecenie wymaga uprawnienia operserv.mode."
+  example:        "/msg %bot% MODE #pomoc +mk sekret"
+  done:           "\x0303✓\x03 Tryby kanału \x02%channel%\x02 ustawiono na \x02%modes%\x02."
+  invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 nie jest prawidłową zmianą trybów. Użyj +tryby lub -tryby."
+
+# --- LIMPIA ----------------------------------------------------------------------
+limpia:
+  syntax:   "LIMPIA <#kanał>"
+  short:    "Usuwa restrykcyjne tryby z kanału."
+  help:     "Usuwa tryby -imnpst z kanału, aby go odblokować.\nKlucze (+k) i limity (+l) pozostają bez zmian.\nTo polecenie wymaga uprawnienia operserv.mode."
+  example:  "/msg %bot% LIMPIA #pomoc"
+  done:     "\x0303✓\x03 Kanał \x02%channel%\x02 został wyczyszczony (tryby %modes%)."

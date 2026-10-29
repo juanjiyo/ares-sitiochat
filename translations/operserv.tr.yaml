@@ -384,3 +384,20 @@ deop:
   help:     "Bir kanaldaki kullanıcının operatör yetkisini (-o) alır.\nRoot kullanıcıların ve rolü olan IRCop'ların yetkisi alınamaz.\nBu komut operserv.op iznini gerektirir."
   example:  "/msg %bot% DEOP #yardim Kullanici"
   done:     "\x0303✓\x03 \x02%nickname%\x02 artık \x02%channel%\x02 kanalında operatör değil."
+
+# --- MODE ------------------------------------------------------------------------
+mode:
+  syntax:         "MODE <#kanal> <modlar> [argümanlar]"
+  short:          "Bir kanalda mod ayarlar."
+  help:           "Belirtilen modları, gerekiyorsa argümanlarıyla birlikte bir kanalda ayarlar.\nModlar + veya - ile başlamalıdır.\nBu komut operserv.mode iznini gerektirir."
+  example:        "/msg %bot% MODE #yardim +mk gizli"
+  done:           "\x0303✓\x03 \x02%channel%\x02 kanalının modları \x02%modes%\x02 olarak ayarlandı."
+  invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 geçerli bir mod değişikliği değil. +modlar veya -modlar kullan."
+
+# --- LIMPIA ----------------------------------------------------------------------
+limpia:
+  syntax:   "LIMPIA <#kanal>"
+  short:    "Bir kanaldaki kısıtlayıcı modları kaldırır."
+  help:     "Kanalın kilidini açmak için -imnpst modlarını kaldırır.\nAnahtarlar (+k) ve limitler (+l) değiştirilmez.\nBu komut operserv.mode iznini gerektirir."
+  example:  "/msg %bot% LIMPIA #yardim"
+  done:     "\x0303✓\x03 \x02%channel%\x02 kanalı temizlendi (modlar %modes%)."

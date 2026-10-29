@@ -384,3 +384,20 @@ deop:
   help:     "Ontneemt een gebruiker in een kanaal de operatorstatus (-o).\nRoot-gebruikers en IRCops met een rol kan deze status niet ontnomen worden.\nVoor deze opdracht is de permissie operserv.op vereist."
   example:  "/msg %bot% DEOP #help Gebruiker"
   done:     "\x0303✓\x03 \x02%nickname%\x02 is geen operator meer in \x02%channel%\x02."
+
+# --- MODE ------------------------------------------------------------------------
+mode:
+  syntax:         "MODE <#kanaal> <modi> [argumenten]"
+  short:          "Modi instellen op een kanaal."
+  help:           "Stelt de opgegeven modi in op een kanaal, gevolgd door hun argumenten indien nodig.\nModi moeten met + of - beginnen.\nVoor deze opdracht is de permissie operserv.mode vereist."
+  example:        "/msg %bot% MODE #help +mk geheim"
+  done:           "\x0303✓\x03 Modi van \x02%channel%\x02 ingesteld op \x02%modes%\x02."
+  invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 is geen geldige moduswijziging. Gebruik +modi of -modi."
+
+# --- LIMPIA ----------------------------------------------------------------------
+limpia:
+  syntax:   "LIMPIA <#kanaal>"
+  short:    "Beperkende modi van een kanaal verwijderen."
+  help:     "Verwijdert de modi -imnpst van een kanaal om het te ontgrendelen.\nSleutels (+k) en limieten (+l) blijven ongewijzigd.\nVoor deze opdracht is de permissie operserv.mode vereist."
+  example:  "/msg %bot% LIMPIA #help"
+  done:     "\x0303✓\x03 Kanaal \x02%channel%\x02 is opgeschoond (modi %modes%)."

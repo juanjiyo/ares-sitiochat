@@ -384,3 +384,20 @@ deop:
   help:     "OP (-o) kentzen dio kanal bateko erabiltzaile bati.\nRoot erabiltzaileei eta rola duten IRCopei ezin zaie OP kendu.\nAgindu honek operserv.op baimena behar du."
   example:  "/msg %bot% DEOP #laguntza Erabiltzailea"
   done:     "\x0303✓\x03 \x02%nickname%\x02 ez da jada operadorea \x02%channel%\x02 kanalean."
+
+# --- MODE ------------------------------------------------------------------------
+mode:
+  syntax:         "MODE <#kanala> <+/-moduak> [argumentuak]"
+  short:          "Moduak ezartzen ditu kanal batean."
+  help:           "Adierazitako moduak ezartzen ditu kanal batean, behar dituzten argumentuekin.\nModuak + edo - ikurrarekin hasi behar dira.\nAgindu honek operserv.mode baimena behar du."
+  example:        "/msg %bot% MODE #laguntza +mk gakoa"
+  done:           "\x0303✓\x03 \x02%channel%\x02 kanalaren moduak \x02%modes%\x02 gisa ezarri dira."
+  invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 ez da modu-aldaketa baliozkoa. Erabili +moduak edo -moduak."
+
+# --- LIMPIA ----------------------------------------------------------------------
+limpia:
+  syntax:   "LIMPIA <#kanala>"
+  short:    "Kanal bateko modu murriztaileak kentzen ditu."
+  help:     "-imnpst moduak kentzen ditu kanal batetik desblokeatzeko.\nGakoak (+k) eta mugak (+l) ez dira aldatzen.\nAgindu honek operserv.mode baimena behar du."
+  example:  "/msg %bot% LIMPIA #laguntza"
+  done:     "\x0303✓\x03 \x02%channel%\x02 kanala garbitu da (%modes% moduak)."

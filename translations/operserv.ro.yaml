@@ -384,3 +384,20 @@ deop:
   help:     "Retrage statutul de operator (-o) unui utilizator dintr-un canal.\nUtilizatorilor Root și IRCop-ilor cu rol nu li se poate retrage.\nAceastă comandă necesită permisiunea operserv.op."
   example:  "/msg %bot% DEOP #ajutor Utilizator"
   done:     "\x0303✓\x03 \x02%nickname%\x02 nu mai este operator pe \x02%channel%\x02."
+
+# --- MODE ------------------------------------------------------------------------
+mode:
+  syntax:         "MODE <#canal> <moduri> [argumente]"
+  short:          "Setează moduri pe un canal."
+  help:           "Setează modurile indicate pe un canal, urmate de argumentele lor când este nevoie.\nModurile trebuie să înceapă cu + sau -.\nAceastă comandă necesită permisiunea operserv.mode."
+  example:        "/msg %bot% MODE #ajutor +mk secret"
+  done:           "\x0303✓\x03 Modurile pentru \x02%channel%\x02 au fost setate la \x02%modes%\x02."
+  invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 nu este o schimbare de moduri validă. Folosește +moduri sau -moduri."
+
+# --- LIMPIA ----------------------------------------------------------------------
+limpia:
+  syntax:   "LIMPIA <#canal>"
+  short:    "Elimină modurile restrictive ale unui canal."
+  help:     "Elimină modurile -imnpst ale unui canal pentru a-l debloca.\nCheile (+k) și limitele (+l) rămân neschimbate.\nAceastă comandă necesită permisiunea operserv.mode."
+  example:  "/msg %bot% LIMPIA #ajutor"
+  done:     "\x0303✓\x03 Canalul \x02%channel%\x02 a fost curățat (moduri %modes%)."

@@ -384,3 +384,20 @@ deop:
   help:     "Removes operator status (-o) from a user on a channel.\nRoot users and IRCops with a role cannot be deopped.\nThis command requires the operserv.op permission."
   example:  "/msg %bot% DEOP #help SomeUser"
   done:     "\x0303✓\x03 \x02%nickname%\x02 is no longer an operator on \x02%channel%\x02."
+
+# --- MODE ------------------------------------------------------------------------
+mode:
+  syntax:         "MODE <#channel> <modes> [arguments]"
+  short:          "Set modes on a channel."
+  help:           "Sets the given modes on a channel, followed by their arguments when needed.\nModes must start with + or -.\nThis command requires the operserv.mode permission."
+  example:        "/msg %bot% MODE #help +mk secret"
+  done:           "\x0303✓\x03 Modes of \x02%channel%\x02 set to \x02%modes%\x02."
+  invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 is not a valid mode change. Use +modes or -modes."
+
+# --- LIMPIA ----------------------------------------------------------------------
+limpia:
+  syntax:   "LIMPIA <#channel>"
+  short:    "Remove restrictive modes from a channel."
+  help:     "Removes the modes -imnpst from a channel to unlock it.\nKeys (+k) and limits (+l) are left untouched.\nThis command requires the operserv.mode permission."
+  example:  "/msg %bot% LIMPIA #help"
+  done:     "\x0303✓\x03 Channel \x02%channel%\x02 has been cleaned (modes %modes%)."

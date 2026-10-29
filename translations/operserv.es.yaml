@@ -385,3 +385,20 @@ deop:
   help:     "Quita el OP (-o) a un usuario presente en un canal.\nA los usuarios Root y a los IRCops con rol no se les puede quitar el OP.\nEste comando requiere el permiso operserv.op."
   example:  "/msg %bot% DEOP #ayuda Usuario"
   done:     "\x0303✓\x03 Se ha hecho DEOP a \x02%nickname%\x02 en \x02%channel%\x02."
+
+# --- MODE ------------------------------------------------------------------------
+mode:
+  syntax:         "MODE <#canal> <+/-modos> [argumentos]"
+  short:          "Establece modos en un canal."
+  help:           "Establece los modos indicados en un canal, seguidos de sus argumentos si los necesitan.\nLos modos deben empezar por + o -.\nEste comando requiere el permiso operserv.mode."
+  example:        "/msg %bot% MODE #ayuda +mk clave"
+  done:           "\x0303✓\x03 Se han establecido los modos de \x02%channel%\x02 a \x02%modes%\x02."
+  invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 no es un cambio de modos válido. Usa +modos o -modos."
+
+# --- LIMPIA ----------------------------------------------------------------------
+limpia:
+  syntax:   "LIMPIA <#canal>"
+  short:    "Quita los modos restrictivos de un canal."
+  help:     "Quita los modos -imnpst de un canal para desbloquearlo.\nLas claves (+k) y los límites (+l) no se modifican.\nEste comando requiere el permiso operserv.mode."
+  example:  "/msg %bot% LIMPIA #ayuda"
+  done:     "\x0303✓\x03 El canal \x02%channel%\x02 ha sido limpiado (modos %modes%)."
