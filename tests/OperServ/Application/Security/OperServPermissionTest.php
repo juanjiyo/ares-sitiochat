@@ -48,6 +48,14 @@ final class OperServPermissionTest extends TestCase
     }
 
     #[Test]
+    public function modeConstantHasExpectedValue(): void
+    {
+        $constant = new ReflectionClass(OperServPermission::class)->getConstant('MODE');
+
+        self::assertSame('operserv.mode', $constant);
+    }
+
+    #[Test]
     public function allConstantsAreStrings(): void
     {
         $reflection = new ReflectionClass(OperServPermission::class);

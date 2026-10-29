@@ -21,5 +21,8 @@ final class OperServPermission
     /** Grants both the OP and DEOP channel overrides. */
     public const string OP = 'operserv.op';
 
+    /** Grants both the MODE and LIMPIA channel overrides. */
+    public const string MODE = 'operserv.mode';
+
     private function __construct() {}
 }
