@@ -17,14 +17,6 @@ final readonly class IrcNetworkUserLookup implements NetworkUserLookup
     {
         $user = $this->users->findByNick($nickname);
 
-        return null === $user ? null : new NetworkUser(
-            $user->uid,
-            $user->nick,
-            $user->ident,
-            $user->hostname,
-            $user->ipBase64,
-            $user->isIdentified,
-            $user->isOper,
-        );
+        return null === $user ? null : NetworkUserMapper::fromSenderView($user);
     }
 }

@@ -2402,6 +2402,9 @@ services:
     App\OperServ\Adapter\In\Irc\Command\InviteCommand:
         tags: ['operserv.command.new']
 
+    App\OperServ\Application\Port\Out\ConnectedUsersDirectory:
+        alias: App\OperServ\Adapter\Out\Irc\IrcConnectedUsersDirectory
+
     # --- OperServ Infrastructure -------------------------------------------------
 
     App\OperServ\Adapter\In\Irc\Bot\OperServBot:
