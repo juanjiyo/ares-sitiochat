@@ -368,3 +368,19 @@ kick:
   help:     "Elimină un utilizator dintr-un canal ca operator de rețea.\nDacă nu se indică un motiv, se folosește unul implicit.\nUtilizatorii Root și IRCop-ii cu rol nu pot fi eliminați.\nAceastă comandă necesită permisiunea operserv.kick."
   example:  "/msg %bot% KICK #ajutor BadUser Oprește floodul"
   done:     "\x0303✓\x03 \x02%nickname%\x02 a fost eliminat din \x02%channel%\x02. Motiv: %reason%"
+
+# --- OP --------------------------------------------------------------------------
+op:
+  syntax:   "OP <#canal> <nick>"
+  short:    "Acordă statut de operator de canal unui utilizator."
+  help:     "Acordă statut de operator (+o) unui utilizator dintr-un canal, chiar dacă acesta nu este înregistrat.\nAceastă comandă necesită permisiunea operserv.op."
+  example:  "/msg %bot% OP #ajutor Utilizator"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 este acum operator pe \x02%channel%\x02."
+
+# --- DEOP ------------------------------------------------------------------------
+deop:
+  syntax:   "DEOP <#canal> <nick>"
+  short:    "Retrage statutul de operator de canal unui utilizator."
+  help:     "Retrage statutul de operator (-o) unui utilizator dintr-un canal.\nUtilizatorilor Root și IRCop-ilor cu rol nu li se poate retrage.\nAceastă comandă necesită permisiunea operserv.op."
+  example:  "/msg %bot% DEOP #ajutor Utilizator"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 nu mai este operator pe \x02%channel%\x02."

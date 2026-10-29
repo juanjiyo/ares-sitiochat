@@ -368,3 +368,19 @@ kick:
   help:     "Wyrzuca użytkownika z kanału jako operator sieci.\nGdy nie podano powodu, używany jest powód domyślny.\nUżytkowników Root i IRCopów z rolą nie można wyrzucić.\nTo polecenie wymaga uprawnienia operserv.kick."
   example:  "/msg %bot% KICK #pomoc BadUser Przestań floodować"
   done:     "\x0303✓\x03 \x02%nickname%\x02 został wyrzucony z \x02%channel%\x02. Powód: %reason%"
+
+# --- OP --------------------------------------------------------------------------
+op:
+  syntax:   "OP <#kanał> <nick>"
+  short:    "Nadaje użytkownikowi status operatora kanału."
+  help:     "Nadaje użytkownikowi kanału status operatora (+o), nawet jeśli kanał nie jest zarejestrowany.\nTo polecenie wymaga uprawnienia operserv.op."
+  example:  "/msg %bot% OP #pomoc Użytkownik"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 jest teraz operatorem na \x02%channel%\x02."
+
+# --- DEOP ------------------------------------------------------------------------
+deop:
+  syntax:   "DEOP <#kanał> <nick>"
+  short:    "Odbiera użytkownikowi status operatora kanału."
+  help:     "Odbiera użytkownikowi kanału status operatora (-o).\nUżytkownikom Root i IRCopom z rolą nie można go odebrać.\nTo polecenie wymaga uprawnienia operserv.op."
+  example:  "/msg %bot% DEOP #pomoc Użytkownik"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 nie jest już operatorem na \x02%channel%\x02."

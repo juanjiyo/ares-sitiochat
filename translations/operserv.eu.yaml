@@ -368,3 +368,19 @@ kick:
   help:     "Erabiltzaile bat kanal batetik kanporatzen du sare-operadore gisa.\nArrazoirik ematen ez bada, lehenetsitako bat erabiltzen da.\nRoot erabiltzaileak eta rola duten IRCopak ezin dira kanporatu.\nAgindu honek operserv.kick baimena behar du."
   example:  "/msg %bot% KICK #laguntza BadUser Utzi flood egiteari"
   done:     "\x0303✓\x03 \x02%nickname%\x02 \x02%channel%\x02 kanaletik kanporatu da. Arrazoia: %reason%"
+
+# --- OP --------------------------------------------------------------------------
+op:
+  syntax:   "OP <#kanala> <nick>"
+  short:    "Kanal-operadore egoera ematen dio erabiltzaile bati."
+  help:     "OP (+o) ematen dio kanal bateko erabiltzaile bati, kanala erregistratuta ez badago ere.\nAgindu honek operserv.op baimena behar du."
+  example:  "/msg %bot% OP #laguntza Erabiltzailea"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 operadorea da orain \x02%channel%\x02 kanalean."
+
+# --- DEOP ------------------------------------------------------------------------
+deop:
+  syntax:   "DEOP <#kanala> <nick>"
+  short:    "Kanal-operadore egoera kentzen dio erabiltzaile bati."
+  help:     "OP (-o) kentzen dio kanal bateko erabiltzaile bati.\nRoot erabiltzaileei eta rola duten IRCopei ezin zaie OP kendu.\nAgindu honek operserv.op baimena behar du."
+  example:  "/msg %bot% DEOP #laguntza Erabiltzailea"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 ez da jada operadorea \x02%channel%\x02 kanalean."

@@ -368,3 +368,19 @@ kick:
   help:     "Bir kullanıcıyı ağ operatörü olarak kanaldan atar.\nSebep verilmezse varsayılan bir sebep kullanılır.\nRoot kullanıcılar ve rolü olan IRCop'lar atılamaz.\nBu komut operserv.kick iznini gerektirir."
   example:  "/msg %bot% KICK #yardim BadUser Flood yapmayı bırak"
   done:     "\x0303✓\x03 \x02%nickname%\x02 \x02%channel%\x02 kanalından atıldı. Sebep: %reason%"
+
+# --- OP --------------------------------------------------------------------------
+op:
+  syntax:   "OP <#kanal> <rumuz>"
+  short:    "Bir kullanıcıya kanal operatörü yetkisi verir."
+  help:     "Bir kanaldaki kullanıcıya operatör yetkisi (+o) verir, kanal kayıtlı olmasa bile.\nBu komut operserv.op iznini gerektirir."
+  example:  "/msg %bot% OP #yardim Kullanici"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 artık \x02%channel%\x02 kanalında operatör."
+
+# --- DEOP ------------------------------------------------------------------------
+deop:
+  syntax:   "DEOP <#kanal> <rumuz>"
+  short:    "Bir kullanıcının kanal operatörü yetkisini alır."
+  help:     "Bir kanaldaki kullanıcının operatör yetkisini (-o) alır.\nRoot kullanıcıların ve rolü olan IRCop'ların yetkisi alınamaz.\nBu komut operserv.op iznini gerektirir."
+  example:  "/msg %bot% DEOP #yardim Kullanici"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 artık \x02%channel%\x02 kanalında operatör değil."

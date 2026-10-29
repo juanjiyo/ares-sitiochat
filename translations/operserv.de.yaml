@@ -368,3 +368,19 @@ kick:
   help:     "Wirft einen Benutzer als Netzwerkoperator aus einem Kanal.\nOhne Angabe wird ein Standardgrund verwendet.\nRoot-Benutzer und IRCops mit Rolle können nicht hinausgeworfen werden.\nDieser Befehl erfordert die Berechtigung operserv.kick."
   example:  "/msg %bot% KICK #hilfe BadUser Hör auf zu fluten"
   done:     "\x0303✓\x03 \x02%nickname%\x02 wurde aus \x02%channel%\x02 geworfen. Grund: %reason%"
+
+# --- OP --------------------------------------------------------------------------
+op:
+  syntax:   "OP <#kanal> <nick>"
+  short:    "Einem Benutzer Kanaloperator-Status geben."
+  help:     "Gibt einem Benutzer in einem Kanal Operator-Status (+o), auch wenn der Kanal nicht registriert ist.\nDieser Befehl erfordert die Berechtigung operserv.op."
+  example:  "/msg %bot% OP #hilfe Benutzer"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 ist jetzt Operator in \x02%channel%\x02."
+
+# --- DEOP ------------------------------------------------------------------------
+deop:
+  syntax:   "DEOP <#kanal> <nick>"
+  short:    "Einem Benutzer den Kanaloperator-Status entziehen."
+  help:     "Entzieht einem Benutzer in einem Kanal den Operator-Status (-o).\nRoot-Benutzern und IRCops mit Rolle kann der Status nicht entzogen werden.\nDieser Befehl erfordert die Berechtigung operserv.op."
+  example:  "/msg %bot% DEOP #hilfe Benutzer"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 ist nicht mehr Operator in \x02%channel%\x02."

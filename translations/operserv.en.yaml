@@ -368,3 +368,19 @@ kick:
   help:     "Kicks a user from a channel as a network operator.\nA default reason is used when none is given.\nRoot users and IRCops with a role cannot be kicked.\nThis command requires the operserv.kick permission."
   example:  "/msg %bot% KICK #help BadUser Stop flooding"
   done:     "\x0303✓\x03 \x02%nickname%\x02 has been kicked from \x02%channel%\x02. Reason: %reason%"
+
+# --- OP --------------------------------------------------------------------------
+op:
+  syntax:   "OP <#channel> <nickname>"
+  short:    "Give channel operator status to a user."
+  help:     "Gives operator status (+o) to a user on a channel, even when the channel is not registered.\nThis command requires the operserv.op permission."
+  example:  "/msg %bot% OP #help SomeUser"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 is now an operator on \x02%channel%\x02."
+
+# --- DEOP ------------------------------------------------------------------------
+deop:
+  syntax:   "DEOP <#channel> <nickname>"
+  short:    "Remove channel operator status from a user."
+  help:     "Removes operator status (-o) from a user on a channel.\nRoot users and IRCops with a role cannot be deopped.\nThis command requires the operserv.op permission."
+  example:  "/msg %bot% DEOP #help SomeUser"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 is no longer an operator on \x02%channel%\x02."

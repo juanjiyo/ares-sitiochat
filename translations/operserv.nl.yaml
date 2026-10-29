@@ -368,3 +368,19 @@ kick:
   help:     "Kickt een gebruiker als netwerkoperator uit een kanaal.\nZonder opgegeven reden wordt een standaardreden gebruikt.\nRoot-gebruikers en IRCops met een rol kunnen niet gekickt worden.\nVoor deze opdracht is de permissie operserv.kick vereist."
   example:  "/msg %bot% KICK #help BadUser Stop met flooden"
   done:     "\x0303✓\x03 \x02%nickname%\x02 is uit \x02%channel%\x02 gekickt. Reden: %reason%"
+
+# --- OP --------------------------------------------------------------------------
+op:
+  syntax:   "OP <#kanaal> <nick>"
+  short:    "Een gebruiker kanaaloperatorstatus geven."
+  help:     "Geeft een gebruiker in een kanaal operatorstatus (+o), ook als het kanaal niet geregistreerd is.\nVoor deze opdracht is de permissie operserv.op vereist."
+  example:  "/msg %bot% OP #help Gebruiker"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 is nu operator in \x02%channel%\x02."
+
+# --- DEOP ------------------------------------------------------------------------
+deop:
+  syntax:   "DEOP <#kanaal> <nick>"
+  short:    "Een gebruiker de kanaaloperatorstatus ontnemen."
+  help:     "Ontneemt een gebruiker in een kanaal de operatorstatus (-o).\nRoot-gebruikers en IRCops met een rol kan deze status niet ontnomen worden.\nVoor deze opdracht is de permissie operserv.op vereist."
+  example:  "/msg %bot% DEOP #help Gebruiker"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 is geen operator meer in \x02%channel%\x02."

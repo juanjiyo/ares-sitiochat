@@ -369,3 +369,19 @@ kick:
   help:     "Expulsa a un usuario de un canal como operador de red.\nSi no se indica un motivo, se usa uno por defecto.\nLos usuarios Root y los IRCops con rol no pueden ser expulsados.\nEste comando requiere el permiso operserv.kick."
   example:  "/msg %bot% KICK #ayuda BadUser Deja de hacer flood"
   done:     "\x0303✓\x03 \x02%nickname%\x02 ha sido expulsado de \x02%channel%\x02. Motivo: %reason%"
+
+# --- OP --------------------------------------------------------------------------
+op:
+  syntax:   "OP <#canal> <nick>"
+  short:    "Da estado de operador a un usuario en un canal."
+  help:     "Da OP (+o) a un usuario presente en un canal, aunque el canal no esté registrado.\nEste comando requiere el permiso operserv.op."
+  example:  "/msg %bot% OP #ayuda Usuario"
+  done:     "\x0303✓\x03 Se ha dado OP a \x02%nickname%\x02 en \x02%channel%\x02."
+
+# --- DEOP ------------------------------------------------------------------------
+deop:
+  syntax:   "DEOP <#canal> <nick>"
+  short:    "Quita el estado de operador a un usuario en un canal."
+  help:     "Quita el OP (-o) a un usuario presente en un canal.\nA los usuarios Root y a los IRCops con rol no se les puede quitar el OP.\nEste comando requiere el permiso operserv.op."
+  example:  "/msg %bot% DEOP #ayuda Usuario"
+  done:     "\x0303✓\x03 Se ha hecho DEOP a \x02%nickname%\x02 en \x02%channel%\x02."

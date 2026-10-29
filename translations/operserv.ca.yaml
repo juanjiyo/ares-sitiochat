@@ -368,3 +368,19 @@ kick:
   help:     "Expulsa un usuari d'un canal com a operador de xarxa.\nSi no s'indica cap motiu, se'n fa servir un per defecte.\nEls usuaris Root i els IRCops amb rol no poden ser expulsats.\nAquesta ordre requereix el permís operserv.kick."
   example:  "/msg %bot% KICK #ajuda BadUser Deixa de fer flood"
   done:     "\x0303✓\x03 \x02%nickname%\x02 ha estat expulsat de \x02%channel%\x02. Motiu: %reason%"
+
+# --- OP --------------------------------------------------------------------------
+op:
+  syntax:   "OP <#canal> <nick>"
+  short:    "Dona l'estat d'operador a un usuari en un canal."
+  help:     "Dona OP (+o) a un usuari present en un canal, encara que el canal no estigui registrat.\nAquesta ordre requereix el permís operserv.op."
+  example:  "/msg %bot% OP #ajuda Usuari"
+  done:     "\x0303✓\x03 S'ha donat OP a \x02%nickname%\x02 a \x02%channel%\x02."
+
+# --- DEOP ------------------------------------------------------------------------
+deop:
+  syntax:   "DEOP <#canal> <nick>"
+  short:    "Treu l'estat d'operador a un usuari en un canal."
+  help:     "Treu l'OP (-o) a un usuari present en un canal.\nAls usuaris Root i als IRCops amb rol no se'ls pot treure l'OP.\nAquesta ordre requereix el permís operserv.op."
+  example:  "/msg %bot% DEOP #ajuda Usuari"
+  done:     "\x0303✓\x03 S'ha fet DEOP a \x02%nickname%\x02 a \x02%channel%\x02."

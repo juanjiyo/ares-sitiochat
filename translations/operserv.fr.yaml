@@ -368,3 +368,19 @@ kick:
   help:     "Expulse un utilisateur d'un salon en tant qu'opérateur réseau.\nUne raison par défaut est utilisée si aucune n'est donnée.\nLes utilisateurs Root et les IRCops ayant un rôle ne peuvent pas être expulsés.\nCette commande nécessite la permission operserv.kick."
   example:  "/msg %bot% KICK #aide BadUser Arrête de flooder"
   done:     "\x0303✓\x03 \x02%nickname%\x02 a été expulsé de \x02%channel%\x02. Raison : %reason%"
+
+# --- OP --------------------------------------------------------------------------
+op:
+  syntax:   "OP <#salon> <pseudo>"
+  short:    "Donne le statut d'opérateur de salon à un utilisateur."
+  help:     "Donne le statut d'opérateur (+o) à un utilisateur d'un salon, même si le salon n'est pas enregistré.\nCette commande nécessite la permission operserv.op."
+  example:  "/msg %bot% OP #aide Utilisateur"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 est maintenant opérateur sur \x02%channel%\x02."
+
+# --- DEOP ------------------------------------------------------------------------
+deop:
+  syntax:   "DEOP <#salon> <pseudo>"
+  short:    "Retire le statut d'opérateur de salon à un utilisateur."
+  help:     "Retire le statut d'opérateur (-o) à un utilisateur d'un salon.\nLes utilisateurs Root et les IRCops ayant un rôle ne peuvent pas le perdre.\nCette commande nécessite la permission operserv.op."
+  example:  "/msg %bot% DEOP #aide Utilisateur"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 n'est plus opérateur sur \x02%channel%\x02."
