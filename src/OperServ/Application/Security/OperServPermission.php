@@ -26,5 +26,8 @@ final class OperServPermission
 
     public const string INVITE = 'operserv.invite';
 
+    /** Grants LISTCLONES, KILLCLONES and BLOCK. */
+    public const string CLONES = 'operserv.clones';
+
     private function __construct() {}
 }

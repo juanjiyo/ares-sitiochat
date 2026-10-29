@@ -64,6 +64,14 @@ final class OperServPermissionTest extends TestCase
     }
 
     #[Test]
+    public function clonesConstantHasExpectedValue(): void
+    {
+        $constant = new ReflectionClass(OperServPermission::class)->getConstant('CLONES');
+
+        self::assertSame('operserv.clones', $constant);
+    }
+
+    #[Test]
     public function allConstantsAreStrings(): void
     {
         $reflection = new ReflectionClass(OperServPermission::class);
