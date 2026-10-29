@@ -9,21 +9,17 @@ use App\OperServ\Application\Port\In\Audit\CommandAuditRecord;
 use App\OperServ\Application\Port\In\CommandAuditRecorder;
 use App\OperServ\Application\Port\Out\KillNetworkUser as KillNetworkUserPort;
 use App\OperServ\Application\Port\Out\NetworkUserLookup;
-use App\OperServ\Application\Port\Out\OperatorAccountLookup;
-use App\OperServ\Application\Port\Out\OperatorRoleAccess;
-use App\OperServ\Application\Port\Out\RootIdentityRegistry;
+use App\OperServ\Application\Security\ProtectedNetworkTargets;
+use App\OperServ\Application\Security\TargetProtection;
 
 use function sprintf;
-use function strtolower;
 
 /** Orchestrates KILL without knowing IRC command syntax or presentation. */
 final readonly class KillNetworkUserHandler
 {
     public function __construct(
         private NetworkUserLookup $users,
-        private RootIdentityRegistry $roots,
-        private OperatorAccountLookup $nickAccounts,
-        private OperatorRoleAccess $operatorRoles,
+        private ProtectedNetworkTargets $protectedTargets,
         private KillNetworkUserPort $network,
         private CommandAuditRecorder $audit,
     ) {}
@@ -35,11 +31,12 @@ final readonly class KillNetworkUserHandler
             return KillNetworkUserResult::notOnline($command->targetNickname);
         }
 
-        if ($this->roots->contains($target->nickname)) {
+        $protection = $this->protectedTargets->protectionFor($target);
+        if (TargetProtection::Root === $protection) {
             return KillNetworkUserResult::protectedRoot($command->targetNickname);
         }
 
-        if ($this->isProtectedIrcOperator($target->nickname, $target->ircOperator, $target->identified)) {
+        if (TargetProtection::IrcOperator === $protection) {
             return KillNetworkUserResult::protectedIrcOperator($command->targetNickname);
         }
 
@@ -62,16 +59,5 @@ final readonly class KillNetworkUserHandler
         ));
 
         return KillNetworkUserResult::killed($command->targetNickname, $command->reason);
-    }
-
-    private function isProtectedIrcOperator(string $nickname, bool $isOper, bool $isIdentified): bool
-    {
-        if (!$isOper || !$isIdentified) {
-            return false;
-        }
-
-        $accountId = $this->nickAccounts->findIdByNickname(strtolower($nickname));
-
-        return null !== $accountId && $this->operatorRoles->hasAssignedRole($accountId);
     }
 }

@@ -21,6 +21,7 @@ use App\OperServ\Application\Port\Out\OperatorAccountLookup;
 use App\OperServ\Application\Port\Out\OperatorRoleAccess;
 use App\OperServ\Application\Port\Out\RootIdentityRegistry;
 use App\OperServ\Application\Security\OperServPermission;
+use App\OperServ\Application\Security\ProtectedNetworkTargets;
 use App\OperServ\Application\UseCase\Kill\KillNetworkUser;
 use App\OperServ\Application\UseCase\Kill\KillNetworkUserHandler;
 use App\OperServ\Application\UseCase\Kill\KillNetworkUserResult;
@@ -36,6 +37,7 @@ use function in_array;
 #[CoversClass(KillNetworkUser::class)]
 #[CoversClass(KillNetworkUserHandler::class)]
 #[CoversClass(KillNetworkUserResult::class)]
+#[CoversClass(ProtectedNetworkTargets::class)]
 final class KillCommandTest extends TestCase
 {
     #[Test]
@@ -184,9 +186,11 @@ final class KillCommandTest extends TestCase
     ): KillNetworkUserHandler {
         return new KillNetworkUserHandler(
             $users,
-            $roots,
-            $accounts ?? $this->createStub(OperatorAccountLookup::class),
-            $roles ?? $this->createStub(OperatorRoleAccess::class),
+            new ProtectedNetworkTargets(
+                $roots,
+                $accounts ?? $this->createStub(OperatorAccountLookup::class),
+                $roles ?? $this->createStub(OperatorRoleAccess::class),
+            ),
             $network,
             $audit ?? $this->createStub(CommandAuditRecorder::class),
         );

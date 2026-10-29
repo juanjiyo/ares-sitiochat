@@ -24,6 +24,7 @@ use App\OperServ\Application\Port\Out\NetworkUserLookup;
 use App\OperServ\Application\Port\Out\OperatorAccountLookup;
 use App\OperServ\Application\Port\Out\OperatorRoleAccess;
 use App\OperServ\Application\Port\Out\RootIdentityRegistry;
+use App\OperServ\Application\Security\ProtectedNetworkTargets;
 use App\OperServ\Application\UseCase\Kill\KillNetworkUserHandler;
 use App\OperServ\Application\UseCase\ManageGline\ManageGlineHandlerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -164,9 +165,11 @@ final class HelpCommandTest extends TestCase
         $notifier = new HelpNotifier();
         $kill = new KillCommand(new KillNetworkUserHandler(
             $this->createStub(NetworkUserLookup::class),
-            $this->createStub(RootIdentityRegistry::class),
-            $this->createStub(OperatorAccountLookup::class),
-            $this->createStub(OperatorRoleAccess::class),
+            new ProtectedNetworkTargets(
+                $this->createStub(RootIdentityRegistry::class),
+                $this->createStub(OperatorAccountLookup::class),
+                $this->createStub(OperatorRoleAccess::class),
+            ),
             $this->createStub(KillNetworkUserPort::class),
             $this->createStub(CommandAuditRecorder::class),
         ));
