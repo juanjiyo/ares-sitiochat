@@ -442,3 +442,24 @@ listclones:
   entry:    "  \x0310›\x03 \x02%nickname%\x02 (%ident%)"
   footer:   "Fine dell'elenco."
   none:     "\x0310ℹ\x03 \x02%nickname%\x02 non ha cloni (%host%)."
+
+# --- KILLCLONES ------------------------------------------------------------------
+killclones:
+  syntax:   "KILLCLONES <nick> [motivo]"
+  short:    "Rimuove i cloni di un nick con una G-Line di 1 ora."
+  help:     "Imposta una G-Line di 1 ora su *@host del nick indicato, disconnettendo tutte le connessioni da quell'host.\nLa G-Line compare in GLINE LIST e può essere rimossa con GLINE DEL.\nLocalhost e gli host condivisi con utenti Root o IRCop con ruolo non ricevono mai una G-Line.\nQuesto comando richiede il permesso operserv.clones."
+  example:  "/msg %bot% KILLCLONES BadUser I cloni non sono ammessi"
+  done:     "\x0303✓\x03 I cloni di \x02%nickname%\x02 sono stati rimossi: G-Line \x02%mask%\x02 per %duration% (%count% connessioni). Motivo: %reason%"
+
+# --- BLOCK -----------------------------------------------------------------------
+block:
+  syntax:   "BLOCK <nick> [motivo]"
+  short:    "Blocca l'host di un nick con una G-Line di 5 ore."
+  help:     "Imposta una G-Line di 5 ore su *@host del nick indicato, disconnettendo tutte le connessioni da quell'host.\nLa G-Line compare in GLINE LIST e può essere rimossa con GLINE DEL.\nLocalhost e gli host condivisi con utenti Root o IRCop con ruolo non ricevono mai una G-Line.\nQuesto comando richiede il permesso operserv.clones."
+  example:  "/msg %bot% BLOCK BadUser Spam"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 è stato bloccato: G-Line \x02%mask%\x02 per %duration% (%count% connessioni). Motivo: %reason%"
+
+# --- CLONE BANS (shared replies) -------------------------------------------------
+clones:
+  loopback_host:  "\x0304✗\x03 Permesso negato: \x02%host%\x02 è un host locale e non riceve mai una G-Line."
+  failed:         "\x0304✗\x03 Impossibile applicare la G-Line \x02%mask%\x02."

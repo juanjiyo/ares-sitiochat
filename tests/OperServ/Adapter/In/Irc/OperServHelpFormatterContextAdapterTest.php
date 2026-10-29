@@ -105,6 +105,17 @@ final class OperServHelpFormatterContextAdapterTest extends TestCase
     }
 
     #[Test]
+    public function groupsCloneBansWithNetworkSecurity(): void
+    {
+        $groups = new OperServHelpFormatterContextAdapter($this->context())->getHelpGroups();
+
+        self::assertSame(
+            ['group_key' => 'help.group.network_security', 'commands' => ['GLINE', 'GEOIP', 'KILL', 'KILLCLONES', 'BLOCK'], 'admin' => false, 'subgroup' => false],
+            $groups[1],
+        );
+    }
+
+    #[Test]
     public function groupsNetworkInformationCommandsAfterChannels(): void
     {
         $groups = new OperServHelpFormatterContextAdapter($this->context())->getHelpGroups();

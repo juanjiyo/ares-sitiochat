@@ -441,3 +441,24 @@ listclones:
   entry:    "  \x0310›\x03 \x02%nickname%\x02 (%ident%)"
   footer:   "Ende der Liste."
   none:     "\x0310ℹ\x03 \x02%nickname%\x02 hat keine Klone (%host%)."
+
+# --- KILLCLONES ------------------------------------------------------------------
+killclones:
+  syntax:   "KILLCLONES <nick> [grund]"
+  short:    "Klone eines Nicks mit einer 1-stündigen G-Line entfernen."
+  help:     "Setzt eine 1-stündige G-Line auf *@host des angegebenen Nicks und trennt damit alle Verbindungen dieses Hosts.\nDie G-Line erscheint in GLINE LIST und kann mit GLINE DEL entfernt werden.\nLocalhost und Hosts, die mit Root-Benutzern oder IRCops mit Rolle geteilt werden, erhalten nie eine G-Line.\nDieser Befehl erfordert die Berechtigung operserv.clones."
+  example:  "/msg %bot% KILLCLONES BadUser Klone sind nicht erlaubt"
+  done:     "\x0303✓\x03 Die Klone von \x02%nickname%\x02 wurden entfernt: G-Line \x02%mask%\x02 für %duration% (%count% Verbindungen). Grund: %reason%"
+
+# --- BLOCK -----------------------------------------------------------------------
+block:
+  syntax:   "BLOCK <nick> [grund]"
+  short:    "Host eines Nicks mit einer 5-stündigen G-Line sperren."
+  help:     "Setzt eine 5-stündige G-Line auf *@host des angegebenen Nicks und trennt damit alle Verbindungen dieses Hosts.\nDie G-Line erscheint in GLINE LIST und kann mit GLINE DEL entfernt werden.\nLocalhost und Hosts, die mit Root-Benutzern oder IRCops mit Rolle geteilt werden, erhalten nie eine G-Line.\nDieser Befehl erfordert die Berechtigung operserv.clones."
+  example:  "/msg %bot% BLOCK BadUser Spam"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 wurde gesperrt: G-Line \x02%mask%\x02 für %duration% (%count% Verbindungen). Grund: %reason%"
+
+# --- CLONE BANS (shared replies) -------------------------------------------------
+clones:
+  loopback_host:  "\x0304✗\x03 Zugriff verweigert: \x02%host%\x02 ist ein lokaler Host und erhält nie eine G-Line."
+  failed:         "\x0304✗\x03 Die G-Line \x02%mask%\x02 konnte nicht gesetzt werden."

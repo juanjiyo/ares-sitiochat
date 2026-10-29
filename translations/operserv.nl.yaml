@@ -441,3 +441,24 @@ listclones:
   entry:    "  \x0310›\x03 \x02%nickname%\x02 (%ident%)"
   footer:   "Einde van de lijst."
   none:     "\x0310ℹ\x03 \x02%nickname%\x02 heeft geen klonen (%host%)."
+
+# --- KILLCLONES ------------------------------------------------------------------
+killclones:
+  syntax:   "KILLCLONES <nick> [reden]"
+  short:    "Klonen van een nick verwijderen met een G-Line van 1 uur."
+  help:     "Zet een G-Line van 1 uur op *@host van de opgegeven nick, waardoor alle verbindingen vanaf die host worden verbroken.\nDe G-Line verschijnt in GLINE LIST en kan worden verwijderd met GLINE DEL.\nLocalhost en hosts die gedeeld worden met Root-gebruikers of IRCops met een rol krijgen nooit een G-Line.\nDeze opdracht vereist de permissie operserv.clones."
+  example:  "/msg %bot% KILLCLONES BadUser Klonen zijn niet toegestaan"
+  done:     "\x0303✓\x03 De klonen van \x02%nickname%\x02 zijn verwijderd: G-Line \x02%mask%\x02 voor %duration% (%count% verbindingen). Reden: %reason%"
+
+# --- BLOCK -----------------------------------------------------------------------
+block:
+  syntax:   "BLOCK <nick> [reden]"
+  short:    "De host van een nick blokkeren met een G-Line van 5 uur."
+  help:     "Zet een G-Line van 5 uur op *@host van de opgegeven nick, waardoor alle verbindingen vanaf die host worden verbroken.\nDe G-Line verschijnt in GLINE LIST en kan worden verwijderd met GLINE DEL.\nLocalhost en hosts die gedeeld worden met Root-gebruikers of IRCops met een rol krijgen nooit een G-Line.\nDeze opdracht vereist de permissie operserv.clones."
+  example:  "/msg %bot% BLOCK BadUser Spam"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 is geblokkeerd: G-Line \x02%mask%\x02 voor %duration% (%count% verbindingen). Reden: %reason%"
+
+# --- CLONE BANS (shared replies) -------------------------------------------------
+clones:
+  loopback_host:  "\x0304✗\x03 Toegang geweigerd: \x02%host%\x02 is een lokale host en krijgt nooit een G-Line."
+  failed:         "\x0304✗\x03 De G-Line \x02%mask%\x02 kon niet worden toegepast."

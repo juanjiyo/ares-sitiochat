@@ -441,3 +441,24 @@ listclones:
   entry:    "  \x0310›\x03 \x02%nickname%\x02 (%ident%)"
   footer:   "Fin de la liste."
   none:     "\x0310ℹ\x03 \x02%nickname%\x02 n'a pas de clones (%host%)."
+
+# --- KILLCLONES ------------------------------------------------------------------
+killclones:
+  syntax:   "KILLCLONES <pseudo> [raison]"
+  short:    "Supprimer les clones d'un pseudo avec une G-Line d'1 heure."
+  help:     "Pose une G-Line d'1 heure sur *@hôte du pseudo indiqué, ce qui déconnecte toutes les connexions de cet hôte.\nLa G-Line apparaît dans GLINE LIST et peut être retirée avec GLINE DEL.\nLocalhost et les hôtes partagés avec des utilisateurs Root ou des IRCops ayant un rôle ne reçoivent jamais de G-Line.\nCette commande requiert la permission operserv.clones."
+  example:  "/msg %bot% KILLCLONES BadUser Les clones ne sont pas autorisés"
+  done:     "\x0303✓\x03 Les clones de \x02%nickname%\x02 ont été supprimés : G-Line \x02%mask%\x02 pour %duration% (%count% connexions). Raison : %reason%"
+
+# --- BLOCK -----------------------------------------------------------------------
+block:
+  syntax:   "BLOCK <pseudo> [raison]"
+  short:    "Bloquer l'hôte d'un pseudo avec une G-Line de 5 heures."
+  help:     "Pose une G-Line de 5 heures sur *@hôte du pseudo indiqué, ce qui déconnecte toutes les connexions de cet hôte.\nLa G-Line apparaît dans GLINE LIST et peut être retirée avec GLINE DEL.\nLocalhost et les hôtes partagés avec des utilisateurs Root ou des IRCops ayant un rôle ne reçoivent jamais de G-Line.\nCette commande requiert la permission operserv.clones."
+  example:  "/msg %bot% BLOCK BadUser Spam"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 a été bloqué : G-Line \x02%mask%\x02 pour %duration% (%count% connexions). Raison : %reason%"
+
+# --- CLONE BANS (shared replies) -------------------------------------------------
+clones:
+  loopback_host:  "\x0304✗\x03 Permission refusée : \x02%host%\x02 est un hôte local et ne reçoit jamais de G-Line."
+  failed:         "\x0304✗\x03 La G-Line \x02%mask%\x02 n'a pas pu être appliquée."

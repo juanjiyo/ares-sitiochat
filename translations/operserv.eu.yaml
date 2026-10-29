@@ -441,3 +441,24 @@ listclones:
   entry:    "  \x0310›\x03 \x02%nickname%\x02 (%ident%)"
   footer:   "Zerrendaren amaiera."
   none:     "\x0310ℹ\x03 \x02%nickname%\x02 nick-ak ez du klonik (%host%)."
+
+# --- KILLCLONES ------------------------------------------------------------------
+killclones:
+  syntax:   "KILLCLONES <nick> [arrazoia]"
+  short:    "Nick baten klonak kanporatzen ditu ordubeteko G-Line batekin."
+  help:     "Ordubeteko G-Line bat jartzen du adierazitako nick-aren *@host gainean, eta host horretako konexio guztiak deskonektatzen ditu.\nG-Line-a GLINE LIST-en agertzen da eta GLINE DEL bidez ken daiteke.\nEz zaie inoiz aplikatzen localhost-i edo Root erabiltzaileekin edo rola duten IRCopekin partekatutako hostei.\nKomando honek operserv.clones baimena behar du."
+  example:  "/msg %bot% KILLCLONES Erabiltzailea Klonak ez daude baimenduta"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 nick-aren klonak kanporatu dira: G-Line \x02%mask%\x02 %duration% (%count% konexio). Arrazoia: %reason%"
+
+# --- BLOCK -----------------------------------------------------------------------
+block:
+  syntax:   "BLOCK <nick> [arrazoia]"
+  short:    "Nick baten hosta blokeatzen du 5 orduko G-Line batekin."
+  help:     "5 orduko G-Line bat jartzen du adierazitako nick-aren *@host gainean, eta host horretako konexio guztiak deskonektatzen ditu.\nG-Line-a GLINE LIST-en agertzen da eta GLINE DEL bidez ken daiteke.\nEz zaie inoiz aplikatzen localhost-i edo Root erabiltzaileekin edo rola duten IRCopekin partekatutako hostei.\nKomando honek operserv.clones baimena behar du."
+  example:  "/msg %bot% BLOCK Erabiltzailea Spam"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 blokeatu da: G-Line \x02%mask%\x02 %duration% (%count% konexio). Arrazoia: %reason%"
+
+# --- CLONE BANS (shared replies) -------------------------------------------------
+clones:
+  loopback_host:  "\x0304✗\x03 Baimena ukatuta: \x02%host%\x02 host lokala da eta ez du inoiz G-Line-rik jasotzen."
+  failed:         "\x0304✗\x03 Ezin izan da \x02%mask%\x02 G-Line-a aplikatu."
