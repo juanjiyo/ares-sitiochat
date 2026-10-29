@@ -26,6 +26,14 @@ parameters:
     ircops.debug_channel_default: null
     ircops.debug_channel: '%env(string:default:ircops.debug_channel_default:IRCOPS_DEBUG_CHANNEL)%'
 
+    # DeBuG pseudo-client (network events relayed to the debug channel, like de.mrc)
+    debugserv.enabled_default: true
+    debugserv.enabled: '%env(bool:default:debugserv.enabled_default:DEBUGSERV_ENABLED)%'
+    debugserv.disabled_events_default: ''
+    debugserv.disabled_events: '%env(string:default:debugserv.disabled_events_default:DEBUGSERV_DISABLED_EVENTS)%'
+    debugserv.nick_default: 'DeBuG'
+    debugserv.nick: '%env(string:default:debugserv.nick_default:DEBUGSERV_NICK)%'
+
     # Antiflood: command rate limiting for service bots (IRCops exempt)
     services.antiflood_max_messages_default: 5
     services.antiflood_max_messages: '%env(int:default:services.antiflood_max_messages_default:SERVICES_ANTIFLOOD_MAX_MESSAGES)%'
@@ -2585,6 +2593,23 @@ services:
 
     App\OperServ\Adapter\Out\Irc\DebugChannelCommandAuditSink:
         tags: ['app.command_audit_sink']
+
+    # --- DeBuG pseudo-client ----------------------------------------------------
+
+    App\DebugServ\Adapter\In\Irc\Bot\DebugServBot:
+        arguments:
+            $uidGenerator: '@App\Irc\Application\Port\In\ServiceUidGeneratorInterface'
+            $servicesVhost: '%services.vhost%'
+            $debugChannel: '%ircops.debug_channel%'
+            $enabled: '%debugserv.enabled%'
+            $nick: '%debugserv.nick%'
+            $ident: '%debugserv.nick%'
+            $logger: '@monolog.logger.irc'
+        tags: ['kernel.event_subscriber', { name: 'app.service_nickname_provider' }, { name: 'app.service_uid_provider' }]
+
+    App\DebugServ\Adapter\In\Event\NetworkDebugRelaySubscriber:
+        arguments:
+            $disabledEvents: '%debugserv.disabled_events%'
 
     # --- HelpServ pseudo-client -------------------------------------------------
 
