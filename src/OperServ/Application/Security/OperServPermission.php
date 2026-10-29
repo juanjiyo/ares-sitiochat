@@ -18,5 +18,8 @@ final class OperServPermission
 
     public const string KICK = 'operserv.kick';
 
+    /** Grants both the OP and DEOP channel overrides. */
+    public const string OP = 'operserv.op';
+
     private function __construct() {}
 }
