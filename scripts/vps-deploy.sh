@@ -83,5 +83,5 @@ echo "previous release: $OLD"
 echo "backup: ~/backups/ares-data-$TS.tar.gz"
 pgrep -fa "bin/console (irc:connect|messenger:consume)" | cut -c1-60
 tail -15 var/ares.log | grep -E "\[OK\]" | cut -c1-80 || true
-echo "bots introduced: $(awk -v s="[$START" '$0 >= s' var/log/irc-"$(date +%F)".log | grep -c 'introduced to network' || true)"
-echo "errors since restart: $(awk -v s="[$START" '$0 >= s' var/log/*-"$(date +%F)".log | grep -ciE '\.(ERROR|CRITICAL|ALERT|EMERGENCY)' || true)"
+echo "bots introduced: $(awk -v s="[$START" '$0 >= s' var/log/irc-"$(date -u +%F)".log | grep -c 'introduced to network' || true)"
+echo "errors since restart: $(awk -v s="[$START" '$0 >= s' var/log/*-"$(date -u +%F)".log | grep -ciE '\.(ERROR|CRITICAL|ALERT|EMERGENCY)' || true)"
