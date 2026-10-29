@@ -32,6 +32,14 @@ final class OperServPermissionTest extends TestCase
     }
 
     #[Test]
+    public function kickConstantHasExpectedValue(): void
+    {
+        $constant = new ReflectionClass(OperServPermission::class)->getConstant('KICK');
+
+        self::assertSame('operserv.kick', $constant);
+    }
+
+    #[Test]
     public function allConstantsAreStrings(): void
     {
         $reflection = new ReflectionClass(OperServPermission::class);

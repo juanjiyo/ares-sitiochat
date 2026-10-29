@@ -19,6 +19,7 @@ final readonly class OperServIrcopPermission implements PermissionProviderInterf
             OperServPermission::GEOIP,
             OperServPermission::RAW,
             OperServPermission::MOTD,
+            OperServPermission::KICK,
         ];
     }
 }
