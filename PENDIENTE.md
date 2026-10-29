@@ -87,7 +87,7 @@ Los 17 commits pasan `php -l`, `lint:container` y `phpunit tests/OperServ tests/
 |---|---|
 | Repositorio local | `C:\IRC\services\ares-sitiochat` → `github.com/juanjiyo/ares-sitiochat` |
 | `main` (GitHub) | `3dd1c77` y posteriores (este documento) — T1–T3 de OPeR, arreglos de la prueba en vivo y de `symfony/mime` (CVE-2026-45070). CI en verde (run `40876795967`) |
-| Producción (VPS `5.250.189.222`) | `/home/irc/ares-sitiochat`, commit `3dd1c77` (desde 2026-10-29 14:19), SQLite `var/data/ares.db`, arranque manual con `nohup` |
+| Producción (VPS `5.250.189.222`) | `/home/irc/ares-sitiochat`, commit `11820e5` (desde 2026-10-29 14:23, desplegado con `scripts/vps-deploy.sh`; el código es el de `3dd1c77`), SQLite `var/data/ares.db`, arranque manual con `nohup` |
 | Trabajo en curso | Rama `feature/operserv-dbots-parity-sliced` (17 commits pequeños, sin subir) |
 
 Convenciones que aplican a **todo** lo que queda (de `AGENTS.md`):
