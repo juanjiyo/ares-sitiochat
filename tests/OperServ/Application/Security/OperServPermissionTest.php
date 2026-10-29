@@ -72,6 +72,14 @@ final class OperServPermissionTest extends TestCase
     }
 
     #[Test]
+    public function conexionesConstantHasExpectedValue(): void
+    {
+        $constant = new ReflectionClass(OperServPermission::class)->getConstant('CONEXIONES');
+
+        self::assertSame('operserv.conexiones', $constant);
+    }
+
+    #[Test]
     public function allConstantsAreStrings(): void
     {
         $reflection = new ReflectionClass(OperServPermission::class);

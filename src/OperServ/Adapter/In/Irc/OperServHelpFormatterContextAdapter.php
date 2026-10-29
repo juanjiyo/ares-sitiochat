@@ -13,7 +13,7 @@ final readonly class OperServHelpFormatterContextAdapter implements HelpFormatte
         ['group_key' => 'help.group.operators_roles', 'commands' => ['IRCOP', 'ROLE'], 'admin' => false, 'subgroup' => false],
         ['group_key' => 'help.group.network_security', 'commands' => ['GLINE', 'GEOIP', 'KILL', 'KILLCLONES', 'BLOCK'], 'admin' => false, 'subgroup' => false],
         ['group_key' => 'help.group.channels', 'commands' => ['KICK', 'OP', 'DEOP', 'MODE', 'LIMPIA', 'INVITE'], 'admin' => false, 'subgroup' => false],
-        ['group_key' => 'help.group.information', 'commands' => ['STATS', 'IRCOPS', 'LISTCLONES'], 'admin' => false, 'subgroup' => false],
+        ['group_key' => 'help.group.information', 'commands' => ['STATS', 'IRCOPS', 'LISTCLONES', 'CONEXIONES'], 'admin' => false, 'subgroup' => false],
         ['group_key' => 'help.group.communication', 'commands' => ['MOTD'], 'admin' => false, 'subgroup' => false],
         ['group_key' => 'help.group.low_level', 'commands' => ['RAW'], 'admin' => false, 'subgroup' => false],
     ];

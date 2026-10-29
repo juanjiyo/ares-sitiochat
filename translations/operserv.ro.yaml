@@ -462,3 +462,27 @@ block:
 clones:
   loopback_host:  "\x0304✗\x03 Permisiune refuzată: \x02%host%\x02 este un host local și nu primește niciodată G-Line."
   failed:         "\x0304✗\x03 G-Line-ul \x02%mask%\x02 nu a putut fi aplicat."
+
+# --- CONEXIONES ------------------------------------------------------------------
+conexiones:
+  syntax:   "CONEXIONES {LIST|VIEW} <minim|host>"
+  short:    "Afișează conexiunile simultane pe IP."
+  help:     "Afișează câte conexiuni simultane sunt active de pe fiecare IP (sau hostname când IP-ul nu este cunoscut).\nAceastă comandă necesită permisiunea operserv.conexiones."
+  example:  "/msg %bot% CONEXIONES LIST 3"
+  list:
+    short:            "Listează IP-urile cu cel puțin <minim> conexiuni."
+    help:             "Listează IP-urile cu cel puțin <minim> conexiuni simultane active, în ordinea descrescătoare a conexiunilor.\nMinimul trebuie să fie un număr întreg mai mare decât 1."
+    syntax:           "CONEXIONES LIST <minim>"
+    example:          "/msg %bot% CONEXIONES LIST 3"
+    header:           "IP-uri cu cel puțin \x02%minimum%\x02 conexiuni simultane active:"
+    entry:            "  \x0310›\x03 \x02%count%\x02 — %host%"
+    footer:           "Sfârșitul listei."
+    empty:            "\x0310ℹ\x03 Niciun IP nu are cel puțin \x02%minimum%\x02 conexiuni simultane."
+    invalid_minimum:  "\x0304✗\x03 Minim invalid: trebuie să fie un număr întreg mai mare decât 1."
+  view:
+    short:      "Afișează conexiunile unui IP."
+    help:       "Afișează câte conexiuni simultane sunt active de pe un IP sau hostname."
+    syntax:     "CONEXIONES VIEW <host>"
+    example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
+    result:     "\x0310ℹ\x03 \x02%host%\x02 are în prezent \x02%count%\x02 conexiuni simultane active."
+    not_found:  "\x0304✗\x03 Nu s-au găsit conexiuni pentru \x02%host%\x02."

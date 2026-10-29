@@ -462,3 +462,27 @@ block:
 clones:
   loopback_host:  "\x0304✗\x03 Odmowa dostępu: \x02%host%\x02 to host lokalny i nigdy nie dostaje G-Line."
   failed:         "\x0304✗\x03 Nie udało się nałożyć G-Line \x02%mask%\x02."
+
+# --- CONEXIONES ------------------------------------------------------------------
+conexiones:
+  syntax:   "CONEXIONES {LIST|VIEW} <minimum|host>"
+  short:    "Pokaż jednoczesne połączenia na IP."
+  help:     "Pokazuje, ile jednoczesnych połączeń jest aktywnych z każdego IP (lub nazwy hosta, gdy IP jest nieznane).\nTa komenda wymaga uprawnienia operserv.conexiones."
+  example:  "/msg %bot% CONEXIONES LIST 3"
+  list:
+    short:            "Wyświetl IP z co najmniej <minimum> połączeniami."
+    help:             "Wyświetla IP z co najmniej <minimum> jednoczesnymi aktywnymi połączeniami, od największej liczby.\nMinimum musi być liczbą całkowitą większą niż 1."
+    syntax:           "CONEXIONES LIST <minimum>"
+    example:          "/msg %bot% CONEXIONES LIST 3"
+    header:           "IP z co najmniej \x02%minimum%\x02 jednoczesnymi aktywnymi połączeniami:"
+    entry:            "  \x0310›\x03 \x02%count%\x02 — %host%"
+    footer:           "Koniec listy."
+    empty:            "\x0310ℹ\x03 Żadne IP nie ma co najmniej \x02%minimum%\x02 jednoczesnych połączeń."
+    invalid_minimum:  "\x0304✗\x03 Nieprawidłowe minimum: musi to być liczba całkowita większa niż 1."
+  view:
+    short:      "Pokaż połączenia jednego IP."
+    help:       "Pokazuje, ile jednoczesnych połączeń jest aktywnych z IP lub nazwy hosta."
+    syntax:     "CONEXIONES VIEW <host>"
+    example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
+    result:     "\x0310ℹ\x03 \x02%host%\x02 ma obecnie \x02%count%\x02 jednoczesnych aktywnych połączeń."
+    not_found:  "\x0304✗\x03 Nie znaleziono połączeń dla \x02%host%\x02."

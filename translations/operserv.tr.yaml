@@ -462,3 +462,27 @@ block:
 clones:
   loopback_host:  "\x0304✗\x03 İzin reddedildi: \x02%host%\x02 yerel bir hosttur ve asla G-Line almaz."
   failed:         "\x0304✗\x03 \x02%mask%\x02 G-Line'ı uygulanamadı."
+
+# --- CONEXIONES ------------------------------------------------------------------
+conexiones:
+  syntax:   "CONEXIONES {LIST|VIEW} <en_az|host>"
+  short:    "IP başına eşzamanlı bağlantıları gösterir."
+  help:     "Her IP'den (IP bilinmiyorsa host adından) kaç eşzamanlı bağlantının etkin olduğunu gösterir.\nBu komut operserv.conexiones iznini gerektirir."
+  example:  "/msg %bot% CONEXIONES LIST 3"
+  list:
+    short:            "En az <en_az> bağlantısı olan IP'leri listeler."
+    help:             "En az <en_az> eşzamanlı etkin bağlantısı olan IP'leri, en çok bağlantısı olandan başlayarak listeler.\nEn az değeri 1'den büyük bir tam sayı olmalıdır."
+    syntax:           "CONEXIONES LIST <en_az>"
+    example:          "/msg %bot% CONEXIONES LIST 3"
+    header:           "En az \x02%minimum%\x02 eşzamanlı etkin bağlantısı olan IP'ler:"
+    entry:            "  \x0310›\x03 \x02%count%\x02 — %host%"
+    footer:           "Listenin sonu."
+    empty:            "\x0310ℹ\x03 En az \x02%minimum%\x02 eşzamanlı bağlantısı olan IP yok."
+    invalid_minimum:  "\x0304✗\x03 Geçersiz en az değeri: 1'den büyük bir tam sayı olmalıdır."
+  view:
+    short:      "Bir IP'nin bağlantılarını gösterir."
+    help:       "Bir IP veya host adından kaç eşzamanlı bağlantının etkin olduğunu gösterir."
+    syntax:     "CONEXIONES VIEW <host>"
+    example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
+    result:     "\x0310ℹ\x03 \x02%host%\x02 şu anda \x02%count%\x02 eşzamanlı etkin bağlantıya sahip."
+    not_found:  "\x0304✗\x03 \x02%host%\x02 için bağlantı bulunamadı."

@@ -462,3 +462,27 @@ block:
 clones:
   loopback_host:  "\x0304✗\x03 Baimena ukatuta: \x02%host%\x02 host lokala da eta ez du inoiz G-Line-rik jasotzen."
   failed:         "\x0304✗\x03 Ezin izan da \x02%mask%\x02 G-Line-a aplikatu."
+
+# --- CONEXIONES ------------------------------------------------------------------
+conexiones:
+  syntax:   "CONEXIONES {LIST|VIEW} <gutxienekoa|host>"
+  short:    "IP bakoitzeko aldibereko konexioak erakusten ditu."
+  help:     "IP bakoitzetik (edo hostetik, IPa ezezaguna bada) zenbat aldibereko konexio aktibo dauden erakusten du.\nKomando honek operserv.conexiones baimena behar du."
+  example:  "/msg %bot% CONEXIONES LIST 3"
+  list:
+    short:            "Gutxienez <gutxienekoa> konexio dituzten IPak zerrendatzen ditu."
+    help:             "Gutxienez <gutxienekoa> aldibereko konexio aktibo dituzten IPak zerrendatzen ditu, konexio gehien dituztenak lehenik.\nGutxienekoak 1 baino handiagoa den zenbaki osoa izan behar du."
+    syntax:           "CONEXIONES LIST <gutxienekoa>"
+    example:          "/msg %bot% CONEXIONES LIST 3"
+    header:           "Gutxienez \x02%minimum%\x02 aldibereko konexio aktibo dituzten IPak:"
+    entry:            "  \x0310›\x03 \x02%count%\x02 — %host%"
+    footer:           "Zerrendaren amaiera."
+    empty:            "\x0310ℹ\x03 Ez dago gutxienez \x02%minimum%\x02 aldibereko konexio dituen IPrik."
+    invalid_minimum:  "\x0304✗\x03 Gutxieneko baliogabea: 1 baino handiagoa den zenbaki osoa izan behar du."
+  view:
+    short:      "IP baten konexioak erakusten ditu."
+    help:       "IP edo host batetik zenbat aldibereko konexio aktibo dauden erakusten du."
+    syntax:     "CONEXIONES VIEW <host>"
+    example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
+    result:     "\x0310ℹ\x03 \x02%host%\x02 hostak une honetan \x02%count%\x02 aldibereko konexio aktibo ditu."
+    not_found:  "\x0304✗\x03 Ez da konexiorik aurkitu \x02%host%\x02 hostarentzat."

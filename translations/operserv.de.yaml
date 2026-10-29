@@ -462,3 +462,27 @@ block:
 clones:
   loopback_host:  "\x0304✗\x03 Zugriff verweigert: \x02%host%\x02 ist ein lokaler Host und erhält nie eine G-Line."
   failed:         "\x0304✗\x03 Die G-Line \x02%mask%\x02 konnte nicht gesetzt werden."
+
+# --- CONEXIONES ------------------------------------------------------------------
+conexiones:
+  syntax:   "CONEXIONES {LIST|VIEW} <minimum|host>"
+  short:    "Gleichzeitige Verbindungen pro IP anzeigen."
+  help:     "Zeigt, wie viele gleichzeitige Verbindungen von jeder IP aktiv sind (oder vom Hostname, wenn die IP unbekannt ist).\nDieser Befehl erfordert die Berechtigung operserv.conexiones."
+  example:  "/msg %bot% CONEXIONES LIST 3"
+  list:
+    short:            "IPs mit mindestens <minimum> Verbindungen auflisten."
+    help:             "Listet die IPs mit mindestens <minimum> gleichzeitigen aktiven Verbindungen auf, die meisten zuerst.\nDas Minimum muss eine ganze Zahl größer als 1 sein."
+    syntax:           "CONEXIONES LIST <minimum>"
+    example:          "/msg %bot% CONEXIONES LIST 3"
+    header:           "IPs mit mindestens \x02%minimum%\x02 gleichzeitigen aktiven Verbindungen:"
+    entry:            "  \x0310›\x03 \x02%count%\x02 — %host%"
+    footer:           "Ende der Liste."
+    empty:            "\x0310ℹ\x03 Keine IP hat mindestens \x02%minimum%\x02 gleichzeitige Verbindungen."
+    invalid_minimum:  "\x0304✗\x03 Ungültiges Minimum: Es muss eine ganze Zahl größer als 1 sein."
+  view:
+    short:      "Verbindungen einer IP anzeigen."
+    help:       "Zeigt, wie viele gleichzeitige Verbindungen von einer IP oder einem Hostname aktiv sind."
+    syntax:     "CONEXIONES VIEW <host>"
+    example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
+    result:     "\x0310ℹ\x03 \x02%host%\x02 hat derzeit \x02%count%\x02 gleichzeitige aktive Verbindungen."
+    not_found:  "\x0304✗\x03 Keine Verbindungen für \x02%host%\x02 gefunden."

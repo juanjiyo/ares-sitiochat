@@ -462,3 +462,27 @@ block:
 clones:
   loopback_host:  "\x0304✗\x03 Permís denegat: \x02%host%\x02 és un host local i mai rep una G-Line."
   failed:         "\x0304✗\x03 No s'ha pogut aplicar la G-Line \x02%mask%\x02."
+
+# --- CONEXIONES ------------------------------------------------------------------
+conexiones:
+  syntax:   "CONEXIONES {LIST|VIEW} <límit|IP>"
+  short:    "Mostra les connexions simultànies per IP."
+  help:     "Mostra quantes connexions simultànies hi ha actives des de cada IP (o des de cada host si la IP no es coneix).\nAquesta comanda requereix el permís operserv.conexiones."
+  example:  "/msg %bot% CONEXIONES LIST 3"
+  list:
+    short:            "Llista les IP amb almenys <límit> connexions."
+    help:             "Llista les IP amb almenys <límit> connexions simultànies actives, de més a menys connexions.\nEl límit ha de ser un enter més gran que 1."
+    syntax:           "CONEXIONES LIST <límit>"
+    example:          "/msg %bot% CONEXIONES LIST 3"
+    header:           "IP amb almenys \x02%minimum%\x02 connexions simultànies actives:"
+    entry:            "  \x0310›\x03 \x02%count%\x02 — %host%"
+    footer:           "Fi de la llista."
+    empty:            "\x0310ℹ\x03 Cap IP no té almenys \x02%minimum%\x02 connexions simultànies."
+    invalid_minimum:  "\x0304✗\x03 El límit indicat no és vàlid; ha de ser un enter més gran que 1."
+  view:
+    short:      "Mostra les connexions d'una IP."
+    help:       "Mostra quantes connexions simultànies hi ha actives des d'una IP o un host."
+    syntax:     "CONEXIONES VIEW <IP>"
+    example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
+    result:     "\x0310ℹ\x03 La IP \x02%host%\x02 té actualment \x02%count%\x02 connexions simultànies actives."
+    not_found:  "\x0304✗\x03 No s'han trobat connexions per a \x02%host%\x02."

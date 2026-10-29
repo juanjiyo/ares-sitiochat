@@ -29,5 +29,7 @@ final class OperServPermission
     /** Grants LISTCLONES, KILLCLONES and BLOCK. */
     public const string CLONES = 'operserv.clones';
 
+    public const string CONEXIONES = 'operserv.conexiones';
+
     private function __construct() {}
 }

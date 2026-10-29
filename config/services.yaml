@@ -2420,6 +2420,9 @@ services:
     App\OperServ\Adapter\In\Irc\Command\BlockCommand:
         tags: ['operserv.command.new']
 
+    App\OperServ\Adapter\In\Irc\Command\ConexionesCommand:
+        tags: ['operserv.command.new']
+
     # --- OperServ Infrastructure -------------------------------------------------
 
     App\OperServ\Adapter\In\Irc\Bot\OperServBot:

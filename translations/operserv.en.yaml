@@ -462,3 +462,27 @@ block:
 clones:
   loopback_host:  "\x0304✗\x03 Permission denied: \x02%host%\x02 is a local host and is never G-Lined."
   failed:         "\x0304✗\x03 The G-Line \x02%mask%\x02 could not be applied."
+
+# --- CONEXIONES ------------------------------------------------------------------
+conexiones:
+  syntax:   "CONEXIONES {LIST|VIEW} <minimum|host>"
+  short:    "Show simultaneous sessions per IP."
+  help:     "Shows how many simultaneous sessions are active from each IP (or hostname when the IP is unknown).\nThis command requires the operserv.conexiones permission."
+  example:  "/msg %bot% CONEXIONES LIST 3"
+  list:
+    short:            "List the IPs with at least <minimum> sessions."
+    help:             "Lists the IPs with at least <minimum> simultaneous active sessions, most sessions first.\nThe minimum must be an integer greater than 1."
+    syntax:           "CONEXIONES LIST <minimum>"
+    example:          "/msg %bot% CONEXIONES LIST 3"
+    header:           "IPs with at least \x02%minimum%\x02 simultaneous active sessions:"
+    entry:            "  \x0310›\x03 \x02%count%\x02 — %host%"
+    footer:           "End of list."
+    empty:            "\x0310ℹ\x03 No IP has at least \x02%minimum%\x02 simultaneous sessions."
+    invalid_minimum:  "\x0304✗\x03 Invalid minimum: it must be an integer greater than 1."
+  view:
+    short:      "Show the sessions of one IP."
+    help:       "Shows how many simultaneous sessions are active from an IP or hostname."
+    syntax:     "CONEXIONES VIEW <host>"
+    example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
+    result:     "\x0310ℹ\x03 \x02%host%\x02 currently has \x02%count%\x02 simultaneous active sessions."
+    not_found:  "\x0304✗\x03 No sessions found for \x02%host%\x02."

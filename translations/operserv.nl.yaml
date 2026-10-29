@@ -462,3 +462,27 @@ block:
 clones:
   loopback_host:  "\x0304✗\x03 Toegang geweigerd: \x02%host%\x02 is een lokale host en krijgt nooit een G-Line."
   failed:         "\x0304✗\x03 De G-Line \x02%mask%\x02 kon niet worden toegepast."
+
+# --- CONEXIONES ------------------------------------------------------------------
+conexiones:
+  syntax:   "CONEXIONES {LIST|VIEW} <minimum|host>"
+  short:    "Gelijktijdige verbindingen per IP tonen."
+  help:     "Toont hoeveel gelijktijdige verbindingen er vanaf elk IP-adres actief zijn (of vanaf de hostnaam als het IP onbekend is).\nDeze opdracht vereist de permissie operserv.conexiones."
+  example:  "/msg %bot% CONEXIONES LIST 3"
+  list:
+    short:            "IP-adressen met minstens <minimum> verbindingen weergeven."
+    help:             "Toont de IP-adressen met minstens <minimum> gelijktijdige actieve verbindingen, de drukste eerst.\nHet minimum moet een geheel getal groter dan 1 zijn."
+    syntax:           "CONEXIONES LIST <minimum>"
+    example:          "/msg %bot% CONEXIONES LIST 3"
+    header:           "IP-adressen met minstens \x02%minimum%\x02 gelijktijdige actieve verbindingen:"
+    entry:            "  \x0310›\x03 \x02%count%\x02 — %host%"
+    footer:           "Einde van de lijst."
+    empty:            "\x0310ℹ\x03 Geen enkel IP-adres heeft minstens \x02%minimum%\x02 gelijktijdige verbindingen."
+    invalid_minimum:  "\x0304✗\x03 Ongeldig minimum: het moet een geheel getal groter dan 1 zijn."
+  view:
+    short:      "Verbindingen van één IP tonen."
+    help:       "Toont hoeveel gelijktijdige verbindingen er vanaf een IP-adres of hostnaam actief zijn."
+    syntax:     "CONEXIONES VIEW <host>"
+    example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
+    result:     "\x0310ℹ\x03 \x02%host%\x02 heeft momenteel \x02%count%\x02 gelijktijdige actieve verbindingen."
+    not_found:  "\x0304✗\x03 Geen verbindingen gevonden voor \x02%host%\x02."
