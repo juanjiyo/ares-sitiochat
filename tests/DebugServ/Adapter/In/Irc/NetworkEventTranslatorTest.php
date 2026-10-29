@@ -159,6 +159,7 @@ final class NetworkEventTranslatorTest extends TestCase
     public static function silentLines(): iterable
     {
         yield 'privmsg' => [':001AAAAAA PRIVMSG NiCK :IDENTIFY secreto'];
+        yield 'typing notification' => [':0019FJV49 TAGMSG 003B00002'];
         yield 'sasl' => [':001 SASL 002 001AAAAAA C cGVwZQ=='];
         yield 'metadata' => [':001 MD client 001AAAAAA certfp :abc'];
         yield 'numeric' => [':001 372 Pepe :motd'];

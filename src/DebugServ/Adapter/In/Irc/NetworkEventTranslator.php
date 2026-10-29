@@ -61,7 +61,7 @@ final class NetworkEventTranslator
 
     /** Lines the original deliberately kept out of the channel. */
     private const array IGNORED = [
-        'PRIVMSG', 'NOTICE', 'PING', 'PONG', 'WHOIS', 'PROTOCTL', 'ADMIN', 'INFO', 'VERSION', 'PASS',
+        'PRIVMSG', 'NOTICE', 'TAGMSG', 'PING', 'PONG', 'WHOIS', 'PROTOCTL', 'ADMIN', 'INFO', 'VERSION', 'PASS',
         'SMO', 'EOS', 'TKL', 'GLOBOPS', 'DBQ', 'DB', 'NETINFO',
         // UnrealIRCd 6 additions: metadata, server info, GLOBOPS' new name, and
         // SASL, whose payload is a credential.
