@@ -202,11 +202,11 @@ kill:
 
 # --- GLINE --------------------------------------------------------------------
 gline:
-  syntax:           "GLINE {ADD|DEL|LIST} [mask] [expiry] [reason]"
+  syntax:           "GLINE {ADD|DEL|LIST|CLEAR} [mask] [expiry] [reason]"
   short:            "Manage network-wide G-lines."
-  help:             "Manage network-wide G-lines (global bans).\nADD adds a new G-line with mask, expiry and reason.\nDEL removes a G-line by mask or entry number.\nLIST shows all G-lines, optionally filtered by mask.\n\nExpiry format: 0=permanent, or use d, h, m suffix (e.g., 7d, 12h, 30m).\nGLINEs matching Root or IRCop users are rejected.\nThis command requires the operserv.gline permission."
+  help:             "Manage network-wide G-lines (global bans).\nADD adds a new G-line with mask, expiry and reason.\nDEL removes a G-line by mask or entry number.\nLIST shows all G-lines, optionally filtered by mask.\nCLEAR — Removes every active G-Line at once, from the services and from the IRCd.\n\nExpiry format: 0=permanent, or use d, h, m suffix (e.g., 7d, 12h, 30m).\nGLINEs matching Root or IRCop users are rejected.\nThis command requires the operserv.gline permission."
   example:          "/msg %bot% GLINE ADD spammer@spam.example 7d Mass advertising"
-  unknown_sub:      "\x0304✗\x03 Unknown subcommand \x02%sub%\x02. Use ADD, DEL, or LIST."
+  unknown_sub:      "\x0304✗\x03 Unknown subcommand \x02%sub%\x02. Use ADD, DEL, LIST or CLEAR."
   invalid_mask:     "\x0304✗\x03 Invalid mask format. Must be in format user@host (e.g., *@192.168.*)."
   global_mask:      "\x0304✗\x03 G-line mask \x02%mask%\x02 is too broad. Global masks are not allowed."
   dangerous_mask:   "\x0304✗\x03 G-line mask \x02%mask%\x02 is too broad. Host part needs at least 4 alphanumeric characters."
@@ -243,6 +243,13 @@ gline:
     never_expires:  "Permanent"
     unknown_creator: "unknown"
     entry:          "\x0310%index%.\x03 \x02%mask%\x02 - %reason% (\x0314%nickname%\x03, expires: %expiration%)"
+
+  clear:
+    syntax:         "GLINE CLEAR"
+    short:          "Removes every G-Line."
+    help:           "Removes every active G-Line at once, from the services and from the IRCd."
+    example:        "/msg %bot% GLINE CLEAR"
+    done:           "\x0303✓\x03 \x02%count%\x02 G-Lines removed."
 
 # --- GEOIP --------------------------------------------------------------------
 geoip:

@@ -202,11 +202,11 @@ kill:
 
 # --- GLINE --------------------------------------------------------------------
 gline:
-  syntax:           "GLINE {ADD|DEL|LIST} [masque] [expiration] [raison]"
+  syntax:           "GLINE {ADD|DEL|LIST|CLEAR} [masque] [expiration] [raison]"
   short:            "Gérer les G-lines du réseau."
-  help:             "Gère les G-lines du réseau (bannissements globaux).\nADD ajoute une nouvelle G-line avec masque, expiration et raison.\nDEL supprime une G-line par masque ou numéro d'entrée.\nLIST affiche toutes les G-lines, optionnellement filtrées par masque.\n\nFormat d'expiration : 0=permanent, ou utilisez le suffixe j, h, m (ex., 7j, 12h, 30m).\nLes GLINEs correspondant aux utilisateurs Root ou IRCop sont rejetées.\nCette commande nécessite la permission operserv.gline."
+  help:             "Gère les G-lines du réseau (bannissements globaux).\nADD ajoute une nouvelle G-line avec masque, expiration et raison.\nDEL supprime une G-line par masque ou numéro d'entrée.\nLIST affiche toutes les G-lines, optionnellement filtrées par masque.\nCLEAR — Supprime d'un coup toutes les G-Lines actives, des services et de l'IRCd.\n\nFormat d'expiration : 0=permanent, ou utilisez le suffixe j, h, m (ex., 7j, 12h, 30m).\nLes GLINEs correspondant aux utilisateurs Root ou IRCop sont rejetées.\nCette commande nécessite la permission operserv.gline."
   example:          "/msg %bot% GLINE ADD spammer@spam.example 7d Publicité de masse"
-  unknown_sub:      "\x0304✗\x03 Sous-commande inconnue \x02%sub%\x02. Utilisez ADD, DEL ou LIST."
+  unknown_sub:      "\x0304✗\x03 Sous-commande inconnue \x02%sub%\x02. Utilisez ADD, DEL, LIST ou CLEAR."
   invalid_mask:     "\x0304✗\x03 Format de masque invalide. Doit être au format utilisateur@hôte (ex., *@192.168.*)."
   global_mask:      "\x0304✗\x03 Le masque G-line \x02%mask%\x02 est trop large. Les masques globaux ne sont pas autorisés."
   dangerous_mask:   "\x0304✗\x03 Le masque G-line \x02%mask%\x02 est trop large. La partie hôte nécessite au moins 4 caractères alphanumériques."
@@ -243,6 +243,13 @@ gline:
     never_expires:  "Permanent"
     unknown_creator: "inconnu"
     entry:          "\x0310%index%.\x03 \x02%mask%\x02 - %reason% (\x0314%nickname%\x03, expire : %expiration%)"
+
+  clear:
+    syntax:         "GLINE CLEAR"
+    short:          "Supprime toutes les G-Lines."
+    help:           "Supprime d'un coup toutes les G-Lines actives, des services et de l'IRCd."
+    example:        "/msg %bot% GLINE CLEAR"
+    done:           "\x0303✓\x03 \x02%count%\x02 G-Lines supprimées."
 
 # --- GEOIP --------------------------------------------------------------------
 geoip:

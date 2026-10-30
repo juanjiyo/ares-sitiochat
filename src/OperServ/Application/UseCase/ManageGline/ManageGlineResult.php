@@ -15,5 +15,6 @@ final readonly class ManageGlineResult
         public ?string $reason = null,
         public ?int $limit = null,
         public array $entries = [],
+        public int $count = 0,
     ) {}
 }

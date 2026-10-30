@@ -9,5 +9,6 @@ enum GlineAction
     case Add;
     case Delete;
     case List;
+    case Clear;
     case Unknown;
 }

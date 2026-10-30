@@ -43,7 +43,7 @@ final class GlineCommandTest extends TestCase
         self::assertSame('gline.help', $command->getHelpKey());
         self::assertSame(20, $command->getOrder());
         self::assertSame('gline.short', $command->getShortDescKey());
-        self::assertSame(['ADD', 'DEL', 'LIST'], array_column($command->getSubCommandHelp(), 'name'));
+        self::assertSame(['ADD', 'DEL', 'LIST', 'CLEAR'], array_column($command->getSubCommandHelp(), 'name'));
         self::assertTrue($command->isOperOnly());
         self::assertSame('operserv.gline', $command->getRequiredPermission());
     }
@@ -65,8 +65,9 @@ final class GlineCommandTest extends TestCase
         $command->execute($this->context(['DEL', ' ident@host.test ']));
         $command->execute($this->context(['LIST', ' *@host.* ']));
         $command->execute($this->context(['unexpected']));
+        $command->execute($this->context(['clear']));
 
-        self::assertSame([GlineAction::Add, GlineAction::Delete, GlineAction::List, GlineAction::Unknown], array_map(static fn (ManageGline $input): GlineAction => $input->action, $handler->inputs));
+        self::assertSame([GlineAction::Add, GlineAction::Delete, GlineAction::List, GlineAction::Unknown, GlineAction::Clear], array_map(static fn (ManageGline $input): GlineAction => $input->action, $handler->inputs));
         self::assertSame('Oper', $handler->inputs[0]->actor);
         self::assertSame(42, $handler->inputs[0]->actorAccountId);
         self::assertSame('Nick', $handler->inputs[0]->mask);
@@ -106,6 +107,7 @@ final class GlineCommandTest extends TestCase
         yield 'not found' => [new ManageGlineResult(ManageGlineOutcome::NotFound, mask: 'missing'), ['DEL'], 'gline.not_found'];
         yield 'empty list' => [new ManageGlineResult(ManageGlineOutcome::ListEmpty), ['LIST'], 'gline.list.empty'];
         yield 'deleted' => [new ManageGlineResult(ManageGlineOutcome::Deleted, mask: 'ident@host'), ['DEL'], 'gline.del.done'];
+        yield 'cleared' => [new ManageGlineResult(ManageGlineOutcome::Cleared, count: 2), ['CLEAR'], 'gline.clear.done'];
     }
 
     #[Test]

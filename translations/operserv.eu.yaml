@@ -202,11 +202,11 @@ kill:
 
 # --- GLINE --------------------------------------------------------------------
 gline:
-  syntax:           "GLINE {ADD|DEL|LIST} [maskara] [iraungitzea] [arrazoia]"
+  syntax:           "GLINE {ADD|DEL|LIST|CLEAR} [maskara] [iraungitzea] [arrazoia]"
   short:            "Kudeatu sare osoko G-lineak."
-  help:             "Sare osoko G-lineak (debeku globalak) kudeatzen ditu.\nADDek G-line berri bat gehitzen du maskara, iraungitze eta arrazoiarekin.\nDELek G-line bat kentzen du maskara edo sarrera zenbakiaren arabera.\nLISTek G-line guztiak erakusten ditu, aukeran maskararekin iragazita.\n\nIraungitze formatua: 0=iraunkorra, edo erabili d, o, m atzizkia (adib., 7d, 12o, 30m).\nRoot edo IRCop erabiltzaileekin bat datozen GLINEak baztertzen dira.\nKomando honek operserv.gline baimena behar du."
+  help:             "Sare osoko G-lineak (debeku globalak) kudeatzen ditu.\nADDek G-line berri bat gehitzen du maskara, iraungitze eta arrazoiarekin.\nDELek G-line bat kentzen du maskara edo sarrera zenbakiaren arabera.\nLISTek G-line guztiak erakusten ditu, aukeran maskararekin iragazita.\nCLEAR — G-Line aktibo guztiak batera ezabatzen ditu, zerbitzuetatik eta IRCdtik.\n\nIraungitze formatua: 0=iraunkorra, edo erabili d, o, m atzizkia (adib., 7d, 12o, 30m).\nRoot edo IRCop erabiltzaileekin bat datozen GLINEak baztertzen dira.\nKomando honek operserv.gline baimena behar du."
   example:          "/msg %bot% GLINE ADD spammer@spam.example 7d Publizitate masiboa"
-  unknown_sub:      "\x0304✗\x03 Azpikomando ezezaguna \x02%sub%\x02. Erabili ADD, DEL edo LIST."
+  unknown_sub:      "\x0304✗\x03 Azpikomando ezezaguna \x02%sub%\x02. Erabili ADD, DEL, LIST edo CLEAR."
   invalid_mask:     "\x0304✗\x03 Maskara formatu baliogabea. Formatua user@host izan behar du (adib., *@192.168.*)."
   global_mask:      "\x0304✗\x03 \x02%mask%\x02 G-line maskara zabalegia da. Maskara globalak ez dira onartzen."
   dangerous_mask:   "\x0304✗\x03 \x02%mask%\x02 G-line maskara zabalegia da. Ostalari zatiak gutxienez 4 karaktere alfanumeriko behar ditu."
@@ -243,6 +243,13 @@ gline:
     never_expires:  "Iraunkorra"
     unknown_creator: "ezezaguna"
     entry:          "\x0310%index%.\x03 \x02%mask%\x02 - %reason% (\x0314%nickname%\x03, iraungitzea: %expiration%)"
+
+  clear:
+    syntax:         "GLINE CLEAR"
+    short:          "G-Line guztiak ezabatzen ditu."
+    help:           "G-Line aktibo guztiak batera ezabatzen ditu, zerbitzuetatik eta IRCdtik."
+    example:        "/msg %bot% GLINE CLEAR"
+    done:           "\x0303✓\x03 \x02%count%\x02 G-Line ezabatu dira."
 
 # --- GEOIP --------------------------------------------------------------------
 geoip:

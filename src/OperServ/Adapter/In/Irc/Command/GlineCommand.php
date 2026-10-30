@@ -71,6 +71,7 @@ final readonly class GlineCommand implements OperServCommandInterface
             ['name' => 'ADD', 'desc_key' => 'gline.add.short', 'help_key' => 'gline.add.help', 'syntax_key' => 'gline.add.syntax', 'example_key' => 'gline.add.example'],
             ['name' => 'DEL', 'desc_key' => 'gline.del.short', 'help_key' => 'gline.del.help', 'syntax_key' => 'gline.del.syntax', 'example_key' => 'gline.del.example'],
             ['name' => 'LIST', 'desc_key' => 'gline.list.short', 'help_key' => 'gline.list.help', 'syntax_key' => 'gline.list.syntax', 'example_key' => 'gline.list.example'],
+            ['name' => 'CLEAR', 'desc_key' => 'gline.clear.short', 'help_key' => 'gline.clear.help', 'syntax_key' => 'gline.clear.syntax', 'example_key' => 'gline.clear.example'],
         ];
     }
 
@@ -95,6 +96,7 @@ final readonly class GlineCommand implements OperServCommandInterface
             'ADD' => GlineAction::Add,
             'DEL' => GlineAction::Delete,
             'LIST' => GlineAction::List,
+            'CLEAR' => GlineAction::Clear,
             default => GlineAction::Unknown,
         };
         $result = $this->handler->handle(new ManageGline(
@@ -132,6 +134,7 @@ final readonly class GlineCommand implements OperServCommandInterface
             ManageGlineOutcome::Added => $this->presentAdded($context, $result),
             ManageGlineOutcome::Deleted => $context->reply('gline.del.done', ['%mask%' => (string) $result->mask]),
             ManageGlineOutcome::Listed => $this->presentList($context, $result),
+            ManageGlineOutcome::Cleared => $context->reply('gline.clear.done', ['%count%' => (string) $result->count]),
         };
     }
 

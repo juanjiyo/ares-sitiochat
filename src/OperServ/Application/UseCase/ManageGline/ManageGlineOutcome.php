@@ -21,4 +21,5 @@ enum ManageGlineOutcome
     case Added;
     case Deleted;
     case Listed;
+    case Cleared;
 }

@@ -202,11 +202,11 @@ kill:
 
 # --- GLINE --------------------------------------------------------------------
 gline:
-  syntax:           "GLINE {ADD|DEL|LIST} [mască] [expirare] [motiv]"
+  syntax:           "GLINE {ADD|DEL|LIST|CLEAR} [mască] [expirare] [motiv]"
   short:            "Gestionați G-line-urile la nivel de rețea."
-  help:             "Gestionează G-line-urile la nivel de rețea (interdicții globale).\nADD adaugă un nou G-line cu mască, expirare și motiv.\nDEL elimină un G-line după mască sau numărul intrării.\nLIST afișează toate G-line-urile, opțional filtrate după mască.\n\nFormat de expirare: 0=permanent, sau folosiți sufixul d, h, m (de ex. 7d, 12h, 30m).\nGLINE-urile care corespund utilizatorilor Root sau IRCop sunt respinse.\nAceastă comandă necesită permisiunea operserv.gline."
+  help:             "Gestionează G-line-urile la nivel de rețea (interdicții globale).\nADD adaugă un nou G-line cu mască, expirare și motiv.\nDEL elimină un G-line după mască sau numărul intrării.\nLIST afișează toate G-line-urile, opțional filtrate după mască.\nCLEAR — Șterge deodată toate G-Lines active, din servicii și din IRCd.\n\nFormat de expirare: 0=permanent, sau folosiți sufixul d, h, m (de ex. 7d, 12h, 30m).\nGLINE-urile care corespund utilizatorilor Root sau IRCop sunt respinse.\nAceastă comandă necesită permisiunea operserv.gline."
   example:          "/msg %bot% GLINE ADD spammer@spam.example 7d Reclamă în masă"
-  unknown_sub:      "\x0304✗\x03 Subcomandă necunoscută \x02%sub%\x02. Folosiți ADD, DEL sau LIST."
+  unknown_sub:      "\x0304✗\x03 Subcomandă necunoscută \x02%sub%\x02. Folosiți ADD, DEL, LIST sau CLEAR."
   invalid_mask:     "\x0304✗\x03 Format de mască invalid. Trebuie să fie în format utilizator@host (de ex. *@192.168.*)."
   global_mask:      "\x0304✗\x03 Masca G-line \x02%mask%\x02 este prea largă. Măștile globale nu sunt permise."
   dangerous_mask:   "\x0304✗\x03 Masca G-line \x02%mask%\x02 este prea largă. Partea de host necesită cel puțin 4 caractere alfanumerice."
@@ -243,6 +243,13 @@ gline:
     never_expires:  "Permanent"
     unknown_creator: "necunoscut"
     entry:          "\x0310%index%.\x03 \x02%mask%\x02 - %reason% (\x0314%nickname%\x03, expiră: %expiration%)"
+
+  clear:
+    syntax:         "GLINE CLEAR"
+    short:          "Șterge toate G-Lines."
+    help:           "Șterge deodată toate G-Lines active, din servicii și din IRCd."
+    example:        "/msg %bot% GLINE CLEAR"
+    done:           "\x0303✓\x03 Au fost șterse \x02%count%\x02 G-Lines."
 
 # --- GEOIP --------------------------------------------------------------------
 geoip:

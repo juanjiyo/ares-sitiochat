@@ -202,11 +202,11 @@ kill:
 
 # --- GLINE --------------------------------------------------------------------
 gline:
-  syntax:           "GLINE {ADD|DEL|LIST} [maske] [süre] [sebep]"
+  syntax:           "GLINE {ADD|DEL|LIST|CLEAR} [maske] [süre] [sebep]"
   short:            "Ağ genelindeki G-line'ları yönetin."
-  help:             "Ağ genelindeki G-line'ları (genel yasaklamalar) yönetin.\nADD maske, süre ve sebep ile yeni bir G-line ekler.\nDEL bir G-line'ı maske veya giriş numarasıyla kaldırır.\nLIST maske filtresi ile isteğe bağlı olarak tüm G-line'ları gösterir.\n\nSüre formatı: 0=kalıcı, veya d, s, d son ekini kullanın (örn., 7g, 12s, 30d).\nRoot veya IRCop kullanıcılarıyla eşleşen GLINE'lar reddedilir.\nBu komut operserv.gline iznini gerektirir."
+  help:             "Ağ genelindeki G-line'ları (genel yasaklamalar) yönetin.\nADD maske, süre ve sebep ile yeni bir G-line ekler.\nDEL bir G-line'ı maske veya giriş numarasıyla kaldırır.\nLIST maske filtresi ile isteğe bağlı olarak tüm G-line'ları gösterir.\nCLEAR — Tüm etkin G-Line'ları servislerden ve IRCd'den tek seferde siler.\n\nSüre formatı: 0=kalıcı, veya d, s, d son ekini kullanın (örn., 7g, 12s, 30d).\nRoot veya IRCop kullanıcılarıyla eşleşen GLINE'lar reddedilir.\nBu komut operserv.gline iznini gerektirir."
   example:          "/msg %bot% GLINE ADD spammer@spam.example 7d Kitlesel reklam"
-  unknown_sub:      "\x0304✗\x03 Bilinmeyen alt komut \x02%sub%\x02. ADD, DEL veya LIST kullanın."
+  unknown_sub:      "\x0304✗\x03 Bilinmeyen alt komut \x02%sub%\x02. ADD, DEL, LIST veya CLEAR kullanın."
   invalid_mask:     "\x0304✗\x03 Geçersiz maske formatı. user@host formatında olmalıdır (örn., *@192.168.*)."
   global_mask:      "\x0304✗\x03 G-line maskesi \x02%mask%\x02 çok geniş. Genel maskeler kullanılamaz."
   dangerous_mask:   "\x0304✗\x03 G-line maskesi \x02%mask%\x02 çok geniş. Host kısmı en az 4 alfanümerik karakter içermelidir."
@@ -243,6 +243,13 @@ gline:
     never_expires:  "Kalıcı"
     unknown_creator: "bilinmiyor"
     entry:          "\x0310%index%.\x03 \x02%mask%\x02 - %reason% (\x0314%nickname%\x03, bitiş: %expiration%)"
+
+  clear:
+    syntax:         "GLINE CLEAR"
+    short:          "Tüm G-Line'ları siler."
+    help:           "Tüm etkin G-Line'ları servislerden ve IRCd'den tek seferde siler."
+    example:        "/msg %bot% GLINE CLEAR"
+    done:           "\x0303✓\x03 \x02%count%\x02 G-Line silindi."
 
 # --- GEOIP --------------------------------------------------------------------
 geoip:

@@ -21,6 +21,7 @@ use App\OperServ\Domain\Policy\GlineMaskPolicy;
 use App\Shared\Application\Time\RelativeExpiryParser;
 use DateTimeImmutable;
 
+use function count;
 use function ctype_digit;
 use function fnmatch;
 use function sprintf;
@@ -48,6 +49,7 @@ final readonly class ManageGlineHandler implements ManageGlineHandlerInterface
             GlineAction::Add => $this->add($command),
             GlineAction::Delete => $this->delete($command),
             GlineAction::List => $this->list($command),
+            GlineAction::Clear => $this->clear($command),
             GlineAction::Unknown => new ManageGlineResult(ManageGlineOutcome::UnknownAction),
         };
     }
@@ -125,6 +127,23 @@ final readonly class ManageGlineHandler implements ManageGlineHandlerInterface
         $this->recordAudit($command, 'GLINE DEL', $gline->mask, null);
 
         return new ManageGlineResult(ManageGlineOutcome::Deleted, $gline->mask);
+    }
+
+    /** Removes every G-Line at once, from the services and from the IRCd. */
+    private function clear(ManageGline $command): ManageGlineResult
+    {
+        $glines = $this->glines->findAll();
+        if ([] === $glines) {
+            return new ManageGlineResult(ManageGlineOutcome::ListEmpty);
+        }
+
+        foreach ($glines as $gline) {
+            $this->glines->remove($gline);
+            $this->network->remove($gline->mask);
+        }
+        $this->recordAudit($command, 'GLINE CLEAR', '*', null);
+
+        return new ManageGlineResult(ManageGlineOutcome::Cleared, count: count($glines));
     }
 
     private function list(ManageGline $command): ManageGlineResult

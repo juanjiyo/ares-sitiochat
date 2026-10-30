@@ -186,6 +186,36 @@ final class ManageGlineHandlerTest extends TestCase
     }
 
     #[Test]
+    public function clearsEveryEntryFromServicesAndNetworkAndAuditsIt(): void
+    {
+        $first = new GlineEntry('one@host.test', 4, 'reason', new DateTimeImmutable('2026-09-01'), null);
+        $second = new GlineEntry('*@46.39.209.77', 4, 'clones', new DateTimeImmutable('2026-09-02'), null);
+        $repository = new RecordingGlineRepository(entries: [$first, $second]);
+        $network = new RecordingGlineNetworkActions();
+        $audit = new RecordingGlineAuditRecorder();
+
+        $result = $this->handler($repository, $network, $audit)->handle(new ManageGline(GlineAction::Clear, 'Oper', 44, new DateTimeImmutable()));
+
+        self::assertSame(ManageGlineOutcome::Cleared, $result->outcome);
+        self::assertSame(2, $result->count);
+        self::assertSame([$first, $second], $repository->removed);
+        self::assertSame(['one@host.test', '*@46.39.209.77'], $network->removed);
+        self::assertSame('GLINE CLEAR', $audit->records[0]->operation);
+        self::assertSame('*', $audit->records[0]->target);
+    }
+
+    #[Test]
+    public function clearReportsAnEmptyListWithoutAuditing(): void
+    {
+        $audit = new RecordingGlineAuditRecorder();
+
+        $result = $this->handler(new RecordingGlineRepository(), new RecordingGlineNetworkActions(), $audit)->handle(new ManageGline(GlineAction::Clear, 'Oper', 44, new DateTimeImmutable()));
+
+        self::assertSame(ManageGlineOutcome::ListEmpty, $result->outcome);
+        self::assertSame([], $audit->records);
+    }
+
+    #[Test]
     public function listsEntriesWithCreatorNicknames(): void
     {
         $entry = new GlineEntry('*@host.test', 7, null, new DateTimeImmutable('2026-09-01'), null);

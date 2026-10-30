@@ -202,11 +202,11 @@ kill:
 
 # --- GLINE --------------------------------------------------------------------
 gline:
-  syntax:           "GLINE {ADD|DEL|LIST} [máscara] [expiración] [razón]"
+  syntax:           "GLINE {ADD|DEL|LIST|CLEAR} [máscara] [expiración] [razón]"
   short:            "Gestiona G-lines de red."
-  help:             "Gestiona G-lines (bans globales) de red.\nADD añade un nuevo G-line con máscara, expiración y razón.\nDEL elimina un G-line por máscara o número de entrada.\nLIST muestra todos los G-lines, filtrable por máscara.\n\nFormato de expiración: 0=permanente, o usa sufijo d, h, m (ej: 7d, 12h, 30m).\nLos GLINEs que coincidan con usuarios Root o IRCop son rechazados.\nEste comando requiere el permiso operserv.gline."
+  help:             "Gestiona G-lines (bans globales) de red.\nADD añade un nuevo G-line con máscara, expiración y razón.\nDEL elimina un G-line por máscara o número de entrada.\nLIST muestra todos los G-lines, filtrable por máscara.\nCLEAR — Borra de golpe todas las G-Lines activas, de los servicios y del IRCd.\n\nFormato de expiración: 0=permanente, o usa sufijo d, h, m (ej: 7d, 12h, 30m).\nLos GLINEs que coincidan con usuarios Root o IRCop son rechazados.\nEste comando requiere el permiso operserv.gline."
   example:          "/msg %bot% GLINE ADD spammer@spam.example 7d Publicidad masiva"
-  unknown_sub:      "\x0304✗\x03 Subcomando desconocido \x02%sub%\x02. Usa ADD, DEL o LIST."
+  unknown_sub:      "\x0304✗\x03 Subcomando desconocido \x02%sub%\x02. Usa ADD, DEL, LIST o CLEAR."
   invalid_mask:     "\x0304✗\x03 Formato de máscara inválido. Debe ser usuario@host (ej: *@192.168.*)."
   global_mask:      "\x0304✗\x03 La máscara G-line \x02%mask%\x02 es demasiado amplia. No se permiten máscaras globales."
   dangerous_mask:   "\x0304✗\x03 La máscara G-line \x02%mask%\x02 es demasiado amplia. La parte del host necesita al menos 4 caracteres alfanuméricos."
@@ -243,6 +243,13 @@ gline:
     never_expires:  "Permanente"
     unknown_creator: "desconocido"
     entry:          "\x0310%index%.\x03 \x02%mask%\x02 - %reason% (\x0314%nickname%\x03, expira: %expiration%)"
+
+  clear:
+    syntax:         "GLINE CLEAR"
+    short:          "Borra todas las G-Lines."
+    help:           "Borra de golpe todas las G-Lines activas, de los servicios y del IRCd."
+    example:        "/msg %bot% GLINE CLEAR"
+    done:           "\x0303✓\x03 Se han borrado \x02%count%\x02 G-Lines."
 
 # --- GEOIP --------------------------------------------------------------------
 geoip:
