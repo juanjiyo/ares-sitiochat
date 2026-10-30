@@ -477,6 +477,7 @@ final class OperServCommandListenerTest extends TestCase
             $sendNotice,
             $userMessageTypeResolver,
             $logger,
+            self::registry(['RAW' => []]),
         );
 
         $listener->onCommand(self::SENDER_UID, 'RAW OPAQUE reset-token');
@@ -527,6 +528,7 @@ final class OperServCommandListenerTest extends TestCase
             $sendNotice,
             $userMessageTypeResolver,
             $logger,
+            self::registry(['RAW' => []]),
         );
 
         $listener->onCommand(self::SENDER_UID, 'RAW OPAQUE reset-token');
@@ -535,20 +537,34 @@ final class OperServCommandListenerTest extends TestCase
     #[Test]
     public function loggingNeverRetainsRawOrGlobalPayloads(): void
     {
-        self::assertSame('RAW', OperServCommandLogSanitizer::commandName('RAW OPAQUE reset-token'));
-        self::assertSame('UNKNOWN', OperServCommandLogSanitizer::commandName('private-secret payload'));
+        $commands = self::registry(['RAW' => []]);
+
+        self::assertSame('RAW', OperServCommandLogSanitizer::commandName('RAW OPAQUE reset-token', $commands));
+        self::assertSame('UNKNOWN', OperServCommandLogSanitizer::commandName('private-secret payload', $commands));
+        self::assertSame('UNKNOWN', OperServCommandLogSanitizer::commandName('   ', $commands));
     }
 
     #[Test]
     public function loggingNamesEveryRegisteredOperServCommandWithoutItsArguments(): void
     {
-        $commands = [
-            'BLOCK', 'CONEXIONES', 'DEOP', 'GEOIP', 'GLINE', 'HELP', 'INVITE', 'IRCOP', 'IRCOPS', 'KICK',
-            'KILL', 'KILLCLONES', 'LIMPIA', 'LISTCLONES', 'MODE', 'MOTD', 'OP', 'RAW', 'ROLE', 'STATS',
-        ];
+        $commands = self::registry(['KILLCLONES' => ['KC'], 'CONEXIONES' => []]);
 
-        foreach ($commands as $command) {
-            self::assertSame($command, OperServCommandLogSanitizer::commandName(strtolower($command) . ' #canal secret-argument'));
+        self::assertSame('KILLCLONES', OperServCommandLogSanitizer::commandName('killclones Pepe secret-argument', $commands));
+        self::assertSame('KILLCLONES', OperServCommandLogSanitizer::commandName('kc Pepe', $commands));
+        self::assertSame('CONEXIONES', OperServCommandLogSanitizer::commandName('Conexiones LIST 2', $commands));
+    }
+
+    /** @param array<string, list<string>> $names command name => aliases */
+    private static function registry(array $names): OperServCommandRegistry
+    {
+        $commands = [];
+        foreach ($names as $name => $aliases) {
+            $command = self::createStub(OperServCommandInterface::class);
+            $command->method('getName')->willReturn($name);
+            $command->method('getAliases')->willReturn($aliases);
+            $commands[] = $command;
         }
+
+        return new OperServCommandRegistry($commands);
     }
 }

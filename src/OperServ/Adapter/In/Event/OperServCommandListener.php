@@ -9,6 +9,7 @@ use App\Irc\Application\Port\In\SendNoticePort;
 use App\Irc\Application\Port\In\ServiceCommandListenerInterface;
 use App\OperServ\Adapter\In\Irc\Bot\OperServBot;
 use App\OperServ\Adapter\In\Irc\OperServCommandLogSanitizer;
+use App\OperServ\Adapter\In\Irc\OperServCommandRegistry;
 use App\OperServ\Adapter\In\Irc\OperServService;
 use App\OperServ\Application\Port\Out\ServiceUserPreferences;
 use Psr\Log\LoggerInterface;
@@ -24,6 +25,7 @@ final readonly class OperServCommandListener implements ServiceCommandListenerIn
         private SendNoticePort $sendNotice,
         private ServiceUserPreferences $messageTypeResolver,
         private LoggerInterface $logger = new NullLogger(),
+        private OperServCommandRegistry $commands = new OperServCommandRegistry([]),
     ) {}
 
     public function getSendNotice(): SendNoticePort
@@ -60,7 +62,7 @@ final readonly class OperServCommandListener implements ServiceCommandListenerIn
             return;
         }
 
-        $command = OperServCommandLogSanitizer::commandName($text);
+        $command = OperServCommandLogSanitizer::commandName($text, $this->commands);
         $this->logger->debug('OperServ: command from {nick} [{uid}]: {command}', [
             'nick' => $sender->nick,
             'uid' => $sender->uid,
