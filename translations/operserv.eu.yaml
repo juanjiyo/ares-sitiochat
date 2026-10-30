@@ -497,3 +497,21 @@ umode:
   invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 ez da modu-aldaketa baliozkoa. Erabili +moduak edo -moduak."
   forbidden:      "\x0304✗\x03 Ezin dituzu r eta h moduak jarri ezta kendu ere."
   above_rank:     "\x0304✗\x03 Zure mailak ez dizu \x02%modes%\x02 moduak erabiltzen uzten."
+
+# --- JAIL ------------------------------------------------------------------------
+jail:
+  syntax:   "JAIL <nick>"
+  short:    "Erabiltzaile bat kartzela-kanalean sartzen du."
+  help:     "Erabiltzaile bat bere kanal guztietatik ateratzen du eta kartzela-kanalean sartzen du (%channel%).\nKartzelan dagoen bitartean, beste kanal batean sartzen bada atera egiten da, eta kartzelatik ateratzen bada berriro sartzen da.\nUNJAIL bidez edo deskonektatzean geratzen da aske.\nRoot erabiltzaileak eta rola duten IRCopak ezin dira kartzelatu.\nAgindu honek operserv.jail baimena behar du."
+  example:  "/msg %bot% JAIL Erabiltzailea"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 \x02%channel%\x02 kanalean kartzelatu da."
+  already:  "\x0304✗\x03 \x02%nickname%\x02 dagoeneko kartzelan dago."
+
+# --- UNJAIL ----------------------------------------------------------------------
+unjail:
+  syntax:      "UNJAIL <nick>"
+  short:       "Kartzelatutako erabiltzaile bat askatzen du."
+  help:        "JAIL bidez kartzelatutako erabiltzaile bat askatzen du: edozein kanaletan sar daiteke berriro.\nAgindu honek operserv.jail baimena behar du."
+  example:     "/msg %bot% UNJAIL Erabiltzailea"
+  done:        "\x0303✓\x03 \x02%nickname%\x02 \x02%channel%\x02 kanaletik askatu da."
+  not_jailed:  "\x0304✗\x03 \x02%nickname%\x02 ez dago kartzelan."

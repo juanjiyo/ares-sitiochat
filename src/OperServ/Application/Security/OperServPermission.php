@@ -34,5 +34,8 @@ final class OperServPermission
     /** Changes user modes, limited to the modes of the actor's rank. */
     public const string UMODE = 'operserv.umode';
 
+    /** Grants both JAIL and UNJAIL. */
+    public const string JAIL = 'operserv.jail';
+
     private function __construct() {}
 }

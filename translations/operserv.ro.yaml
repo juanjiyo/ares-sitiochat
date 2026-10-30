@@ -497,3 +497,21 @@ umode:
   invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 nu este o schimbare de moduri validă. Folosește +moduri sau -moduri."
   forbidden:      "\x0304✗\x03 Nu poți seta sau elimina modurile r și h."
   above_rank:     "\x0304✗\x03 Rangul tău nu îți permite să folosești modurile \x02%modes%\x02."
+
+# --- JAIL ------------------------------------------------------------------------
+jail:
+  syntax:   "JAIL <nick>"
+  short:    "Închide un utilizator în canalul închisoare."
+  help:     "Scoate un utilizator din toate canalele sale și îl pune în canalul închisoare (%channel%).\nCât timp este închis, dacă intră în alt canal este scos, iar dacă iese din închisoare este pus înapoi.\nEste eliberat cu UNJAIL sau la deconectare.\nUtilizatorii Root și IRCop-ii cu rol nu pot fi închiși.\nAceastă comandă necesită permisiunea operserv.jail."
+  example:  "/msg %bot% JAIL Utilizator"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 a fost închis în \x02%channel%\x02."
+  already:  "\x0304✗\x03 \x02%nickname%\x02 este deja închis."
+
+# --- UNJAIL ----------------------------------------------------------------------
+unjail:
+  syntax:      "UNJAIL <nick>"
+  short:       "Eliberează un utilizator închis."
+  help:        "Eliberează un utilizator închis cu JAIL: poate intra din nou în orice canal.\nAceastă comandă necesită permisiunea operserv.jail."
+  example:     "/msg %bot% UNJAIL Utilizator"
+  done:        "\x0303✓\x03 \x02%nickname%\x02 a fost eliberat din \x02%channel%\x02."
+  not_jailed:  "\x0304✗\x03 \x02%nickname%\x02 nu este închis."

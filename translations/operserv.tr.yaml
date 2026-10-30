@@ -497,3 +497,21 @@ umode:
   invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 geçerli bir mod değişikliği değil. +modlar veya -modlar kullan."
   forbidden:      "\x0304✗\x03 r ve h modlarını ekleyemez veya kaldıramazsın."
   above_rank:     "\x0304✗\x03 Rütben \x02%modes%\x02 modlarını kullanmana izin vermiyor."
+
+# --- JAIL ------------------------------------------------------------------------
+jail:
+  syntax:   "JAIL <nick>"
+  short:    "Bir kullanıcıyı hapis kanalına kapatır."
+  help:     "Bir kullanıcıyı tüm kanallarından çıkarır ve hapis kanalına (%channel%) koyar.\nHapisteyken başka bir kanala girerse çıkarılır, hapisten çıkarsa geri konur.\nUNJAIL ile veya bağlantısı kesildiğinde serbest kalır.\nRoot kullanıcıları ve rolü olan IRCop'lar hapsedilemez.\nBu komut operserv.jail iznini gerektirir."
+  example:  "/msg %bot% JAIL Kullanıcı"
+  done:     "\x0303✓\x03 \x02%nickname%\x02, \x02%channel%\x02 kanalına hapsedildi."
+  already:  "\x0304✗\x03 \x02%nickname%\x02 zaten hapiste."
+
+# --- UNJAIL ----------------------------------------------------------------------
+unjail:
+  syntax:      "UNJAIL <nick>"
+  short:       "Hapsedilmiş bir kullanıcıyı serbest bırakır."
+  help:        "JAIL ile hapsedilmiş bir kullanıcıyı serbest bırakır: yeniden istediği kanala girebilir.\nBu komut operserv.jail iznini gerektirir."
+  example:     "/msg %bot% UNJAIL Kullanıcı"
+  done:        "\x0303✓\x03 \x02%nickname%\x02, \x02%channel%\x02 kanalından serbest bırakıldı."
+  not_jailed:  "\x0304✗\x03 \x02%nickname%\x02 hapiste değil."

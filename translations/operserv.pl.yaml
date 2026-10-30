@@ -497,3 +497,21 @@ umode:
   invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 nie jest prawidłową zmianą trybów. Użyj +tryby lub -tryby."
   forbidden:      "\x0304✗\x03 Nie możesz ustawić ani usunąć trybów r i h."
   above_rank:     "\x0304✗\x03 Twoja ranga nie pozwala na użycie trybów \x02%modes%\x02."
+
+# --- JAIL ------------------------------------------------------------------------
+jail:
+  syntax:   "JAIL <nick>"
+  short:    "Zamyka użytkownika w kanale więzienia."
+  help:     "Usuwa użytkownika ze wszystkich jego kanałów i umieszcza go w kanale więzienia (%channel%).\nDopóki jest uwięziony, wejście na inny kanał kończy się usunięciem, a opuszczenie więzienia ponownym umieszczeniem w nim.\nZostaje uwolniony poleceniem UNJAIL lub po rozłączeniu.\nUżytkowników Root i IRCopów z rolą nie można uwięzić.\nTo polecenie wymaga uprawnienia operserv.jail."
+  example:  "/msg %bot% JAIL Użytkownik"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 został uwięziony w \x02%channel%\x02."
+  already:  "\x0304✗\x03 \x02%nickname%\x02 jest już uwięziony."
+
+# --- UNJAIL ----------------------------------------------------------------------
+unjail:
+  syntax:      "UNJAIL <nick>"
+  short:       "Uwalnia uwięzionego użytkownika."
+  help:        "Uwalnia użytkownika uwięzionego poleceniem JAIL: może znów wejść na dowolny kanał.\nTo polecenie wymaga uprawnienia operserv.jail."
+  example:     "/msg %bot% UNJAIL Użytkownik"
+  done:        "\x0303✓\x03 \x02%nickname%\x02 został uwolniony z \x02%channel%\x02."
+  not_jailed:  "\x0304✗\x03 \x02%nickname%\x02 nie jest uwięziony."

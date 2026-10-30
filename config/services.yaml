@@ -176,6 +176,9 @@ parameters:
     operserv.root_users: '%env(string:default:operserv.root_users_default:OPERSERV_ROOT_USERS)%'
     operserv.max_glines_default: 1000
     operserv.max_glines: '%env(int:default:operserv.max_glines_default:OPERSERV_MAX_GLINES)%'
+    # OPeR JAIL: channel jailed users are kept in
+    operserv.jail_channel_default: '#Sumidero'
+    operserv.jail_channel: '%env(string:default:operserv.jail_channel_default:OPERSERV_JAIL_CHANNEL)%'
 
     # Mailer (verification and email-change emails)
     mailer.from: '%env(MAILER_FROM)%'
@@ -2441,6 +2444,26 @@ services:
         alias: App\OperServ\Adapter\Out\Irc\ActiveConnectionUserModeActions
 
     App\OperServ\Adapter\In\Irc\Command\UmodeCommand:
+        tags: ['operserv.command.new']
+
+    App\OperServ\Application\Port\Out\JailNetworkActions:
+        alias: App\OperServ\Adapter\Out\Irc\ActiveConnectionJailNetworkActions
+
+    App\OperServ\Application\UseCase\Jail\JailUserHandler:
+        arguments:
+            $jailChannel: '%operserv.jail_channel%'
+
+    App\OperServ\Application\UseCase\Jail\EnforceJail:
+        arguments:
+            $jailChannel: '%operserv.jail_channel%'
+
+    App\OperServ\Adapter\In\Event\OperServJailSubscriber:
+        tags: ['kernel.event_subscriber']
+
+    App\OperServ\Adapter\In\Irc\Command\JailCommand:
+        tags: ['operserv.command.new']
+
+    App\OperServ\Adapter\In\Irc\Command\UnjailCommand:
         tags: ['operserv.command.new']
 
     # --- OperServ Infrastructure -------------------------------------------------

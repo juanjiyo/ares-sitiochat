@@ -88,6 +88,14 @@ final class OperServPermissionTest extends TestCase
     }
 
     #[Test]
+    public function jailConstantHasExpectedValue(): void
+    {
+        $constant = new ReflectionClass(OperServPermission::class)->getConstant('JAIL');
+
+        self::assertSame('operserv.jail', $constant);
+    }
+
+    #[Test]
     public function allConstantsAreStrings(): void
     {
         $reflection = new ReflectionClass(OperServPermission::class);

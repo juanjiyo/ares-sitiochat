@@ -497,3 +497,21 @@ umode:
   invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 não é uma alteração de modos válida. Usa +modos ou -modos."
   forbidden:      "\x0304✗\x03 Não podes definir nem remover os modos r e h."
   above_rank:     "\x0304✗\x03 O teu nível não te permite usar os modos \x02%modes%\x02."
+
+# --- JAIL ------------------------------------------------------------------------
+jail:
+  syntax:   "JAIL <nick>"
+  short:    "Prende um utilizador no canal prisão."
+  help:     "Retira um utilizador de todos os seus canais e coloca-o no canal prisão (%channel%).\nEnquanto estiver preso, se entrar noutro canal é retirado, e se sair da prisão é colocado de volta.\nFica livre com UNJAIL ou ao desligar-se.\nOs utilizadores Root e os IRCops com função não podem ser presos.\nEste comando requer a permissão operserv.jail."
+  example:  "/msg %bot% JAIL Utilizador"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 foi preso em \x02%channel%\x02."
+  already:  "\x0304✗\x03 \x02%nickname%\x02 já está preso."
+
+# --- UNJAIL ----------------------------------------------------------------------
+unjail:
+  syntax:      "UNJAIL <nick>"
+  short:       "Liberta um utilizador preso."
+  help:        "Liberta um utilizador preso com JAIL: pode voltar a entrar em qualquer canal.\nEste comando requer a permissão operserv.jail."
+  example:     "/msg %bot% UNJAIL Utilizador"
+  done:        "\x0303✓\x03 \x02%nickname%\x02 foi libertado de \x02%channel%\x02."
+  not_jailed:  "\x0304✗\x03 \x02%nickname%\x02 não está preso."

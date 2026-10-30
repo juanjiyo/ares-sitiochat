@@ -497,3 +497,21 @@ umode:
   invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 n'est pas un changement de modes valide. Utilise +modes ou -modes."
   forbidden:      "\x0304✗\x03 Tu ne peux ni ajouter ni retirer les modes r et h."
   above_rank:     "\x0304✗\x03 Ton rang ne te permet pas d'utiliser les modes \x02%modes%\x02."
+
+# --- JAIL ------------------------------------------------------------------------
+jail:
+  syntax:   "JAIL <pseudo>"
+  short:    "Emprisonne un utilisateur dans le salon prison."
+  help:     "Retire un utilisateur de tous ses salons et le place dans le salon prison (%channel%).\nTant qu'il est emprisonné, il est retiré de tout autre salon et remis en prison s'il en sort.\nIl est libéré avec UNJAIL ou à sa déconnexion.\nLes utilisateurs Root et les IRCops avec rôle ne peuvent pas être emprisonnés.\nCette commande nécessite la permission operserv.jail."
+  example:  "/msg %bot% JAIL Utilisateur"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 a été emprisonné dans \x02%channel%\x02."
+  already:  "\x0304✗\x03 \x02%nickname%\x02 est déjà emprisonné."
+
+# --- UNJAIL ----------------------------------------------------------------------
+unjail:
+  syntax:      "UNJAIL <pseudo>"
+  short:       "Libère un utilisateur emprisonné."
+  help:        "Libère un utilisateur emprisonné avec JAIL : il peut de nouveau rejoindre n'importe quel salon.\nCette commande nécessite la permission operserv.jail."
+  example:     "/msg %bot% UNJAIL Utilisateur"
+  done:        "\x0303✓\x03 \x02%nickname%\x02 a été libéré de \x02%channel%\x02."
+  not_jailed:  "\x0304✗\x03 \x02%nickname%\x02 n'est pas emprisonné."

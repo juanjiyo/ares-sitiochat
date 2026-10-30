@@ -497,3 +497,21 @@ umode:
   invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 ist keine gültige Modusänderung. Verwende +Modi oder -Modi."
   forbidden:      "\x0304✗\x03 Die Modi r und h können weder gesetzt noch entfernt werden."
   above_rank:     "\x0304✗\x03 Dein Rang erlaubt dir die Modi \x02%modes%\x02 nicht."
+
+# --- JAIL ------------------------------------------------------------------------
+jail:
+  syntax:   "JAIL <Nick>"
+  short:    "Sperrt einen Benutzer im Gefängniskanal ein."
+  help:     "Entfernt einen Benutzer aus all seinen Kanälen und setzt ihn in den Gefängniskanal (%channel%).\nSolange er eingesperrt ist, wird er aus jedem anderen Kanal entfernt und bei Verlassen des Gefängnisses zurückgesetzt.\nEr wird mit UNJAIL oder beim Trennen der Verbindung freigelassen.\nRoot-Benutzer und IRCops mit Rolle können nicht eingesperrt werden.\nDieser Befehl erfordert die Berechtigung operserv.jail."
+  example:  "/msg %bot% JAIL Benutzer"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 wurde in \x02%channel%\x02 eingesperrt."
+  already:  "\x0304✗\x03 \x02%nickname%\x02 ist bereits eingesperrt."
+
+# --- UNJAIL ----------------------------------------------------------------------
+unjail:
+  syntax:      "UNJAIL <Nick>"
+  short:       "Lässt einen eingesperrten Benutzer frei."
+  help:        "Lässt einen mit JAIL eingesperrten Benutzer frei: er kann wieder jeden Kanal betreten.\nDieser Befehl erfordert die Berechtigung operserv.jail."
+  example:     "/msg %bot% UNJAIL Benutzer"
+  done:        "\x0303✓\x03 \x02%nickname%\x02 wurde aus \x02%channel%\x02 freigelassen."
+  not_jailed:  "\x0304✗\x03 \x02%nickname%\x02 ist nicht eingesperrt."

@@ -497,3 +497,21 @@ umode:
   invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 no és un canvi de modes vàlid. Fes servir +modes o -modes."
   forbidden:      "\x0304✗\x03 No pots posar ni treure els modes r i h."
   above_rank:     "\x0304✗\x03 El teu rang no et permet fer servir els modes \x02%modes%\x02."
+
+# --- JAIL ------------------------------------------------------------------------
+jail:
+  syntax:   "JAIL <nick>"
+  short:    "Empresona un usuari al canal presó."
+  help:     "Treu un usuari de tots els seus canals i el posa al canal presó (%channel%).\nMentre està empresonat, si entra en un altre canal se'l treu, i si surt de la presó se'l torna a posar.\nQueda lliure amb UNJAIL o en desconnectar-se.\nEls usuaris Root i els IRCops amb rol no poden ser empresonats.\nAquesta ordre requereix el permís operserv.jail."
+  example:  "/msg %bot% JAIL Usuari"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 ha estat empresonat a \x02%channel%\x02."
+  already:  "\x0304✗\x03 \x02%nickname%\x02 ja està empresonat."
+
+# --- UNJAIL ----------------------------------------------------------------------
+unjail:
+  syntax:      "UNJAIL <nick>"
+  short:       "Allibera un usuari empresonat."
+  help:        "Allibera un usuari empresonat amb JAIL: pot tornar a entrar a qualsevol canal.\nAquesta ordre requereix el permís operserv.jail."
+  example:     "/msg %bot% UNJAIL Usuari"
+  done:        "\x0303✓\x03 \x02%nickname%\x02 ha estat alliberat de \x02%channel%\x02."
+  not_jailed:  "\x0304✗\x03 \x02%nickname%\x02 no està empresonat."

@@ -497,3 +497,21 @@ umode:
   invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 is not a valid mode change. Use +modes or -modes."
   forbidden:      "\x0304✗\x03 You cannot set or unset the r and h modes."
   above_rank:     "\x0304✗\x03 Your rank does not allow you to use the modes \x02%modes%\x02."
+
+# --- JAIL ------------------------------------------------------------------------
+jail:
+  syntax:   "JAIL <nick>"
+  short:    "Jails a user in the jail channel."
+  help:     "Moves a user out of all their channels into the jail channel (%channel%).\nWhile jailed, joining another channel gets them parted, and leaving the jail gets them back in.\nThey are freed with UNJAIL or when they disconnect.\nRoot users and role IRCops cannot be jailed.\nThis command requires the operserv.jail permission."
+  example:  "/msg %bot% JAIL User"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 has been jailed in \x02%channel%\x02."
+  already:  "\x0304✗\x03 \x02%nickname%\x02 is already jailed."
+
+# --- UNJAIL ----------------------------------------------------------------------
+unjail:
+  syntax:      "UNJAIL <nick>"
+  short:       "Frees a jailed user."
+  help:        "Frees a user jailed with JAIL: they may join any channel again.\nThis command requires the operserv.jail permission."
+  example:     "/msg %bot% UNJAIL User"
+  done:        "\x0303✓\x03 \x02%nickname%\x02 has been freed from \x02%channel%\x02."
+  not_jailed:  "\x0304✗\x03 \x02%nickname%\x02 is not jailed."

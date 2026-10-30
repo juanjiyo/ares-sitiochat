@@ -497,3 +497,21 @@ umode:
   invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 is geen geldige moduswijziging. Gebruik +modi of -modi."
   forbidden:      "\x0304✗\x03 Je kunt de modi r en h niet zetten of verwijderen."
   above_rank:     "\x0304✗\x03 Je rang staat de modi \x02%modes%\x02 niet toe."
+
+# --- JAIL ------------------------------------------------------------------------
+jail:
+  syntax:   "JAIL <nick>"
+  short:    "Zet een gebruiker vast in het gevangeniskanaal."
+  help:     "Haalt een gebruiker uit al zijn kanalen en zet hem in het gevangeniskanaal (%channel%).\nZolang hij vastzit, wordt hij uit elk ander kanaal gehaald en teruggezet als hij de gevangenis verlaat.\nHij komt vrij met UNJAIL of wanneer hij de verbinding verbreekt.\nRoot-gebruikers en IRCops met een rol kunnen niet worden vastgezet.\nDit commando vereist de permissie operserv.jail."
+  example:  "/msg %bot% JAIL Gebruiker"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 is vastgezet in \x02%channel%\x02."
+  already:  "\x0304✗\x03 \x02%nickname%\x02 zit al vast."
+
+# --- UNJAIL ----------------------------------------------------------------------
+unjail:
+  syntax:      "UNJAIL <nick>"
+  short:       "Laat een vastgezette gebruiker vrij."
+  help:        "Laat een met JAIL vastgezette gebruiker vrij: hij kan weer elk kanaal betreden.\nDit commando vereist de permissie operserv.jail."
+  example:     "/msg %bot% UNJAIL Gebruiker"
+  done:        "\x0303✓\x03 \x02%nickname%\x02 is vrijgelaten uit \x02%channel%\x02."
+  not_jailed:  "\x0304✗\x03 \x02%nickname%\x02 zit niet vast."
