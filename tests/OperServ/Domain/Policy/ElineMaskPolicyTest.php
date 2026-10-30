@@ -9,10 +9,22 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 #[CoversClass(ElineMaskPolicy::class)]
 final class ElineMaskPolicyTest extends TestCase
 {
+    #[Test]
+    public function cannotBeInstantiated(): void
+    {
+        $reflection = new ReflectionClass(ElineMaskPolicy::class);
+        $constructor = $reflection->getConstructor();
+
+        self::assertNotNull($constructor);
+        self::assertTrue($constructor->isPrivate());
+        $constructor->invoke($reflection->newInstanceWithoutConstructor());
+    }
+
     /** @return iterable<string, array{string, string, string, bool}> */
     public static function connections(): iterable
     {
