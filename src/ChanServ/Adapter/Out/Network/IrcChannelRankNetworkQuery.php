@@ -13,6 +13,7 @@ use App\Irc\Application\Port\In\ChannelLookupPort;
 use App\Irc\Application\Port\In\ChannelModeSupportInterface;
 use App\Irc\Application\Port\In\ChannelView;
 use App\Irc\Application\Port\In\NetworkUserLookupPort;
+use App\Irc\Application\Port\In\ServiceUidRegistry;
 use App\NickServ\Application\Port\In\NickAccountQuery;
 
 use function in_array;
@@ -26,6 +27,7 @@ final readonly class IrcChannelRankNetworkQuery implements ChannelRankNetworkQue
         private ActiveChannelModeSupportProviderInterface $modeSupportProvider,
         private ChannelRankModeMapper $rankMapper,
         private string $chanservNick,
+        private ServiceUidRegistry $serviceUids,
     ) {}
 
     public function findChannel(string $channelName): ?ChannelRankNetworkState
@@ -73,7 +75,8 @@ final readonly class IrcChannelRankNetworkQuery implements ChannelRankNetworkQue
                 nickname: $user->nick,
                 identified: $user->isIdentified,
                 operator: $user->isOper,
-                service: 0 === strcasecmp($user->nick, $this->chanservNick),
+                // Every services bot, not only ChanServ: none of them is ever stripped.
+                service: 0 === strcasecmp($user->nick, $this->chanservNick) || null !== $this->serviceUids->getUidByUid($user->uid),
                 registeredNickId: $accountId,
                 currentRanks: $ranks,
             );

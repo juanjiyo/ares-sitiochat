@@ -13,6 +13,8 @@ use App\Irc\Application\Port\In\ChannelModeSupportInterface;
 use App\Irc\Application\Port\In\ChannelView;
 use App\Irc\Application\Port\In\NetworkUserLookupPort;
 use App\Irc\Application\Port\In\SenderView;
+use App\Irc\Application\Port\In\ServiceUidProviderInterface;
+use App\Irc\Application\Port\In\ServiceUidRegistry;
 use App\NickServ\Application\Port\In\NickAccountData;
 use App\NickServ\Application\Port\In\NickAccountQuery;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -46,6 +48,7 @@ final class IrcChannelRankNetworkQueryTest extends TestCase
                 ['uid' => 'Alias', 'roleLetter' => 'v'],
                 ['uid' => 'Pending', 'roleLetter' => 'q'],
                 ['uid' => 'Missing', 'roleLetter' => 'o'],
+                ['uid' => '003AAAAAB', 'roleLetter' => 'o'],
             ],
             modeParams: ['k' => 'secret'],
         ));
@@ -53,11 +56,13 @@ final class IrcChannelRankNetworkQueryTest extends TestCase
         $identified = new SenderView('U1', 'Alice', 'a', 'host', 'cloak', '', true);
         $unidentifiedService = new SenderView('U2', 'cHaNsErV', 's', 'host', 'cloak', '', false);
         $pendingUser = new SenderView('U3', 'PendingNick', 'p', 'host', 'cloak', '', true);
+        $operBot = new SenderView('003AAAAAB', 'OPeR', 'o', 'host', 'cloak', '', true);
         $users = $this->createStub(NetworkUserLookupPort::class);
         $users->method('findByUid')->willReturnCallback(
             static fn (string $uid): ?SenderView => match ($uid) {
                 'U1' => $identified,
                 'Pending' => $pendingUser,
+                '003AAAAAB' => $operBot,
                 default => null,
             },
         );
@@ -90,12 +95,13 @@ final class IrcChannelRankNetworkQueryTest extends TestCase
             $supportProvider,
             new ChannelRankModeMapper(),
             'ChanServ',
+            $this->serviceUids('003AAAAAB'),
         )->findChannel('#Case');
 
         self::assertNotNull($result);
         self::assertSame('#Case', $result->name);
         self::assertSame([ChannelRank::Owner, ChannelRank::Operator, ChannelRank::Voice], $result->supportedRanks);
-        self::assertCount(3, $result->members);
+        self::assertCount(4, $result->members);
         self::assertSame('U1', $result->members[0]->uid);
         self::assertTrue($result->members[0]->identified);
         self::assertSame(42, $result->members[0]->registeredNickId);
@@ -108,6 +114,9 @@ final class IrcChannelRankNetworkQueryTest extends TestCase
         self::assertTrue($result->members[2]->identified);
         self::assertNull($result->members[2]->registeredNickId);
         self::assertSame([ChannelRank::Owner], $result->members[2]->currentRanks);
+        self::assertFalse($result->members[2]->service);
+        self::assertSame('OPeR', $result->members[3]->nickname);
+        self::assertTrue($result->members[3]->service);
     }
 
     private function query(ChannelLookupPort $channels): IrcChannelRankNetworkQuery
@@ -119,6 +128,16 @@ final class IrcChannelRankNetworkQueryTest extends TestCase
             $this->createStub(ActiveChannelModeSupportProviderInterface::class),
             new ChannelRankModeMapper(),
             'ChanServ',
+            $this->serviceUids('003AAAAAB'),
         );
+    }
+
+    private function serviceUids(string $uid): ServiceUidRegistry
+    {
+        $provider = $this->createStub(ServiceUidProviderInterface::class);
+        $provider->method('getServiceKey')->willReturn('operserv');
+        $provider->method('getUid')->willReturn($uid);
+
+        return ServiceUidRegistry::fromIterable([$provider]);
     }
 }
