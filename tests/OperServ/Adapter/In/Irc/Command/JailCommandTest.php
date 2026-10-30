@@ -86,12 +86,13 @@ final class JailCommandTest extends TestCase
     public function jailsAUserIntoTheJailChannelOnlyAndReleasesThemOutOfIt(): void
     {
         $jailed = $this->run_(new JailCommand($this->handler()), 'Target');
+        $afterJail = $this->network->calls;
 
         self::assertSame([
             ['join', 'UID1', '#Sumidero'],
             ['part', 'UID1', '#SitioChat'],
             ['part', 'UID1', '#Zamora'],
-        ], $this->network->calls);
+        ], $afterJail);
         self::assertTrue($this->roster->contains('UID1'));
         self::assertSame([['jail.done', ['%nickname%' => 'Target', '%channel%' => '#Sumidero']]], $jailed);
         self::assertSame('JAIL', $this->audit->records[0]->operation);
@@ -103,12 +104,17 @@ final class JailCommandTest extends TestCase
         $released = $this->run_(new UnjailCommand($this->handler()), 'Target');
         self::assertSame([['unjail.done', ['%nickname%' => 'Target', '%channel%' => '#Sumidero']]], $released);
         self::assertFalse($this->roster->contains('UID1'));
-        self::assertSame(['part', 'UID1', '#sumidero'], $this->network->calls[3]);
-        self::assertCount(4, $this->network->calls);
+        $afterRelease = [
+            ['join', 'UID1', '#Sumidero'],
+            ['part', 'UID1', '#SitioChat'],
+            ['part', 'UID1', '#Zamora'],
+            ['part', 'UID1', '#sumidero'],
+        ];
+        self::assertSame($afterRelease, $this->network->calls);
         self::assertSame('UNJAIL', $this->audit->records[1]->operation);
 
         self::assertSame([['unjail.not_jailed', ['%nickname%' => 'Target', '%channel%' => '#Sumidero']]], $this->run_(new UnjailCommand($this->handler()), 'Target'));
-        self::assertCount(4, $this->network->calls);
+        self::assertSame($afterRelease, $this->network->calls);
     }
 
     #[Test]
