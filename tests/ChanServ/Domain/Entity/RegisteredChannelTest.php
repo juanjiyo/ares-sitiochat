@@ -333,6 +333,18 @@ final class RegisteredChannelTest extends TestCase
     }
 
     #[Test]
+    public function interestGeneralIsOffByDefaultAndCanBeToggled(): void
+    {
+        $channel = RegisteredChannel::register(new DateTimeImmutable(), '#Madrid', 1, 'Desc');
+
+        self::assertFalse($channel->isInterestGeneral());
+        $channel->changeInterestGeneral(true);
+        self::assertTrue($channel->isInterestGeneral());
+        $channel->changeInterestGeneral(false);
+        self::assertFalse($channel->isInterestGeneral());
+    }
+
+    #[Test]
     public function isNoExpireReturnsFalseByDefault(): void
     {
         $channel = RegisteredChannel::register(new DateTimeImmutable(), '#test', 1, 'Desc');

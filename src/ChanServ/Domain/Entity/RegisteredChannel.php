@@ -77,6 +77,9 @@ class RegisteredChannel
 
     private bool $noExpire = false;
 
+    /** Interés General (IG): a network-promoted channel the administration may take over. */
+    private bool $interestGeneral = false;
+
     private ?DateTimeImmutable $lastUsedAt = null;
 
     private DateTimeImmutable $createdAt;
@@ -456,6 +459,16 @@ class RegisteredChannel
     public function changeNoExpire(bool $noExpire): void
     {
         $this->noExpire = $noExpire;
+    }
+
+    public function isInterestGeneral(): bool
+    {
+        return $this->interestGeneral;
+    }
+
+    public function changeInterestGeneral(bool $interestGeneral): void
+    {
+        $this->interestGeneral = $interestGeneral;
     }
 
     private static function assertValidEntrymsg(string $entrymsg): void

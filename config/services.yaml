@@ -1630,6 +1630,9 @@ services:
     App\ChanServ\Application\Port\In\ChannelRegistration:
         alias: App\ChanServ\Application\Service\ApprovedChannelRegistrationService
 
+    App\ChanServ\Application\Port\In\ChannelAdministration:
+        alias: App\ChanServ\Application\Service\ChannelAdministrationService
+
     App\MemoServ\Adapter\In\Irc\MemoServService:
         arguments:
             $serviceNicks: '@App\Irc\Application\Port\In\ServiceNicknameRegistry'

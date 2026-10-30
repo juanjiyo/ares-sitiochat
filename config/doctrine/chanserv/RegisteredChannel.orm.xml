@@ -44,6 +44,7 @@
         <field name="suspendedUntil" type="datetime_immutable" nullable="true" column="suspended_until"/>
         <field name="forbiddenReason" type="string" length="255" nullable="true" column="forbidden_reason"/>
         <field name="noExpire" type="boolean" column="no_expire"/>
+        <field name="interestGeneral" type="boolean" column="interest_general"/>
         <field name="pendingDeletionAt" type="datetime_immutable" nullable="true" column="pending_deletion_at"/>
     </entity>
 </doctrine-mapping>
