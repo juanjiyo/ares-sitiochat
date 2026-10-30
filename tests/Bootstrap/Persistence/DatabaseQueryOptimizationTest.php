@@ -58,8 +58,7 @@ final class DatabaseQueryOptimizationTest extends TestCase
             __DIR__ . '/../../../config/doctrine/nickserv' => 'App\\NickServ\\Domain\\Entity',
             __DIR__ . '/../../../config/doctrine/chanserv' => 'App\\ChanServ\\Domain\\Entity',
         ]));
-        $config->setProxyDir(__DIR__ . '/../../../var/cache/test/Proxies');
-        $config->setProxyNamespace('App\\Tests\\Proxies');
+        $config->enableNativeLazyObjects(true);
         $this->logger = new QueryCaptureLogger();
         $config->setMiddlewares([new Middleware($this->logger)]);
         $dsn = getenv('ARES_QUERY_TEST_DATABASE_URL');

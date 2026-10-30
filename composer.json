@@ -15,22 +15,22 @@
         "ext-pdo_sqlite": "*",
         "amphp/amp": "^3.1",
         "amphp/socket": "^2.4",
-        "doctrine/doctrine-bundle": "3.2.*",
+        "doctrine/doctrine-bundle": "3.3.*",
         "doctrine/doctrine-migrations-bundle": "4.0.*",
-        "doctrine/orm": "3.6.*",
-        "symfony/console": "7.4.*",
-        "symfony/doctrine-messenger": "7.4.*",
-        "symfony/dotenv": "7.4.*",
-        "symfony/flex": "2.10.*",
-        "symfony/framework-bundle": "7.4.*",
-        "symfony/lock": "7.4.*",
-        "symfony/mailer": "7.4.*",
-        "symfony/messenger": "7.4.*",
-        "symfony/monolog-bundle": "4.0.*",
-        "symfony/runtime": "7.4.*",
-        "symfony/security-core": "7.4.*",
-        "symfony/translation": "7.4.*",
-        "symfony/yaml": "7.4.*"
+        "doctrine/orm": "3.7.*",
+        "symfony/console": "8.1.*",
+        "symfony/doctrine-messenger": "8.1.*",
+        "symfony/dotenv": "8.1.*",
+        "symfony/flex": "2.12.*",
+        "symfony/framework-bundle": "8.1.*",
+        "symfony/lock": "8.1.*",
+        "symfony/mailer": "8.1.*",
+        "symfony/messenger": "8.1.*",
+        "symfony/monolog-bundle": "4.1.*",
+        "symfony/runtime": "8.1.*",
+        "symfony/security-core": "8.1.*",
+        "symfony/translation": "8.1.*",
+        "symfony/yaml": "8.1.*"
     },
     "config": {
         "allow-plugins": {
@@ -87,7 +87,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "7.4.*",
+            "require": "8.1.*",
             "docker": false
         }
     },

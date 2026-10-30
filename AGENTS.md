@@ -10,8 +10,8 @@ for the current task; do not load every skill by default.
 ## 1. Project Baseline
 
 - PHP >= 8.5
-- Symfony 7.4
-- Doctrine ORM 3.6
+- Symfony 8.1
+- Doctrine ORM 3.7
 - PHPUnit 13
 - PHPStan 2.x at `--level=max`
 - PHP-CS-Fixer with `.php-cs-fixer.dist.php`

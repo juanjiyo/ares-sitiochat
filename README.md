@@ -1,7 +1,7 @@
 # Ares IRC Services
 
 [![PHP](https://img.shields.io/badge/PHP-8.5-777BB4?style=flat&logo=php)](https://php.net)
-[![Symfony](https://img.shields.io/badge/Symfony-7.4-black?style=flat&logo=symfony)](https://symfony.com)
+[![Symfony](https://img.shields.io/badge/Symfony-8.1-black?style=flat&logo=symfony)](https://symfony.com)
 [![License](https://img.shields.io/badge/license-AGPL--3.0--or--later-blue.svg)](LICENSE)
 [![Coverage](https://codecov.io/gh/davidlig/ares-irc-services/branch/main/graph/badge.svg)](https://codecov.io/gh/davidlig/ares-irc-services)
 [![Release](https://img.shields.io/github/v/release/davidlig/ares-irc-services?include_prereleases&label=release)](https://github.com/davidlig/ares-irc-services/releases)
@@ -9,7 +9,7 @@
 
 > **Under active development.** Functionality and APIs may change.
 
-A modular, protocol-agnostic IRC services daemon built with **PHP 8.5**, **Symfony 7.4**, **Doctrine ORM 3.6**, and **Clean Architecture / DDD** principles. Ships with NickServ, ChanServ, MemoServ, and OperServ — all protocol-independent via a strategy pattern backed by a tagged-service registry.
+A modular, protocol-agnostic IRC services daemon built with **PHP 8.5**, **Symfony 8.1**, **Doctrine ORM 3.7**, and **Clean Architecture / DDD** principles. Ships with NickServ, ChanServ, MemoServ, and OperServ — all protocol-independent via a strategy pattern backed by a tagged-service registry.
 
 ---
 

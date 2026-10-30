@@ -47,9 +47,7 @@ abstract class DoctrineIntegrationTestCase extends TestCase
             __DIR__ . '/../../config/doctrine/unreal_udb' => 'App\Irc\Adapter\Protocol\UnrealUdb\Model',
         ]));
 
-        $config->setProxyDir(__DIR__ . '/../../var/cache/test/Proxies');
-        $config->setProxyNamespace('App\Tests\Proxies');
-        $config->setAutoGenerateProxyClasses(true);
+        $config->enableNativeLazyObjects(true);
 
         $connection = DriverManager::getConnection([
             'driver' => 'pdo_sqlite',
