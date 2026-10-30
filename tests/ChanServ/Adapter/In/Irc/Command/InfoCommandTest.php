@@ -32,6 +32,8 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use function array_key_last;
+use function array_slice;
 use function is_string;
 
 #[CoversClass(InfoCommand::class)]
@@ -257,7 +259,7 @@ final class InfoCommandTest extends TestCase
     }
 
     #[Test]
-    public function showsUrlAndEmailAfterTopicAndTopicSetter(): void
+    public function showsTopicBeforeUrlAndEmail(): void
     {
         $channel = RegisteredChannel::register(new DateTimeImmutable(), '#Test', 1, 'Desc');
         $channel->updateUrl('https://example.com');
@@ -278,38 +280,15 @@ final class InfoCommandTest extends TestCase
         $this->createCommand($channelRepo, $nickRepo)->execute($this->createContext(['#Test'], $notifier, $translator));
 
         self::assertLessThan(array_search('info.url', $messages, true), array_search('info.topic', $messages, true));
-        self::assertLessThan(array_search('info.url', $messages, true), array_search('info.topic_set_by', $messages, true));
-        self::assertLessThan(array_search('info.email', $messages, true), array_search('info.topic_set_by', $messages, true));
+        self::assertLessThan(array_search('info.topic_set_at', $messages, true), array_search('info.topic_set_by', $messages, true));
+        self::assertLessThan(array_search('info.url', $messages, true), array_search('info.topic_set_at', $messages, true));
+        self::assertLessThan(array_search('info.email', $messages, true), array_search('info.url', $messages, true));
     }
 
     #[Test]
-    public function omitsOptionsWhenAllChannelOptionsAreOff(): void
+    public function listsEveryOptionAsOffByDefault(): void
     {
         $channel = RegisteredChannel::register(new DateTimeImmutable(), '#Test', 1, 'Desc');
-        $channelRepo = $this->createStub(RegisteredChannelRepositoryInterface::class);
-        $channelRepo->method('findByChannelName')->willReturn($channel);
-        $nickRepo = $this->createStub(ChanUserAccountPort::class);
-        $nickRepo->method('findAccountById')->willReturn(new ChanAccountView(1, 'FounderNick', 'en'));
-        $messages = [];
-        $notifier = $this->createStub(ChanServNotifierInterface::class);
-        $notifier->method('sendMessage')->willReturnCallback(static function (string $target, string $message) use (&$messages): void {
-            $messages[] = $message;
-        });
-        $translator = $this->createStub(TranslatorInterface::class);
-        $translator->method('trans')->willReturnCallback(static fn (string $id): string => $id);
-
-        $this->createCommand($channelRepo, $nickRepo)->execute($this->createContext(['#Test'], $notifier, $translator));
-
-        self::assertNotContains('info.options', $messages);
-    }
-
-    #[Test]
-    public function showsOnlyEnabledChannelOptions(): void
-    {
-        $channel = RegisteredChannel::register(new DateTimeImmutable(), '#Test', 1, 'Desc');
-        $channel->configureTopicLock(true);
-        $channel->configureMlock(true, '+nt');
-        $channel->configureSecure(true);
         $channelRepo = $this->createStub(RegisteredChannelRepositoryInterface::class);
         $channelRepo->method('findByChannelName')->willReturn($channel);
         $nickRepo = $this->createStub(ChanUserAccountPort::class);
@@ -321,14 +300,53 @@ final class InfoCommandTest extends TestCase
         });
         $translator = $this->createStub(TranslatorInterface::class);
         $translator->method('trans')->willReturnCallback(static function (string $id, array $parameters = []): string {
-            $options = $parameters['%options%'] ?? '';
+            $option = $parameters['%option%'] ?? null;
+            $state = $parameters['%state%'] ?? '';
 
-            return $id . ':' . (is_string($options) ? $options : '');
+            return is_string($option) && is_string($state) ? $id . ':' . $option . '=' . $state : $id;
         });
 
         $this->createCommand($channelRepo, $nickRepo)->execute($this->createContext(['#Test'], $notifier, $translator));
 
-        self::assertContains('info.options:TOPICLOCK, MLOCK, SECURE', $messages);
+        self::assertContains('info.options_header', $messages);
+        foreach (['TOPICLOCK', 'SECURE', 'KEEPTOPIC', 'PRIVATE', 'IRCOPONLY', 'NOEXPIRE'] as $option) {
+            self::assertContains('info.option_line:' . $option . '=info.option_off', $messages);
+        }
+        self::assertNotContains('info.interest_general', $messages);
+        self::assertNotContains('info.entrymsg', $messages);
+    }
+
+    #[Test]
+    public function showsEnabledOptionsAsOn(): void
+    {
+        $channel = RegisteredChannel::register(new DateTimeImmutable(), '#Test', 1, 'Desc');
+        $channel->configureTopicLock(true);
+        $channel->configureMlock(true, '+nt');
+        $channel->configureSecure(true);
+        $channel->configureKeepTopic(true);
+        $channelRepo = $this->createStub(RegisteredChannelRepositoryInterface::class);
+        $channelRepo->method('findByChannelName')->willReturn($channel);
+        $nickRepo = $this->createStub(ChanUserAccountPort::class);
+        $nickRepo->method('findAccountById')->willReturn(new ChanAccountView(1, 'FounderNick', 'en'));
+        $messages = [];
+        $notifier = $this->createStub(ChanServNotifierInterface::class);
+        $notifier->method('sendMessage')->willReturnCallback(static function (string $target, string $message) use (&$messages): void {
+            $messages[] = $message;
+        });
+        $translator = $this->createStub(TranslatorInterface::class);
+        $translator->method('trans')->willReturnCallback(static function (string $id, array $parameters = []): string {
+            $option = $parameters['%option%'] ?? null;
+            $state = $parameters['%state%'] ?? '';
+
+            return is_string($option) && is_string($state) ? $id . ':' . $option . '=' . $state : $id;
+        });
+
+        $this->createCommand($channelRepo, $nickRepo)->execute($this->createContext(['#Test'], $notifier, $translator));
+
+        foreach (['TOPICLOCK', 'SECURE', 'KEEPTOPIC'] as $option) {
+            self::assertContains('info.option_line:' . $option . '=info.option_on', $messages);
+        }
+        self::assertContains('info.option_line:PRIVATE=info.option_off', $messages);
     }
 
     #[Test]
@@ -347,14 +365,15 @@ final class InfoCommandTest extends TestCase
         });
         $translator = $this->createStub(TranslatorInterface::class);
         $translator->method('trans')->willReturnCallback(static function (string $id, array $parameters = []): string {
-            $options = $parameters['%options%'] ?? '';
+            $option = $parameters['%option%'] ?? null;
+            $state = $parameters['%state%'] ?? '';
 
-            return $id . ':' . (is_string($options) ? $options : '');
+            return is_string($option) && is_string($state) ? $id . ':' . $option . '=' . $state : $id;
         });
 
         $this->createCommand($channelRepo, $nickRepo)->execute($this->createContext(['#Test'], $notifier, $translator));
 
-        self::assertContains('info.options:IRCOPONLY', $messages);
+        self::assertContains('info.option_line:IRCOPONLY=info.option_on', $messages);
     }
 
     #[Test]
@@ -814,52 +833,59 @@ final class InfoCommandTest extends TestCase
     }
 
     #[Test]
-    public function showsNoExpireLineWhenNoExpireIsOn(): void
+    public function showsNoExpireAsOnWhenEnabled(): void
     {
         $channel = RegisteredChannel::register(new DateTimeImmutable(), '#Test', 1, 'Desc');
         $channel->changeNoExpire(true);
         $channelRepo = $this->createStub(RegisteredChannelRepositoryInterface::class);
         $channelRepo->method('findByChannelName')->willReturn($channel);
-        $founder = new ChanAccountView(1, 'FounderNick', 'en');
         $nickRepo = $this->createStub(ChanUserAccountPort::class);
-        $nickRepo->method('findAccountById')->willReturn($founder);
-
-        $rawMessages = [];
+        $nickRepo->method('findAccountById')->willReturn(new ChanAccountView(1, 'FounderNick', 'en'));
+        $messages = [];
         $notifier = $this->createStub(ChanServNotifierInterface::class);
-        $notifier->method('sendMessage')->willReturnCallback(static function (string $t, string $m) use (&$rawMessages): void {
-            $rawMessages[] = $m;
+        $notifier->method('sendMessage')->willReturnCallback(static function (string $target, string $message) use (&$messages): void {
+            $messages[] = $message;
         });
         $translator = $this->createStub(TranslatorInterface::class);
-        $translator->method('trans')->willReturnCallback(static fn (string $id): string => $id);
+        $translator->method('trans')->willReturnCallback(static function (string $id, array $parameters = []): string {
+            $option = $parameters['%option%'] ?? null;
+            $state = $parameters['%state%'] ?? '';
 
-        $cmd = $this->createCommand($channelRepo, $nickRepo);
-        $cmd->execute($this->createContext(['#Test'], $notifier, $translator));
+            return is_string($option) && is_string($state) ? $id . ':' . $option . '=' . $state : $id;
+        });
 
-        self::assertContains('info.no_expire', $rawMessages);
+        $this->createCommand($channelRepo, $nickRepo)->execute($this->createContext(['#Test'], $notifier, $translator));
+
+        self::assertContains('info.option_line:NOEXPIRE=info.option_on', $messages);
     }
 
     #[Test]
-    public function doesNotShowNoExpireLineWhenNoExpireIsOff(): void
+    public function showsStatusGeneralInterestAndEntryMessage(): void
     {
         $channel = RegisteredChannel::register(new DateTimeImmutable(), '#Test', 1, 'Desc');
+        $channel->changeInterestGeneral(true);
+        $channel->updateEntrymsg('Bienvenid@');
         $channelRepo = $this->createStub(RegisteredChannelRepositoryInterface::class);
         $channelRepo->method('findByChannelName')->willReturn($channel);
-        $founder = new ChanAccountView(1, 'FounderNick', 'en');
         $nickRepo = $this->createStub(ChanUserAccountPort::class);
-        $nickRepo->method('findAccountById')->willReturn($founder);
-
-        $rawMessages = [];
+        $nickRepo->method('findAccountById')->willReturn(new ChanAccountView(1, 'FounderNick', 'en'));
+        $messages = [];
         $notifier = $this->createStub(ChanServNotifierInterface::class);
-        $notifier->method('sendMessage')->willReturnCallback(static function (string $t, string $m) use (&$rawMessages): void {
-            $rawMessages[] = $m;
+        $notifier->method('sendMessage')->willReturnCallback(static function (string $target, string $message) use (&$messages): void {
+            $messages[] = $message;
         });
         $translator = $this->createStub(TranslatorInterface::class);
-        $translator->method('trans')->willReturnCallback(static fn (string $id): string => $id);
+        $translator->method('trans')->willReturnCallback(static function (string $id, array $parameters = []): string {
+            $value = $parameters['%message%'] ?? $parameters['%channel%'] ?? null;
 
-        $cmd = $this->createCommand($channelRepo, $nickRepo);
-        $cmd->execute($this->createContext(['#Test'], $notifier, $translator));
+            return is_string($value) ? $id . ':' . $value : $id;
+        });
 
-        self::assertNotContains('info.no_expire', $rawMessages);
+        $this->createCommand($channelRepo, $nickRepo)->execute($this->createContext(['#Test'], $notifier, $translator));
+
+        self::assertSame(['info.header:#Test', 'info.status_registered', 'info.interest_general', 'info.founder'], array_slice($messages, 0, 4));
+        self::assertContains('info.entrymsg:Bienvenid@', $messages);
+        self::assertSame('info.footer:#Test', $messages[array_key_last($messages)]);
     }
 
     #[Test]

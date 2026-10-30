@@ -12,14 +12,14 @@ use App\ChanServ\Application\UseCase\ShowInfo\ShowChannelInfoHandlerInterface;
 use App\ChanServ\Domain\Exception\ChannelNotRegisteredException;
 use DateTimeImmutable;
 
-use function implode;
 use function str_contains;
 
 /**
  * INFO <#channel>.
  *
- * Shows channel info: founder, successor, url, email, description,
- * last used, last topic, TOPICLOCK, MLOCK, SECURE, IRCOPONLY.
+ * Shows channel info in the ChatHispano layout: status, general interest,
+ * founder, successor, description, dates, topic, entry message, url, email,
+ * every option as on/off and the locked modes.
  */
 final readonly class InfoCommand implements ChanServCommandInterface
 {
@@ -148,7 +148,7 @@ final readonly class InfoCommand implements ChanServCommandInterface
         $this->presentHeader($context, $channelName);
         $context->replyRaw($context->trans('info.forbidden_status'));
         $this->presentOptionalLine($context, 'info.forbidden_reason', '%reason%', $info->forbiddenReason);
-        $this->presentFooter($context);
+        $this->presentFooter($context, $channelName);
     }
 
     private function presentPendingDeletion(ChanServContext $context, string $channelName, ChannelInfoView $info): void
@@ -158,7 +158,7 @@ final readonly class InfoCommand implements ChanServCommandInterface
         $this->presentOptionalDate($context, 'info.pending_deletion_at', $info->pendingDeletionAt);
         $this->presentOptionalDate($context, 'info.pending_deletion_until', $info->pendingDeletionUntil);
         $context->replyRaw($context->trans('info.pending_deletion_notice'));
-        $this->presentFooter($context);
+        $this->presentFooter($context, $channelName);
     }
 
     private function presentRegisteredChannel(ChanServContext $context, string $channelName, ChannelInfoView $info): void
@@ -166,17 +166,22 @@ final readonly class InfoCommand implements ChanServCommandInterface
         $canShowTopic = $this->canShowTopic($context, $info);
 
         $this->presentHeader($context, $channelName);
-        $this->presentSuspendedStatus($context, $info);
+        $this->presentStatus($context, $info);
+        if ($info->interestGeneral) {
+            $context->replyRaw($context->trans('info.interest_general'));
+        }
         $this->presentChannelIdentity($context, $info);
         $context->replyRaw($context->trans('info.last_used', [
             '%date%' => $context->formatDate($info->lastUsedAt),
         ]));
         $this->presentTopic($context, $info, $canShowTopic);
+        if ('' !== $info->entrymsg) {
+            $context->replyRaw($context->trans('info.entrymsg', ['%message%' => $info->entrymsg]));
+        }
         $this->presentContactDetails($context, $info);
+        $this->presentOptions($context, $info);
         $this->presentMlockModes($context, $info);
-        $this->presentEnabledOptions($context, $info);
-        $this->presentNoExpire($context, $info);
-        $this->presentFooter($context);
+        $this->presentFooter($context, $channelName);
     }
 
     private function presentHeader(ChanServContext $context, string $channelName): void
@@ -184,14 +189,16 @@ final readonly class InfoCommand implements ChanServCommandInterface
         $context->replyRaw($context->trans('info.header', ['%channel%' => $channelName]));
     }
 
-    private function presentFooter(ChanServContext $context): void
+    private function presentFooter(ChanServContext $context, string $channelName): void
     {
-        $context->replyRaw($context->trans('info.footer'));
+        $context->replyRaw($context->trans('info.footer', ['%channel%' => $channelName]));
     }
 
-    private function presentSuspendedStatus(ChanServContext $context, ChannelInfoView $info): void
+    private function presentStatus(ChanServContext $context, ChannelInfoView $info): void
     {
         if (!$info->suspended) {
+            $context->replyRaw($context->trans('info.status_registered'));
+
             return;
         }
 
@@ -227,6 +234,7 @@ final readonly class InfoCommand implements ChanServCommandInterface
 
         $context->replyRaw($context->trans('info.topic', ['%topic%' => $info->topic]));
         $this->presentOptionalLine($context, 'info.topic_set_by', '%nickname%', $info->lastTopicSetByNick);
+        $this->presentOptionalDate($context, 'info.topic_set_at', $info->lastTopicSetAt);
     }
 
     private function presentContactDetails(ChanServContext $context, ChannelInfoView $info): void
@@ -245,36 +253,23 @@ final readonly class InfoCommand implements ChanServCommandInterface
         $context->replyRaw($context->trans('info.mlock_modes', ['%modes%' => $modesDisplay]));
     }
 
-    private function presentEnabledOptions(ChanServContext $context, ChannelInfoView $info): void
+    private function presentOptions(ChanServContext $context, ChannelInfoView $info): void
     {
-        $enabledOptions = [];
-        if ($info->topicLock) {
-            $enabledOptions[] = 'TOPICLOCK';
+        $context->replyRaw($context->trans('info.options_header'));
+        $options = [
+            'TOPICLOCK' => $info->topicLock,
+            'SECURE' => $info->secure,
+            'KEEPTOPIC' => $info->keepTopic,
+            'PRIVATE' => $info->private,
+            'IRCOPONLY' => $info->ircopOnly,
+            'NOEXPIRE' => $info->noExpire,
+        ];
+        foreach ($options as $option => $enabled) {
+            $context->replyRaw($context->trans('info.option_line', [
+                '%option%' => $option,
+                '%state%' => $context->trans($enabled ? 'info.option_on' : 'info.option_off'),
+            ]));
         }
-        if ($info->mlockActive) {
-            $enabledOptions[] = 'MLOCK';
-        }
-        if ($info->secure) {
-            $enabledOptions[] = 'SECURE';
-        }
-        if ($info->ircopOnly) {
-            $enabledOptions[] = 'IRCOPONLY';
-        }
-
-        if ([] === $enabledOptions) {
-            return;
-        }
-
-        $context->replyRaw($context->trans('info.options', ['%options%' => implode(', ', $enabledOptions)]));
-    }
-
-    private function presentNoExpire(ChanServContext $context, ChannelInfoView $info): void
-    {
-        if (!$info->noExpire) {
-            return;
-        }
-
-        $context->replyRaw($context->trans('info.no_expire'));
     }
 
     private function presentOptionalDate(ChanServContext $context, string $key, ?DateTimeImmutable $date): void
