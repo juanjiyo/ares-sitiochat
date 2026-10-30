@@ -16,7 +16,7 @@ use function implode;
 use function strtoupper;
 
 /**
- * IG {ADD|DEL} <#channel> | IG LIST; IRC parsing and presentation only.
+ * IG {ADD|DEL|LIST} [#channel]; IRC parsing and presentation only.
  *
  * The registration is the normal one: IG only marks the channel in ChanServ as
  * Interés General, which is what lets the administration take it over with APODERA.

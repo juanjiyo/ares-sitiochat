@@ -130,7 +130,7 @@ help:
   unknown_command:  "\x0307✗\x03 Nieznana komenda \x02%command%\x02. Użyj \x0303/msg %bot% HELP\x03."
 
 ig:
-  syntax: "IG {ADD|DEL} <#kanał> | IG LIST"
+  syntax: "IG {ADD|DEL|LIST} [#kanał]"
   short: "Zarządza kanałami Interesu Ogólnego (IG)."
   help: "Oznacza lub usuwa oznaczenie zarejestrowanego kanału jako kanału Interesu Ogólnego (IG). Rejestracja kanału się nie zmienia: zapisywane jest tylko oznaczenie. Tylko kanały IG administracja może przejąć poleceniem APODERA. Potrzebujesz uprawnienia \x02cregserv.ig\x02."
   example: "/msg CReG IG ADD #Madrid"

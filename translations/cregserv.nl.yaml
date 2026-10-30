@@ -130,7 +130,7 @@ help:
   unknown_command:  "\x0307✗\x03 Onbekend commando \x02%command%\x02. Gebruik \x0303/msg %bot% HELP\x03."
 
 ig:
-  syntax: "IG {ADD|DEL} <#kanaal> | IG LIST"
+  syntax: "IG {ADD|DEL|LIST} [#kanaal]"
   short: "Beheert de kanalen van Algemeen Belang (IG)."
   help: "Markeert een geregistreerd kanaal als kanaal van Algemeen Belang (IG) of haalt de markering weg. De registratie van het kanaal verandert niet: alleen de markering wordt opgeslagen. Alleen IG-kanalen kan de administratie overnemen met APODERA. Je hebt de permissie \x02cregserv.ig\x02 nodig."
   example: "/msg CReG IG ADD #Madrid"

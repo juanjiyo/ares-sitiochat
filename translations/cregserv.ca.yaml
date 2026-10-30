@@ -130,7 +130,7 @@ help:
   unknown_command:  "\x0307✗\x03 Ordre desconeguda \x02%command%\x02. Utilitzeu \x0303/msg %bot% HELP\x03."
 
 ig:
-  syntax: "IG {ADD|DEL} <#canal> | IG LIST"
+  syntax: "IG {ADD|DEL|LIST} [#canal]"
   short: "Gestiona els canals d'Interès General (IG)."
   help: "Marca o desmarca un canal registrat com d'Interès General (IG). El registre del canal no canvia: només es desa la marca. Els canals IG són els únics que l'administració pot prendre amb APODERA. Necessites el permís \x02cregserv.ig\x02."
   example: "/msg CReG IG ADD #Madrid"

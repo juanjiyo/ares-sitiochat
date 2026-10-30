@@ -130,7 +130,7 @@ help:
   unknown_command:  "\x0307✗\x03 Commande inconnue \x02%command%\x02. Utilisez \x0303/msg %bot% HELP\x03."
 
 ig:
-  syntax: "IG {ADD|DEL} <#salon> | IG LIST"
+  syntax: "IG {ADD|DEL|LIST} [#salon]"
   short: "Gère les salons d'Intérêt Général (IG)."
   help: "Marque ou démarque un salon enregistré comme d'Intérêt Général (IG). L'enregistrement du salon ne change pas : seule la marque est enregistrée. Les salons IG sont les seuls que l'administration peut reprendre avec APODERA. Tu as besoin de la permission \x02cregserv.ig\x02."
   example: "/msg CReG IG ADD #Madrid"

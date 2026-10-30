@@ -130,7 +130,7 @@ help:
   unknown_command:  "\x0307✗\x03 Komando ezezaguna \x02%command%\x02. Erabili \x0303/msg %bot% HELP\x03."
 
 ig:
-  syntax: "IG {ADD|DEL} <#kanala> | IG LIST"
+  syntax: "IG {ADD|DEL|LIST} [#kanala]"
   short: "Interes Orokorreko (IG) kanalak kudeatzen ditu."
   help: "Erregistratutako kanal bat Interes Orokorrekotzat (IG) markatzen edo desmarkatzen du. Kanalaren erregistroa ez da aldatzen: marka bakarrik gordetzen da. IG kanalak dira administrazioak APODERA bidez har ditzakeen bakarrak. \x02cregserv.ig\x02 baimena behar duzu."
   example: "/msg CReG IG ADD #Madrid"
