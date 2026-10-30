@@ -97,7 +97,7 @@ final class UdbStoreInitializerTest extends TestCase
             ['david::pass' => 'crypt:' . self::BCRYPT_HASH, 'david::vhost' => 'david.example.net'],
             $this->records->blocks['N'],
         );
-        self::assertSame(['#chan::founder' => 'david'], UdbTestValues::logicalMap($this->records->recordsByBlock('C')));
+        self::assertSame(['#chan::founder' => 'david', '#chan::options' => '*8'], UdbTestValues::logicalMap($this->records->recordsByBlock('C')));
         self::assertSame(['G::*@bad.example::reason' => 'abuse'], UdbTestValues::logicalMap($this->records->recordsByBlock('K')));
         // I/S/L start empty and are never seeded from SQL.
         self::assertArrayNotHasKey('I', $this->records->blocks);

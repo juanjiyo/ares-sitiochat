@@ -283,10 +283,14 @@ final readonly class UdbRecordExporter
         return [];
     }
 
-    /** Channel option bitmask: MLOCK 2, TOPICLOCK 4, OPER_ONLY 16, SECURE_OPS 32. */
+    /** Channel option bitmask: MLOCK 2, TOPICLOCK 4, PERSISTENT 8 (+P), OPER_ONLY 16, SECURE_OPS 32. */
     public function channelOptions(ChannelProjection $channel): int
     {
         $options = 0;
+        // A registered channel is never destroyed, even when it is left empty.
+        if (!$channel->pendingDeletion && !$channel->forbidden) {
+            $options |= 8;
+        }
         if ($channel->mlockActive) {
             $options |= 2;
         }

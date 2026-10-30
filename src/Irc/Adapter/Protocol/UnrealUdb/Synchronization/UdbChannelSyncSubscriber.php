@@ -196,7 +196,7 @@ final class UdbChannelSyncSubscriber implements EventSubscriberInterface
 
     /**
      * Reconciles every options record after the UDB store initializer has run.
-     * This removes legacy PERSISTENT/+P (*8) bits from existing stores and
+     * This sets PERSISTENT/+P (*8) on every registered channel and
      * aligns suspension markers (including channels already pending deletion).
      */
     public function onNetworkSyncComplete(NetworkSyncCompleteEvent $event): void

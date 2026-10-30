@@ -247,7 +247,7 @@ final class UdbRecordExporterTest extends TestCase
             '#chan::founder' => 'founder',
             '#chan::topic' => 'Welcome',
             '#chan::modes' => '+nt',
-            '#chan::options' => '*6',
+            '#chan::options' => '*14',
         ], $records);
     }
 
@@ -268,8 +268,8 @@ final class UdbRecordExporterTest extends TestCase
 
         $records = $this->exporter->channelRecords($channel);
 
-        self::assertSame(['#suspended::suspend' => 'abuse'], $records);
-        self::assertSame(0, $this->exporter->channelOptions($channel));
+        self::assertSame(['#suspended::suspend' => 'abuse', '#suspended::options' => '*8'], $records);
+        self::assertSame(8, $this->exporter->channelOptions($channel));
     }
 
     #[Test]
@@ -277,7 +277,7 @@ final class UdbRecordExporterTest extends TestCase
     {
         $channel = $this->createChannel('#suspended', suspended: true);
 
-        self::assertSame(['#suspended::suspend' => '1'], $this->exporter->channelRecords($channel));
+        self::assertSame(['#suspended::suspend' => '1', '#suspended::options' => '*8'], $this->exporter->channelRecords($channel));
     }
 
     #[Test]
@@ -319,15 +319,15 @@ final class UdbRecordExporterTest extends TestCase
     #[Test]
     public function channelOptionsBitsMatchUdbSemantics(): void
     {
-        self::assertSame(0, $this->exporter->channelOptions($this->createChannel('#plain')));
-        self::assertSame(2, $this->exporter->channelOptions($this->createChannel('#m', mlockActive: true)));
-        self::assertSame(4, $this->exporter->channelOptions($this->createChannel('#t', topicLock: true)));
-        self::assertSame(6, $this->exporter->channelOptions($this->createChannel('#mt', mlockActive: true, topicLock: true)));
+        self::assertSame(8, $this->exporter->channelOptions($this->createChannel('#plain')));
+        self::assertSame(10, $this->exporter->channelOptions($this->createChannel('#m', mlockActive: true)));
+        self::assertSame(12, $this->exporter->channelOptions($this->createChannel('#t', topicLock: true)));
+        self::assertSame(14, $this->exporter->channelOptions($this->createChannel('#mt', mlockActive: true, topicLock: true)));
         self::assertSame(6, $this->exporter->channelOptions($this->createChannel('#pd', pendingDeletion: true, mlockActive: true, topicLock: true)));
-        self::assertSame(32, $this->exporter->channelOptions($this->createChannel('#secure', secure: true)));
-        self::assertSame(16, $this->exporter->channelOptions($this->createChannel('#opers', ircopOnly: true)));
-        self::assertSame(54, $this->exporter->channelOptions($this->createChannel('#all', mlockActive: true, topicLock: true, secure: true, ircopOnly: true)));
-        self::assertSame(32, $this->exporter->channelOptions($this->createChannel('#blocked', suspended: true, secure: true, ircopOnly: true)));
+        self::assertSame(40, $this->exporter->channelOptions($this->createChannel('#secure', secure: true)));
+        self::assertSame(24, $this->exporter->channelOptions($this->createChannel('#opers', ircopOnly: true)));
+        self::assertSame(62, $this->exporter->channelOptions($this->createChannel('#all', mlockActive: true, topicLock: true, secure: true, ircopOnly: true)));
+        self::assertSame(40, $this->exporter->channelOptions($this->createChannel('#blocked', suspended: true, secure: true, ircopOnly: true)));
         self::assertSame(0, $this->exporter->channelOptions($this->createChannel('#pending', pendingDeletion: true, ircopOnly: true)));
         self::assertSame(0, $this->exporter->channelOptions($this->createChannel('#forbidden', forbidden: true, ircopOnly: true)));
     }
@@ -447,10 +447,16 @@ final class UdbRecordExporterTest extends TestCase
             $this->createChannel('#second', suspended: true, suspensionReason: 'abuse'),
         ]);
         $secondSuspended = UdbPathCodec::encodePath(['#second', 'suspend']);
+        $firstOptions = UdbPathCodec::encodePath(['#first', 'options']);
+        $secondOptions = UdbPathCodec::encodePath(['#second', 'options']);
 
         self::assertNotNull($secondSuspended);
+        self::assertNotNull($firstOptions);
+        self::assertNotNull($secondOptions);
         self::assertTrue(UdbTestValues::typedMap(UdbBlock::Channels, [
+            $firstOptions => '*8',
             $secondSuspended => 'abuse',
+            $secondOptions => '*8',
         ]) == $this->exporter->encodedBlockRecords(UdbBlock::Channels));
     }
 
