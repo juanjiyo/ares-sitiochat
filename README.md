@@ -1,4 +1,4 @@
-# Ares IRC Services
+# Ares IRC Services for SitioChat (Based on: https://github.com/davidlig/ares-irc-services)
 
 [![PHP](https://img.shields.io/badge/PHP-8.5-777BB4?style=flat&logo=php)](https://php.net)
 [![Symfony](https://img.shields.io/badge/Symfony-8.1-black?style=flat&logo=symfony)](https://symfony.com)
@@ -69,8 +69,8 @@ Try the bots on our public test network:
 ## Quick Start
 
 ```bash
-git clone https://github.com/davidlig/ares-irc-services.git
-cd ares-irc-services
+git clone https://github.com/juanjiyo/ares-sitiochat.git
+cd ares-irc-sitiochat
 composer install
 cp .env .env.local
 # edit .env.local — set at minimum: IRC_LINK_PASSWORD, IRC_PROTOCOL, IRC_SERVER_SID
@@ -133,7 +133,7 @@ composer check-platform-reqs    # validate against composer.json
 ### 1. Clone
 
 ```bash
-git clone https://github.com/davidlig/ares-irc-services.git
+git clone https://github.com/juanjiyo/ares-sitiochat.git
 cd ares-irc-services
 ```
 
@@ -170,7 +170,7 @@ All variables live in `.env.local`. Required variables are marked with ⚠.
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `IRC_SERVER_NAME` | `ares-services.davidlig.net` | FQDN Ares presents to the IRCd |
+| `IRC_SERVER_NAME` | `irc.sitiochat.es` | FQDN Ares presents to the IRCd |
 | `IRC_IRCD_HOST` | `127.0.0.1` | IRCd hostname or IP |
 | `IRC_IRCD_PORT` | `7000` | IRCd server-link listener port |
 | `IRC_LINK_PASSWORD` | `pass` | ⚠ Shared link password |
@@ -184,7 +184,7 @@ All variables live in `.env.local`. Required variables are marked with ⚠.
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `IRC_SERVICES_VHOST` | `services.davidlig.net` | Virtual host for service pseudo-clients |
+| `IRC_SERVICES_VHOST` | `bots.sitiochat.es` | Virtual host for service pseudo-clients |
 | `SERVICES_DEFAULT_LANGUAGE` | `en` | Default language for service replies (`ca`, `de`, `el`, `en`, `es`, `eu`, `fr`, `gl`, `it`, `nl`, `pl`, `pt`, `ro`, `tr`) |
 | `SERVICES_DEFAULT_TIMEZONE` | `UTC` | Default timezone for date display |
 
