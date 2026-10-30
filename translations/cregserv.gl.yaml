@@ -132,7 +132,7 @@ help:
 ig:
   syntax: "IG {ADD|DEL|LIST} [#canle]"
   short: "Xestiona as canles de Interese Xeral (IG)."
-  help: "Marca ou desmarca unha canle rexistrada como de Interese Xeral (IG). O rexistro da canle non cambia: só se garda a marca. As canles IG son as únicas que a administración pode tomar con APODERA. Necesitas o permiso \x02cregserv.ig\x02."
+  help: "Marca ou desmarca unha canle rexistrada como de Interese Xeral (IG). O rexistro da canle non cambia: só se garda a marca. Para tomalas, usa APODERA IG. Necesitas o permiso \x02cregserv.ig\x02."
   example: "/msg CReG IG ADD #Madrid"
   not_registered: "\x0304✗\x03 A canle \x02%channel%\x02 non está rexistrada."
   add:
@@ -155,13 +155,14 @@ ig:
     empty: "Non hai canles de Interese Xeral."
 
 apodera:
-  syntax: "APODERA <#canle> [nick]"
-  short: "Toma unha canle de Interese Xeral para a administración."
-  help: "Cambia o fundador dunha canle de Interese Xeral (IG) ao nick indicado ou, se non o indicas, a ti. Serve para intervir unha canle ou para recuperala cando ao fundador lle caduca o nick. Só funciona con canles IG (ver IG) e non aplica o límite de canles por nick. Necesitas o permiso \x02cregserv.apodera\x02."
-  example: "/msg CReG APODERA #Madrid SitioChat"
+  syntax: "APODERA [IG] <#canle> [nick]"
+  short: "Toma unha canle para a administración."
+  help: "Cambia o fundador da canle ao nick indicado ou, se non o indicas, a ti, e quita +q, +a, +o e +h a todos menos aos bots. Usa APODERA para as canles normais e APODERA IG para as de Interese Xeral (ver IG). Serve para intervir unha canle ou para recuperala cando ao fundador lle caduca o nick, e non aplica o límite de canles por nick. Necesitas o permiso \x02cregserv.apodera\x02."
+  example: "/msg CReG APODERA IG #Madrid SitioChat"
   done: "\x0303✔\x03 A canle \x02%channel%\x02 ten agora como fundador a \x02%nickname%\x02."
   already_founder: "\x0304✗\x03 \x02%nickname%\x02 xa é o fundador de \x02%channel%\x02."
   not_registered: "\x0304✗\x03 A canle \x02%channel%\x02 non está rexistrada."
-  not_ig: "\x0304✗\x03 A canle \x02%channel%\x02 non é de Interese Xeral: APODERA só se pode usar en canles IG."
+  not_ig: "\x0304✗\x03 A canle \x02%channel%\x02 non é de Interese Xeral: usa APODERA %channel%."
+  is_ig: "\x0304✗\x03 A canle \x02%channel%\x02 é de Interese Xeral: usa APODERA IG %channel%."
   founder_not_registered: "\x0304✗\x03 O nick \x02%nickname%\x02 non está rexistrado."
   founder_suspended: "\x0304✗\x03 O nick \x02%nickname%\x02 está suspendido."

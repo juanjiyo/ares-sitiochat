@@ -132,7 +132,7 @@ help:
 ig:
   syntax: "IG {ADD|DEL|LIST} [#canale]"
   short: "Gestisce i canali di Interesse Generale (IG)."
-  help: "Contrassegna o rimuove il contrassegno di un canale registrato come di Interesse Generale (IG). La registrazione del canale non cambia: viene salvato solo il contrassegno. I canali IG sono gli unici che l'amministrazione può prendere con APODERA. Ti serve il permesso \x02cregserv.ig\x02."
+  help: "Contrassegna o rimuove il contrassegno di un canale registrato come di Interesse Generale (IG). La registrazione del canale non cambia: viene salvato solo il contrassegno. Per prenderli, usa APODERA IG. Ti serve il permesso \x02cregserv.ig\x02."
   example: "/msg CReG IG ADD #Madrid"
   not_registered: "\x0304✗\x03 Il canale \x02%channel%\x02 non è registrato."
   add:
@@ -155,13 +155,14 @@ ig:
     empty: "Non ci sono canali di Interesse Generale."
 
 apodera:
-  syntax: "APODERA <#canale> [nick]"
-  short: "Prende un canale di Interesse Generale per l'amministrazione."
-  help: "Cambia il fondatore di un canale di Interesse Generale (IG) nel nick indicato o, se non lo indichi, in te. Serve per intervenire su un canale o per recuperarlo quando il nick del fondatore scade. Funziona solo sui canali IG (vedi IG) e non applica il limite di canali per nick. Ti serve il permesso \x02cregserv.apodera\x02."
-  example: "/msg CReG APODERA #Madrid SitioChat"
+  syntax: "APODERA [IG] <#canale> [nick]"
+  short: "Prende un canale per l'amministrazione."
+  help: "Cambia il fondatore del canale nel nick indicato o, se non lo indichi, in te, e toglie +q, +a, +o e +h a tutti tranne ai bot. Usa APODERA per i canali normali e APODERA IG per quelli di Interesse Generale (vedi IG). Serve per intervenire su un canale o per recuperarlo quando il nick del fondatore scade, e non applica il limite di canali per nick. Ti serve il permesso \x02cregserv.apodera\x02."
+  example: "/msg CReG APODERA IG #Madrid SitioChat"
   done: "\x0303✔\x03 Il canale \x02%channel%\x02 ha ora come fondatore \x02%nickname%\x02."
   already_founder: "\x0304✗\x03 \x02%nickname%\x02 è già il fondatore di \x02%channel%\x02."
   not_registered: "\x0304✗\x03 Il canale \x02%channel%\x02 non è registrato."
-  not_ig: "\x0304✗\x03 Il canale \x02%channel%\x02 non è di Interesse Generale: APODERA funziona solo sui canali IG."
+  not_ig: "\x0304✗\x03 Il canale \x02%channel%\x02 non è di Interesse Generale: usa APODERA %channel%."
+  is_ig: "\x0304✗\x03 Il canale \x02%channel%\x02 è di Interesse Generale: usa APODERA IG %channel%."
   founder_not_registered: "\x0304✗\x03 Il nick \x02%nickname%\x02 non è registrato."
   founder_suspended: "\x0304✗\x03 Il nick \x02%nickname%\x02 è sospeso."

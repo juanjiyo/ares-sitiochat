@@ -13,12 +13,16 @@ use App\Irc\Application\Port\In\Command\CommandOutcome;
 use App\Irc\Application\Port\In\Command\IrcopAuditData;
 use DateTimeImmutable;
 
+use function array_slice;
+use function strtoupper;
+
 /**
- * APODERA <#channel> [nickname]; IRC parsing and presentation only.
+ * APODERA [IG] <#channel> [nickname]; IRC parsing and presentation only.
  *
- * The administration takes an Interés General channel over: its founder becomes the
- * given nickname or, without one, the operator. For interventions, or when the
- * founder's nickname expired. Only IG channels can be taken.
+ * The administration takes a channel over: its founder becomes the given nickname or,
+ * without one, the operator, and every user but the services loses +q, +a, +o and +h.
+ * For interventions, or when the founder's nickname expired. Plain APODERA is for
+ * channels that are not Interés General; APODERA IG is for the IG ones.
  */
 final readonly class ApoderaCommand implements CRegServCommandInterface
 {
@@ -82,17 +86,26 @@ final readonly class ApoderaCommand implements CRegServCommandInterface
     public function execute(CRegServContext $context): ?CommandOutcome
     {
         $actor = $context->getSenderNickname() ?? '';
-        $channelName = $context->args[0];
-        $founder = $context->args[1] ?? $actor;
+        $interestGeneral = 'IG' === strtoupper($context->args[0]);
+        $args = $interestGeneral ? array_slice($context->args, 1) : $context->args;
+        if (!isset($args[0])) {
+            $context->reply('error.syntax', ['%syntax%' => $context->trans('apodera.syntax')]);
+
+            return null;
+        }
+
+        $channelName = $args[0];
+        $founder = $args[1] ?? $actor;
         $params = ['%channel%' => $channelName, '%nickname%' => $founder];
 
-        $outcome = $this->channels->takeOver($channelName, $founder, $actor, new DateTimeImmutable());
+        $outcome = $this->channels->takeOver($channelName, $interestGeneral, $founder, $actor, new DateTimeImmutable());
 
         $context->reply(match ($outcome) {
             ChannelAdministrationOutcome::Updated => 'apodera.done',
             ChannelAdministrationOutcome::Unchanged => 'apodera.already_founder',
             ChannelAdministrationOutcome::NotRegistered => 'apodera.not_registered',
             ChannelAdministrationOutcome::NotInterestGeneral => 'apodera.not_ig',
+            ChannelAdministrationOutcome::InterestGeneral => 'apodera.is_ig',
             ChannelAdministrationOutcome::FounderSuspended => 'apodera.founder_suspended',
             ChannelAdministrationOutcome::FounderNotRegistered => 'apodera.founder_not_registered',
         }, $params);

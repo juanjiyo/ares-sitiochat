@@ -13,6 +13,7 @@ enum ChannelAdministrationOutcome
     case NotRegistered;
 
     case NotInterestGeneral;
+    case InterestGeneral;
 
     case FounderNotRegistered;
 

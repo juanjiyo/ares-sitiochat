@@ -39,7 +39,7 @@ final class ApoderaCommandTest extends TestCase
     {
         $channels = $this->createMock(ChannelAdministration::class);
         $channels->expects(self::once())->method('takeOver')
-            ->with('#Madrid', 'SitioChat', 'NetAdmin', self::anything())
+            ->with('#Madrid', false, 'SitioChat', 'NetAdmin', self::anything())
             ->willReturn(ChannelAdministrationOutcome::Updated);
         $harness = new AdministrationCommandHarness();
 
@@ -55,13 +55,24 @@ final class ApoderaCommandTest extends TestCase
     {
         $channels = $this->createMock(ChannelAdministration::class);
         $channels->expects(self::once())->method('takeOver')
-            ->with('#Madrid', 'NetAdmin', 'NetAdmin', self::anything())
+            ->with('#Madrid', true, 'NetAdmin', 'NetAdmin', self::anything())
             ->willReturn(ChannelAdministrationOutcome::Updated);
         $harness = new AdministrationCommandHarness();
 
-        new ApoderaCommand($channels)->execute($harness->context('APODERA', ['#Madrid']));
+        new ApoderaCommand($channels)->execute($harness->context('APODERA', ['ig', '#Madrid']));
 
         self::assertSame([['apodera.done', ['%channel%' => '#Madrid', '%nickname%' => 'NetAdmin']]], $harness->replies);
+    }
+
+    #[Test]
+    public function asksForTheChannelAfterIg(): void
+    {
+        $channels = $this->createMock(ChannelAdministration::class);
+        $channels->expects(self::never())->method('takeOver');
+        $harness = new AdministrationCommandHarness();
+
+        self::assertNull(new ApoderaCommand($channels)->execute($harness->context('APODERA', ['IG'])));
+        self::assertSame(['apodera.syntax', 'error.syntax'], array_column($harness->replies, 0));
     }
 
     /** @return iterable<string, array{ChannelAdministrationOutcome, string}> */
@@ -70,6 +81,7 @@ final class ApoderaCommandTest extends TestCase
         yield 'already founder' => [ChannelAdministrationOutcome::Unchanged, 'apodera.already_founder'];
         yield 'not registered' => [ChannelAdministrationOutcome::NotRegistered, 'apodera.not_registered'];
         yield 'not IG' => [ChannelAdministrationOutcome::NotInterestGeneral, 'apodera.not_ig'];
+        yield 'is IG' => [ChannelAdministrationOutcome::InterestGeneral, 'apodera.is_ig'];
         yield 'founder not registered' => [ChannelAdministrationOutcome::FounderNotRegistered, 'apodera.founder_not_registered'];
         yield 'founder suspended' => [ChannelAdministrationOutcome::FounderSuspended, 'apodera.founder_suspended'];
     }

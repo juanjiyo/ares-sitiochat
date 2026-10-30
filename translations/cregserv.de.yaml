@@ -132,7 +132,7 @@ help:
 ig:
   syntax: "IG {ADD|DEL|LIST} [#Kanal]"
   short: "Verwaltet die Kanäle von allgemeinem Interesse (IG)."
-  help: "Markiert einen registrierten Kanal als Kanal von allgemeinem Interesse (IG) oder hebt die Markierung auf. Die Registrierung ändert sich nicht: nur die Markierung wird gespeichert. Nur IG-Kanäle kann die Administration mit APODERA übernehmen. Du benötigst die Berechtigung \x02cregserv.ig\x02."
+  help: "Markiert einen registrierten Kanal als Kanal von allgemeinem Interesse (IG) oder hebt die Markierung auf. Die Registrierung ändert sich nicht: nur die Markierung wird gespeichert. Zum Übernehmen nutze APODERA IG. Du benötigst die Berechtigung \x02cregserv.ig\x02."
   example: "/msg CReG IG ADD #Madrid"
   not_registered: "\x0304✗\x03 Der Kanal \x02%channel%\x02 ist nicht registriert."
   add:
@@ -155,13 +155,14 @@ ig:
     empty: "Es gibt keine Kanäle von allgemeinem Interesse."
 
 apodera:
-  syntax: "APODERA <#Kanal> [Nick]"
-  short: "Übernimmt einen IG-Kanal für die Administration."
-  help: "Ändert den Gründer eines Kanals von allgemeinem Interesse (IG) auf den angegebenen Nick oder, ohne Angabe, auf dich. Dient dazu, in einen Kanal einzugreifen oder ihn zurückzuholen, wenn der Nick des Gründers abläuft. Funktioniert nur bei IG-Kanälen (siehe IG) und ignoriert das Kanal-Limit pro Nick. Du benötigst die Berechtigung \x02cregserv.apodera\x02."
-  example: "/msg CReG APODERA #Madrid SitioChat"
+  syntax: "APODERA [IG] <#Kanal> [Nick]"
+  short: "Übernimmt einen Kanal für die Administration."
+  help: "Ändert den Gründer des Kanals auf den angegebenen Nick oder, ohne Angabe, auf dich und entfernt +q, +a, +o und +h bei allen außer den Bots. Nutze APODERA für normale Kanäle und APODERA IG für Kanäle von allgemeinem Interesse (siehe IG). Dient dazu, in einen Kanal einzugreifen oder ihn zurückzuholen, wenn der Nick des Gründers abläuft, und ignoriert das Kanal-Limit pro Nick. Du benötigst die Berechtigung \x02cregserv.apodera\x02."
+  example: "/msg CReG APODERA IG #Madrid SitioChat"
   done: "\x0303✔\x03 Der Kanal \x02%channel%\x02 hat jetzt \x02%nickname%\x02 als Gründer."
   already_founder: "\x0304✗\x03 \x02%nickname%\x02 ist bereits Gründer von \x02%channel%\x02."
   not_registered: "\x0304✗\x03 Der Kanal \x02%channel%\x02 ist nicht registriert."
-  not_ig: "\x0304✗\x03 Der Kanal \x02%channel%\x02 ist nicht von allgemeinem Interesse: APODERA funktioniert nur bei IG-Kanälen."
+  not_ig: "\x0304✗\x03 Der Kanal \x02%channel%\x02 ist nicht von allgemeinem Interesse: nutze APODERA %channel%."
+  is_ig: "\x0304✗\x03 Der Kanal \x02%channel%\x02 ist von allgemeinem Interesse: nutze APODERA IG %channel%."
   founder_not_registered: "\x0304✗\x03 Der Nick \x02%nickname%\x02 ist nicht registriert."
   founder_suspended: "\x0304✗\x03 Der Nick \x02%nickname%\x02 ist gesperrt."

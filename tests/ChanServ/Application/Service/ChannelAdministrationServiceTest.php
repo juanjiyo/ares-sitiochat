@@ -5,8 +5,13 @@ declare(strict_types=1);
 namespace App\Tests\ChanServ\Application\Service;
 
 use App\ChanServ\Application\Model\ChanAccountView;
+use App\ChanServ\Application\Model\ChannelMember;
+use App\ChanServ\Application\Model\ChannelRankNetworkState;
+use App\ChanServ\Application\Model\MemberRankChange;
 use App\ChanServ\Application\Port\In\ChannelAdministrationOutcome;
 use App\ChanServ\Application\Port\Out\ChannelAccessRepositoryInterface;
+use App\ChanServ\Application\Port\Out\ChannelRankActions;
+use App\ChanServ\Application\Port\Out\ChannelRankNetworkQuery;
 use App\ChanServ\Application\Port\Out\ChanServEventPublisher;
 use App\ChanServ\Application\Port\Out\ChanUserAccountPort;
 use App\ChanServ\Application\Port\Out\RegisteredChannelRepositoryInterface;
@@ -14,6 +19,8 @@ use App\ChanServ\Application\PublishedEvent\ChannelFounderChangedEvent;
 use App\ChanServ\Application\Service\ChannelAdministrationService;
 use App\ChanServ\Domain\Entity\ChannelAccess;
 use App\ChanServ\Domain\Entity\RegisteredChannel;
+use App\ChanServ\Domain\ValueObject\ChannelRank;
+use App\ChanServ\Domain\ValueObject\RankChangeAction;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -36,6 +43,11 @@ final class ChannelAdministrationServiceTest extends TestCase
     private array $removedAccess = [];
 
     private ?ChannelAccess $founderAccess = null;
+
+    private ?ChannelRankNetworkState $networkChannel = null;
+
+    /** @var list<array{string, list<MemberRankChange>}> */
+    private array $rankChanges = [];
 
     protected function setUp(): void
     {
@@ -83,7 +95,19 @@ final class ChannelAdministrationServiceTest extends TestCase
             $this->events[] = $event;
         });
 
-        return new ChannelAdministrationService($repository, $access, $accounts, $events);
+        $network = $this->createStub(ChannelRankNetworkQuery::class);
+        $network->method('findChannel')->willReturnCallback(fn (): ?ChannelRankNetworkState => $this->networkChannel);
+        $ranks = $this->createStub(ChannelRankActions::class);
+        $ranks->method('apply')->willReturnCallback(function (string $channel, array $changes): void {
+            $typed = [];
+            foreach ($changes as $change) {
+                self::assertInstanceOf(MemberRankChange::class, $change);
+                $typed[] = $change;
+            }
+            $this->rankChanges[] = [$channel, $typed];
+        });
+
+        return new ChannelAdministrationService($repository, $access, $accounts, $events, $network, $ranks);
     }
 
     #[Test]
@@ -116,7 +140,7 @@ final class ChannelAdministrationServiceTest extends TestCase
         $this->founderAccess = $this->createStub(ChannelAccess::class);
         $at = new DateTimeImmutable('2026-10-30 12:00:00');
 
-        self::assertSame(ChannelAdministrationOutcome::Updated, $this->service()->takeOver('#Madrid', 'SitioChat', 'NetAdmin', $at));
+        self::assertSame(ChannelAdministrationOutcome::Updated, $this->service()->takeOver('#Madrid', true, 'SitioChat', 'NetAdmin', $at));
 
         self::assertSame(7, $this->channels['#madrid']->getFounderNickId());
         self::assertSame([$this->channels['#madrid']], $this->saved);
@@ -133,7 +157,7 @@ final class ChannelAdministrationServiceTest extends TestCase
     #[Test]
     public function takeOverLeavesNoAccessEntryToRemoveWhenThereIsNone(): void
     {
-        self::assertSame(ChannelAdministrationOutcome::Updated, $this->service()->takeOver('#Sevilla', 'SitioChat', 'NetAdmin', new DateTimeImmutable()));
+        self::assertSame(ChannelAdministrationOutcome::Updated, $this->service()->takeOver('#Sevilla', true, 'SitioChat', 'NetAdmin', new DateTimeImmutable()));
         self::assertSame([], $this->removedAccess);
     }
 
@@ -143,13 +167,51 @@ final class ChannelAdministrationServiceTest extends TestCase
         $service = $this->service();
         $at = new DateTimeImmutable();
 
-        self::assertSame(ChannelAdministrationOutcome::NotRegistered, $service->takeOver('#nadie', 'SitioChat', 'NetAdmin', $at));
-        self::assertSame(ChannelAdministrationOutcome::NotInterestGeneral, $service->takeOver('#Casa', 'SitioChat', 'NetAdmin', $at));
-        self::assertSame(ChannelAdministrationOutcome::FounderNotRegistered, $service->takeOver('#Madrid', 'Ghost', 'NetAdmin', $at));
-        self::assertSame(ChannelAdministrationOutcome::FounderNotRegistered, $service->takeOver('#Madrid', 'Pending', 'NetAdmin', $at));
-        self::assertSame(ChannelAdministrationOutcome::FounderSuspended, $service->takeOver('#Madrid', 'Banned', 'NetAdmin', $at));
-        self::assertSame(ChannelAdministrationOutcome::Unchanged, $service->takeOver('#Madrid', 'Owner', 'NetAdmin', $at));
+        self::assertSame(ChannelAdministrationOutcome::NotRegistered, $service->takeOver('#nadie', true, 'SitioChat', 'NetAdmin', $at));
+        self::assertSame(ChannelAdministrationOutcome::NotInterestGeneral, $service->takeOver('#Casa', true, 'SitioChat', 'NetAdmin', $at));
+        self::assertSame(ChannelAdministrationOutcome::InterestGeneral, $service->takeOver('#Madrid', false, 'SitioChat', 'NetAdmin', $at));
+        self::assertSame(ChannelAdministrationOutcome::FounderNotRegistered, $service->takeOver('#Madrid', true, 'Ghost', 'NetAdmin', $at));
+        self::assertSame(ChannelAdministrationOutcome::FounderNotRegistered, $service->takeOver('#Madrid', true, 'Pending', 'NetAdmin', $at));
+        self::assertSame(ChannelAdministrationOutcome::FounderSuspended, $service->takeOver('#Madrid', true, 'Banned', 'NetAdmin', $at));
+        self::assertSame(ChannelAdministrationOutcome::Unchanged, $service->takeOver('#Madrid', true, 'Owner', 'NetAdmin', $at));
         self::assertSame([], $this->saved);
         self::assertSame([], $this->events);
+        self::assertSame([], $this->rankChanges);
+    }
+
+    #[Test]
+    public function takesAChannelThatIsNotInterestGeneralOverAndStripsStaffRanks(): void
+    {
+        $this->networkChannel = new ChannelRankNetworkState('#Casa', [
+            new ChannelMember('UID1', 'Dueño', true, false, false, 1, [ChannelRank::Owner, ChannelRank::Operator]),
+            new ChannelMember('UID2', 'Charla', false, false, false, null, [ChannelRank::Voice]),
+            new ChannelMember('UID3', 'Ayuda', true, false, false, 4, [ChannelRank::Administrator, ChannelRank::HalfOperator, ChannelRank::Voice]),
+            new ChannelMember('UID9', 'CHaN', true, true, true, null, [ChannelRank::Operator]),
+        ], ChannelRank::highestFirst());
+
+        self::assertSame(ChannelAdministrationOutcome::Updated, $this->service()->takeOver('#Casa', false, 'SitioChat', 'NetAdmin', new DateTimeImmutable()));
+
+        self::assertSame(7, $this->channels['#casa']->getFounderNickId());
+        self::assertCount(1, $this->rankChanges);
+        [$channel, $changes] = $this->rankChanges[0];
+        self::assertSame('#Casa', $channel);
+        self::assertSame(
+            [['UID1', ChannelRank::Owner], ['UID1', ChannelRank::Operator], ['UID3', ChannelRank::Administrator], ['UID3', ChannelRank::HalfOperator]],
+            array_map(static fn (MemberRankChange $change): array => [$change->uid, $change->change->rank], $changes),
+        );
+        foreach ($changes as $change) {
+            self::assertSame(RankChangeAction::Revoke, $change->change->action);
+        }
+    }
+
+    #[Test]
+    public function takeOverSendsNoModesWhenNobodyHoldsAStaffRank(): void
+    {
+        $this->networkChannel = new ChannelRankNetworkState('#Madrid', [
+            new ChannelMember('UID2', 'Charla', false, false, false, null, [ChannelRank::Voice]),
+        ], ChannelRank::highestFirst());
+
+        self::assertSame(ChannelAdministrationOutcome::Updated, $this->service()->takeOver('#Madrid', true, 'SitioChat', 'NetAdmin', new DateTimeImmutable()));
+        self::assertSame([], $this->rankChanges);
     }
 }

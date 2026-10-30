@@ -4,14 +4,20 @@ declare(strict_types=1);
 
 namespace App\ChanServ\Application\Service;
 
+use App\ChanServ\Application\Model\MemberRankChange;
 use App\ChanServ\Application\Port\In\ChannelAdministration;
 use App\ChanServ\Application\Port\In\ChannelAdministrationOutcome;
 use App\ChanServ\Application\Port\Out\ChannelAccessRepositoryInterface;
+use App\ChanServ\Application\Port\Out\ChannelRankActions;
+use App\ChanServ\Application\Port\Out\ChannelRankNetworkQuery;
 use App\ChanServ\Application\Port\Out\ChanServEventPublisher;
 use App\ChanServ\Application\Port\Out\ChanUserAccountPort;
 use App\ChanServ\Application\Port\Out\RegisteredChannelRepositoryInterface;
 use App\ChanServ\Application\PublishedEvent\ChannelFounderChangedEvent;
 use App\ChanServ\Domain\Entity\RegisteredChannel;
+use App\ChanServ\Domain\ValueObject\ChannelRank;
+use App\ChanServ\Domain\ValueObject\RankChange;
+use App\ChanServ\Domain\ValueObject\RankChangeAction;
 use DateTimeImmutable;
 
 use function sort;
@@ -26,6 +32,8 @@ final readonly class ChannelAdministrationService implements ChannelAdministrati
         private ChannelAccessRepositoryInterface $access,
         private ChanUserAccountPort $accounts,
         private ChanServEventPublisher $events,
+        private ChannelRankNetworkQuery $network,
+        private ChannelRankActions $ranks,
     ) {}
 
     public function markInterestGeneral(string $channelName, bool $interestGeneral): ChannelAdministrationOutcome
@@ -61,6 +69,7 @@ final readonly class ChannelAdministrationService implements ChannelAdministrati
 
     public function takeOver(
         string $channelName,
+        bool $interestGeneral,
         string $newFounderNickname,
         string $actorNickname,
         DateTimeImmutable $occurredAt,
@@ -70,8 +79,10 @@ final readonly class ChannelAdministrationService implements ChannelAdministrati
             return ChannelAdministrationOutcome::NotRegistered;
         }
 
-        if (!$channel->isInterestGeneral()) {
-            return ChannelAdministrationOutcome::NotInterestGeneral;
+        if ($channel->isInterestGeneral() !== $interestGeneral) {
+            return $interestGeneral
+                ? ChannelAdministrationOutcome::NotInterestGeneral
+                : ChannelAdministrationOutcome::InterestGeneral;
         }
 
         $founder = $this->accounts->findAccountByNick($newFounderNickname);
@@ -110,7 +121,34 @@ final readonly class ChannelAdministrationService implements ChannelAdministrati
             byOperator: true,
         ));
 
+        $this->stripStaffRanks($channel->getName());
+
         return ChannelAdministrationOutcome::Updated;
+    }
+
+    /** Removes +q, +a, +o and +h from every user in the channel except the services. */
+    private function stripStaffRanks(string $channelName): void
+    {
+        $state = $this->network->findChannel($channelName);
+        if (null === $state) {
+            return;
+        }
+
+        $changes = [];
+        foreach ($state->members as $member) {
+            if ($member->service) {
+                continue;
+            }
+            foreach ($member->currentRanks as $rank) {
+                if (ChannelRank::Voice !== $rank) {
+                    $changes[] = new MemberRankChange($member->uid, new RankChange($rank, RankChangeAction::Revoke));
+                }
+            }
+        }
+
+        if ([] !== $changes) {
+            $this->ranks->apply($channelName, $changes);
+        }
     }
 
     private function registered(string $channelName): ?RegisteredChannel

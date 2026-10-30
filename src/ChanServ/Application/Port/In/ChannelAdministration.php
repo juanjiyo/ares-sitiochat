@@ -10,7 +10,7 @@ use DateTimeImmutable;
  * Administrative changes to registered channels, decided by the network staff.
  *
  * Public entry point for CReG: the Interés General (IG) mark and APODERA, the takeover
- * of an IG channel by the administration.
+ * of a channel by the administration.
  */
 interface ChannelAdministration
 {
@@ -21,11 +21,14 @@ interface ChannelAdministration
     public function interestGeneralChannels(): array;
 
     /**
-     * Gives an Interés General channel to a new founder, without the founder's consent and
-     * without the per-nick channel limit: the administration is taking the channel over.
+     * Gives a channel to a new founder, without the founder's consent and without the
+     * per-nick channel limit, and strips +q, +a, +o and +h from every user but the services:
+     * the administration is taking the channel over. $interestGeneral says which kind of
+     * channel the operator meant; a channel of the other kind is refused.
      */
     public function takeOver(
         string $channelName,
+        bool $interestGeneral,
         string $newFounderNickname,
         string $actorNickname,
         DateTimeImmutable $occurredAt,

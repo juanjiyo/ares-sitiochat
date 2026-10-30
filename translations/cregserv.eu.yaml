@@ -132,7 +132,7 @@ help:
 ig:
   syntax: "IG {ADD|DEL|LIST} [#kanala]"
   short: "Interes Orokorreko (IG) kanalak kudeatzen ditu."
-  help: "Erregistratutako kanal bat Interes Orokorrekotzat (IG) markatzen edo desmarkatzen du. Kanalaren erregistroa ez da aldatzen: marka bakarrik gordetzen da. IG kanalak dira administrazioak APODERA bidez har ditzakeen bakarrak. \x02cregserv.ig\x02 baimena behar duzu."
+  help: "Erregistratutako kanal bat Interes Orokorrekotzat (IG) markatzen edo desmarkatzen du. Kanalaren erregistroa ez da aldatzen: marka bakarrik gordetzen da. Hartzeko, erabili APODERA IG. \x02cregserv.ig\x02 baimena behar duzu."
   example: "/msg CReG IG ADD #Madrid"
   not_registered: "\x0304✗\x03 \x02%channel%\x02 kanala ez dago erregistratuta."
   add:
@@ -155,13 +155,14 @@ ig:
     empty: "Ez dago Interes Orokorreko kanalik."
 
 apodera:
-  syntax: "APODERA <#kanala> [nick]"
-  short: "Interes Orokorreko kanal bat administraziorako hartzen du."
-  help: "Interes Orokorreko (IG) kanal baten sortzailea adierazitako nickera aldatzen du edo, adierazten ez baduzu, zuregana. Kanal batean esku hartzeko edo sortzailearen nicka iraungitzen denean berreskuratzeko balio du. IG kanaletan bakarrik dabil (ikus IG) eta ez du nick bakoitzeko kanal-muga aplikatzen. \x02cregserv.apodera\x02 baimena behar duzu."
-  example: "/msg CReG APODERA #Madrid SitioChat"
+  syntax: "APODERA [IG] <#kanala> [nick]"
+  short: "Kanal bat administrazioarentzat hartzen du."
+  help: "Kanalaren sortzailea adierazitako nickera aldatzen du edo, adierazten ez baduzu, zuregana, eta +q, +a, +o eta +h kentzen dizkie guztiei, botei izan ezik. Erabili APODERA kanal arruntetarako eta APODERA IG Interes Orokorrekoetarako (ikus IG). Kanal batean esku hartzeko edo sortzailearen nicka iraungitzen denean berreskuratzeko balio du, eta ez du nick bakoitzeko kanal-muga aplikatzen. \x02cregserv.apodera\x02 baimena behar duzu."
+  example: "/msg CReG APODERA IG #Madrid SitioChat"
   done: "\x0303✔\x03 \x02%channel%\x02 kanalaren sortzailea \x02%nickname%\x02 da orain."
   already_founder: "\x0304✗\x03 \x02%nickname%\x02 dagoeneko \x02%channel%\x02 kanalaren sortzailea da."
   not_registered: "\x0304✗\x03 \x02%channel%\x02 kanala ez dago erregistratuta."
-  not_ig: "\x0304✗\x03 \x02%channel%\x02 kanala ez da Interes Orokorrekoa: APODERA IG kanaletan bakarrik erabil daiteke."
+  not_ig: "\x0304✗\x03 \x02%channel%\x02 kanala ez da Interes Orokorrekoa: erabili APODERA %channel%."
+  is_ig: "\x0304✗\x03 \x02%channel%\x02 kanala Interes Orokorrekoa da: erabili APODERA IG %channel%."
   founder_not_registered: "\x0304✗\x03 \x02%nickname%\x02 nicka ez dago erregistratuta."
   founder_suspended: "\x0304✗\x03 \x02%nickname%\x02 nicka etenda dago."

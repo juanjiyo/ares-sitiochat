@@ -132,7 +132,7 @@ help:
 ig:
   syntax: "IG {ADD|DEL|LIST} [#kanaal]"
   short: "Beheert de kanalen van Algemeen Belang (IG)."
-  help: "Markeert een geregistreerd kanaal als kanaal van Algemeen Belang (IG) of haalt de markering weg. De registratie van het kanaal verandert niet: alleen de markering wordt opgeslagen. Alleen IG-kanalen kan de administratie overnemen met APODERA. Je hebt de permissie \x02cregserv.ig\x02 nodig."
+  help: "Markeert een geregistreerd kanaal als kanaal van Algemeen Belang (IG) of haalt de markering weg. De registratie van het kanaal verandert niet: alleen de markering wordt opgeslagen. Gebruik APODERA IG om ze over te nemen. Je hebt de permissie \x02cregserv.ig\x02 nodig."
   example: "/msg CReG IG ADD #Madrid"
   not_registered: "\x0304✗\x03 Het kanaal \x02%channel%\x02 is niet geregistreerd."
   add:
@@ -155,13 +155,14 @@ ig:
     empty: "Er zijn geen kanalen van Algemeen Belang."
 
 apodera:
-  syntax: "APODERA <#kanaal> [nick]"
-  short: "Neemt een kanaal van Algemeen Belang over voor de administratie."
-  help: "Wijzigt de oprichter van een kanaal van Algemeen Belang (IG) naar de opgegeven nick of, zonder nick, naar jou. Dient om in te grijpen in een kanaal of om het terug te halen als de nick van de oprichter verloopt. Werkt alleen op IG-kanalen (zie IG) en negeert de kanaallimiet per nick. Je hebt de permissie \x02cregserv.apodera\x02 nodig."
-  example: "/msg CReG APODERA #Madrid SitioChat"
+  syntax: "APODERA [IG] <#kanaal> [nick]"
+  short: "Neemt een kanaal over voor de administratie."
+  help: "Wijzigt de oprichter van het kanaal naar de opgegeven nick of, zonder nick, naar jou, en haalt +q, +a, +o en +h weg bij iedereen behalve de bots. Gebruik APODERA voor gewone kanalen en APODERA IG voor kanalen van Algemeen Belang (zie IG). Dient om in te grijpen in een kanaal of om het terug te halen als de nick van de oprichter verloopt, en negeert de kanaallimiet per nick. Je hebt de permissie \x02cregserv.apodera\x02 nodig."
+  example: "/msg CReG APODERA IG #Madrid SitioChat"
   done: "\x0303✔\x03 Het kanaal \x02%channel%\x02 heeft nu \x02%nickname%\x02 als oprichter."
   already_founder: "\x0304✗\x03 \x02%nickname%\x02 is al de oprichter van \x02%channel%\x02."
   not_registered: "\x0304✗\x03 Het kanaal \x02%channel%\x02 is niet geregistreerd."
-  not_ig: "\x0304✗\x03 Het kanaal \x02%channel%\x02 is niet van Algemeen Belang: APODERA werkt alleen op IG-kanalen."
+  not_ig: "\x0304✗\x03 Het kanaal \x02%channel%\x02 is niet van Algemeen Belang: gebruik APODERA %channel%."
+  is_ig: "\x0304✗\x03 Het kanaal \x02%channel%\x02 is van Algemeen Belang: gebruik APODERA IG %channel%."
   founder_not_registered: "\x0304✗\x03 De nick \x02%nickname%\x02 is niet geregistreerd."
   founder_suspended: "\x0304✗\x03 De nick \x02%nickname%\x02 is geschorst."

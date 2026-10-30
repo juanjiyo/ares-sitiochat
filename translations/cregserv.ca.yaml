@@ -132,7 +132,7 @@ help:
 ig:
   syntax: "IG {ADD|DEL|LIST} [#canal]"
   short: "Gestiona els canals d'Interès General (IG)."
-  help: "Marca o desmarca un canal registrat com d'Interès General (IG). El registre del canal no canvia: només es desa la marca. Els canals IG són els únics que l'administració pot prendre amb APODERA. Necessites el permís \x02cregserv.ig\x02."
+  help: "Marca o desmarca un canal registrat com d'Interès General (IG). El registre del canal no canvia: només es desa la marca. Per prendre’ls, fes servir APODERA IG. Necessites el permís \x02cregserv.ig\x02."
   example: "/msg CReG IG ADD #Madrid"
   not_registered: "\x0304✗\x03 El canal \x02%channel%\x02 no està registrat."
   add:
@@ -155,13 +155,14 @@ ig:
     empty: "No hi ha canals d'Interès General."
 
 apodera:
-  syntax: "APODERA <#canal> [nick]"
-  short: "Pren un canal d'Interès General per a l'administració."
-  help: "Canvia el fundador d'un canal d'Interès General (IG) al nick indicat o, si no n'indiques cap, a tu. Serveix per intervenir un canal o per recuperar-lo quan al fundador li caduca el nick. Només funciona amb canals IG (vegeu IG) i no aplica el límit de canals per nick. Necessites el permís \x02cregserv.apodera\x02."
-  example: "/msg CReG APODERA #Madrid SitioChat"
+  syntax: "APODERA [IG] <#canal> [nick]"
+  short: "Pren un canal per a l'administració."
+  help: "Canvia el fundador del canal al nick indicat o, si no n'indiques cap, a tu, i treu +q, +a, +o i +h a tothom menys als bots. Fes servir APODERA per als canals normals i APODERA IG per als d'Interès General (vegeu IG). Serveix per intervenir un canal o per recuperar-lo quan al fundador li caduca el nick, i no aplica el límit de canals per nick. Necessites el permís \x02cregserv.apodera\x02."
+  example: "/msg CReG APODERA IG #Madrid SitioChat"
   done: "\x0303✔\x03 El canal \x02%channel%\x02 té ara com a fundador \x02%nickname%\x02."
   already_founder: "\x0304✗\x03 \x02%nickname%\x02 ja és el fundador de \x02%channel%\x02."
   not_registered: "\x0304✗\x03 El canal \x02%channel%\x02 no està registrat."
-  not_ig: "\x0304✗\x03 El canal \x02%channel%\x02 no és d'Interès General: APODERA només es pot fer servir en canals IG."
+  not_ig: "\x0304✗\x03 El canal \x02%channel%\x02 no és d'Interès General: fes servir APODERA %channel%."
+  is_ig: "\x0304✗\x03 El canal \x02%channel%\x02 és d'Interès General: fes servir APODERA IG %channel%."
   founder_not_registered: "\x0304✗\x03 El nick \x02%nickname%\x02 no està registrat."
   founder_suspended: "\x0304✗\x03 El nick \x02%nickname%\x02 està suspès."

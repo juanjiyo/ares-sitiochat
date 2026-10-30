@@ -132,7 +132,7 @@ help:
 ig:
   syntax: "IG {ADD|DEL|LIST} [#salon]"
   short: "Gère les salons d'Intérêt Général (IG)."
-  help: "Marque ou démarque un salon enregistré comme d'Intérêt Général (IG). L'enregistrement du salon ne change pas : seule la marque est enregistrée. Les salons IG sont les seuls que l'administration peut reprendre avec APODERA. Tu as besoin de la permission \x02cregserv.ig\x02."
+  help: "Marque ou démarque un salon enregistré comme d'Intérêt Général (IG). L'enregistrement du salon ne change pas : seule la marque est enregistrée. Pour les reprendre, utilise APODERA IG. Tu as besoin de la permission \x02cregserv.ig\x02."
   example: "/msg CReG IG ADD #Madrid"
   not_registered: "\x0304✗\x03 Le salon \x02%channel%\x02 n'est pas enregistré."
   add:
@@ -155,13 +155,14 @@ ig:
     empty: "Il n'y a aucun salon d'Intérêt Général."
 
 apodera:
-  syntax: "APODERA <#salon> [pseudo]"
-  short: "Reprend un salon d'Intérêt Général pour l'administration."
-  help: "Change le fondateur d'un salon d'Intérêt Général (IG) pour le pseudo indiqué ou, sans pseudo, pour toi. Sert à intervenir sur un salon ou à le récupérer quand le pseudo du fondateur expire. Ne fonctionne que sur les salons IG (voir IG) et ignore la limite de salons par pseudo. Tu as besoin de la permission \x02cregserv.apodera\x02."
-  example: "/msg CReG APODERA #Madrid SitioChat"
+  syntax: "APODERA [IG] <#salon> [pseudo]"
+  short: "Prend un salon pour l'administration."
+  help: "Change le fondateur du salon pour le pseudo indiqué ou, sans pseudo, pour toi, et retire +q, +a, +o et +h à tout le monde sauf aux bots. Utilise APODERA pour les salons normaux et APODERA IG pour ceux d'Intérêt Général (voir IG). Sert à intervenir sur un salon ou à le récupérer quand le pseudo du fondateur expire, et ignore la limite de salons par pseudo. Tu as besoin de la permission \x02cregserv.apodera\x02."
+  example: "/msg CReG APODERA IG #Madrid SitioChat"
   done: "\x0303✔\x03 Le salon \x02%channel%\x02 a désormais \x02%nickname%\x02 comme fondateur."
   already_founder: "\x0304✗\x03 \x02%nickname%\x02 est déjà le fondateur de \x02%channel%\x02."
   not_registered: "\x0304✗\x03 Le salon \x02%channel%\x02 n'est pas enregistré."
-  not_ig: "\x0304✗\x03 Le salon \x02%channel%\x02 n'est pas d'Intérêt Général : APODERA ne fonctionne que sur les salons IG."
+  not_ig: "\x0304✗\x03 Le salon \x02%channel%\x02 n'est pas d'Intérêt Général : utilise APODERA %channel%."
+  is_ig: "\x0304✗\x03 Le salon \x02%channel%\x02 est d'Intérêt Général : utilise APODERA IG %channel%."
   founder_not_registered: "\x0304✗\x03 Le pseudo \x02%nickname%\x02 n'est pas enregistré."
   founder_suspended: "\x0304✗\x03 Le pseudo \x02%nickname%\x02 est suspendu."
