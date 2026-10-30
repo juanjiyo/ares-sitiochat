@@ -565,7 +565,7 @@ eline:
     short:    "Compte les E-Lines."
     help:     "Indique combien d'E-Lines sont actives."
     example:  "/msg %bot% ELINE COUNT"
-    result:   "Il y a \x02%count%\x02 E-Lines actives."
+    result:   "\x0310ℹ\x03 E-Lines actives: \x02%count%\x02."
   clear:
     syntax:   "ELINE CLEAR"
     short:    "Supprime toutes les E-Lines."

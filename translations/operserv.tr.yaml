@@ -565,7 +565,7 @@ eline:
     short:    "E-Line'ları sayar."
     help:     "Kaç E-Line'ın etkin olduğunu gösterir."
     example:  "/msg %bot% ELINE COUNT"
-    result:   "\x02%count%\x02 etkin E-Line var."
+    result:   "\x0310ℹ\x03 Etkin E-Line: \x02%count%\x02."
   clear:
     syntax:   "ELINE CLEAR"
     short:    "Tüm E-Line'ları siler."

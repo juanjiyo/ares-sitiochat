@@ -565,7 +565,7 @@ eline:
     short:    "Μετρά τις E-Lines."
     help:     "Εμφανίζει πόσες E-Lines είναι ενεργές."
     example:  "/msg %bot% ELINE COUNT"
-    result:   "Υπάρχουν \x02%count%\x02 ενεργές E-Lines."
+    result:   "\x0310ℹ\x03 Ενεργές E-Lines: \x02%count%\x02."
   clear:
     syntax:   "ELINE CLEAR"
     short:    "Διαγράφει όλες τις E-Lines."
