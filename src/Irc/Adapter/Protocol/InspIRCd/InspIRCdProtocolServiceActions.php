@@ -155,6 +155,11 @@ final readonly class InspIRCdProtocolServiceActions implements ProtocolServiceAc
         $this->write('' === $reason ? $line : $line . ' :' . $reason);
     }
 
+    public function forceUserMode(string $serverSid, string $targetUid, string $modes): void
+    {
+        $this->write(sprintf(':%s MODE %s %s', $serverSid, $targetUid, $modes));
+    }
+
     public function addBanException(string $serverSid, string $userMask, string $hostMask, string $setBy, int $setAt, int $expireAt, string $banTypes, string $reason): void
     {
         $duration = 0 === $expireAt ? 0 : max(1, $expireAt - $setAt);

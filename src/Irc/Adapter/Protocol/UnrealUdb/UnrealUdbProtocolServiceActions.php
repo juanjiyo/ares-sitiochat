@@ -169,6 +169,11 @@ final readonly class UnrealUdbProtocolServiceActions implements ProtocolServiceA
         $this->write('' === $reason ? $line : $line . ' :' . $reason);
     }
 
+    public function forceUserMode(string $serverSid, string $targetUid, string $modes): void
+    {
+        $this->write(sprintf(':%s SVS2MODE %s %s', $serverSid, $targetUid, $modes));
+    }
+
     public function addBanException(string $serverSid, string $userMask, string $hostMask, string $setBy, int $setAt, int $expireAt, string $banTypes, string $reason): void
     {
         $this->write(sprintf(':%s TKL + E %s %s %s %d %d %s :%s', $serverSid, $userMask, $hostMask, $setBy, $expireAt, $setAt, $banTypes, $reason));

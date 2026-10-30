@@ -556,6 +556,16 @@ final class InspIRCdProtocolServiceActionsTest extends TestCase
     }
 
     #[Test]
+    public function forceUserModeChangesTheModesRightAway(): void
+    {
+        $actions = new InspIRCdProtocolServiceActions($this->connectionHolder);
+
+        $actions->forceUserMode('001', '001ABCD', '+x-w');
+
+        self::assertSame([':001 MODE 001ABCD +x-w'], $this->written);
+    }
+
+    #[Test]
     public function forcePartUsesSvspartWithAndWithoutReason(): void
     {
         $actions = new InspIRCdProtocolServiceActions($this->connectionHolder);

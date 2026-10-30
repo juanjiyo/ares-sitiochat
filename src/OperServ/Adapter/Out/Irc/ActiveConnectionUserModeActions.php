@@ -24,7 +24,7 @@ final readonly class ActiveConnectionUserModeActions implements UserModeNetworkA
             return false;
         }
 
-        $module->getServiceActions()->setUserMode($serverSid, $targetUid, $modes);
+        $module->getServiceActions()->forceUserMode($serverSid, $targetUid, $modes);
         $this->networkUsers->applyModeChange($targetUid, $modes);
 
         return true;

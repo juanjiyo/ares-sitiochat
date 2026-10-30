@@ -619,6 +619,16 @@ final class UnrealUdbProtocolServiceActionsTest extends TestCase
     }
 
     #[Test]
+    public function forceUserModeChangesTheModesRightAway(): void
+    {
+        $actions = $this->createActions();
+
+        $actions->forceUserMode('001', '001ABCD', '+x-w');
+
+        self::assertSame([':001 SVS2MODE 001ABCD +x-w'], $this->written);
+    }
+
+    #[Test]
     public function forcePartUsesSvspartWithAndWithoutReason(): void
     {
         $actions = $this->createActions();

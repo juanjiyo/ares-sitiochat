@@ -77,6 +77,16 @@ interface ProtocolServiceActionsInterface
     public function forcePart(string $serverSid, string $targetUid, string $channelName, string $reason = ''): void;
 
     /**
+     * Change a user's modes right away, for an operator command (Unreal: SVS2MODE, InspIRCd: MODE).
+     * Unlike setUserMode, it is never left to UDB records.
+     *
+     * @param string $serverSid Server SID (source of the command)
+     * @param string $targetUid UID of the user
+     * @param string $modes     Mode change (e.g., +x-w)
+     */
+    public function forceUserMode(string $serverSid, string $targetUid, string $modes): void;
+
+    /**
      * Add a ban exception (E-Line): users matching user@host skip the given ban types.
      *
      * @param int    $expireAt Unix time it expires at, 0 when permanent

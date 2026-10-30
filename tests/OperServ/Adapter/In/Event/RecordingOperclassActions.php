@@ -53,6 +53,8 @@ final class RecordingOperclassActions implements ProtocolServiceActionsInterface
 
     public function forcePart(string $serverSid, string $targetUid, string $channelName, string $reason = ''): void {}
 
+    public function forceUserMode(string $serverSid, string $targetUid, string $modes): void {}
+
     public function addBanException(string $serverSid, string $userMask, string $hostMask, string $setBy, int $setAt, int $expireAt, string $banTypes, string $reason): void {}
 
     public function removeBanException(string $serverSid, string $userMask, string $hostMask, string $removedBy): void {}

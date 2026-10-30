@@ -20,7 +20,7 @@ final class ActiveConnectionUserModeActionsTest extends TestCase
     public function sendsTheModesAndMirrorsThemLocally(): void
     {
         $actions = $this->createMock(ProtocolServiceActionsInterface::class);
-        $actions->expects(self::once())->method('setUserMode')->with('001', 'U1', '+R-w');
+        $actions->expects(self::once())->method('forceUserMode')->with('001', 'U1', '+R-w');
         $module = $this->createStub(ProtocolModuleInterface::class);
         $module->method('getServiceActions')->willReturn($actions);
         $connection = $this->createStub(ActiveProtocolModuleHolderInterface::class);
