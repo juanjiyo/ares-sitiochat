@@ -37,7 +37,7 @@ final class UnrealStandaloneServiceIntroductionFormatterTest extends TestCase
         self::assertStringContainsString('services', $line);
         self::assertStringContainsString('services.test.local', $line);
         self::assertStringContainsString('001ABCD', $line);
-        self::assertStringContainsString('+dIopqS', $line);
+        self::assertStringContainsString('+BHdIopqrS', $line);
         self::assertStringContainsString(':Nickname Service', $line);
     }
 
@@ -71,7 +71,7 @@ final class UnrealStandaloneServiceIntroductionFormatterTest extends TestCase
         );
 
         self::assertMatchesRegularExpression(
-            '/^:003 UID MemoServ 1 \d+ services services\.test\.local 003IJKL 0 \+dIopqRS \* \* \* :Memo Service$/',
+            '/^:003 UID MemoServ 1 \d+ services services\.test\.local 003IJKL 0 \+BHdIopqrRS \* \* \* :Memo Service$/',
             $line
         );
     }

@@ -13,11 +13,11 @@ use function sprintf;
 final readonly class UnrealStandaloneServiceIntroductionFormatter
 {
     private const array SERVICE_UMODES = [
-        'nickserv' => '+dIopqS',
-        'chanserv' => '+dIopqS',
-        'memoserv' => '+dIopqRS',
-        'cregserv' => '+dIopqS',
-        'operserv' => '+dIopqRS',
+        'nickserv' => '+BHdIopqrS',
+        'chanserv' => '+BHdIopqrS',
+        'memoserv' => '+BHdIopqrRS',
+        'cregserv' => '+BHdIopqrS',
+        'operserv' => '+BHdIopqrRS',
     ];
 
     public function formatIntroduction(
@@ -30,7 +30,7 @@ final readonly class UnrealStandaloneServiceIntroductionFormatter
         string $serviceName,
     ): string {
         $ts = time();
-        $umodes = self::SERVICE_UMODES[$serviceName] ?? '+Siod';
+        $umodes = self::SERVICE_UMODES[$serviceName] ?? '+BHSdioqr';
 
         return sprintf(
             ':%s UID %s 1 %d %s %s %s 0 %s * * * :%s',
