@@ -65,7 +65,7 @@ final class NetworkEventTranslator
         'SMO', 'EOS', 'TKL', 'GLOBOPS', 'DBQ', 'DB', 'NETINFO',
         // UnrealIRCd 6 additions: metadata, server info, GLOBOPS' new name, and
         // SASL, whose payload is a credential.
-        'MD', 'SINFO', 'SENDUMODE', 'SASL', 'SVSLOGIN', 'ERROR', 'CAPAB',
+        'MD', 'SINFO', 'REPUTATION', 'SENDUMODE', 'SASL', 'SVSLOGIN', 'ERROR', 'CAPAB',
     ];
 
     /** @var array<string, string> SID => server name */
