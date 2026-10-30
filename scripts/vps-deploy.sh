@@ -12,7 +12,7 @@
 #   2. stops irc:connect gracefully (SIGTERM to the php process, not its bash wrapper);
 #   3. backs up var/data and .env.local into ~/backups;
 #   4. swaps the directories (the old one is kept as ares-sitiochat.old-<timestamp>);
-#   5. clears the cache, prints the pending migrations and starts irc:connect again;
+#   5. clears the cache, applies the pending migrations and starts irc:connect again;
 #   6. reports the introduced service bots and the errors logged since the restart.
 set -euo pipefail
 
@@ -75,6 +75,8 @@ cp -a "$OLD"/var/data "$OLD"/var/log "$OLD"/var/ares.log "$LIVE"/var/
 cd "$LIVE"
 php bin/console cache:clear --env=prod -q
 php bin/console doctrine:migrations:status --no-interaction 2>&1 | grep -E "\| New" | head -1
+# The backup above already holds var/data, so pending migrations are applied before the start.
+php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration 2>&1 | grep -E "Migrating|migrated|No migrations|ERROR" || true
 START=$(date -u -d "-1 min" +%FT%H:%M)
 nohup setsid php bin/console irc:connect -vv >> var/ares.log 2>&1 < /dev/null &
 sleep 25
