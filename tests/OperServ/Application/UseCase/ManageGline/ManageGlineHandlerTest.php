@@ -23,6 +23,8 @@ use App\OperServ\Application\UseCase\ManageGline\ManageGlineHandler;
 use App\OperServ\Application\UseCase\ManageGline\ManageGlineOutcome;
 use App\OperServ\Application\UseCase\ManageGline\ManageGlineResult;
 use DateTimeImmutable;
+use App\Tests\OperServ\Application\UseCase\ManageEline\InMemoryElineRepository;
+use App\OperServ\Application\Port\Out\ElineEntry;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
@@ -86,6 +88,26 @@ final class ManageGlineHandlerTest extends TestCase
         self::assertSame(ManageGlineOutcome::Added, $first->outcome);
         self::assertSame(ManageGlineOutcome::Added, $second->outcome);
         self::assertSame([['U2', 'G-Lined (Oper): clones'], ['U1', 'G-Lined (Oper): spam']], $kills->kills);
+    }
+
+    #[Test]
+    public function addSparesConnectedUsersCoveredByAnActiveEline(): void
+    {
+        $kills = new RecordingGlineKills();
+        $now = new DateTimeImmutable('2026-10-30 10:00:00');
+        $elines = new InMemoryElineRepository();
+        $elines->save(new ElineEntry('*@46.39.209.0/24', 'Oper', 'ZNC', $now, null));
+        $elines->save(new ElineEntry('*@198.51.100.20', 'Oper', 'old', $now, $now->modify('-1 minute')));
+        $connected = [
+            new NetworkUser('U1', 'Exempt', 'irc', 'dsl-46.example.net', '', false, false, '46.39.209.77'),
+            new NetworkUser('U2', 'Expired', 'irc', 'dsl-46.example.net', '', false, false, '198.51.100.20'),
+        ];
+        $handler = $this->handler(new RecordingGlineRepository(), new RecordingGlineNetworkActions(), new RecordingGlineAuditRecorder(), connected: $connected, kills: $kills, elines: $elines);
+
+        $result = $handler->handle(new ManageGline(GlineAction::Add, 'Oper', 44, $now, '*@dsl-46.example.net', '1h', 'clones'));
+
+        self::assertSame(ManageGlineOutcome::Added, $result->outcome);
+        self::assertSame([['U2', 'G-Lined (Oper): clones']], $kills->kills);
     }
 
     #[Test]
@@ -242,6 +264,7 @@ final class ManageGlineHandlerTest extends TestCase
             new RecordingGlineAuditRecorder(),
             new GlineTestConnectedUsers([]),
             new RecordingGlineKills(),
+            new InMemoryElineRepository(),
             1,
         );
 
@@ -302,7 +325,7 @@ final class ManageGlineHandlerTest extends TestCase
      * @param array<int, string>       $accountNicknames
      * @param list<NetworkUser>        $connected
      */
-    private function handler(RecordingGlineRepository $repository, RecordingGlineNetworkActions $network, RecordingGlineAuditRecorder $audit, array $users = [], array $protected = [], array $accountNicknames = [], array $connected = [], ?RecordingGlineKills $kills = null): ManageGlineHandler
+    private function handler(RecordingGlineRepository $repository, RecordingGlineNetworkActions $network, RecordingGlineAuditRecorder $audit, array $users = [], array $protected = [], array $accountNicknames = [], array $connected = [], ?RecordingGlineKills $kills = null, ?InMemoryElineRepository $elines = null): ManageGlineHandler
     {
         return new ManageGlineHandler(
             $repository,
@@ -312,6 +335,7 @@ final class ManageGlineHandlerTest extends TestCase
             $audit,
             new GlineTestConnectedUsers($connected),
             $kills ?? new RecordingGlineKills(),
+            $elines ?? new InMemoryElineRepository(),
         );
     }
 }

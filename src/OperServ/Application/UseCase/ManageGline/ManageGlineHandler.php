@@ -8,14 +8,18 @@ use App\OperServ\Application\Port\In\Audit\CommandAuditCategory;
 use App\OperServ\Application\Port\In\Audit\CommandAuditRecord;
 use App\OperServ\Application\Port\In\CommandAuditRecorder;
 use App\OperServ\Application\Port\Out\ConnectedUsersDirectory;
+use App\OperServ\Application\Port\Out\ElineEntry;
+use App\OperServ\Application\Port\Out\ElineRepository;
 use App\OperServ\Application\Port\Out\GlineEntry;
 use App\OperServ\Application\Port\Out\GlineNetworkActions;
 use App\OperServ\Application\Port\Out\GlineRepository;
 use App\OperServ\Application\Port\Out\GlineUserLookup;
 use App\OperServ\Application\Port\Out\KillNetworkUser;
 use App\OperServ\Application\Port\Out\ProtectedGlineSubjects;
+use App\OperServ\Domain\Policy\ElineMaskPolicy;
 use App\OperServ\Domain\Policy\GlineMaskPolicy;
 use App\Shared\Application\Time\RelativeExpiryParser;
+use DateTimeImmutable;
 
 use function ctype_digit;
 use function fnmatch;
@@ -34,6 +38,7 @@ final readonly class ManageGlineHandler implements ManageGlineHandlerInterface
         private CommandAuditRecorder $audit,
         private ConnectedUsersDirectory $connectedUsers,
         private KillNetworkUser $kills,
+        private ElineRepository $elines,
         private int $maxGlines = 1000,
     ) {}
 
@@ -97,7 +102,7 @@ final readonly class ManageGlineHandler implements ManageGlineHandlerInterface
 
         $this->glines->save($resolvedMask, $command->actorAccountId, $reason, $command->occurredAt, $expiresAt);
         $this->network->add($resolvedMask, $expiresAt, $reason);
-        $this->disconnectMatchingUsers($resolvedMask, $command->actor, $reason);
+        $this->disconnectMatchingUsers($resolvedMask, $command->actor, $reason, $command->occurredAt);
         $this->recordAudit($command, 'GLINE ADD', $resolvedMask, $reason, ['duration' => null === $expiresAt ? 'permanent' : $expiry]);
 
         return new ManageGlineResult(ManageGlineOutcome::Added, $resolvedMask, expiry: $expiry, reason: $reason);
@@ -157,16 +162,30 @@ final readonly class ManageGlineHandler implements ManageGlineHandlerInterface
 
     /**
      * A G-Line published through UDB only refuses new connections, so the users already connected
-     * from the banned mask are killed here, as a classic TKL G-Line would do.
+     * from the banned mask are killed here, as a classic TKL G-Line would do. Like the IRCd,
+     * it spares the connections covered by an active E-Line.
      */
-    private function disconnectMatchingUsers(string $mask, string $actor, string $reason): void
+    private function disconnectMatchingUsers(string $mask, string $actor, string $reason, DateTimeImmutable $at): void
     {
         $killReason = sprintf('G-Lined (%s): %s', $actor, $reason);
+        $elines = $this->elines->findActiveAt($at);
         foreach ($this->connectedUsers->listConnected() as $user) {
-            if ($this->matches($mask, $user->ident, $user->hostname, $user->ipAddress)) {
+            if ($this->matches($mask, $user->ident, $user->hostname, $user->ipAddress) && !$this->exempted($elines, $user->ident, $user->ipAddress)) {
                 $this->kills->kill($user->uid, $killReason);
             }
         }
+    }
+
+    /** @param list<ElineEntry> $elines */
+    private function exempted(array $elines, string $ident, string $ipAddress): bool
+    {
+        foreach ($elines as $eline) {
+            if (ElineMaskPolicy::covers($eline->mask, $ident, $ipAddress)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /** The host part of the mask matches either the real hostname or the real IP of the connection. */
