@@ -58,7 +58,7 @@ final class ElineCommandTest extends TestCase
         self::assertSame(1, $command->getMinArgs());
         self::assertSame(24, $command->getOrder());
         self::assertSame(['eline.syntax', 'eline.help', 'eline.example', 'eline.short'], [$command->getSyntaxKey(), $command->getHelpKey(), $command->getExampleKey(), $command->getShortDescKey()]);
-        self::assertSame(['ADD', 'DEL', 'LIST', 'VIEW', 'COUNT'], array_column($command->getSubCommandHelp(), 'name'));
+        self::assertSame(['ADD', 'DEL', 'LIST', 'VIEW', 'COUNT', 'CLEAR'], array_column($command->getSubCommandHelp(), 'name'));
         self::assertSame('eline.add.syntax', $command->getSubCommandHelp()[0]['syntax_key']);
         self::assertTrue($command->isOperOnly());
         self::assertSame(OperServPermission::ELINE, $command->getRequiredPermission());
@@ -119,6 +119,10 @@ final class ElineCommandTest extends TestCase
         self::assertSame([['eline.count.result', ['%count%' => '2']]], $this->run_(['COUNT']));
         self::assertSame([['eline.deleted', ['%masks%' => '*@1.1.1.1, *@2.2.2.2']]], $this->run_(['DEL', '1-2']));
         self::assertSame([['eline.list.empty', []]], $this->run_(['LIST']));
+
+        $this->elines->save(new ElineEntry('*@3.3.3.3', 'Oper', 'r', new DateTimeImmutable(), null));
+        self::assertSame([['eline.clear.done', ['%count%' => '1']]], $this->run_(['clear']));
+        self::assertSame([], $this->elines->entries);
     }
 
     #[Test]

@@ -21,7 +21,7 @@ use function implode;
 use function str_starts_with;
 use function strtoupper;
 
-/** IRC parsing adapter for ELINE ADD [+expiry] <user@ip|ip> <reason> | DEL <mask|number|list> | LIST | VIEW | COUNT. */
+/** IRC parsing adapter for ELINE ADD [+expiry] <user@ip|ip> <reason> | DEL <mask|number|list> | LIST | VIEW | COUNT | CLEAR. */
 final readonly class ElineCommand implements OperServCommandInterface
 {
     public function __construct(private ManageElineHandler $handler) {}
@@ -74,6 +74,7 @@ final readonly class ElineCommand implements OperServCommandInterface
             ['name' => 'LIST', 'desc_key' => 'eline.list.short', 'help_key' => 'eline.list.help', 'syntax_key' => 'eline.list.syntax', 'example_key' => 'eline.list.example'],
             ['name' => 'VIEW', 'desc_key' => 'eline.view.short', 'help_key' => 'eline.view.help', 'syntax_key' => 'eline.view.syntax', 'example_key' => 'eline.view.example'],
             ['name' => 'COUNT', 'desc_key' => 'eline.count.short', 'help_key' => 'eline.count.help', 'syntax_key' => 'eline.count.syntax', 'example_key' => 'eline.count.example'],
+            ['name' => 'CLEAR', 'desc_key' => 'eline.clear.short', 'help_key' => 'eline.clear.help', 'syntax_key' => 'eline.clear.syntax', 'example_key' => 'eline.clear.example'],
         ];
     }
 
@@ -109,6 +110,7 @@ final readonly class ElineCommand implements OperServCommandInterface
             'DEL' => isset($args[0]) ? new ManageEline(ElineAction::Delete, $actor, $now, $args[0]) : null,
             'LIST', 'VIEW' => new ManageEline(ElineAction::List, $actor, $now),
             'COUNT' => new ManageEline(ElineAction::Count, $actor, $now),
+            'CLEAR' => new ManageEline(ElineAction::Clear, $actor, $now),
             default => null,
         };
 
@@ -128,6 +130,7 @@ final readonly class ElineCommand implements OperServCommandInterface
             ManageElineOutcome::Deleted => $context->reply('eline.deleted', ['masks' => implode(', ', array_map(static fn (ElineEntry $entry): string => $entry->mask, $result->entries))]),
             ManageElineOutcome::NotFound => $context->reply('eline.not_found', ['item' => $result->detail]),
             ManageElineOutcome::Counted => $context->reply('eline.count.result', ['count' => (string) count($result->entries)]),
+            ManageElineOutcome::Cleared => $context->reply('eline.clear.done', ['count' => (string) count($result->entries)]),
             ManageElineOutcome::Listed => $this->list($context, $result->entries, 'VIEW' === $action),
             ManageElineOutcome::NetworkUnavailable => null,
         };

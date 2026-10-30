@@ -46,6 +46,7 @@ final readonly class ManageElineHandler
             ElineAction::Delete => $this->delete($command),
             ElineAction::List => new ManageElineResult(ManageElineOutcome::Listed, $this->elines->findActiveAt($command->occurredAt)),
             ElineAction::Count => new ManageElineResult(ManageElineOutcome::Counted, $this->elines->findActiveAt($command->occurredAt)),
+            ElineAction::Clear => $this->clear($command),
         };
     }
 
@@ -102,6 +103,20 @@ final readonly class ManageElineHandler
         }
 
         return new ManageElineResult(ManageElineOutcome::Deleted, $selected);
+    }
+
+    /** Removes every active E-Line at once. */
+    private function clear(ManageEline $command): ManageElineResult
+    {
+        $active = $this->elines->findActiveAt($command->occurredAt);
+        foreach ($active as $entry) {
+            $this->elines->remove($entry->mask);
+            $this->network->remove($entry->mask, $command->actorNickname);
+        }
+
+        $this->record($command, 'ELINE CLEAR', '*', null);
+
+        return new ManageElineResult(ManageElineOutcome::Cleared, $active);
     }
 
     /**

@@ -22,5 +22,7 @@ enum ManageElineOutcome
 
     case Counted;
 
+    case Cleared;
+
     case NetworkUnavailable;
 }

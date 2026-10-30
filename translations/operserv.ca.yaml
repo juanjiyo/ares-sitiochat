@@ -518,7 +518,7 @@ unjail:
 
 # --- ELINE -----------------------------------------------------------------------
 eline:
-  syntax:          "ELINE {ADD|DEL|LIST|VIEW|COUNT} ..."
+  syntax:          "ELINE {ADD|DEL|LIST|VIEW|COUNT|CLEAR} ..."
   short:           "Gestiona les excepcions de ban per IP (E-Lines)."
   help:            "Les E-Lines eximeixen una IP dels bans de la xarxa (G-Lines, Z-Lines, shun, límit de connexions per IP, llistes negres...). Útil per a les VPS amb ZNC dels IRCops.\nADD n'afegeix una, DEL les esborra, LIST i VIEW les mostren i COUNT les compta.\nAquesta ordre requereix el permís operserv.eline."
   example:         "/msg %bot% ELINE ADD +30d *@203.0.113.10 ZNC IRCops"
@@ -559,3 +559,9 @@ eline:
     help:     "Mostra quantes E-Lines hi ha actives."
     example:  "/msg %bot% ELINE COUNT"
     result:   "Hi ha {B}%count%{B} E-Lines actives."
+  clear:
+    syntax:   "ELINE CLEAR"
+    short:    "Esborra totes les E-Lines."
+    help:     "Esborra de cop totes les E-Lines actives, dels serveis i de l'IRCd."
+    example:  "/msg %bot% ELINE CLEAR"
+    done:     "\x0303✓\x03 S'han esborrat \x02%count%\x02 E-Lines."

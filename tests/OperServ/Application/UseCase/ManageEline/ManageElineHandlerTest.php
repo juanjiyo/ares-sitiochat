@@ -132,6 +132,21 @@ final class ManageElineHandlerTest extends TestCase
     }
 
     #[Test]
+    public function clearsEveryActiveEline(): void
+    {
+        $this->elines->save(new ElineEntry('*@1.1.1.1', 'Oper', 'r', $this->now, null));
+        $this->elines->save(new ElineEntry('*@2.2.2.2', 'Oper', 'r', $this->now, null));
+
+        $result = $this->handle(ElineAction::Clear);
+
+        self::assertSame(ManageElineOutcome::Cleared, $result->outcome);
+        self::assertCount(2, $result->entries);
+        self::assertSame([], $this->elines->entries);
+        self::assertSame([['remove', '*@1.1.1.1 by Oper'], ['remove', '*@2.2.2.2 by Oper']], $this->network->calls);
+        self::assertSame(['ELINE CLEAR', '*'], [$this->audit->records[0]->operation, $this->audit->records[0]->target]);
+    }
+
+    #[Test]
     public function republishesActiveElinesOnResync(): void
     {
         $this->elines->save(new ElineEntry('*@1.1.1.1', 'Oper', 'r', $this->now, null));

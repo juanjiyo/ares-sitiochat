@@ -13,4 +13,6 @@ enum ElineAction
     case List;
 
     case Count;
+
+    case Clear;
 }
