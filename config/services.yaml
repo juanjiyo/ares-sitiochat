@@ -2578,6 +2578,7 @@ services:
             $debugNotifiers: !tagged_iterator app.debug_notifier
             $debugChannel: '%ircops.debug_channel%'
             $registeredChannelSetup: '@App\ChanServ\Application\Port\In\RegisteredChannelSetup'
+            $serviceBots: !tagged_iterator app.service_uid_provider
         tags: ['kernel.event_subscriber']
 
     # --- Semantic command audit -------------------------------------------------

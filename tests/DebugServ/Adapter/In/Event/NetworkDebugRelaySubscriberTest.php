@@ -13,13 +13,10 @@ use App\Irc\Adapter\Event\NetworkSyncCompleteEvent;
 use App\Irc\Adapter\Out\Connection\ActiveConnectionHolder;
 use App\Irc\Adapter\Out\Connection\ConnectionInterface;
 use App\Irc\Adapter\Protocol\IRCMessage;
-use App\Irc\Application\Port\In\ChannelLookupPort;
-use App\Irc\Application\Port\In\ChannelModeSupportInterface;
 use App\Irc\Application\Port\In\NetworkUserLookupPort;
 use App\Irc\Application\Port\In\ProtocolModuleInterface;
 use App\Irc\Application\Port\In\ProtocolServiceActionsInterface;
 use App\Irc\Application\Port\In\SendNoticePort;
-use App\Irc\Application\Port\In\ServiceChannelRegistrationPort;
 use App\Irc\Application\Port\In\ServiceUidGeneratorInterface;
 use App\Irc\Application\PublishedEvent\ServiceIntroductionRequestedEvent;
 use App\Irc\Domain\Server\ServerLink;
@@ -40,11 +37,8 @@ final class NetworkDebugRelaySubscriberTest extends TestCase
     private function relay(string $disabled = '', bool $enabled = true): NetworkDebugRelaySubscriber
     {
         $holder = new ActiveConnectionHolder();
-        $modes = $this->createStub(ChannelModeSupportInterface::class);
-        $modes->method('getSupportedPrefixModes')->willReturn(['o']);
         $module = $this->createStub(ProtocolModuleInterface::class);
         $module->method('getServiceActions')->willReturn($this->createStub(ProtocolServiceActionsInterface::class));
-        $module->method('getChannelModeSupport')->willReturn($modes);
         $holder->setProtocolModule($module);
 
         $uids = $this->createStub(ServiceUidGeneratorInterface::class);
@@ -56,8 +50,6 @@ final class NetworkDebugRelaySubscriberTest extends TestCase
 
         $bot = new DebugServBot(
             $holder,
-            $this->createStub(ChannelLookupPort::class),
-            $this->createStub(ServiceChannelRegistrationPort::class),
             $send,
             $uids,
             'services.sitiochat.org',
