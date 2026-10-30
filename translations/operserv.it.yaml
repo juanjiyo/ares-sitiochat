@@ -249,7 +249,7 @@ gline:
     short:          "Elimina tutte le G-Lines."
     help:           "Elimina in una volta tutte le G-Lines attive, dai servizi e dall'IRCd."
     example:        "/msg %bot% GLINE CLEAR"
-    done:           "\x0303✓\x03 Eliminate \x02%count%\x02 G-Lines."
+    done:           "\x0303✓\x03 G-Lines eliminate: \x02%count%\x02."
 
 # --- GEOIP --------------------------------------------------------------------
 geoip:
@@ -572,4 +572,4 @@ eline:
     short:    "Elimina tutte le E-Lines."
     help:     "Elimina in una volta tutte le E-Lines attive, dai servizi e dall'IRCd."
     example:  "/msg %bot% ELINE CLEAR"
-    done:     "\x0303✓\x03 Eliminate \x02%count%\x02 E-Lines."
+    done:     "\x0303✓\x03 E-Lines eliminate: \x02%count%\x02."

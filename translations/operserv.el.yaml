@@ -249,7 +249,7 @@ gline:
     short:          "Διαγράφει όλες τις G-Lines."
     help:           "Διαγράφει μονομιάς όλες τις ενεργές G-Lines, από τις υπηρεσίες και από τον IRCd."
     example:        "/msg %bot% GLINE CLEAR"
-    done:           "\x0303✓\x03 Διαγράφηκαν \x02%count%\x02 G-Lines."
+    done:           "\x0303✓\x03 Διαγραμμένες G-Lines: \x02%count%\x02."
 
 # --- GEOIP --------------------------------------------------------------------
 geoip:
@@ -571,4 +571,4 @@ eline:
     short:    "Διαγράφει όλες τις E-Lines."
     help:     "Διαγράφει μονομιάς όλες τις ενεργές E-Lines, από τις υπηρεσίες και από τον IRCd."
     example:  "/msg %bot% ELINE CLEAR"
-    done:     "\x0303✓\x03 Διαγράφηκαν \x02%count%\x02 E-Lines."
+    done:     "\x0303✓\x03 Διαγραμμένες E-Lines: \x02%count%\x02."
