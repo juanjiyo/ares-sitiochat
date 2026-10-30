@@ -88,7 +88,6 @@ final readonly class HelpCommand implements CRegServCommandInterface
 
         if (empty($context->args)) {
             $lines = $this->formatter->renderGeneralHelp($adapter);
-            $lines[] = $this->formatter->renderFooter($adapter);
             $context->replyRaw(implode("\n", $lines));
 
             return null;

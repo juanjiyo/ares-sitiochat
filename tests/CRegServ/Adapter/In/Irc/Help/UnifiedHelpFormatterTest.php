@@ -26,7 +26,7 @@ final class UnifiedHelpFormatterTest extends TestCase
 {
     private const array LOCALES = ['ca', 'de', 'el', 'en', 'es', 'eu', 'fr', 'gl', 'it', 'nl', 'pl', 'pt', 'ro', 'tr'];
 
-    private const array ALLOWED_HELP_COLORS = ['03', '07', '10', '14'];
+    private const array ALLOWED_HELP_COLORS = ['03', '04', '07', '10', '14'];
 
     #[Test]
     public function rendersFilteredGeneralHelpAndSortedIrcopSection(): void
@@ -45,24 +45,22 @@ final class UnifiedHelpFormatterTest extends TestCase
             ircopAccess: true,
         );
 
-        $lines = new UnifiedHelpFormatter()->renderGeneralHelp($context);
+        $lines = new UnifiedHelpFormatter('TestNet')->renderGeneralHelp($context);
 
         self::assertSame([
-            'translated:help.header',
+            'translated:help.header_general',
             'translated:help.intro',
             ' ',
             'translated:help.general_header',
-            ' ',
-            'translated:help.group_header',
             'translated:help.command_line',
-            ' ',
-            'translated:help.general_footer',
             ' ',
             'translated:help.ircop_header',
+            'translated:help.command_line',
+            'translated:help.command_line',
             ' ',
-            'translated:help.subgroup_header',
-            'translated:help.command_line',
-            'translated:help.command_line',
+            'translated:help.warning',
+            ' ',
+            'translated:help.footer_general',
         ], $lines);
         self::assertSame([], $context->replies);
         self::assertSame([], $context->rawReplies);
@@ -77,19 +75,19 @@ final class UnifiedHelpFormatterTest extends TestCase
             $renderedCommands[] = $reply['params']['command'];
         }
         self::assertSame([
-            'VISIBLE     ',
-            'APROBAR     ',
-            'SAREGISTER  ',
+            'VISIBLE      ',
+            'APROBAR      ',
+            'SAREGISTER   ',
         ], $renderedCommands);
     }
 
     #[Test]
-    public function rendersEachIrcopSubgroupAndItsCommands(): void
+    public function rendersEveryIrcopGroupCommandUnderASingleOperatorsHeader(): void
     {
         $groups = [
-            ['group_key' => 'help.ircop_group.approval', 'commands' => ['APROBAR', 'DENEGAR'], 'admin' => true, 'subgroup' => true],
-            ['group_key' => 'help.ircop_group.queue', 'commands' => ['PENDIENTES', 'DENEGADOS', 'DROP'], 'admin' => true, 'subgroup' => true],
-            ['group_key' => 'help.ircop_group.forced', 'commands' => ['SAREGISTER'], 'admin' => true, 'subgroup' => true],
+            ['commands' => ['APROBAR', 'DENEGAR'], 'admin' => true],
+            ['commands' => ['PENDIENTES', 'DENEGADOS', 'DROP'], 'admin' => true],
+            ['commands' => ['SAREGISTER'], 'admin' => true],
         ];
         $commandNames = array_merge(...array_column($groups, 'commands'));
         $commands = [];
@@ -102,34 +100,42 @@ final class UnifiedHelpFormatterTest extends TestCase
             helpGroups: $groups,
         );
 
-        new UnifiedHelpFormatter()->renderGeneralHelp($context);
+        $lines = new UnifiedHelpFormatter('TestNet')->renderGeneralHelp($context);
 
         $translatedKeys = array_column($context->translations, 'key');
-        $groupKeys = array_column($groups, 'group_key');
-        self::assertSame($groupKeys, array_values(array_filter(
-            $translatedKeys,
-            static fn (string $key): bool => in_array($key, $groupKeys, true),
-        )));
         self::assertCount(1, array_keys($translatedKeys, 'help.ircop_header', true));
+        self::assertNotContains('translated:help.subgroup_header', $lines);
+
+        $renderedCommands = [];
+        foreach ($context->translations as $reply) {
+            if ('help.command_line' !== $reply['key']) {
+                continue;
+            }
+
+            self::assertIsString($reply['params']['command']);
+            $renderedCommands[] = trim($reply['params']['command']);
+        }
+        self::assertSame($commandNames, $renderedCommands);
     }
 
     #[Test]
-    public function rendersUngroupedCommandAndGeneralFooterWithoutAdminCommands(): void
+    public function rendersUngroupedCommandsBeforeTheWarningWithoutAdminCommands(): void
     {
         $context = new CRegServHelpFormatterContext(
             commands: [new CRegServHelpableCommand('VISIBLE', 1)],
             visibleCommands: ['VISIBLE'],
             helpGroups: [
-                ['group_key' => 'help.group.requests', 'commands' => ['NOTHERE'], 'admin' => false, 'subgroup' => false],
+                ['commands' => ['NOTHERE'], 'admin' => false],
             ],
         );
 
-        $lines = new UnifiedHelpFormatter()->renderGeneralHelp($context);
+        $lines = new UnifiedHelpFormatter('TestNet')->renderGeneralHelp($context);
 
-        self::assertSame(' ', $lines[4]);
-        self::assertSame('translated:help.general_footer', $lines[5]);
-        self::assertSame('translated:help.command_line', $lines[6]);
-        self::assertCount(7, $lines);
+        self::assertSame('translated:help.general_header', $lines[3]);
+        self::assertSame('translated:help.command_line', $lines[4]);
+        self::assertSame('translated:help.warning', $lines[6]);
+        self::assertSame('translated:help.footer_general', $lines[8]);
+        self::assertCount(9, $lines);
         self::assertNotContains('translated:help.ircop_header', $lines);
     }
 
@@ -138,7 +144,7 @@ final class UnifiedHelpFormatterTest extends TestCase
     {
         $context = new CRegServHelpFormatterContext();
 
-        $lines = new UnifiedHelpFormatter()->renderCommandHelp($context, new CRegServHelpableCommand('SET', 1, [[
+        $lines = new UnifiedHelpFormatter('TestNet')->renderCommandHelp($context, new CRegServHelpableCommand('SET', 1, [[
             'name' => 'EMAIL',
             'desc_key' => 'set.email.short',
             'help_key' => 'set.email.help',
@@ -146,7 +152,7 @@ final class UnifiedHelpFormatterTest extends TestCase
         ]], ['command' => 'SET']));
 
         self::assertSame([
-            'translated:help.header',
+            'translated:help.command_header',
             'translated:set.help',
             ' ',
             'translated:help.options_header',
@@ -155,7 +161,8 @@ final class UnifiedHelpFormatterTest extends TestCase
             'translated:help.set_sub_footer',
             ' ',
             'translated:help.syntax_label',
-            'translated:help.footer',
+            ' ',
+            'translated:help.footer_command',
         ], $lines);
         self::assertSame([], $context->rawReplies);
     }
@@ -163,7 +170,7 @@ final class UnifiedHelpFormatterTest extends TestCase
     #[Test]
     public function rendersSubcommandHelpWithAndWithoutOptions(): void
     {
-        $formatter = new UnifiedHelpFormatter();
+        $formatter = new UnifiedHelpFormatter('TestNet');
 
         $withOptions = $formatter->renderSubCommandHelp(new CRegServHelpFormatterContext(), 'SET', [
             'name' => 'EMAIL',
@@ -172,13 +179,14 @@ final class UnifiedHelpFormatterTest extends TestCase
             'options_key' => 'set.email.options',
         ]);
         self::assertSame([
-            'translated:help.header',
+            'translated:help.command_header',
             'translated:set.email.help',
             ' ',
             'translated:set.email.options',
             ' ',
             'translated:help.syntax_label',
-            'translated:help.footer',
+            ' ',
+            'translated:help.footer_command',
         ], $withOptions);
 
         $withoutOptions = $formatter->renderSubCommandHelp(new CRegServHelpFormatterContext(), 'SET', [
@@ -187,30 +195,32 @@ final class UnifiedHelpFormatterTest extends TestCase
             'syntax_key' => 'set.email.syntax',
         ]);
         self::assertSame([
-            'translated:help.header',
+            'translated:help.command_header',
             'translated:set.email.help',
             ' ',
             'translated:help.syntax_label',
-            'translated:help.footer',
+            ' ',
+            'translated:help.footer_command',
         ], $withoutOptions);
     }
 
     #[Test]
     public function rendersTheExampleLineOnlyForCommandsExposingAnExampleKey(): void
     {
-        $formatter = new UnifiedHelpFormatter();
+        $formatter = new UnifiedHelpFormatter('TestNet');
 
         $withExampleContext = new CRegServHelpFormatterContext();
         $withExample = $formatter->renderCommandHelp($withExampleContext, new CRegServHelpableCommandWithExample('CANCEL', 3));
 
         self::assertSame([
-            'translated:help.header',
+            'translated:help.command_header',
             'translated:cancel.help',
             ' ',
             'translated:help.syntax_label',
             ' ',
             'translated:help.example_label',
-            'translated:help.footer',
+            ' ',
+            'translated:help.footer_command',
         ], $withExample);
 
         $exampleLabels = array_values(array_filter(
@@ -224,36 +234,39 @@ final class UnifiedHelpFormatterTest extends TestCase
         $withoutExample = $formatter->renderCommandHelp($withoutExampleContext, new CRegServHelpableCommand('REGISTRA', 1));
 
         self::assertNotContains('translated:help.example_label', $withoutExample);
-        self::assertSame('translated:help.syntax_label', $withoutExample[count($withoutExample) - 2]);
+        self::assertSame('translated:help.syntax_label', $withoutExample[count($withoutExample) - 3]);
     }
 
     #[Test]
-    public function renderFooterReturnsTheTranslatedFooter(): void
+    public function definesHeaderTemplatesAndPlaceholdersInEveryLocale(): void
     {
         $context = new CRegServHelpFormatterContext();
+        $lines = new UnifiedHelpFormatter('TestNet')->renderGeneralHelp($context);
 
-        self::assertSame('translated:help.footer', new UnifiedHelpFormatter()->renderFooter($context));
-    }
-
-    #[Test]
-    public function definesHeaderTemplateAndPlaceholdersInEveryLocale(): void
-    {
-        $context = new CRegServHelpFormatterContext();
-        $header = new UnifiedHelpFormatter()->renderHeader($context, 'HELP REGISTRA');
-
-        self::assertSame('translated:help.header', $header);
+        self::assertSame('translated:help.header_general', $lines[0]);
         self::assertSame([], $context->replies);
         self::assertSame([], $context->rawReplies);
 
         self::assertSame([
-            'key' => 'help.header',
-            'params' => ['title' => 'HELP REGISTRA', 'separator' => str_repeat('─', 40 - 3 - mb_strlen('HELP REGISTRA'))],
+            'key' => 'help.header_general',
+            'params' => ['network' => 'TestNet'],
         ], $context->translations[0]);
 
-        $expectedTemplate = "\x02\x0307🤖 %title%\x03\x0F \x0314%separator%\x03\x0F";
+        $commandContext = new CRegServHelpFormatterContext();
+        new UnifiedHelpFormatter('TestNet')->renderCommandHelp($commandContext, new CRegServHelpableCommand('REGISTRA', 1));
+
+        self::assertSame([
+            'key' => 'help.command_header',
+            'params' => ['command' => 'REGISTRA'],
+        ], $commandContext->translations[0]);
+
         foreach (self::LOCALES as $locale) {
             $help = $this->loadHelpCatalog($locale);
-            self::assertSame($expectedTemplate, $help['header'] ?? null, $locale);
+            self::assertSame("\x02\x0303%bot%\x03\x0F - \x0307%network%\x03", $help['header_general'] ?? null, $locale);
+            self::assertIsString($help['command_header'], $locale);
+            self::assertStringStartsWith("\x02\x0303%command%\x03\x0F - ", $help['command_header'], $locale);
+            $commandHeaderTail = (string) substr($help['command_header'], 12);
+            self::assertStringContainsString('%command%', $commandHeaderTail, $locale);
         }
     }
 
@@ -264,42 +277,35 @@ final class UnifiedHelpFormatterTest extends TestCase
             $help = $this->loadHelpCatalog($locale);
             $this->assertHelpColorsAllowed($help, $locale);
 
-            foreach (['general_header', 'options_header', 'ircop_header'] as $section) {
+            foreach (['general_header', 'ircop_header', 'options_header'] as $section) {
                 self::assertIsString($help[$section], $locale);
-                self::assertStringStartsWith("\x02 ■ ", $help[$section], $locale);
+                self::assertStringStartsWith("\x02", $help[$section], $locale);
                 self::assertStringEndsWith("\x02", $help[$section], $locale);
-            }
-            foreach (['group_header', 'subgroup_header'] as $group) {
-                self::assertSame("\x0310  ◆ %group%\x03\x0F", $help[$group], $locale);
+                self::assertStringNotContainsString('%', $help[$section], $locale);
             }
             foreach (['command_line', 'subcommand_line'] as $row) {
-                self::assertSame("    \x0310›\x03\x0F \x02\x0303%command%\x03\x0F%description%", $help[$row], $locale);
+                self::assertSame("   \x0303%command%\x03\x0F%description%", $help[$row], $locale);
             }
-            foreach (['general_footer', 'set_sub_footer'] as $hint) {
-                self::assertIsString($help[$hint], $locale);
-                self::assertStringStartsWith("\x0310ℹ\x03\x0F ", $help[$hint], $locale);
-                self::assertMatchesRegularExpression('/\x02\x0303HELP [^\x03]+\x03\x0F/u', $help[$hint], $locale);
+            self::assertIsString($help['set_sub_footer'], $locale);
+            self::assertStringContainsString('/msg %bot% HELP %command%', $help['set_sub_footer'], $locale);
+            foreach (['syntax_label', 'example_label'] as $label) {
+                self::assertIsString($help[$label], $locale);
+                self::assertStringStartsWith("\x02", $help[$label], $locale);
+                self::assertStringContainsString("\n    \x0303", $help[$label], $locale);
             }
-            self::assertSame("\x0314─────────────────────────────\x03\x0F", $help['footer'], $locale);
-        }
-    }
-
-    #[Test]
-    public function definesCRegServHelpGroupsInEveryLocale(): void
-    {
-        $expectedPublicGroups = ['requests'];
-        $expectedIrcopGroups = ['approval', 'queue', 'forced'];
-
-        foreach (self::LOCALES as $locale) {
-            $help = $this->loadHelpCatalog($locale);
-            $publicGroups = $this->requireStringKeyedArray($help['group'] ?? null, $locale . ' must define public HELP groups');
-            $ircopGroups = $this->requireStringKeyedArray($help['ircop_group'] ?? null, $locale . ' must define IRCop HELP groups');
-            self::assertSame($expectedPublicGroups, array_keys($publicGroups), $locale);
-            self::assertSame($expectedIrcopGroups, array_keys($ircopGroups), $locale);
-            foreach ($ircopGroups as $label) {
-                self::assertIsString($label, $locale);
-                self::assertNotSame('', trim($label), $locale);
+            $syntaxLabel = $help['syntax_label'];
+            self::assertIsString($syntaxLabel, $locale);
+            self::assertStringContainsString('/msg %bot% %syntax%', $syntaxLabel, $locale);
+            self::assertIsString($help['warning'], $locale);
+            self::assertStringStartsWith("\x02\x0304", $help['warning'], $locale);
+            foreach (['footer_general', 'footer_command'] as $end) {
+                self::assertIsString($help[$end], $locale);
+                self::assertStringStartsWith("\x02", $help[$end], $locale);
+                self::assertStringEndsWith("\x02", $help[$end], $locale);
             }
+            self::assertIsString($help['intro'], $locale);
+            self::assertStringContainsString('/msg %bot% HELP', $help['intro'], $locale);
+            self::assertStringContainsString("\n\n", $help['intro'], $locale);
         }
     }
 
@@ -366,10 +372,10 @@ final class CRegServHelpFormatterContext implements HelpFormatterContextInterfac
     public array $translations = [];
 
     /**
-     * @param list<HelpableCommandInterface>                                                      $commands
-     * @param list<HelpableCommandInterface>                                                      $ircopCommands
-     * @param list<string>                                                                        $visibleCommands
-     * @param list<array{group_key: string, commands: list<string>, admin: bool, subgroup: bool}> $helpGroups
+     * @param list<HelpableCommandInterface>                   $commands
+     * @param list<HelpableCommandInterface>                   $ircopCommands
+     * @param list<string>                                     $visibleCommands
+     * @param list<array{commands: list<string>, admin: bool}> $helpGroups
      */
     public function __construct(
         private readonly array $commands = [],
@@ -418,8 +424,8 @@ final class CRegServHelpFormatterContext implements HelpFormatterContextInterfac
         }
 
         return [
-            ['group_key' => 'help.group.requests', 'commands' => ['VISIBLE'], 'admin' => false, 'subgroup' => false],
-            ['group_key' => 'help.ircop_group.approval', 'commands' => ['APROBAR', 'SAREGISTER'], 'admin' => true, 'subgroup' => true],
+            ['commands' => ['VISIBLE'], 'admin' => false],
+            ['commands' => ['APROBAR', 'SAREGISTER'], 'admin' => true],
         ];
     }
 

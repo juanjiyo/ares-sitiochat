@@ -114,7 +114,7 @@ final class HelpCommandTest extends TestCase
             static fn (string $permission): bool => in_array($permission, $grantedPermissions, true),
         );
 
-        return new HelpCommand(new UnifiedHelpFormatter(), $checker);
+        return new HelpCommand(new UnifiedHelpFormatter('TestNet'), $checker);
     }
 
     private function createCommandStub(string $name, int $order, bool $operOnly, ?string $permission): CRegServCommandInterface
@@ -197,7 +197,8 @@ final class HelpCommandTest extends TestCase
         self::assertStringContainsString('ESTADO', $output);
         self::assertStringNotContainsString('help.ircop_header', $output);
         self::assertStringNotContainsString('APROBAR', $output);
-        self::assertStringContainsString('help.footer', $output);
+        self::assertStringContainsString('help.warning', $output);
+        self::assertStringContainsString('help.footer_general', $output);
     }
 
     #[Test]

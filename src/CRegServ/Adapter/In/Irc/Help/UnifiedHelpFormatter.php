@@ -10,35 +10,23 @@ use function strtoupper;
 
 /**
  * Renders unified HELP output (header, command list, options, syntax, footer)
- * within CReG. The context supplies translations, command groups and visibility.
+ * within CReG. The context supplies translations and command visibility.
  *
- * Copy of ChanServ's formatter adapted to CReG: each service owns its own
- * formatter instance under its own namespace (house pattern — see OperServ,
- * MemoServ and NickServ), and deptrac forbids CReG from reaching into ChanServ.
+ * Copy of ChanServ's formatter adapted to CReG and styled after the plain
+ * ChatHispano layout: no emoji, no box drawing, section headers plus aligned
+ * command rows. Each service owns its own formatter instance under its own
+ * namespace (house pattern — see OperServ, MemoServ and NickServ), and deptrac
+ * forbids CReG from reaching into ChanServ.
  */
 final readonly class UnifiedHelpFormatter
 {
-    private const int CMD_PAD = 12;
+    private const int CMD_PAD = 13;
 
     private const int SUBS_PAD = 10;
 
-    private const int HEADER_WIDTH = 40;
-
-    public function renderHeader(HelpFormatterContextInterface $context, string $title): string
-    {
-        $visible = 3 + mb_strlen($title);
-        $dashes = str_repeat('─', max(0, self::HEADER_WIDTH - $visible));
-
-        return $context->trans('help.header', [
-            'title' => $title,
-            'separator' => $dashes,
-        ]);
-    }
-
-    public function renderFooter(HelpFormatterContextInterface $context): string
-    {
-        return $context->trans('help.footer');
-    }
+    public function __construct(
+        private string $networkName,
+    ) {}
 
     /** @return list<string> */
     public function renderGeneralHelp(HelpFormatterContextInterface $context): array
@@ -58,13 +46,12 @@ final readonly class UnifiedHelpFormatter
             }
         }
 
-        $lines = [$this->renderHeader($context, $context->trans('help.header_title'))];
+        $lines = [$context->trans('help.header_general', ['network' => $this->networkName])];
         $lines[] = $context->trans('help.intro');
         $lines[] = ' ';
         $lines[] = $context->trans('help.general_header');
 
         $shown = [];
-        $generalFooterSent = false;
         $ircopHeaderSent = false;
         foreach ($context->getHelpGroups() as $group) {
             $groupCommands = [];
@@ -80,28 +67,10 @@ final readonly class UnifiedHelpFormatter
             }
             usort($groupCommands, static fn (HelpableCommandInterface $a, HelpableCommandInterface $b): int => $a->getOrder() <=> $b->getOrder());
 
-            if ($group['admin']) {
-                if (!$generalFooterSent) {
-                    $lines[] = ' ';
-                    $lines[] = $context->trans('help.general_footer');
-                    $generalFooterSent = true;
-                }
-                if (!$ircopHeaderSent) {
-                    $lines[] = ' ';
-                    $lines[] = $context->trans('help.ircop_header');
-                    $ircopHeaderSent = true;
-                }
-                if ($group['subgroup']) {
-                    $lines[] = ' ';
-                    $lines[] = $context->trans('help.subgroup_header', [
-                        'group' => $context->trans($group['group_key']),
-                    ]);
-                }
-            } else {
+            if ($group['admin'] && !$ircopHeaderSent) {
                 $lines[] = ' ';
-                $lines[] = $context->trans('help.group_header', [
-                    'group' => $context->trans($group['group_key']),
-                ]);
+                $lines[] = $context->trans('help.ircop_header');
+                $ircopHeaderSent = true;
             }
 
             foreach ($groupCommands as $command) {
@@ -110,11 +79,6 @@ final readonly class UnifiedHelpFormatter
                     'description' => $context->trans($command->getShortDescKey()),
                 ]);
             }
-        }
-
-        if (!$generalFooterSent) {
-            $lines[] = ' ';
-            $lines[] = $context->trans('help.general_footer');
         }
 
         // Keep a visible fallback for any future command not yet assigned to a group.
@@ -131,7 +95,11 @@ final readonly class UnifiedHelpFormatter
                 'description' => $context->trans($command->getShortDescKey()),
             ]);
         }
-        // Caller appends help.footer after the command list.
+
+        $lines[] = ' ';
+        $lines[] = $context->trans('help.warning');
+        $lines[] = ' ';
+        $lines[] = $context->trans('help.footer_general');
 
         return $lines;
     }
@@ -139,7 +107,7 @@ final readonly class UnifiedHelpFormatter
     /** @return list<string> */
     public function renderCommandHelp(HelpFormatterContextInterface $context, HelpableCommandInterface $handler): array
     {
-        $lines = [$this->renderHeader($context, 'HELP ' . $handler->getName())];
+        $lines = [$context->trans('help.command_header', ['command' => $handler->getName()])];
 
         $rawParams = method_exists($handler, 'getHelpParams') ? $handler->getHelpParams() : [];
         /** @var array<string, mixed> $params */
@@ -174,7 +142,8 @@ final readonly class UnifiedHelpFormatter
             $lines[] = $context->trans('help.example_label', ['example' => $context->trans($exampleKey)]);
         }
 
-        $lines[] = $this->renderFooter($context);
+        $lines[] = ' ';
+        $lines[] = $context->trans('help.footer_command', ['command' => $handler->getName()]);
 
         return $lines;
     }
@@ -186,7 +155,7 @@ final readonly class UnifiedHelpFormatter
      */
     public function renderSubCommandHelp(HelpFormatterContextInterface $context, string $parentName, array $sub): array
     {
-        $lines = [$this->renderHeader($context, 'HELP ' . $parentName . ' ' . $sub['name'])];
+        $lines = [$context->trans('help.command_header', ['command' => $parentName . ' ' . $sub['name']])];
         $lines[] = $context->trans($sub['help_key']);
         if (isset($sub['options_key'])) {
             $lines[] = ' ';
@@ -194,7 +163,8 @@ final readonly class UnifiedHelpFormatter
         }
         $lines[] = ' ';
         $lines[] = $context->trans('help.syntax_label', ['syntax' => $context->trans($sub['syntax_key'])]);
-        $lines[] = $this->renderFooter($context);
+        $lines[] = ' ';
+        $lines[] = $context->trans('help.footer_command', ['command' => $parentName . ' ' . $sub['name']]);
 
         return $lines;
     }

@@ -39,7 +39,7 @@ interface HelpFormatterContextInterface
     /**
      * Ordered presentation-only command groups.
      *
-     * @return list<array{group_key: string, commands: list<string>, admin: bool, subgroup: bool}>
+     * @return list<array{commands: list<string>, admin: bool}>
      */
     public function getHelpGroups(): array;
 

@@ -124,6 +124,10 @@ parameters:
     chanserv.drop_grace_days_default: 7
     chanserv.drop_grace_days: '%env(int:default:chanserv.drop_grace_days_default:CHANSERV_DROP_GRACE_DAYS)%'
 
+    # Network identity (shown in service HELP headers)
+    network.name_default: 'SitioChat'
+    network.name: '%env(string:default:network.name_default:NETWORK_NAME)%'
+
     # MemoServ pseudo-client
     # CReG pseudo-client (channel registration with manual approval)
     cregserv.nick_default: 'CReG'
@@ -1561,6 +1565,10 @@ services:
     App\CRegServ\Adapter\In\Irc\CRegServCommandRegistry:
         arguments:
             $commands: !tagged_iterator cregserv.command
+
+    App\CRegServ\Adapter\In\Irc\Help\UnifiedHelpFormatter:
+        arguments:
+            $networkName: '%network.name%'
 
     App\CRegServ\Application\Port\Out\RegisteredChannelLookupPort:
         alias: App\CRegServ\Adapter\Out\ChanServ\ChanServRegisteredChannelLookupAdapter
