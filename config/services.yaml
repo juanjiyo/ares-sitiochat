@@ -183,6 +183,10 @@ parameters:
     # OPeR JAIL: channel jailed users are kept in
     operserv.jail_channel_default: '#Sumidero'
     operserv.jail_channel: '%env(string:default:operserv.jail_channel_default:OPERSERV_JAIL_CHANNEL)%'
+    # OPeR ELINE: UnrealIRCd ban types an E-Line exempts from (G-Line, K-Line, Z-Lines, shun,
+    # blacklist, connect-flood, max-per-IP, handshake flood, antirandom, antimixedutf8)
+    operserv.eline_bantypes_default: 'GkZzsbcmdr8'
+    operserv.eline_bantypes: '%env(string:default:operserv.eline_bantypes_default:OPERSERV_ELINE_BANTYPES)%'
 
     # Mailer (verification and email-change emails)
     mailer.from: '%env(MAILER_FROM)%'
@@ -2481,6 +2485,22 @@ services:
         tags: ['operserv.command.new']
 
     App\OperServ\Adapter\In\Irc\Command\UnjailCommand:
+        tags: ['operserv.command.new']
+
+    App\OperServ\Application\Port\Out\ElineRepository:
+        alias: App\OperServ\Adapter\Out\Persistence\Doctrine\DoctrineElineRepository
+
+    App\OperServ\Adapter\Out\Irc\ActiveConnectionElineNetworkActions:
+        arguments:
+            $banTypes: '%operserv.eline_bantypes%'
+
+    App\OperServ\Application\Port\Out\ElineNetworkActions:
+        alias: App\OperServ\Adapter\Out\Irc\ActiveConnectionElineNetworkActions
+
+    App\OperServ\Adapter\In\Event\OperServElineSyncSubscriber:
+        tags: ['kernel.event_subscriber']
+
+    App\OperServ\Adapter\In\Irc\Command\ElineCommand:
         tags: ['operserv.command.new']
 
     # --- OperServ Infrastructure -------------------------------------------------

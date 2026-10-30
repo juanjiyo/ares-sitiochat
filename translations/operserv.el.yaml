@@ -515,3 +515,47 @@ unjail:
   example:     "/msg %bot% UNJAIL Χρήστης"
   done:        "\x0303✓\x03 Ο \x02%nickname%\x02 απελευθερώθηκε από το \x02%channel%\x02."
   not_jailed:  "\x0304✗\x03 Ο \x02%nickname%\x02 δεν είναι φυλακισμένος."
+
+# --- ELINE -----------------------------------------------------------------------
+eline:
+  syntax:          "ELINE {ADD|DEL|LIST|VIEW|COUNT} ..."
+  short:           "Διαχειρίζεται τις εξαιρέσεις ban ανά IP (E-Lines)."
+  help:            "Οι E-Lines εξαιρούν μια IP από τα ban του δικτύου (G-Lines, Z-Lines, shun, όριο συνδέσεων ανά IP, μαύρες λίστες...). Χρήσιμο για τα VPS με ZNC των IRCops.\nΤο ADD προσθέτει μία, το DEL τις διαγράφει, τα LIST και VIEW τις εμφανίζουν και το COUNT τις μετρά.\nΑυτή η εντολή απαιτεί το δικαίωμα operserv.eline."
+  example:         "/msg %bot% ELINE ADD +30d *@203.0.113.10 ZNC IRCops"
+  added:           "\x0303✓\x03 Προστέθηκε E-Line για το {B}%mask%{B} (λήγει: %expiration%)."
+  already_exists:  "\x0304✗\x03 Υπάρχει ήδη E-Line για το {B}%mask%{B}."
+  invalid_mask:    "\x0304✗\x03 Το {B}%mask%{B} δεν είναι έγκυρο: χρησιμοποίησε χρήστης@IP ή IP (η IP μπορεί να είναι εύρος CIDR)."
+  invalid_expiry:  "\x0304✗\x03 Το {B}%expiry%{B} δεν είναι έγκυρη λήξη: χρησιμοποίησε +0 (μόνιμη) ή τιμή όπως +30d, +12h, +30m."
+  deleted:         "\x0303✓\x03 Διαγράφηκαν οι E-Lines: {B}%masks%{B}."
+  not_found:       "\x0304✗\x03 Δεν υπάρχει E-Line {B}%item%{B}."
+  never_expires:   "ποτέ"
+  add:
+    syntax:   "ELINE ADD [+λήξη] <χρήστης@IP|IP> <αιτία>"
+    short:    "Προσθέτει μια E-Line."
+    help:     "Προσθέτει εξαίρεση ban για μια IP ή ένα εύρος CIDR, προαιρετικά με λήξη (+30d, +12h, +30m· χωρίς λήξη είναι μόνιμη). Χωρίς χρήστη χρησιμοποιείται *."
+    example:  "/msg %bot% ELINE ADD +30d 203.0.113.10 ZNC IRCops"
+  del:
+    syntax:   "ELINE DEL <μάσκα|αριθμός|λίστα>"
+    short:    "Διαγράφει E-Lines."
+    help:     "Διαγράφει μια E-Line με τη μάσκα της, τον αριθμό της στο LIST ή μια λίστα αριθμών και ευρών (1,3-5)."
+    example:  "/msg %bot% ELINE DEL 1,3-5"
+  list:
+    syntax:   "ELINE LIST"
+    short:    "Εμφανίζει τις E-Lines."
+    help:     "Εμφανίζει τις ενεργές E-Lines αριθμημένες με τη λήξη τους."
+    example:  "/msg %bot% ELINE LIST"
+    header:   "\x0307---\x03 \x02E-Lines (%count%)\x02 \x0307---\x03"
+    entry:    "  \x02%number%.\x02 %mask% \x0314(λήγει: %expiration%)\x03"
+    empty:    "Δεν υπάρχουν ενεργές E-Lines."
+  view:
+    syntax:   "ELINE VIEW"
+    short:    "Εμφανίζει τις E-Lines αναλυτικά."
+    help:     "Εμφανίζει τις ενεργές E-Lines με το ποιος τις έβαλε, πότε, τη λήξη και την αιτία."
+    example:  "/msg %bot% ELINE VIEW"
+    entry:    "  \x02%number%.\x02 %mask% \x0314από %setby% στις %created%, λήγει: %expiration% - %reason%\x03"
+  count:
+    syntax:   "ELINE COUNT"
+    short:    "Μετρά τις E-Lines."
+    help:     "Εμφανίζει πόσες E-Lines είναι ενεργές."
+    example:  "/msg %bot% ELINE COUNT"
+    result:   "Υπάρχουν {B}%count%{B} ενεργές E-Lines."

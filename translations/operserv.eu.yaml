@@ -515,3 +515,47 @@ unjail:
   example:     "/msg %bot% UNJAIL Erabiltzailea"
   done:        "\x0303✓\x03 \x02%nickname%\x02 \x02%channel%\x02 kanaletik askatu da."
   not_jailed:  "\x0304✗\x03 \x02%nickname%\x02 ez dago kartzelan."
+
+# --- ELINE -----------------------------------------------------------------------
+eline:
+  syntax:          "ELINE {ADD|DEL|LIST|VIEW|COUNT} ..."
+  short:           "IP bidezko ban-salbuespenak (E-Lines) kudeatzen ditu."
+  help:            "E-Lineek IP bat sareko banetatik salbuesten dute (G-Lines, Z-Lines, shun, IP bakoitzeko konexio-muga, zerrenda beltzak...). Erabilgarria IRCopen ZNC dituzten VPSetarako.\nADD-ek bat gehitzen du, DEL-ek ezabatzen ditu, LIST eta VIEW-ek erakusten dituzte eta COUNT-ek zenbatzen ditu.\nAgindu honek operserv.eline baimena behar du."
+  example:         "/msg %bot% ELINE ADD +30d *@203.0.113.10 ZNC IRCops"
+  added:           "\x0303✓\x03 E-Line gehitu da {B}%mask%{B} maskararako (iraungitzea: %expiration%)."
+  already_exists:  "\x0304✗\x03 Dagoeneko badago E-Line bat {B}%mask%{B} maskararako."
+  invalid_mask:    "\x0304✗\x03 {B}%mask%{B} ez da baliozkoa: erabili erabiltzailea@IP edo IP (IPa CIDR tartea izan daiteke)."
+  invalid_expiry:  "\x0304✗\x03 {B}%expiry%{B} ez da iraungitze baliozkoa: erabili +0 (iraunkorra) edo +30d, +12h, +30m bezalako balio bat."
+  deleted:         "\x0303✓\x03 Ezabatutako E-Lineak: {B}%masks%{B}."
+  not_found:       "\x0304✗\x03 Ez dago {B}%item%{B} E-Linerik."
+  never_expires:   "inoiz ez"
+  add:
+    syntax:   "ELINE ADD [+iraungitzea] <erabiltzailea@IP|IP> <arrazoia>"
+    short:    "E-Line bat gehitzen du."
+    help:     "Ban-salbuespen bat gehitzen du IP edo CIDR tarte baterako, aukeran iraungitzearekin (+30d, +12h, +30m; gabe, iraunkorra da). Erabiltzailerik adierazten ez bada * erabiltzen da."
+    example:  "/msg %bot% ELINE ADD +30d 203.0.113.10 ZNC IRCops"
+  del:
+    syntax:   "ELINE DEL <maskara|zenbakia|zerrenda>"
+    short:    "E-Lineak ezabatzen ditu."
+    help:     "E-Line bat ezabatzen du bere maskararen, LISTeko zenbakiaren edo zenbaki eta tarteen zerrenda baten bidez (1,3-5)."
+    example:  "/msg %bot% ELINE DEL 1,3-5"
+  list:
+    syntax:   "ELINE LIST"
+    short:    "E-Lineak zerrendatzen ditu."
+    help:     "E-Line aktiboak erakusten ditu, zenbakituta, iraungitzearekin."
+    example:  "/msg %bot% ELINE LIST"
+    header:   "\x0307---\x03 \x02E-Lineak (%count%)\x02 \x0307---\x03"
+    entry:    "  \x02%number%.\x02 %mask% \x0314(iraungitzea: %expiration%)\x03"
+    empty:    "Ez dago E-Line aktiborik."
+  view:
+    syntax:   "ELINE VIEW"
+    short:    "E-Lineak xehetasunez erakusten ditu."
+    help:     "E-Line aktiboak erakusten ditu, nork eta noiz jarri zituen, iraungitzea eta arrazoia."
+    example:  "/msg %bot% ELINE VIEW"
+    entry:    "  \x02%number%.\x02 %mask% \x0314%setby%-(e)k jarria %created%(e)an, iraungitzea: %expiration% - %reason%\x03"
+  count:
+    syntax:   "ELINE COUNT"
+    short:    "E-Lineak zenbatzen ditu."
+    help:     "Zenbat E-Line aktibo dauden erakusten du."
+    example:  "/msg %bot% ELINE COUNT"
+    result:   "{B}%count%{B} E-Line aktibo daude."

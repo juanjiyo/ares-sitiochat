@@ -96,6 +96,14 @@ final class OperServPermissionTest extends TestCase
     }
 
     #[Test]
+    public function elineConstantHasExpectedValue(): void
+    {
+        $constant = new ReflectionClass(OperServPermission::class)->getConstant('ELINE');
+
+        self::assertSame('operserv.eline', $constant);
+    }
+
+    #[Test]
     public function allConstantsAreStrings(): void
     {
         $reflection = new ReflectionClass(OperServPermission::class);

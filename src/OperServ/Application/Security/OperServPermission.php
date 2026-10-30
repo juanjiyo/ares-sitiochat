@@ -37,5 +37,8 @@ final class OperServPermission
     /** Grants both JAIL and UNJAIL. */
     public const string JAIL = 'operserv.jail';
 
+    /** Ban exceptions by IP (E-Lines). */
+    public const string ELINE = 'operserv.eline';
+
     private function __construct() {}
 }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="App\OperServ\Domain\Entity\Eline" table="eline">
+        <unique-constraints>
+            <unique-constraint name="uniq_eline_mask" columns="mask"/>
+        </unique-constraints>
+        <indexes>
+            <index name="idx_eline_expires_at" columns="expires_at"/>
+        </indexes>
+        <id name="id" type="integer" column="id">
+            <generator strategy="IDENTITY"/>
+        </id>
+        <field name="mask" type="string" length="255" column="mask"/>
+        <field name="setBy" type="string" length="64" column="set_by"/>
+        <field name="reason" type="string" length="255" column="reason"/>
+        <field name="createdAt" type="datetime_immutable" column="created_at"/>
+        <field name="expiresAt" type="datetime_immutable" column="expires_at" nullable="true"/>
+    </entity>
+</doctrine-mapping>

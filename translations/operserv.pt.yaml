@@ -515,3 +515,47 @@ unjail:
   example:     "/msg %bot% UNJAIL Utilizador"
   done:        "\x0303✓\x03 \x02%nickname%\x02 foi libertado de \x02%channel%\x02."
   not_jailed:  "\x0304✗\x03 \x02%nickname%\x02 não está preso."
+
+# --- ELINE -----------------------------------------------------------------------
+eline:
+  syntax:          "ELINE {ADD|DEL|LIST|VIEW|COUNT} ..."
+  short:           "Gere as exceções de ban por IP (E-Lines)."
+  help:            "As E-Lines isentam um IP dos bans da rede (G-Lines, Z-Lines, shun, limite de ligações por IP, listas negras...). Útil para as VPS com ZNC dos IRCops.\nADD adiciona uma, DEL apaga-as, LIST e VIEW mostram-nas e COUNT conta-as.\nEste comando requer a permissão operserv.eline."
+  example:         "/msg %bot% ELINE ADD +30d *@203.0.113.10 ZNC IRCops"
+  added:           "\x0303✓\x03 E-Line adicionada para {B}%mask%{B} (expira: %expiration%)."
+  already_exists:  "\x0304✗\x03 Já existe uma E-Line para {B}%mask%{B}."
+  invalid_mask:    "\x0304✗\x03 {B}%mask%{B} não é válida: usa utilizador@IP ou IP (o IP pode ser um intervalo CIDR)."
+  invalid_expiry:  "\x0304✗\x03 {B}%expiry%{B} não é uma expiração válida: usa +0 (permanente) ou um valor como +30d, +12h, +30m."
+  deleted:         "\x0303✓\x03 E-Lines apagadas: {B}%masks%{B}."
+  not_found:       "\x0304✗\x03 Não existe nenhuma E-Line {B}%item%{B}."
+  never_expires:   "nunca"
+  add:
+    syntax:   "ELINE ADD [+expiração] <utilizador@IP|IP> <motivo>"
+    short:    "Adiciona uma E-Line."
+    help:     "Adiciona uma exceção de ban para um IP ou um intervalo CIDR, opcionalmente com expiração (+30d, +12h, +30m; sem ela é permanente). Sem utilizador usa-se *."
+    example:  "/msg %bot% ELINE ADD +30d 203.0.113.10 ZNC IRCops"
+  del:
+    syntax:   "ELINE DEL <máscara|número|lista>"
+    short:    "Apaga E-Lines."
+    help:     "Apaga uma E-Line pela sua máscara, pelo seu número em LIST ou por uma lista de números e intervalos (1,3-5)."
+    example:  "/msg %bot% ELINE DEL 1,3-5"
+  list:
+    syntax:   "ELINE LIST"
+    short:    "Lista as E-Lines."
+    help:     "Mostra as E-Lines ativas, numeradas, com a sua expiração."
+    example:  "/msg %bot% ELINE LIST"
+    header:   "\x0307---\x03 \x02E-Lines (%count%)\x02 \x0307---\x03"
+    entry:    "  \x02%number%.\x02 %mask% \x0314(expira: %expiration%)\x03"
+    empty:    "Não há E-Lines ativas."
+  view:
+    syntax:   "ELINE VIEW"
+    short:    "Mostra as E-Lines em detalhe."
+    help:     "Mostra as E-Lines ativas com quem as pôs, quando, a expiração e o motivo."
+    example:  "/msg %bot% ELINE VIEW"
+    entry:    "  \x02%number%.\x02 %mask% \x0314posta por %setby% em %created%, expira: %expiration% - %reason%\x03"
+  count:
+    syntax:   "ELINE COUNT"
+    short:    "Conta as E-Lines."
+    help:     "Mostra quantas E-Lines estão ativas."
+    example:  "/msg %bot% ELINE COUNT"
+    result:   "Há {B}%count%{B} E-Lines ativas."

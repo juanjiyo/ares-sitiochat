@@ -515,3 +515,47 @@ unjail:
   example:     "/msg %bot% UNJAIL Kullanıcı"
   done:        "\x0303✓\x03 \x02%nickname%\x02, \x02%channel%\x02 kanalından serbest bırakıldı."
   not_jailed:  "\x0304✗\x03 \x02%nickname%\x02 hapiste değil."
+
+# --- ELINE -----------------------------------------------------------------------
+eline:
+  syntax:          "ELINE {ADD|DEL|LIST|VIEW|COUNT} ..."
+  short:           "IP bazlı ban istisnalarını (E-Lines) yönetir."
+  help:            "E-Line'lar bir IP'yi ağ banlarından muaf tutar (G-Line, Z-Line, shun, IP başına bağlantı sınırı, kara listeler...). IRCop'ların ZNC'li VPS'leri için kullanışlıdır.\nADD bir tane ekler, DEL siler, LIST ve VIEW gösterir, COUNT sayar.\nBu komut operserv.eline iznini gerektirir."
+  example:         "/msg %bot% ELINE ADD +30d *@203.0.113.10 ZNC IRCops"
+  added:           "\x0303✓\x03 {B}%mask%{B} için E-Line eklendi (bitiş: %expiration%)."
+  already_exists:  "\x0304✗\x03 {B}%mask%{B} için zaten bir E-Line var."
+  invalid_mask:    "\x0304✗\x03 {B}%mask%{B} geçerli değil: kullanıcı@IP veya IP kullan (IP bir CIDR aralığı olabilir)."
+  invalid_expiry:  "\x0304✗\x03 {B}%expiry%{B} geçerli bir süre değil: +0 (kalıcı) veya +30d, +12h, +30m gibi bir değer kullan."
+  deleted:         "\x0303✓\x03 Silinen E-Line'lar: {B}%masks%{B}."
+  not_found:       "\x0304✗\x03 {B}%item%{B} adlı bir E-Line yok."
+  never_expires:   "asla"
+  add:
+    syntax:   "ELINE ADD [+süre] <kullanıcı@IP|IP> <sebep>"
+    short:    "Bir E-Line ekler."
+    help:     "Bir IP veya CIDR aralığı için ban istisnası ekler, isteğe bağlı olarak süreyle (+30d, +12h, +30m; süresiz kalıcıdır). Kullanıcı belirtilmezse * kullanılır."
+    example:  "/msg %bot% ELINE ADD +30d 203.0.113.10 ZNC IRCops"
+  del:
+    syntax:   "ELINE DEL <maske|numara|liste>"
+    short:    "E-Line'ları siler."
+    help:     "Bir E-Line'ı maskesiyle, LIST'teki numarasıyla veya numara ve aralık listesiyle (1,3-5) siler."
+    example:  "/msg %bot% ELINE DEL 1,3-5"
+  list:
+    syntax:   "ELINE LIST"
+    short:    "E-Line'ları listeler."
+    help:     "Etkin E-Line'ları numaralı ve bitiş süreleriyle gösterir."
+    example:  "/msg %bot% ELINE LIST"
+    header:   "\x0307---\x03 \x02E-Line'lar (%count%)\x02 \x0307---\x03"
+    entry:    "  \x02%number%.\x02 %mask% \x0314(bitiş: %expiration%)\x03"
+    empty:    "Etkin E-Line yok."
+  view:
+    syntax:   "ELINE VIEW"
+    short:    "E-Line'ları ayrıntılı gösterir."
+    help:     "Etkin E-Line'ları kimin, ne zaman koyduğu, bitiş süresi ve sebebiyle gösterir."
+    example:  "/msg %bot% ELINE VIEW"
+    entry:    "  \x02%number%.\x02 %mask% \x0314%setby% tarafından %created% tarihinde konuldu, bitiş: %expiration% - %reason%\x03"
+  count:
+    syntax:   "ELINE COUNT"
+    short:    "E-Line'ları sayar."
+    help:     "Kaç E-Line'ın etkin olduğunu gösterir."
+    example:  "/msg %bot% ELINE COUNT"
+    result:   "{B}%count%{B} etkin E-Line var."
