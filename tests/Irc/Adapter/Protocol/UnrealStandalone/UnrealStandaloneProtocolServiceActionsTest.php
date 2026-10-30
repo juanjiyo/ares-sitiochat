@@ -423,6 +423,22 @@ final class UnrealStandaloneProtocolServiceActionsTest extends TestCase
     }
 
     #[Test]
+    public function banExceptionsAreAddedAndRemoved(): void
+    {
+        $actions = new UnrealStandaloneProtocolServiceActions($this->connectionHolder);
+
+        $actions->addBanException('001', '*', '1.2.3.4', 'Oper', 1000, 4600, 'GkZz', 'ZNC staff');
+        $actions->addBanException('001', '*', '1.2.3.4', 'Oper', 1000, 0, 'GkZz', 'ZNC staff');
+        $actions->removeBanException('001', '*', '1.2.3.4', 'Oper');
+
+        self::assertSame([
+            ':001 TKL + E * 1.2.3.4 Oper 4600 1000 GkZz :ZNC staff',
+            ':001 TKL + E * 1.2.3.4 Oper 0 1000 GkZz :ZNC staff',
+            ':001 TKL - E * 1.2.3.4 Oper',
+        ], $this->written);
+    }
+
+    #[Test]
     public function forcePartUsesSvspartWithAndWithoutReason(): void
     {
         $actions = new UnrealStandaloneProtocolServiceActions($this->connectionHolder);

@@ -10,6 +10,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 use function in_array;
+use function max;
 use function sprintf;
 
 /**
@@ -152,6 +153,17 @@ final readonly class InspIRCdProtocolServiceActions implements ProtocolServiceAc
     {
         $line = sprintf(':%s SVSPART %s %s', $serverSid, $targetUid, $channelName);
         $this->write('' === $reason ? $line : $line . ' :' . $reason);
+    }
+
+    public function addBanException(string $serverSid, string $userMask, string $hostMask, string $setBy, int $setAt, int $expireAt, string $banTypes, string $reason): void
+    {
+        $duration = 0 === $expireAt ? 0 : max(1, $expireAt - $setAt);
+        $this->write(sprintf(':%s ADDLINE E %s@%s %s %d %d :%s', $serverSid, $userMask, $hostMask, $setBy, $setAt, $duration, $reason));
+    }
+
+    public function removeBanException(string $serverSid, string $userMask, string $hostMask, string $removedBy): void
+    {
+        $this->write(sprintf(':%s DELLINE E %s@%s', $serverSid, $userMask, $hostMask));
     }
 
     public function setChannelTopic(string $serverSid, string $channelName, ?string $topic, string $serviceUid = '', ?int $channelCreationTs = null): void

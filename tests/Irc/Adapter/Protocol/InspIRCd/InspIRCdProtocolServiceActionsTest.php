@@ -540,6 +540,22 @@ final class InspIRCdProtocolServiceActionsTest extends TestCase
     }
 
     #[Test]
+    public function banExceptionsAreAddedAndRemoved(): void
+    {
+        $actions = new InspIRCdProtocolServiceActions($this->connectionHolder);
+
+        $actions->addBanException('001', '*', '1.2.3.4', 'Oper', 1000, 4600, 'GkZz', 'ZNC staff');
+        $actions->addBanException('001', '*', '1.2.3.4', 'Oper', 1000, 0, 'GkZz', 'ZNC staff');
+        $actions->removeBanException('001', '*', '1.2.3.4', 'Oper');
+
+        self::assertSame([
+            ':001 ADDLINE E *@1.2.3.4 Oper 1000 3600 :ZNC staff',
+            ':001 ADDLINE E *@1.2.3.4 Oper 1000 0 :ZNC staff',
+            ':001 DELLINE E *@1.2.3.4',
+        ], $this->written);
+    }
+
+    #[Test]
     public function forcePartUsesSvspartWithAndWithoutReason(): void
     {
         $actions = new InspIRCdProtocolServiceActions($this->connectionHolder);

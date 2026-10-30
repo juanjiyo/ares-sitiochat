@@ -77,6 +77,17 @@ interface ProtocolServiceActionsInterface
     public function forcePart(string $serverSid, string $targetUid, string $channelName, string $reason = ''): void;
 
     /**
+     * Add a ban exception (E-Line): users matching user@host skip the given ban types.
+     *
+     * @param int    $expireAt Unix time it expires at, 0 when permanent
+     * @param string $banTypes UnrealIRCd ban type letters (e.g. GkZzs); ignored where the IRCd exempts from all
+     */
+    public function addBanException(string $serverSid, string $userMask, string $hostMask, string $setBy, int $setAt, int $expireAt, string $banTypes, string $reason): void;
+
+    /** Remove a ban exception (E-Line). */
+    public function removeBanException(string $serverSid, string $userMask, string $hostMask, string $removedBy): void;
+
+    /**
      * Set or clear the channel topic. Null = clear.
      *
      * @param string      $serverSid         Server SID (source of the TOPIC/FTOPIC command)
