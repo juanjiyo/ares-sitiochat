@@ -448,7 +448,7 @@ killclones:
   short:    "Expulsa os clons dun nick cunha G-Line de 1 hora."
   help:     "Pon unha G-Line de 1 hora sobre *@host do nick indicado, o que desconecta todas as conexións dese host.\nA G-Line aparece en GLINE LIST e pódese quitar con GLINE DEL.\nNunca se aplica a localhost nin a hosts compartidos con usuarios Root ou IRCops con rol.\nEste comando require o permiso operserv.clones."
   example:  "/msg %bot% KILLCLONES Usuario Clons non permitidos"
-  done:     "\x0303✓\x03 Os clons de \x02%nickname%\x02 foron expulsados: G-Line \x02%mask%\x02 durante %duration% (%count% conexións). Motivo: %reason%"
+  done:     "\x0303✓\x03 Os clons de \x02%nickname%\x02 foron expulsados: G-Line \x02%mask%\x02 durante %duration% (conexións: %count%). Motivo: %reason%"
 
 # --- BLOCK -----------------------------------------------------------------------
 block:
@@ -456,7 +456,7 @@ block:
   short:    "Bloquea o host dun nick cunha G-Line de 5 horas."
   help:     "Pon unha G-Line de 5 horas sobre *@host do nick indicado, o que desconecta todas as conexións dese host.\nA G-Line aparece en GLINE LIST e pódese quitar con GLINE DEL.\nNunca se aplica a localhost nin a hosts compartidos con usuarios Root ou IRCops con rol.\nEste comando require o permiso operserv.clones."
   example:  "/msg %bot% BLOCK Usuario Spam"
-  done:     "\x0303✓\x03 \x02%nickname%\x02 foi bloqueado: G-Line \x02%mask%\x02 durante %duration% (%count% conexións). Motivo: %reason%"
+  done:     "\x0303✓\x03 \x02%nickname%\x02 foi bloqueado: G-Line \x02%mask%\x02 durante %duration% (conexións: %count%). Motivo: %reason%"
 
 # --- CLONE BANS (shared replies) -------------------------------------------------
 clones:

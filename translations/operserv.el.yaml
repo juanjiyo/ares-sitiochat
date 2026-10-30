@@ -448,7 +448,7 @@ killclones:
   short:    "Αφαιρεί τους κλώνους ενός ψευδωνύμου με G-Line 1 ώρας."
   help:     "Ορίζει G-Line 1 ώρας στο *@host του ψευδωνύμου, αποσυνδέοντας όλες τις συνδέσεις από αυτό το host.\nΗ G-Line εμφανίζεται στο GLINE LIST και αφαιρείται με GLINE DEL.\nΤο localhost και τα hosts που μοιράζονται με χρήστες Root ή IRCops με ρόλο δεν δέχονται ποτέ G-Line.\nΑυτή η εντολή απαιτεί την άδεια operserv.clones."
   example:  "/msg %bot% KILLCLONES BadUser Δεν επιτρέπονται κλώνοι"
-  done:     "\x0303✓\x03 Οι κλώνοι του \x02%nickname%\x02 αφαιρέθηκαν: G-Line \x02%mask%\x02 για %duration% (%count% συνδέσεις). Αιτία: %reason%"
+  done:     "\x0303✓\x03 Οι κλώνοι του \x02%nickname%\x02 αφαιρέθηκαν: G-Line \x02%mask%\x02 για %duration% (συνδέσεις: %count%). Αιτία: %reason%"
 
 # --- BLOCK -----------------------------------------------------------------------
 block:
@@ -456,7 +456,7 @@ block:
   short:    "Αποκλείει το host ενός ψευδωνύμου με G-Line 5 ωρών."
   help:     "Ορίζει G-Line 5 ωρών στο *@host του ψευδωνύμου, αποσυνδέοντας όλες τις συνδέσεις από αυτό το host.\nΗ G-Line εμφανίζεται στο GLINE LIST και αφαιρείται με GLINE DEL.\nΤο localhost και τα hosts που μοιράζονται με χρήστες Root ή IRCops με ρόλο δεν δέχονται ποτέ G-Line.\nΑυτή η εντολή απαιτεί την άδεια operserv.clones."
   example:  "/msg %bot% BLOCK BadUser Spam"
-  done:     "\x0303✓\x03 Ο \x02%nickname%\x02 αποκλείστηκε: G-Line \x02%mask%\x02 για %duration% (%count% συνδέσεις). Αιτία: %reason%"
+  done:     "\x0303✓\x03 Ο \x02%nickname%\x02 αποκλείστηκε: G-Line \x02%mask%\x02 για %duration% (συνδέσεις: %count%). Αιτία: %reason%"
 
 # --- CLONE BANS (shared replies) -------------------------------------------------
 clones:
