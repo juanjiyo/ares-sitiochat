@@ -13,6 +13,7 @@ use App\NickServ\Application\Port\Out\RegistrationMailSender;
 use App\NickServ\Application\Port\Out\RegistrationThrottle;
 use App\NickServ\Application\Port\Out\RegistrationVerificationStore;
 use App\NickServ\Application\Port\Out\VerificationTokenGenerator;
+use App\NickServ\Application\Service\NickActivationPublisher;
 use App\NickServ\Domain\Entity\BlockedEmailDomain;
 use App\NickServ\Domain\Entity\RegisteredNick;
 use App\NickServ\Domain\ValueObject\NickStatus;
@@ -41,6 +42,7 @@ final readonly class RegisterNickHandler implements RegisterNickHandlerInterface
         private int $maxNicksPerEmail,
         private int $verificationTokenTtlSeconds = 3600,
         private string $guestPrefix = 'Guest-',
+        private ?NickActivationPublisher $activation = null,
     ) {}
 
     public function handle(RegisterNick $command): RegisterNickResult
@@ -96,6 +98,7 @@ final readonly class RegisterNickHandler implements RegisterNickHandlerInterface
                 registeredAt: $now,
             );
             $this->nickRepository->save($active);
+            $this->activation?->passwordHashAvailable($active);
             $this->throttle->recordAttempt($command->clientKey, $now);
 
             return RegisterNickResult::registeredWithoutVerification($command->nickname);
