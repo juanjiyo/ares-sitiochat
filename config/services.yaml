@@ -14,6 +14,8 @@ parameters:
     irc.server_sid:    '%env(IRC_SERVER_SID)%'
 
     # Services global settings
+    services.bot_swhois_default: 'es un robot oficial'
+    services.bot_swhois: '%env(string:default:services.bot_swhois_default:SERVICES_BOT_SWHOIS)%'
     services.vhost:         '%env(IRC_SERVICES_VHOST)%'
     services.default_language: '%env(SERVICES_DEFAULT_LANGUAGE)%'
     services.default_timezone_fallback: 'UTC'
@@ -649,11 +651,15 @@ services:
             $logger:             '@monolog.logger.irc'
             $eventDispatcher:    '@event_dispatcher'
 
-    App\Irc\Adapter\Protocol\UnrealStandalone\UnrealStandaloneServiceIntroductionFormatter: ~
+    App\Irc\Adapter\Protocol\UnrealStandalone\UnrealStandaloneServiceIntroductionFormatter:
+        arguments:
+            $botSwhois: '%services.bot_swhois%'
 
     App\Irc\Adapter\Protocol\InspIRCd\InspIRCdServiceIntroductionFormatter: ~
 
-    App\Irc\Adapter\Protocol\UnrealUdb\UnrealUdbServiceIntroductionFormatter: ~
+    App\Irc\Adapter\Protocol\UnrealUdb\UnrealUdbServiceIntroductionFormatter:
+        arguments:
+            $botSwhois: '%services.bot_swhois%'
 
     App\Irc\Adapter\Protocol\UnrealStandalone\UnrealStandaloneProtocolServiceActions:
         arguments:

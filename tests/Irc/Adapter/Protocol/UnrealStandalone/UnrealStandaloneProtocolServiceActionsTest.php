@@ -7,6 +7,7 @@ namespace App\Tests\Irc\Adapter\Protocol\UnrealStandalone;
 use App\Irc\Adapter\Out\Connection\ActiveConnectionHolder;
 use App\Irc\Adapter\Out\Connection\ConnectionInterface;
 use App\Irc\Adapter\Protocol\UnrealStandalone\UnrealStandaloneProtocolServiceActions;
+use App\Irc\Adapter\Protocol\UnrealStandalone\UnrealStandaloneServiceIntroductionFormatter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -405,6 +406,20 @@ final class UnrealStandaloneProtocolServiceActionsTest extends TestCase
         self::assertCount(1, $this->written);
         self::assertStringContainsString(':001 UID NickServ 1', $this->written[0]);
         self::assertStringContainsString('001AAAAAA', $this->written[0]);
+    }
+
+    #[Test]
+    public function introduceServiceSendsTheBotSwhoisAfterTheIntroduction(): void
+    {
+        $actions = new UnrealStandaloneProtocolServiceActions(
+            $this->connectionHolder,
+            introductionFormatter: new UnrealStandaloneServiceIntroductionFormatter('es un robot oficial'),
+        );
+
+        $actions->introduceService('001', 'NickServ', 'NickServ', 'services.host', '001AAAAAA', 'Nickname Services', 'nickserv');
+
+        self::assertCount(2, $this->written);
+        self::assertSame(':001 SWHOIS 001AAAAAA + services 0 :es un robot oficial', $this->written[1]);
     }
 
     #[Test]

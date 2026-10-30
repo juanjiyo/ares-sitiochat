@@ -103,6 +103,11 @@ final readonly class UnrealUdbProtocolServiceActions implements ProtocolServiceA
             $serviceKey,
         );
         $this->write($line);
+
+        $swhois = $this->introductionFormatter->formatSwhois($serverSid, $uid);
+        if (null !== $swhois) {
+            $this->write($swhois);
+        }
     }
 
     public function forceNick(string $serverSid, string $targetUid, string $newNick): void

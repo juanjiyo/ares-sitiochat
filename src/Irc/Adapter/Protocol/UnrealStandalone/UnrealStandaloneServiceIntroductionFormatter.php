@@ -13,12 +13,17 @@ use function sprintf;
 final readonly class UnrealStandaloneServiceIntroductionFormatter
 {
     private const array SERVICE_UMODES = [
-        'nickserv' => '+BHdIopqrS',
-        'chanserv' => '+BHdIopqrS',
-        'memoserv' => '+BHdIopqrRS',
-        'cregserv' => '+BHdIopqrS',
-        'operserv' => '+BHdIopqrRS',
+        'nickserv' => '+BHdIopqrSz',
+        'chanserv' => '+BHdIopqrSz',
+        'memoserv' => '+BHdIopqrRSz',
+        'cregserv' => '+BHdIopqrSz',
+        'operserv' => '+BHdIopqrRSz',
     ];
+
+    /** @param string $botSwhois extra WHOIS line for every service bot ('' for none) */
+    public function __construct(
+        private string $botSwhois = '',
+    ) {}
 
     public function formatIntroduction(
         string $serverSid,
@@ -30,7 +35,7 @@ final readonly class UnrealStandaloneServiceIntroductionFormatter
         string $serviceName,
     ): string {
         $ts = time();
-        $umodes = self::SERVICE_UMODES[$serviceName] ?? '+BHSdioqr';
+        $umodes = self::SERVICE_UMODES[$serviceName] ?? '+BHSdioqrz';
 
         return sprintf(
             ':%s UID %s 1 %d %s %s %s 0 %s * * * :%s',
@@ -43,5 +48,15 @@ final readonly class UnrealStandaloneServiceIntroductionFormatter
             $umodes,
             $realname,
         );
+    }
+
+    /** The SWHOIS line that follows the introduction, or null when none is configured. */
+    public function formatSwhois(string $serverSid, string $uid): ?string
+    {
+        if ('' === $this->botSwhois) {
+            return null;
+        }
+
+        return sprintf(':%s SWHOIS %s + services 0 :%s', $serverSid, $uid, $this->botSwhois);
     }
 }

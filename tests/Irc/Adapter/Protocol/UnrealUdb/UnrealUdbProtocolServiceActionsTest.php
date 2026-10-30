@@ -9,6 +9,7 @@ use App\Irc\Adapter\Out\Connection\ConnectionInterface;
 use App\Irc\Adapter\Protocol\UnrealUdb\Session\UdbSessionStateInterface;
 use App\Irc\Adapter\Protocol\UnrealUdb\Synchronization\UdbRecordWriterInterface;
 use App\Irc\Adapter\Protocol\UnrealUdb\UnrealUdbProtocolServiceActions;
+use App\Irc\Adapter\Protocol\UnrealUdb\UnrealUdbServiceIntroductionFormatter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -583,6 +584,22 @@ final class UnrealUdbProtocolServiceActionsTest extends TestCase
         self::assertCount(1, $this->written);
         self::assertStringContainsString(':001 UID NickServ 1', $this->written[0]);
         self::assertStringContainsString('001AAAAAA', $this->written[0]);
+    }
+
+    #[Test]
+    public function introduceServiceSendsTheBotSwhoisAfterTheIntroduction(): void
+    {
+        $actions = new UnrealUdbProtocolServiceActions(
+            $this->connectionHolder,
+            $this->createUdbRecordWriter($this->connectionHolder),
+            introductionFormatter: new UnrealUdbServiceIntroductionFormatter('es un robot oficial'),
+            clock: new MutableUdbClock(1_800_000_000),
+        );
+
+        $actions->introduceService('001', 'NickServ', 'NickServ', 'services.host', '001AAAAAA', 'Nickname Services', 'nickserv');
+
+        self::assertCount(2, $this->written);
+        self::assertSame(':001 SWHOIS 001AAAAAA + services 0 :es un robot oficial', $this->written[1]);
     }
 
     #[Test]

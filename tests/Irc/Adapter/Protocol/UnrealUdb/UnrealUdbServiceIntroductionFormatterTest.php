@@ -37,7 +37,7 @@ final class UnrealUdbServiceIntroductionFormatterTest extends TestCase
         self::assertStringContainsString('services', $line);
         self::assertStringContainsString('services.test.local', $line);
         self::assertStringContainsString('001ABCD', $line);
-        self::assertStringContainsString('+BHdIopqrS', $line);
+        self::assertStringContainsString('+BHdIopqrSz', $line);
         self::assertStringContainsString(':Nickname Service', $line);
     }
 
@@ -71,7 +71,7 @@ final class UnrealUdbServiceIntroductionFormatterTest extends TestCase
         );
 
         self::assertMatchesRegularExpression(
-            '/^:003 UID MemoServ 1 \d+ services services\.test\.local 003IJKL 0 \+BHdIopqrRS \* \* \* :Memo Service$/',
+            '/^:003 UID MemoServ 1 \d+ services services\.test\.local 003IJKL 0 \+BHdIopqrRSz \* \* \* :Memo Service$/',
             $line
         );
     }
@@ -90,5 +90,20 @@ final class UnrealUdbServiceIntroductionFormatterTest extends TestCase
         );
 
         self::assertStringEndsWith(':Test Bot Service', $line);
+    }
+
+    #[Test]
+    public function formatSwhoisIsEmptyWithoutAConfiguredText(): void
+    {
+        self::assertNull($this->formatter->formatSwhois('001', '001AAAAAA'));
+    }
+
+    #[Test]
+    public function formatSwhoisAddsTheConfiguredLine(): void
+    {
+        self::assertSame(
+            ':001 SWHOIS 001AAAAAA + services 0 :es un robot oficial',
+            new UnrealUdbServiceIntroductionFormatter('es un robot oficial')->formatSwhois('001', '001AAAAAA'),
+        );
     }
 }
