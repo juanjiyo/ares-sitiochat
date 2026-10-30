@@ -148,6 +148,12 @@ final readonly class InspIRCdProtocolServiceActions implements ProtocolServiceAc
         $this->write(sprintf(':%s SVSJOIN %s %s', $prefix, $targetUid, $channelName));
     }
 
+    public function forcePart(string $serverSid, string $targetUid, string $channelName, string $reason = ''): void
+    {
+        $line = sprintf(':%s SVSPART %s %s', $serverSid, $targetUid, $channelName);
+        $this->write('' === $reason ? $line : $line . ' :' . $reason);
+    }
+
     public function setChannelTopic(string $serverSid, string $channelName, ?string $topic, string $serviceUid = '', ?int $channelCreationTs = null): void
     {
         $prefix = '' !== $serviceUid ? $serviceUid : $serverSid;

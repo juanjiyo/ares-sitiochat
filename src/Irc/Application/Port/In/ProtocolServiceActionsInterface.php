@@ -67,6 +67,16 @@ interface ProtocolServiceActionsInterface
     public function forceJoin(string $serverSid, string $targetUid, string $channelName, string $serviceUid = ''): void;
 
     /**
+     * Force a user to leave a channel (SVSPART).
+     *
+     * @param string $serverSid   Server SID (source of the command)
+     * @param string $targetUid   UID of the user to move out
+     * @param string $channelName Channel name (e.g., #reunion)
+     * @param string $reason      Optional part message
+     */
+    public function forcePart(string $serverSid, string $targetUid, string $channelName, string $reason = ''): void;
+
+    /**
      * Set or clear the channel topic. Null = clear.
      *
      * @param string      $serverSid         Server SID (source of the TOPIC/FTOPIC command)

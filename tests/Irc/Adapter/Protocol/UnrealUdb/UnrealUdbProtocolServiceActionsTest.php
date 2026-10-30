@@ -603,6 +603,17 @@ final class UnrealUdbProtocolServiceActionsTest extends TestCase
     }
 
     #[Test]
+    public function forcePartUsesSvspartWithAndWithoutReason(): void
+    {
+        $actions = $this->createActions();
+
+        $actions->forcePart('001', '001ABCD', '#test');
+        $actions->forcePart('001', '001ABCD', '#test', 'Encarcelado');
+
+        self::assertSame([':001 SVSPART 001ABCD #test', ':001 SVSPART 001ABCD #test :Encarcelado'], $this->written);
+    }
+
+    #[Test]
     public function forceJoinUsesSajoinWithoutServiceUid(): void
     {
         $actions = $this->createActions();
