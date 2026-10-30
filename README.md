@@ -59,8 +59,8 @@ design rather than adding mode letters ad hoc.
 
 Try the bots on our public test network:
 
-- **Plain:** [irc://irc.davidlig.net:6667](irc://irc.davidlig.net:6667)
-- **SSL:** [ircs://irc.davidlig.net:6697](ircs://irc.davidlig.net:6697)
+- **Plain:** [irc://irc.sitiochat.es:6667](irc://irc.sitiochat.es:6667)
+- **SSL:** [ircs://irc.sitiochat.es:6697](ircs://irc.sitiochat.es:6697)
 
 > Availability is best-effort; the server may be restarted for development.
 
