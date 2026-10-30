@@ -66,6 +66,9 @@ final class NetworkEventTranslator
         // UnrealIRCd 6 additions: metadata, server info, GLOBOPS' new name, and
         // SASL, whose payload is a credential.
         'MD', 'SINFO', 'REPUTATION', 'SENDUMODE', 'SASL', 'SVSLOGIN', 'ERROR', 'CAPAB',
+        // Noise: the module list sent on link, and the IRCv3 batch markers that wrap a
+        // multiline message (its PRIVMSG lines are already hidden).
+        'SMOD', 'BATCH',
     ];
 
     /** @var array<string, string> SID => server name */

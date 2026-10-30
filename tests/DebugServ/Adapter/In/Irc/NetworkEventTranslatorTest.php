@@ -161,6 +161,9 @@ final class NetworkEventTranslatorTest extends TestCase
         yield 'privmsg' => [':001AAAAAA PRIVMSG NiCK :IDENTIFY secreto'];
         yield 'reputation sync' => [':001 REPUTATION 46.39.209.77 19'];
         yield 'typing notification' => [':0019FJV49 TAGMSG 003B00002'];
+        yield 'module list' => [':001 SMOD :G:third/redirect:1.0'];
+        yield 'multiline batch start' => [':0015AATIS BATCH 003E00008 +oVIwpAZCoxrnnXGG3VY5PR draft/multiline'];
+        yield 'multiline batch end' => [':0015AATIS BATCH 003E00008 -oVIwpAZCoxrnnXGG3VY5PR'];
         yield 'sasl' => [':001 SASL 002 001AAAAAA C cGVwZQ=='];
         yield 'metadata' => [':001 MD client 001AAAAAA certfp :abc'];
         yield 'numeric' => [':001 372 Pepe :motd'];
