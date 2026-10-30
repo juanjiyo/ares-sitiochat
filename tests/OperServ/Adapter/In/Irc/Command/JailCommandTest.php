@@ -83,7 +83,7 @@ final class JailCommandTest extends TestCase
     }
 
     #[Test]
-    public function jailsAUserIntoTheJailChannelOnlyAndReleasesThem(): void
+    public function jailsAUserIntoTheJailChannelOnlyAndReleasesThemOutOfIt(): void
     {
         $jailed = $this->run_(new JailCommand($this->handler()), 'Target');
 
@@ -103,9 +103,12 @@ final class JailCommandTest extends TestCase
         $released = $this->run_(new UnjailCommand($this->handler()), 'Target');
         self::assertSame([['unjail.done', ['%nickname%' => 'Target', '%channel%' => '#Sumidero']]], $released);
         self::assertFalse($this->roster->contains('UID1'));
+        self::assertSame(['part', 'UID1', '#sumidero'], $this->network->calls[3]);
+        self::assertCount(4, $this->network->calls);
         self::assertSame('UNJAIL', $this->audit->records[1]->operation);
 
         self::assertSame([['unjail.not_jailed', ['%nickname%' => 'Target', '%channel%' => '#Sumidero']]], $this->run_(new UnjailCommand($this->handler()), 'Target'));
+        self::assertCount(4, $this->network->calls);
     }
 
     #[Test]

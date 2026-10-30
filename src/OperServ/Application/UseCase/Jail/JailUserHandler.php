@@ -18,7 +18,8 @@ use function strcasecmp;
 
 /**
  * JAIL and UNJAIL: a jailed user is moved out of every channel into the jail
- * channel and kept there by EnforceJail until released or disconnected.
+ * channel and kept there by EnforceJail until released (UNJAIL also takes
+ * them out of the jail channel) or disconnected.
  */
 final readonly class JailUserHandler
 {
@@ -77,6 +78,12 @@ final readonly class JailUserHandler
 
         if (!$this->roster->release($target->uid)) {
             return $this->result(JailOutcome::NotJailed, $target->nickname);
+        }
+
+        foreach ($this->network->channelsOf($target->uid) as $channel) {
+            if (0 === strcasecmp($channel, $this->jailChannel)) {
+                $this->network->part($target->uid, $channel);
+            }
         }
 
         $this->record('UNJAIL', $command, $target);
