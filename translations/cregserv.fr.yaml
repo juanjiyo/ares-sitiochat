@@ -128,3 +128,40 @@ help:
   footer_general:   "\x02FIN de l'AIDE de %bot%\x02"
   footer_command:   "\x02FIN de l'aide de la commande %command%\x02"
   unknown_command:  "\x0307✗\x03 Commande inconnue \x02%command%\x02. Utilisez \x0303/msg %bot% HELP\x03."
+
+ig:
+  syntax: "IG {ADD|DEL} <#salon> | IG LIST"
+  short: "Gère les salons d'Intérêt Général (IG)."
+  help: "Marque ou démarque un salon enregistré comme d'Intérêt Général (IG). L'enregistrement du salon ne change pas : seule la marque est enregistrée. Les salons IG sont les seuls que l'administration peut reprendre avec APODERA. Tu as besoin de la permission \x02cregserv.ig\x02."
+  example: "/msg CReG IG ADD #Madrid"
+  not_registered: "\x0304✗\x03 Le salon \x02%channel%\x02 n'est pas enregistré."
+  add:
+    syntax: "IG ADD <#salon>"
+    short: "Marque un salon comme IG."
+    help: "Marque le salon enregistré indiqué comme d'Intérêt Général."
+    done: "\x0303✔\x03 Le salon \x02%channel%\x02 est désormais d'Intérêt Général."
+    already: "\x0304✗\x03 Le salon \x02%channel%\x02 est déjà d'Intérêt Général."
+  del:
+    syntax: "IG DEL <#salon>"
+    short: "Retire la marque IG d'un salon."
+    help: "Retire la marque d'Intérêt Général du salon indiqué."
+    done: "\x0303✔\x03 Le salon \x02%channel%\x02 n'est plus d'Intérêt Général."
+    not_marked: "\x0304✗\x03 Le salon \x02%channel%\x02 n'est pas d'Intérêt Général."
+  list:
+    syntax: "IG LIST"
+    short: "Liste les salons IG."
+    help: "Affiche tous les salons marqués comme d'Intérêt Général."
+    channels: "\x02Salons d'Intérêt Général :\x02 %channels%"
+    empty: "Il n'y a aucun salon d'Intérêt Général."
+
+apodera:
+  syntax: "APODERA <#salon> [pseudo]"
+  short: "Reprend un salon d'Intérêt Général pour l'administration."
+  help: "Change le fondateur d'un salon d'Intérêt Général (IG) pour le pseudo indiqué ou, sans pseudo, pour toi. Sert à intervenir sur un salon ou à le récupérer quand le pseudo du fondateur expire. Ne fonctionne que sur les salons IG (voir IG) et ignore la limite de salons par pseudo. Tu as besoin de la permission \x02cregserv.apodera\x02."
+  example: "/msg CReG APODERA #Madrid SitioChat"
+  done: "\x0303✔\x03 Le salon \x02%channel%\x02 a désormais \x02%nickname%\x02 comme fondateur."
+  already_founder: "\x0304✗\x03 \x02%nickname%\x02 est déjà le fondateur de \x02%channel%\x02."
+  not_registered: "\x0304✗\x03 Le salon \x02%channel%\x02 n'est pas enregistré."
+  not_ig: "\x0304✗\x03 Le salon \x02%channel%\x02 n'est pas d'Intérêt Général : APODERA ne fonctionne que sur les salons IG."
+  founder_not_registered: "\x0304✗\x03 Le pseudo \x02%nickname%\x02 n'est pas enregistré."
+  founder_suspended: "\x0304✗\x03 Le pseudo \x02%nickname%\x02 est suspendu."

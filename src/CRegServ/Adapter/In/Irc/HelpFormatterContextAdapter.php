@@ -20,6 +20,7 @@ final readonly class HelpFormatterContextAdapter implements HelpFormatterContext
         ['commands' => ['APROBAR', 'DENEGAR'], 'admin' => true],
         ['commands' => ['PENDIENTES', 'DENEGADOS', 'DROP'], 'admin' => true],
         ['commands' => ['SAREGISTER'], 'admin' => true],
+        ['commands' => ['IG', 'APODERA'], 'admin' => true],
     ];
 
     public function __construct(

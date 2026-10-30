@@ -128,3 +128,40 @@ help:
   footer_general:   "\x02FIN da AXUDA de %bot%\x02"
   footer_command:   "\x02FIN da axuda do comando %command%\x02"
   unknown_command:  "\x0307✗\x03 Comando descoñecido \x02%command%\x02. Use \x0303/msg %bot% HELP\x03."
+
+ig:
+  syntax: "IG {ADD|DEL} <#canle> | IG LIST"
+  short: "Xestiona as canles de Interese Xeral (IG)."
+  help: "Marca ou desmarca unha canle rexistrada como de Interese Xeral (IG). O rexistro da canle non cambia: só se garda a marca. As canles IG son as únicas que a administración pode tomar con APODERA. Necesitas o permiso \x02cregserv.ig\x02."
+  example: "/msg CReG IG ADD #Madrid"
+  not_registered: "\x0304✗\x03 A canle \x02%channel%\x02 non está rexistrada."
+  add:
+    syntax: "IG ADD <#canle>"
+    short: "Marca unha canle como IG."
+    help: "Marca a canle rexistrada indicada como de Interese Xeral."
+    done: "\x0303✔\x03 A canle \x02%channel%\x02 é agora de Interese Xeral."
+    already: "\x0304✗\x03 A canle \x02%channel%\x02 xa é de Interese Xeral."
+  del:
+    syntax: "IG DEL <#canle>"
+    short: "Quita a marca IG dunha canle."
+    help: "Quita a marca de Interese Xeral da canle indicada."
+    done: "\x0303✔\x03 A canle \x02%channel%\x02 xa non é de Interese Xeral."
+    not_marked: "\x0304✗\x03 A canle \x02%channel%\x02 non é de Interese Xeral."
+  list:
+    syntax: "IG LIST"
+    short: "Lista as canles IG."
+    help: "Mostra todas as canles marcadas como de Interese Xeral."
+    channels: "\x02Canles de Interese Xeral:\x02 %channels%"
+    empty: "Non hai canles de Interese Xeral."
+
+apodera:
+  syntax: "APODERA <#canle> [nick]"
+  short: "Toma unha canle de Interese Xeral para a administración."
+  help: "Cambia o fundador dunha canle de Interese Xeral (IG) ao nick indicado ou, se non o indicas, a ti. Serve para intervir unha canle ou para recuperala cando ao fundador lle caduca o nick. Só funciona con canles IG (ver IG) e non aplica o límite de canles por nick. Necesitas o permiso \x02cregserv.apodera\x02."
+  example: "/msg CReG APODERA #Madrid SitioChat"
+  done: "\x0303✔\x03 A canle \x02%channel%\x02 ten agora como fundador a \x02%nickname%\x02."
+  already_founder: "\x0304✗\x03 \x02%nickname%\x02 xa é o fundador de \x02%channel%\x02."
+  not_registered: "\x0304✗\x03 A canle \x02%channel%\x02 non está rexistrada."
+  not_ig: "\x0304✗\x03 A canle \x02%channel%\x02 non é de Interese Xeral: APODERA só se pode usar en canles IG."
+  founder_not_registered: "\x0304✗\x03 O nick \x02%nickname%\x02 non está rexistrado."
+  founder_suspended: "\x0304✗\x03 O nick \x02%nickname%\x02 está suspendido."

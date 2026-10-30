@@ -29,6 +29,12 @@ final readonly class CRegServPermission
      */
     public const string SAREGISTER = 'cregserv.saregister';
 
+    /** Marks and unmarks Interés General (IG) channels. */
+    public const string IG = 'cregserv.ig';
+
+    /** Takes an IG channel over for the administration (APODERA). */
+    public const string APODERA = 'cregserv.apodera';
+
     /**
      * @return list<string>
      */
@@ -41,6 +47,8 @@ final readonly class CRegServPermission
             self::DENEGADOS,
             self::DROP,
             self::SAREGISTER,
+            self::IG,
+            self::APODERA,
         ];
     }
 

@@ -23,6 +23,8 @@ final class CRegServPermissionTest extends TestCase
             'cregserv.denegados',
             'cregserv.drop',
             'cregserv.saregister',
+            'cregserv.ig',
+            'cregserv.apodera',
         ], CRegServPermission::allIrcop());
     }
 

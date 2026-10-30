@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Bootstrap;
 
+use App\CRegServ\Adapter\In\Irc\Command\ApoderaCommand;
 use App\CRegServ\Adapter\In\Irc\Command\AprobarCommand;
 use App\CRegServ\Adapter\In\Irc\Command\CancelChannelRegistrationCommand;
 use App\CRegServ\Adapter\In\Irc\Command\DenegadosCommand;
@@ -11,6 +12,7 @@ use App\CRegServ\Adapter\In\Irc\Command\DenegarCommand;
 use App\CRegServ\Adapter\In\Irc\Command\DropCommand;
 use App\CRegServ\Adapter\In\Irc\Command\EstadoCommand;
 use App\CRegServ\Adapter\In\Irc\Command\HelpCommand;
+use App\CRegServ\Adapter\In\Irc\Command\IgCommand;
 use App\CRegServ\Adapter\In\Irc\Command\PendientesCommand;
 use App\CRegServ\Adapter\In\Irc\Command\RegistraCommand;
 use App\CRegServ\Adapter\In\Irc\Command\SaregisterCommand;
@@ -50,6 +52,8 @@ final class CRegServCommandWiringTest extends KernelTestCase
             'DENEGADOS' => [DenegadosCommand::class, 'DENEGADOS'],
             'DROP' => [DropCommand::class, 'DROP'],
             'SAREGISTER' => [SaregisterCommand::class, 'SAREGISTER'],
+            'IG' => [IgCommand::class, 'IG'],
+            'APODERA' => [ApoderaCommand::class, 'APODERA'],
             'HELP' => [HelpCommand::class, 'HELP'],
         ];
     }
@@ -70,7 +74,7 @@ final class CRegServCommandWiringTest extends KernelTestCase
     }
 
     #[Test]
-    public function theRegistryHoldsExactlyTheTenPortedCommands(): void
+    public function theRegistryHoldsExactlyTheTwelvePortedCommands(): void
     {
         self::bootKernel();
 
@@ -84,7 +88,7 @@ final class CRegServCommandWiringTest extends KernelTestCase
         sort($names);
 
         self::assertSame(
-            ['APROBAR', 'CANCEL', 'DENEGADOS', 'DENEGAR', 'DROP', 'ESTADO', 'HELP', 'PENDIENTES', 'REGISTRA', 'SAREGISTER'],
+            ['APODERA', 'APROBAR', 'CANCEL', 'DENEGADOS', 'DENEGAR', 'DROP', 'ESTADO', 'HELP', 'IG', 'PENDIENTES', 'REGISTRA', 'SAREGISTER'],
             $names,
         );
     }
@@ -101,6 +105,8 @@ final class CRegServCommandWiringTest extends KernelTestCase
             'DENEGADOS' => ['DENEGADOS', DenegadosCommand::class, CRegServPermission::DENEGADOS],
             'DROP' => ['DROP', DropCommand::class, CRegServPermission::DROP],
             'SAREGISTER' => ['SAREGISTER', SaregisterCommand::class, CRegServPermission::SAREGISTER],
+            'IG' => ['IG', IgCommand::class, CRegServPermission::IG],
+            'APODERA' => ['APODERA', ApoderaCommand::class, CRegServPermission::APODERA],
         ];
     }
 

@@ -128,3 +128,40 @@ help:
   footer_general:   "\x02END of the %bot% HELP\x02"
   footer_command:   "\x02END of the help for %command%\x02"
   unknown_command:  "\x0307✗\x03 Unknown command \x02%command%\x02. Use \x0303/msg %bot% HELP\x03."
+
+ig:
+  syntax: "IG {ADD|DEL} <#channel> | IG LIST"
+  short: "Manages the General Interest (IG) channels."
+  help: "Marks or unmarks a registered channel as General Interest (IG). The channel registration does not change: only the mark is stored. IG channels are the only ones the administration can take over with APODERA. You need the \x02cregserv.ig\x02 permission."
+  example: "/msg CReG IG ADD #Madrid"
+  not_registered: "\x0304✗\x03 The channel \x02%channel%\x02 is not registered."
+  add:
+    syntax: "IG ADD <#channel>"
+    short: "Marks a channel as IG."
+    help: "Marks the given registered channel as General Interest."
+    done: "\x0303✔\x03 The channel \x02%channel%\x02 is now General Interest."
+    already: "\x0304✗\x03 The channel \x02%channel%\x02 is already General Interest."
+  del:
+    syntax: "IG DEL <#channel>"
+    short: "Removes the IG mark from a channel."
+    help: "Removes the General Interest mark from the given channel."
+    done: "\x0303✔\x03 The channel \x02%channel%\x02 is no longer General Interest."
+    not_marked: "\x0304✗\x03 The channel \x02%channel%\x02 is not General Interest."
+  list:
+    syntax: "IG LIST"
+    short: "Lists the IG channels."
+    help: "Shows every channel marked as General Interest."
+    channels: "\x02General Interest channels:\x02 %channels%"
+    empty: "There are no General Interest channels."
+
+apodera:
+  syntax: "APODERA <#channel> [nick]"
+  short: "Takes a General Interest channel over for the administration."
+  help: "Changes the founder of a General Interest (IG) channel to the given nick or, without one, to you. It is used to intervene in a channel or to recover it when the founder's nick expires. It only works on IG channels (see IG) and ignores the per-nick channel limit. You need the \x02cregserv.apodera\x02 permission."
+  example: "/msg CReG APODERA #Madrid SitioChat"
+  done: "\x0303✔\x03 The channel \x02%channel%\x02 now has \x02%nickname%\x02 as founder."
+  already_founder: "\x0304✗\x03 \x02%nickname%\x02 is already the founder of \x02%channel%\x02."
+  not_registered: "\x0304✗\x03 The channel \x02%channel%\x02 is not registered."
+  not_ig: "\x0304✗\x03 The channel \x02%channel%\x02 is not General Interest: APODERA only works on IG channels."
+  founder_not_registered: "\x0304✗\x03 The nick \x02%nickname%\x02 is not registered."
+  founder_suspended: "\x0304✗\x03 The nick \x02%nickname%\x02 is suspended."

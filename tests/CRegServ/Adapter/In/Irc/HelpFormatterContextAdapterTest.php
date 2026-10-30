@@ -159,6 +159,7 @@ final class HelpFormatterContextAdapterTest extends TestCase
             ['commands' => ['APROBAR', 'DENEGAR'], 'admin' => true],
             ['commands' => ['PENDIENTES', 'DENEGADOS', 'DROP'], 'admin' => true],
             ['commands' => ['SAREGISTER'], 'admin' => true],
+            ['commands' => ['IG', 'APODERA'], 'admin' => true],
         ], $groups);
     }
 

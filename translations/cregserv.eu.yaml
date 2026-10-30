@@ -128,3 +128,40 @@ help:
   footer_general:   "\x02%bot%(r)en LAGUNTZAREN AMAIERA\x02"
   footer_command:   "\x02%command% komandoaren laguntzaren amaiera\x02"
   unknown_command:  "\x0307✗\x03 Komando ezezaguna \x02%command%\x02. Erabili \x0303/msg %bot% HELP\x03."
+
+ig:
+  syntax: "IG {ADD|DEL} <#kanala> | IG LIST"
+  short: "Interes Orokorreko (IG) kanalak kudeatzen ditu."
+  help: "Erregistratutako kanal bat Interes Orokorrekotzat (IG) markatzen edo desmarkatzen du. Kanalaren erregistroa ez da aldatzen: marka bakarrik gordetzen da. IG kanalak dira administrazioak APODERA bidez har ditzakeen bakarrak. \x02cregserv.ig\x02 baimena behar duzu."
+  example: "/msg CReG IG ADD #Madrid"
+  not_registered: "\x0304✗\x03 \x02%channel%\x02 kanala ez dago erregistratuta."
+  add:
+    syntax: "IG ADD <#kanala>"
+    short: "Kanal bat IG gisa markatzen du."
+    help: "Adierazitako kanal erregistratua Interes Orokorrekotzat markatzen du."
+    done: "\x0303✔\x03 \x02%channel%\x02 kanala Interes Orokorrekoa da orain."
+    already: "\x0304✗\x03 \x02%channel%\x02 kanala dagoeneko Interes Orokorrekoa da."
+  del:
+    syntax: "IG DEL <#kanala>"
+    short: "Kanal baten IG marka kentzen du."
+    help: "Adierazitako kanalaren Interes Orokorreko marka kentzen du."
+    done: "\x0303✔\x03 \x02%channel%\x02 kanala ez da jada Interes Orokorrekoa."
+    not_marked: "\x0304✗\x03 \x02%channel%\x02 kanala ez da Interes Orokorrekoa."
+  list:
+    syntax: "IG LIST"
+    short: "IG kanalak zerrendatzen ditu."
+    help: "Interes Orokorreko gisa markatutako kanal guztiak erakusten ditu."
+    channels: "\x02Interes Orokorreko kanalak:\x02 %channels%"
+    empty: "Ez dago Interes Orokorreko kanalik."
+
+apodera:
+  syntax: "APODERA <#kanala> [nick]"
+  short: "Interes Orokorreko kanal bat administraziorako hartzen du."
+  help: "Interes Orokorreko (IG) kanal baten sortzailea adierazitako nickera aldatzen du edo, adierazten ez baduzu, zuregana. Kanal batean esku hartzeko edo sortzailearen nicka iraungitzen denean berreskuratzeko balio du. IG kanaletan bakarrik dabil (ikus IG) eta ez du nick bakoitzeko kanal-muga aplikatzen. \x02cregserv.apodera\x02 baimena behar duzu."
+  example: "/msg CReG APODERA #Madrid SitioChat"
+  done: "\x0303✔\x03 \x02%channel%\x02 kanalaren sortzailea \x02%nickname%\x02 da orain."
+  already_founder: "\x0304✗\x03 \x02%nickname%\x02 dagoeneko \x02%channel%\x02 kanalaren sortzailea da."
+  not_registered: "\x0304✗\x03 \x02%channel%\x02 kanala ez dago erregistratuta."
+  not_ig: "\x0304✗\x03 \x02%channel%\x02 kanala ez da Interes Orokorrekoa: APODERA IG kanaletan bakarrik erabil daiteke."
+  founder_not_registered: "\x0304✗\x03 \x02%nickname%\x02 nicka ez dago erregistratuta."
+  founder_suspended: "\x0304✗\x03 \x02%nickname%\x02 nicka etenda dago."

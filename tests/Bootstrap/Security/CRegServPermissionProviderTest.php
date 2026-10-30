@@ -35,6 +35,6 @@ final class CRegServPermissionProviderTest extends TestCase
     {
         $permission = new CRegServPermissionProvider();
 
-        self::assertSame([CRegServPermission::APROBAR, CRegServPermission::DENEGAR, CRegServPermission::PENDIENTES, CRegServPermission::DENEGADOS, CRegServPermission::DROP, CRegServPermission::SAREGISTER], $permission->getPermissions());
+        self::assertSame([CRegServPermission::APROBAR, CRegServPermission::DENEGAR, CRegServPermission::PENDIENTES, CRegServPermission::DENEGADOS, CRegServPermission::DROP, CRegServPermission::SAREGISTER, CRegServPermission::IG, CRegServPermission::APODERA], $permission->getPermissions());
     }
 }

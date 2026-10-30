@@ -128,3 +128,40 @@ help:
   footer_general:   "\x02FIM da AJUDA do %bot%\x02"
   footer_command:   "\x02FIM da ajuda do comando %command%\x02"
   unknown_command:  "\x0307✗\x03 Comando desconhecido \x02%command%\x02. Use \x0303/msg %bot% HELP\x03."
+
+ig:
+  syntax: "IG {ADD|DEL} <#canal> | IG LIST"
+  short: "Gere os canais de Interesse Geral (IG)."
+  help: "Marca ou desmarca um canal registado como de Interesse Geral (IG). O registo do canal não muda: apenas a marca é guardada. Os canais IG são os únicos que a administração pode tomar com APODERA. Precisas da permissão \x02cregserv.ig\x02."
+  example: "/msg CReG IG ADD #Madrid"
+  not_registered: "\x0304✗\x03 O canal \x02%channel%\x02 não está registado."
+  add:
+    syntax: "IG ADD <#canal>"
+    short: "Marca um canal como IG."
+    help: "Marca o canal registado indicado como de Interesse Geral."
+    done: "\x0303✔\x03 O canal \x02%channel%\x02 é agora de Interesse Geral."
+    already: "\x0304✗\x03 O canal \x02%channel%\x02 já é de Interesse Geral."
+  del:
+    syntax: "IG DEL <#canal>"
+    short: "Retira a marca IG de um canal."
+    help: "Retira a marca de Interesse Geral do canal indicado."
+    done: "\x0303✔\x03 O canal \x02%channel%\x02 já não é de Interesse Geral."
+    not_marked: "\x0304✗\x03 O canal \x02%channel%\x02 não é de Interesse Geral."
+  list:
+    syntax: "IG LIST"
+    short: "Lista os canais IG."
+    help: "Mostra todos os canais marcados como de Interesse Geral."
+    channels: "\x02Canais de Interesse Geral:\x02 %channels%"
+    empty: "Não há canais de Interesse Geral."
+
+apodera:
+  syntax: "APODERA <#canal> [nick]"
+  short: "Toma um canal de Interesse Geral para a administração."
+  help: "Muda o fundador de um canal de Interesse Geral (IG) para o nick indicado ou, se não indicares nenhum, para ti. Serve para intervir num canal ou para o recuperar quando o nick do fundador expira. Só funciona com canais IG (ver IG) e ignora o limite de canais por nick. Precisas da permissão \x02cregserv.apodera\x02."
+  example: "/msg CReG APODERA #Madrid SitioChat"
+  done: "\x0303✔\x03 O canal \x02%channel%\x02 tem agora como fundador \x02%nickname%\x02."
+  already_founder: "\x0304✗\x03 \x02%nickname%\x02 já é o fundador de \x02%channel%\x02."
+  not_registered: "\x0304✗\x03 O canal \x02%channel%\x02 não está registado."
+  not_ig: "\x0304✗\x03 O canal \x02%channel%\x02 não é de Interesse Geral: APODERA só funciona em canais IG."
+  founder_not_registered: "\x0304✗\x03 O nick \x02%nickname%\x02 não está registado."
+  founder_suspended: "\x0304✗\x03 O nick \x02%nickname%\x02 está suspenso."

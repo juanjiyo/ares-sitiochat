@@ -128,3 +128,40 @@ help:
   footer_general:   "\x02%bot% YARDIMININ SONU\x02"
   footer_command:   "\x02%command% komutunun yardımının sonu\x02"
   unknown_command:  "\x0307✗\x03 Bilinmeyen komut \x02%command%\x02. \x0303/msg %bot% HELP\x03 kullanın."
+
+ig:
+  syntax: "IG {ADD|DEL} <#kanal> | IG LIST"
+  short: "Genel İlgi (IG) kanallarını yönetir."
+  help: "Kayıtlı bir kanalı Genel İlgi (IG) kanalı olarak işaretler veya işareti kaldırır. Kanal kaydı değişmez: yalnızca işaret saklanır. Yönetimin APODERA ile devralabileceği tek kanallar IG kanallarıdır. \x02cregserv.ig\x02 iznine ihtiyacın var."
+  example: "/msg CReG IG ADD #Madrid"
+  not_registered: "\x0304✗\x03 \x02%channel%\x02 kanalı kayıtlı değil."
+  add:
+    syntax: "IG ADD <#kanal>"
+    short: "Bir kanalı IG olarak işaretler."
+    help: "Belirtilen kayıtlı kanalı Genel İlgi kanalı olarak işaretler."
+    done: "\x0303✔\x03 \x02%channel%\x02 kanalı artık Genel İlgi kanalı."
+    already: "\x0304✗\x03 \x02%channel%\x02 kanalı zaten Genel İlgi kanalı."
+  del:
+    syntax: "IG DEL <#kanal>"
+    short: "Bir kanalın IG işaretini kaldırır."
+    help: "Belirtilen kanalın Genel İlgi işaretini kaldırır."
+    done: "\x0303✔\x03 \x02%channel%\x02 kanalı artık Genel İlgi kanalı değil."
+    not_marked: "\x0304✗\x03 \x02%channel%\x02 kanalı Genel İlgi kanalı değil."
+  list:
+    syntax: "IG LIST"
+    short: "IG kanallarını listeler."
+    help: "Genel İlgi olarak işaretlenmiş tüm kanalları gösterir."
+    channels: "\x02Genel İlgi kanalları:\x02 %channels%"
+    empty: "Genel İlgi kanalı yok."
+
+apodera:
+  syntax: "APODERA <#kanal> [nick]"
+  short: "Bir Genel İlgi kanalını yönetim adına devralır."
+  help: "Bir Genel İlgi (IG) kanalının kurucusunu belirtilen nick'e veya, nick belirtmezsen, sana değiştirir. Bir kanala müdahale etmek ya da kurucunun nick'i sona erdiğinde kanalı geri almak için kullanılır. Yalnızca IG kanallarında çalışır (bkz. IG) ve nick başına kanal sınırını uygulamaz. \x02cregserv.apodera\x02 iznine ihtiyacın var."
+  example: "/msg CReG APODERA #Madrid SitioChat"
+  done: "\x0303✔\x03 \x02%channel%\x02 kanalının kurucusu artık \x02%nickname%\x02."
+  already_founder: "\x0304✗\x03 \x02%nickname%\x02 zaten \x02%channel%\x02 kanalının kurucusu."
+  not_registered: "\x0304✗\x03 \x02%channel%\x02 kanalı kayıtlı değil."
+  not_ig: "\x0304✗\x03 \x02%channel%\x02 kanalı Genel İlgi kanalı değil: APODERA yalnızca IG kanallarında kullanılabilir."
+  founder_not_registered: "\x0304✗\x03 \x02%nickname%\x02 nick'i kayıtlı değil."
+  founder_suspended: "\x0304✗\x03 \x02%nickname%\x02 nick'i askıya alınmış."
