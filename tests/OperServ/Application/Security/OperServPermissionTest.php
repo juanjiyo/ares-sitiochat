@@ -80,6 +80,14 @@ final class OperServPermissionTest extends TestCase
     }
 
     #[Test]
+    public function umodeConstantHasExpectedValue(): void
+    {
+        $constant = new ReflectionClass(OperServPermission::class)->getConstant('UMODE');
+
+        self::assertSame('operserv.umode', $constant);
+    }
+
+    #[Test]
     public function allConstantsAreStrings(): void
     {
         $reflection = new ReflectionClass(OperServPermission::class);

@@ -486,3 +486,14 @@ conexiones:
     example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
     result:     "\x0310ℹ\x03 \x02%host%\x02 adresinden eşzamanlı etkin bağlantılar: \x02%count%\x02."
     not_found:  "\x0304✗\x03 \x02%host%\x02 için bağlantı bulunamadı."
+
+# --- UMODE -----------------------------------------------------------------------
+umode:
+  syntax:         "UMODE <nick> <+/-modlar>"
+  short:          "Bir nick'in kullanıcı modlarını değiştirir."
+  help:           "Bağlı bir nick'e kullanıcı modu ekler veya kaldırır.\nYalnızca kendi rütbendeki veya daha alttaki modları kullanabilirsin: her IRCop kullanıcı modlarını, bir Operatör ayrıca s ve W'yi, bir Yönetici ayrıca H, q ve o'yu; Root ise hepsini.\nr ve h modları eklenemez veya kaldırılamaz.\nBu komut operserv.umode iznini gerektirir."
+  example:        "/msg %bot% UMODE Kullanıcı +R"
+  done:           "\x0303✓\x03 \x02%modes%\x02 modları \x02%nickname%\x02 kullanıcısına uygulandı."
+  invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 geçerli bir mod değişikliği değil. +modlar veya -modlar kullan."
+  forbidden:      "\x0304✗\x03 r ve h modlarını ekleyemez veya kaldıramazsın."
+  above_rank:     "\x0304✗\x03 Rütben \x02%modes%\x02 modlarını kullanmana izin vermiyor."

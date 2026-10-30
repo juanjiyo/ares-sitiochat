@@ -486,3 +486,14 @@ conexiones:
     example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
     result:     "\x0310ℹ\x03 Gelijktijdige actieve verbindingen van \x02%host%\x02: \x02%count%\x02."
     not_found:  "\x0304✗\x03 Geen verbindingen gevonden voor \x02%host%\x02."
+
+# --- UMODE -----------------------------------------------------------------------
+umode:
+  syntax:         "UMODE <nick> <+/-modi>"
+  short:          "Wijzigt de gebruikersmodi van een nick."
+  help:           "Zet of verwijdert gebruikersmodi op een verbonden nick.\nJe mag alleen de modi van je eigen rang of lager gebruiken: elke IRCop de gebruikersmodi, een Operator ook s en W, een Administrator ook H, q en o; Root alle modi.\nDe modi r en h kunnen niet gezet of verwijderd worden.\nDit commando vereist de permissie operserv.umode."
+  example:        "/msg %bot% UMODE Gebruiker +R"
+  done:           "\x0303✓\x03 Modi \x02%modes%\x02 toegepast op \x02%nickname%\x02."
+  invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 is geen geldige moduswijziging. Gebruik +modi of -modi."
+  forbidden:      "\x0304✗\x03 Je kunt de modi r en h niet zetten of verwijderen."
+  above_rank:     "\x0304✗\x03 Je rang staat de modi \x02%modes%\x02 niet toe."

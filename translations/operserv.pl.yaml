@@ -486,3 +486,14 @@ conexiones:
     example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
     result:     "\x0310ℹ\x03 Jednoczesne aktywne połączenia z \x02%host%\x02: \x02%count%\x02."
     not_found:  "\x0304✗\x03 Nie znaleziono połączeń dla \x02%host%\x02."
+
+# --- UMODE -----------------------------------------------------------------------
+umode:
+  syntax:         "UMODE <nick> <+/-tryby>"
+  short:          "Zmienia tryby użytkownika nicka."
+  help:           "Ustawia lub usuwa tryby użytkownika połączonemu nickowi.\nMożesz używać tylko trybów swojej rangi lub niższych: każdy IRCop tryby użytkownika, Operator także s i W, Administrator także H, q i o; Root dowolne.\nTrybów r i h nie można ustawić ani usunąć.\nTo polecenie wymaga uprawnienia operserv.umode."
+  example:        "/msg %bot% UMODE Użytkownik +R"
+  done:           "\x0303✓\x03 Tryby \x02%modes%\x02 zastosowano dla \x02%nickname%\x02."
+  invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 nie jest prawidłową zmianą trybów. Użyj +tryby lub -tryby."
+  forbidden:      "\x0304✗\x03 Nie możesz ustawić ani usunąć trybów r i h."
+  above_rank:     "\x0304✗\x03 Twoja ranga nie pozwala na użycie trybów \x02%modes%\x02."

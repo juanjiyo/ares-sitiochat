@@ -486,3 +486,14 @@ conexiones:
     example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
     result:     "\x0310ℹ\x03 Conexións simultáneas activas da IP \x02%host%\x02: \x02%count%\x02."
     not_found:  "\x0304✗\x03 Non se atoparon conexións para \x02%host%\x02."
+
+# --- UMODE -----------------------------------------------------------------------
+umode:
+  syntax:         "UMODE <nick> <+/-modos>"
+  short:          "Cambia os modos de usuario dun nick."
+  help:           "Pon ou quita modos de usuario a un nick conectado.\nSó podes usar os modos do teu rango ou inferiores: calquera IRCop os de usuario, un Operador tamén s e W, un Administrador tamén H, q e o; Root, calquera.\nOs modos r e h non se poden poñer nin quitar.\nEste comando require o permiso operserv.umode."
+  example:        "/msg %bot% UMODE Usuario +R"
+  done:           "\x0303✓\x03 Modos \x02%modes%\x02 aplicados a \x02%nickname%\x02."
+  invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 non é un cambio de modos válido. Usa +modos ou -modos."
+  forbidden:      "\x0304✗\x03 Non podes poñer nin quitar os modos r e h."
+  above_rank:     "\x0304✗\x03 O teu rango non che permite usar os modos \x02%modes%\x02."

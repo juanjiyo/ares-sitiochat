@@ -486,3 +486,14 @@ conexiones:
     example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
     result:     "\x0310ℹ\x03 Ταυτόχρονες ενεργές συνδέσεις του \x02%host%\x02: \x02%count%\x02."
     not_found:  "\x0304✗\x03 Δεν βρέθηκαν συνδέσεις για το \x02%host%\x02."
+
+# --- UMODE -----------------------------------------------------------------------
+umode:
+  syntax:         "UMODE <nick> <+/-modes>"
+  short:          "Αλλάζει τα modes χρήστη ενός nick."
+  help:           "Ορίζει ή αφαιρεί modes χρήστη σε ένα συνδεδεμένο nick.\nΜπορείς να χρησιμοποιήσεις μόνο τα modes της βαθμίδας σου ή κατώτερης: κάθε IRCop τα modes χρήστη, ένας Operator επίσης τα s και W, ένας Administrator επίσης τα H, q και o· ο Root οποιοδήποτε.\nΤα modes r και h δεν μπορούν να οριστούν ή να αφαιρεθούν.\nΑυτή η εντολή απαιτεί το δικαίωμα operserv.umode."
+  example:        "/msg %bot% UMODE Χρήστης +R"
+  done:           "\x0303✓\x03 Τα modes \x02%modes%\x02 εφαρμόστηκαν στο \x02%nickname%\x02."
+  invalid_modes:  "\x0304✗\x03 Το \x02%modes%\x02 δεν είναι έγκυρη αλλαγή modes. Χρησιμοποίησε +modes ή -modes."
+  forbidden:      "\x0304✗\x03 Δεν μπορείς να ορίσεις ή να αφαιρέσεις τα modes r και h."
+  above_rank:     "\x0304✗\x03 Η βαθμίδα σου δεν σου επιτρέπει τα modes \x02%modes%\x02."

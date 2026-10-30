@@ -2437,6 +2437,12 @@ services:
     App\OperServ\Adapter\In\Irc\Command\ConexionesCommand:
         tags: ['operserv.command.new']
 
+    App\OperServ\Application\Port\Out\UserModeNetworkActions:
+        alias: App\OperServ\Adapter\Out\Irc\ActiveConnectionUserModeActions
+
+    App\OperServ\Adapter\In\Irc\Command\UmodeCommand:
+        tags: ['operserv.command.new']
+
     # --- OperServ Infrastructure -------------------------------------------------
 
     App\OperServ\Adapter\In\Irc\Bot\OperServBot:

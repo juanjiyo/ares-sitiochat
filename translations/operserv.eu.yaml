@@ -486,3 +486,14 @@ conexiones:
     example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
     result:     "\x0310ℹ\x03 \x02%host%\x02 hostaren aldibereko konexio aktiboak: \x02%count%\x02."
     not_found:  "\x0304✗\x03 Ez da konexiorik aurkitu \x02%host%\x02 hostarentzat."
+
+# --- UMODE -----------------------------------------------------------------------
+umode:
+  syntax:         "UMODE <nick> <+/-moduak>"
+  short:          "Nick baten erabiltzaile-moduak aldatzen ditu."
+  help:           "Konektatutako nick bati erabiltzaile-moduak jarri edo kentzen dizkio.\nZure mailako edo beheragoko moduak bakarrik erabil ditzakezu: edozein IRCopek erabiltzaile-moduak, Operadore batek s eta W ere, Administratzaile batek H, q eta o ere; Rootek, edozein.\nr eta h moduak ezin dira jarri ezta kendu ere.\nAgindu honek operserv.umode baimena behar du."
+  example:        "/msg %bot% UMODE Erabiltzailea +R"
+  done:           "\x0303✓\x03 \x02%modes%\x02 moduak \x02%nickname%\x02 nickari aplikatu zaizkio."
+  invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 ez da modu-aldaketa baliozkoa. Erabili +moduak edo -moduak."
+  forbidden:      "\x0304✗\x03 Ezin dituzu r eta h moduak jarri ezta kendu ere."
+  above_rank:     "\x0304✗\x03 Zure mailak ez dizu \x02%modes%\x02 moduak erabiltzen uzten."

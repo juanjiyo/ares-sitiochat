@@ -25,6 +25,7 @@ final readonly class OperServIrcopPermission implements PermissionProviderInterf
             OperServPermission::INVITE,
             OperServPermission::CLONES,
             OperServPermission::CONEXIONES,
+            OperServPermission::UMODE,
         ];
     }
 }

@@ -486,3 +486,14 @@ conexiones:
     example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
     result:     "\x0310ℹ\x03 Connexions simultànies actives de la IP \x02%host%\x02: \x02%count%\x02."
     not_found:  "\x0304✗\x03 No s'han trobat connexions per a \x02%host%\x02."
+
+# --- UMODE -----------------------------------------------------------------------
+umode:
+  syntax:         "UMODE <nick> <+/-modes>"
+  short:          "Canvia els modes d'usuari d'un nick."
+  help:           "Posa o treu modes d'usuari a un nick connectat.\nNomés pots fer servir els modes del teu rang o inferiors: qualsevol IRCop els d'usuari, un Operador també s i W, un Administrador també H, q i o; Root, qualsevol.\nEls modes r i h no es poden posar ni treure.\nAquesta ordre requereix el permís operserv.umode."
+  example:        "/msg %bot% UMODE Usuari +R"
+  done:           "\x0303✓\x03 Modes \x02%modes%\x02 aplicats a \x02%nickname%\x02."
+  invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 no és un canvi de modes vàlid. Fes servir +modes o -modes."
+  forbidden:      "\x0304✗\x03 No pots posar ni treure els modes r i h."
+  above_rank:     "\x0304✗\x03 El teu rang no et permet fer servir els modes \x02%modes%\x02."

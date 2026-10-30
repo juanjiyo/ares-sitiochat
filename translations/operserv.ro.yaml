@@ -486,3 +486,14 @@ conexiones:
     example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
     result:     "\x0310ℹ\x03 Conexiuni simultane active de la \x02%host%\x02: \x02%count%\x02."
     not_found:  "\x0304✗\x03 Nu s-au găsit conexiuni pentru \x02%host%\x02."
+
+# --- UMODE -----------------------------------------------------------------------
+umode:
+  syntax:         "UMODE <nick> <+/-moduri>"
+  short:          "Schimbă modurile de utilizator ale unui nick."
+  help:           "Setează sau elimină moduri de utilizator pentru un nick conectat.\nPoți folosi doar modurile rangului tău sau inferioare: orice IRCop modurile de utilizator, un Operator și s și W, un Administrator și H, q și o; Root, oricare.\nModurile r și h nu pot fi setate sau eliminate.\nAceastă comandă necesită permisiunea operserv.umode."
+  example:        "/msg %bot% UMODE Utilizator +R"
+  done:           "\x0303✓\x03 Modurile \x02%modes%\x02 au fost aplicate lui \x02%nickname%\x02."
+  invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 nu este o schimbare de moduri validă. Folosește +moduri sau -moduri."
+  forbidden:      "\x0304✗\x03 Nu poți seta sau elimina modurile r și h."
+  above_rank:     "\x0304✗\x03 Rangul tău nu îți permite să folosești modurile \x02%modes%\x02."

@@ -486,3 +486,14 @@ conexiones:
     example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
     result:     "\x0310ℹ\x03 Connexions simultanées actives de \x02%host%\x02 : \x02%count%\x02."
     not_found:  "\x0304✗\x03 Aucune connexion trouvée pour \x02%host%\x02."
+
+# --- UMODE -----------------------------------------------------------------------
+umode:
+  syntax:         "UMODE <pseudo> <+/-modes>"
+  short:          "Modifie les modes utilisateur d'un pseudo."
+  help:           "Ajoute ou retire des modes utilisateur à un pseudo connecté.\nTu ne peux utiliser que les modes de ton rang ou inférieurs : tout IRCop les modes utilisateur, un Opérateur aussi s et W, un Administrateur aussi H, q et o ; Root, n'importe lequel.\nLes modes r et h ne peuvent être ni ajoutés ni retirés.\nCette commande nécessite la permission operserv.umode."
+  example:        "/msg %bot% UMODE Utilisateur +R"
+  done:           "\x0303✓\x03 Modes \x02%modes%\x02 appliqués à \x02%nickname%\x02."
+  invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 n'est pas un changement de modes valide. Utilise +modes ou -modes."
+  forbidden:      "\x0304✗\x03 Tu ne peux ni ajouter ni retirer les modes r et h."
+  above_rank:     "\x0304✗\x03 Ton rang ne te permet pas d'utiliser les modes \x02%modes%\x02."

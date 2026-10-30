@@ -486,3 +486,14 @@ conexiones:
     example:    "/msg %bot% CONEXIONES VIEW 192.0.2.10"
     result:     "\x0310ℹ\x03 Simultaneous active sessions from \x02%host%\x02: \x02%count%\x02."
     not_found:  "\x0304✗\x03 No sessions found for \x02%host%\x02."
+
+# --- UMODE -----------------------------------------------------------------------
+umode:
+  syntax:         "UMODE <nick> <+/-modes>"
+  short:          "Changes the user modes of a nick."
+  help:           "Sets or unsets user modes on a connected nick.\nYou may only use the modes of your rank or below: any IRCop the user modes, an Operator also s and W, an Administrator also H, q and o; Root, any of them.\nThe r and h modes cannot be set or unset.\nThis command requires the operserv.umode permission."
+  example:        "/msg %bot% UMODE User +R"
+  done:           "\x0303✓\x03 Modes \x02%modes%\x02 applied to \x02%nickname%\x02."
+  invalid_modes:  "\x0304✗\x03 \x02%modes%\x02 is not a valid mode change. Use +modes or -modes."
+  forbidden:      "\x0304✗\x03 You cannot set or unset the r and h modes."
+  above_rank:     "\x0304✗\x03 Your rank does not allow you to use the modes \x02%modes%\x02."

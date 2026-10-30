@@ -110,7 +110,7 @@ final class OperServHelpFormatterContextAdapterTest extends TestCase
         $groups = new OperServHelpFormatterContextAdapter($this->context())->getHelpGroups();
 
         self::assertSame(
-            ['group_key' => 'help.group.network_security', 'commands' => ['GLINE', 'GEOIP', 'KILL', 'KILLCLONES', 'BLOCK'], 'admin' => false, 'subgroup' => false],
+            ['group_key' => 'help.group.network_security', 'commands' => ['GLINE', 'GEOIP', 'KILL', 'KILLCLONES', 'BLOCK', 'UMODE'], 'admin' => false, 'subgroup' => false],
             $groups[1],
         );
     }

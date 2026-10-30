@@ -31,5 +31,8 @@ final class OperServPermission
 
     public const string CONEXIONES = 'operserv.conexiones';
 
+    /** Changes user modes, limited to the modes of the actor's rank. */
+    public const string UMODE = 'operserv.umode';
+
     private function __construct() {}
 }
