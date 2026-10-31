@@ -694,6 +694,8 @@ blackmail:
   list_header:      "\x0307ℹ\x03 Engelli e-posta alan adları (%count%):"
   list_line:        "  %index%. %domain%"
   list_empty:       "\x0307ℹ\x03 Engelli e-posta alan adı yok."
+  list_total:       "\x0307ℹ\x03 %count% engelli e-posta alan adı var. Görmek için LIST <desen> kullanın, örneğin LIST *chat*."
+  list_no_matches:  "\x0307ℹ\x03 %pattern% ile eşleşen engelli e-posta alan adı yok."
   usage:            "\x0304✗\x03 Bilinmeyen alt komut. Kullanım: %syntax%"
   add:
     syntax:         "BLACKMAIL ADD <alan adı>"
@@ -706,7 +708,7 @@ blackmail:
     help:           "Bir alan adını LIST konumuna göre engel listesinden kaldırır\nveya ALL ile tüm listeyi temizler."
     example:        "/msg %bot% BLACKMAIL DEL 1"
   list:
-    syntax:         "BLACKMAIL LIST"
+    syntax:         "BLACKMAIL LIST [desen]"
     short:          "Engelli e-posta alan adlarını listeler."
-    help:           "Engelli e-posta alan adlarını artan sırada gösterir.\nGösterilen numaralar BLACKMAIL DEL ile kullanılabilir."
-    example:        "/msg %bot% BLACKMAIL LIST"
+    help:           "Desen olmadan kaç alan adının engelli olduğunu gösterir. Bir desenle (* ve ? kullanılabilir)\neşleşen alan adlarını gösterir. Gösterilen numaralar BLACKMAIL DEL ile kullanılabilir."
+    example:        "/msg %bot% BLACKMAIL LIST *chat*"

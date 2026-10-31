@@ -694,6 +694,8 @@ blackmail:
   list_header:      "\x0307ℹ\x03 Blokeatutako posta-domeinuak (%count%):"
   list_line:        "  %index%. %domain%"
   list_empty:       "\x0307ℹ\x03 Ez dago blokeatutako posta-domeinurik."
+  list_total:       "\x0307ℹ\x03 %count% posta-domeinu blokeatuta daude. Erabili LIST <eredua> ikusteko, adibidez LIST *chat*."
+  list_no_matches:  "\x0307ℹ\x03 Ez dago %pattern% ereduarekin bat datorren posta-domeinu blokeaturik."
   usage:            "\x0304✗\x03 Azpikomando ezezaguna. Erabilera: %syntax%"
   add:
     syntax:         "BLACKMAIL ADD <domeinua>"
@@ -706,7 +708,7 @@ blackmail:
     help:           "Domeinu bat kentzen du blokeo-zerrendatik LIST-en duen posizioaren arabera,\nedo zerrenda osoa husten du ALL-ekin."
     example:        "/msg %bot% BLACKMAIL DEL 1"
   list:
-    syntax:         "BLACKMAIL LIST"
+    syntax:         "BLACKMAIL LIST [eredua]"
     short:          "Blokeatutako posta-domeinuak zerrendatzen ditu."
-    help:           "Blokeatutako posta-domeinuak goranzko ordenan erakusten ditu.\nErakutsitako zenbakiak BLACKMAIL DEL-ekin erabil daitezke."
-    example:        "/msg %bot% BLACKMAIL LIST"
+    help:           "Eredurik gabe, zenbat domeinu dauden blokeatuta erakusten du. Eredu batekin (* eta ? onartzen ditu)\nbat datozen domeinuak erakusten ditu. Erakutsitako zenbakiak BLACKMAIL DEL-ekin erabil daitezke."
+    example:        "/msg %bot% BLACKMAIL LIST *chat*"

@@ -694,6 +694,8 @@ blackmail:
   list_header:      "\x0307ℹ\x03 Domenii de e-mail blocate (\x02%count%\x02):"
   list_line:        "  \x02%index%.\x02 %domain%"
   list_empty:       "\x0307ℹ\x03 Nu există domenii de e-mail blocate."
+  list_total:       "\x0307ℹ\x03 Există \x02%count%\x02 domenii de e-mail blocate. Folosește \x02LIST <model>\x02 pentru a le vedea, de exemplu \x02LIST *chat*\x02."
+  list_no_matches:  "\x0307ℹ\x03 Niciun domeniu de e-mail blocat nu se potrivește cu \x02%pattern%\x02."
   usage:            "\x0304✗\x03 Subcomandă necunoscută. Utilizare: \x02%syntax%\x02"
   add:
     syntax:         "BLACKMAIL ADD <domeniu>"
@@ -706,7 +708,7 @@ blackmail:
     help:           "Elimină un domeniu din lista de blocare după poziția sa din LIST,\nsau golește întreaga listă cu ALL."
     example:        "/msg %bot% BLACKMAIL DEL 1"
   list:
-    syntax:         "BLACKMAIL LIST"
+    syntax:         "BLACKMAIL LIST [model]"
     short:          "Listează domeniile de e-mail blocate."
-    help:           "Afișează domeniile de e-mail blocate în ordine crescătoare.\nNumerele afișate pot fi folosite cu BLACKMAIL DEL."
-    example:        "/msg %bot% BLACKMAIL LIST"
+    help:           "Fără model arată câte domenii sunt blocate. Cu un model (sunt permise * și ?)\narată domeniile care se potrivesc. Numerele afișate pot fi folosite cu BLACKMAIL DEL."
+    example:        "/msg %bot% BLACKMAIL LIST *chat*"

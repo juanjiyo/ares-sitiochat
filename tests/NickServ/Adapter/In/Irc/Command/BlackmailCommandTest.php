@@ -215,7 +215,7 @@ final class BlackmailCommandTest extends TestCase
     }
 
     #[Test]
-    public function listPrintsEveryEntry(): void
+    public function listWithoutPatternOnlyReportsTheTotal(): void
     {
         $repository = new InMemoryBlockedEmailDomainRepository();
         $repository->domains[] = new BlockedEmailDomain('alpha.com', $this->clock()->now());
@@ -225,7 +225,40 @@ final class BlackmailCommandTest extends TestCase
         $outcome = $this->command($repository)->execute($this->context(['LIST'], $messages));
 
         self::assertTrue($outcome->success);
+        self::assertSame(['blackmail.list_total'], $messages);
+    }
+
+    #[Test]
+    public function listWithPatternPrintsMatchesWithTheirListPosition(): void
+    {
+        $repository = new InMemoryBlockedEmailDomainRepository();
+        $repository->domains[] = new BlockedEmailDomain('alpha.com', $this->clock()->now());
+        $repository->domains[] = new BlockedEmailDomain('chatzona.net', $this->clock()->now());
+        $repository->domains[] = new BlockedEmailDomain('beta.com', $this->clock()->now());
+        $repository->domains[] = new BlockedEmailDomain('chathispano.com', $this->clock()->now());
+        $messages = [];
+        $params = [];
+
+        $outcome = $this->command($repository)->execute($this->context(['LIST', '*CHAT*'], $messages, params: $params));
+
+        self::assertTrue($outcome->success);
         self::assertSame(['blackmail.list_header', 'blackmail.list_line', 'blackmail.list_line'], $messages);
+        self::assertSame('2', $params[0]['%count%']);
+        self::assertSame(['2', 'chatzona.net'], [$params[1]['%index%'], $params[1]['%domain%']]);
+        self::assertSame(['4', 'chathispano.com'], [$params[2]['%index%'], $params[2]['%domain%']]);
+    }
+
+    #[Test]
+    public function listWithPatternReportsWhenNothingMatches(): void
+    {
+        $repository = new InMemoryBlockedEmailDomainRepository();
+        $repository->domains[] = new BlockedEmailDomain('alpha.com', $this->clock()->now());
+        $messages = [];
+
+        $outcome = $this->command($repository)->execute($this->context(['LIST', '*chat*'], $messages));
+
+        self::assertTrue($outcome->success);
+        self::assertSame(['blackmail.list_no_matches'], $messages);
     }
 
     #[Test]
@@ -288,13 +321,15 @@ final class BlackmailCommandTest extends TestCase
     }
 
     /** @param list<string> $arguments
-     * @param list<string> $messages
+     * @param list<string>                $messages
+     * @param list<array<string, string>> $params
      */
-    private function context(array $arguments, array &$messages, bool $withSender = true): NickServContext
+    private function context(array $arguments, array &$messages, bool $withSender = true, array &$params = []): NickServContext
     {
         $translator = $this->createStub(TranslatorInterface::class);
-        $translator->method('trans')->willReturnCallback(static function (string $key) use (&$messages): string {
+        $translator->method('trans')->willReturnCallback(static function (string $key, array $parameters = []) use (&$messages, &$params): string {
             $messages[] = $key;
+            $params[] = $parameters;
 
             return $key;
         });

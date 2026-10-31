@@ -694,6 +694,8 @@ blackmail:
   list_header:      "\x0307ℹ\x03 Geblokkeerde e-maildomeinen (\x02%count%\x02):"
   list_line:        "  \x02%index%.\x02 %domain%"
   list_empty:       "\x0307ℹ\x03 Er zijn geen e-maildomeinen geblokkeerd."
+  list_total:       "\x0307ℹ\x03 Er zijn \x02%count%\x02 e-maildomeinen geblokkeerd. Gebruik \x02LIST <patroon>\x02 om ze te zien, bijvoorbeeld \x02LIST *chat*\x02."
+  list_no_matches:  "\x0307ℹ\x03 Geen geblokkeerd e-maildomein komt overeen met \x02%pattern%\x02."
   usage:            "\x0304✗\x03 Onbekend subcommando. Gebruik: \x02%syntax%\x02"
   add:
     syntax:         "BLACKMAIL ADD <domein>"
@@ -706,7 +708,7 @@ blackmail:
     help:           "Verwijdert een domein uit de blokkeerlijst op basis van de positie in LIST,\nof leegt de hele lijst met ALL."
     example:        "/msg %bot% BLACKMAIL DEL 1"
   list:
-    syntax:         "BLACKMAIL LIST"
+    syntax:         "BLACKMAIL LIST [patroon]"
     short:          "Toont de geblokkeerde e-maildomeinen."
-    help:           "Toont de geblokkeerde e-maildomeinen in oplopende volgorde.\nDe getoonde nummers kunnen met BLACKMAIL DEL worden gebruikt."
-    example:        "/msg %bot% BLACKMAIL LIST"
+    help:           "Zonder patroon toont dit hoeveel domeinen geblokkeerd zijn. Met een patroon (* en ? toegestaan)\nworden de overeenkomende domeinen getoond. De getoonde nummers kunnen met BLACKMAIL DEL worden gebruikt."
+    example:        "/msg %bot% BLACKMAIL LIST *chat*"

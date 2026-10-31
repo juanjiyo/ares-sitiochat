@@ -694,6 +694,8 @@ blackmail:
   list_header:      "\x0307ℹ\x03 Blocked e-mail domains (\x02%count%\x02):"
   list_line:        "  \x02%index%.\x02 %domain%"
   list_empty:       "\x0307ℹ\x03 No e-mail domains are blocked."
+  list_total:       "\x0307ℹ\x03 There are \x02%count%\x02 blocked e-mail domains. Use \x02LIST <pattern>\x02 to see them, for example \x02LIST *chat*\x02."
+  list_no_matches:  "\x0307ℹ\x03 No blocked e-mail domain matches \x02%pattern%\x02."
   usage:            "\x0304✗\x03 Unknown subcommand. Usage: \x02%syntax%\x02"
   add:
     syntax:         "BLACKMAIL ADD <domain>"
@@ -706,7 +708,7 @@ blackmail:
     help:           "Removes a domain from the block list by its 1-based LIST position,\nor clears the whole list with ALL."
     example:        "/msg %bot% BLACKMAIL DEL 1"
   list:
-    syntax:         "BLACKMAIL LIST"
+    syntax:         "BLACKMAIL LIST [pattern]"
     short:          "List the blocked e-mail domains."
-    help:           "Shows the blocked e-mail domains in ascending order.\nThe numbers shown can be used with BLACKMAIL DEL."
-    example:        "/msg %bot% BLACKMAIL LIST"
+    help:           "Without a pattern it shows how many domains are blocked. With a pattern (* and ? allowed)\nit shows the matching domains. The numbers shown can be used with BLACKMAIL DEL."
+    example:        "/msg %bot% BLACKMAIL LIST *chat*"

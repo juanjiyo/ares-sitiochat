@@ -694,6 +694,8 @@ blackmail:
   list_header:      "\x0307ℹ\x03 Αποκλεισμένοι τομείς email (\x02%count%\x02):"
   list_line:        "  \x02%index%.\x02 %domain%"
   list_empty:       "\x0307ℹ\x03 Δεν υπάρχουν αποκλεισμένοι τομείς email."
+  list_total:       "\x0307ℹ\x03 Υπάρχουν \x02%count%\x02 αποκλεισμένοι τομείς email. Χρησιμοποιήστε \x02LIST <μοτίβο>\x02 για να τους δείτε, για παράδειγμα \x02LIST *chat*\x02."
+  list_no_matches:  "\x0307ℹ\x03 Κανένας αποκλεισμένος τομέας email δεν ταιριάζει με \x02%pattern%\x02."
   usage:            "\x0304✗\x03 Άγνωστη υποεντολή. Χρήση: \x02%syntax%\x02"
   add:
     syntax:         "BLACKMAIL ADD <τομέας>"
@@ -706,7 +708,7 @@ blackmail:
     help:           "Αφαιρεί έναν τομέα από τη λίστα αποκλεισμού με βάση τη θέση του στο LIST,\nή αδειάζει ολόκληρη τη λίστα με ALL."
     example:        "/msg %bot% BLACKMAIL DEL 1"
   list:
-    syntax:         "BLACKMAIL LIST"
+    syntax:         "BLACKMAIL LIST [μοτίβο]"
     short:          "Εμφανίζει τους αποκλεισμένους τομείς email."
-    help:           "Εμφανίζει τους αποκλεισμένους τομείς email σε αύξουσα σειρά.\nΟι αριθμοί που εμφανίζονται μπορούν να χρησιμοποιηθούν με το BLACKMAIL DEL."
-    example:        "/msg %bot% BLACKMAIL LIST"
+    help:           "Χωρίς μοτίβο εμφανίζει πόσοι τομείς είναι αποκλεισμένοι. Με μοτίβο (επιτρέπονται * και ?)\nεμφανίζει τους τομείς που ταιριάζουν. Οι αριθμοί που εμφανίζονται μπορούν να χρησιμοποιηθούν με το BLACKMAIL DEL."
+    example:        "/msg %bot% BLACKMAIL LIST *chat*"

@@ -694,6 +694,8 @@ blackmail:
   list_header:      "\x0307ℹ\x03 Dominis de correu bloquejats (\x02%count%\x02):"
   list_line:        "  \x02%index%.\x02 %domain%"
   list_empty:       "\x0307ℹ\x03 No hi ha cap domini de correu bloquejat."
+  list_total:       "\x0307ℹ\x03 Hi ha \x02%count%\x02 dominis de correu bloquejats. Fes servir \x02LIST <patró>\x02 per veure'ls, per exemple \x02LIST *chat*\x02."
+  list_no_matches:  "\x0307ℹ\x03 Cap domini de correu bloquejat coincideix amb \x02%pattern%\x02."
   usage:            "\x0304✗\x03 Subordre desconeguda. Ús: \x02%syntax%\x02"
   add:
     syntax:         "BLACKMAIL ADD <domini>"
@@ -706,7 +708,7 @@ blackmail:
     help:           "Elimina un domini de la llista de bloqueig per la seva posició a LIST,\no buida tota la llista amb ALL."
     example:        "/msg %bot% BLACKMAIL DEL 1"
   list:
-    syntax:         "BLACKMAIL LIST"
+    syntax:         "BLACKMAIL LIST [patró]"
     short:          "Llista els dominis de correu bloquejats."
-    help:           "Mostra els dominis de correu bloquejats en ordre ascendent.\nEls números mostrats es poden usar amb BLACKMAIL DEL."
-    example:        "/msg %bot% BLACKMAIL LIST"
+    help:           "Sense patró mostra quants dominis hi ha bloquejats. Amb un patró (admet * i ?)\nmostra els dominis que hi coincideixen. Els números mostrats es poden fer servir amb BLACKMAIL DEL."
+    example:        "/msg %bot% BLACKMAIL LIST *chat*"

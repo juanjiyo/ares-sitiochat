@@ -694,6 +694,8 @@ blackmail:
   list_header:      "\x0307ℹ\x03 Domini e-mail bloccati (\x02%count%\x02):"
   list_line:        "  \x02%index%.\x02 %domain%"
   list_empty:       "\x0307ℹ\x03 Nessun dominio e-mail è bloccato."
+  list_total:       "\x0307ℹ\x03 Ci sono \x02%count%\x02 domini e-mail bloccati. Usa \x02LIST <modello>\x02 per vederli, ad esempio \x02LIST *chat*\x02."
+  list_no_matches:  "\x0307ℹ\x03 Nessun dominio e-mail bloccato corrisponde a \x02%pattern%\x02."
   usage:            "\x0304✗\x03 Sottocomando sconosciuto. Uso: \x02%syntax%\x02"
   add:
     syntax:         "BLACKMAIL ADD <dominio>"
@@ -706,7 +708,7 @@ blackmail:
     help:           "Rimuove un dominio dalla lista di blocco in base alla sua posizione in LIST,\no svuota l'intera lista con ALL."
     example:        "/msg %bot% BLACKMAIL DEL 1"
   list:
-    syntax:         "BLACKMAIL LIST"
+    syntax:         "BLACKMAIL LIST [modello]"
     short:          "Elenca i domini e-mail bloccati."
-    help:           "Mostra i domini e-mail bloccati in ordine crescente.\nI numeri mostrati possono essere usati con BLACKMAIL DEL."
-    example:        "/msg %bot% BLACKMAIL LIST"
+    help:           "Senza modello mostra quanti domini sono bloccati. Con un modello (ammessi * e ?)\nmostra i domini corrispondenti. I numeri mostrati possono essere usati con BLACKMAIL DEL."
+    example:        "/msg %bot% BLACKMAIL LIST *chat*"

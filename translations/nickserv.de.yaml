@@ -694,6 +694,8 @@ blackmail:
   list_header:      "\x0307ℹ\x03 Gesperrte E-Mail-Domains (\x02%count%\x02):"
   list_line:        "  \x02%index%.\x02 %domain%"
   list_empty:       "\x0307ℹ\x03 Es sind keine E-Mail-Domains gesperrt."
+  list_total:       "\x0307ℹ\x03 Es sind \x02%count%\x02 E-Mail-Domains gesperrt. Mit \x02LIST <Muster>\x02 werden sie angezeigt, zum Beispiel \x02LIST *chat*\x02."
+  list_no_matches:  "\x0307ℹ\x03 Keine gesperrte E-Mail-Domain passt zu \x02%pattern%\x02."
   usage:            "\x0304✗\x03 Unbekannter Unterbefehl. Verwendung: \x02%syntax%\x02"
   add:
     syntax:         "BLACKMAIL ADD <domain>"
@@ -706,7 +708,7 @@ blackmail:
     help:           "Entfernt eine Domain anhand ihrer 1-basierten LIST-Position aus der Sperrliste\noder leert die gesamte Liste mit ALL."
     example:        "/msg %bot% BLACKMAIL DEL 1"
   list:
-    syntax:         "BLACKMAIL LIST"
+    syntax:         "BLACKMAIL LIST [muster]"
     short:          "Listet die gesperrten E-Mail-Domains auf."
-    help:           "Zeigt die gesperrten E-Mail-Domains in aufsteigender Reihenfolge.\nDie angezeigten Nummern können mit BLACKMAIL DEL verwendet werden."
-    example:        "/msg %bot% BLACKMAIL LIST"
+    help:           "Ohne Muster wird die Anzahl gesperrter Domains angezeigt. Mit einem Muster (* und ? erlaubt)\nwerden die passenden Domains angezeigt. Die angezeigten Nummern können mit BLACKMAIL DEL verwendet werden."
+    example:        "/msg %bot% BLACKMAIL LIST *chat*"

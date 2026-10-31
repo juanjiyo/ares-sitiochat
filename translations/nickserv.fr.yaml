@@ -694,6 +694,8 @@ blackmail:
   list_header:      "\x0307ℹ\x03 Domaines de messagerie bloqués (\x02%count%\x02) :"
   list_line:        "  \x02%index%.\x02 %domain%"
   list_empty:       "\x0307ℹ\x03 Aucun domaine de messagerie n'est bloqué."
+  list_total:       "\x0307ℹ\x03 Il y a \x02%count%\x02 domaines de messagerie bloqués. Utilisez \x02LIST <motif>\x02 pour les voir, par exemple \x02LIST *chat*\x02."
+  list_no_matches:  "\x0307ℹ\x03 Aucun domaine de messagerie bloqué ne correspond à \x02%pattern%\x02."
   usage:            "\x0304✗\x03 Sous-commande inconnue. Utilisation : \x02%syntax%\x02"
   add:
     syntax:         "BLACKMAIL ADD <domaine>"
@@ -706,7 +708,7 @@ blackmail:
     help:           "Retire un domaine de la liste de blocage selon sa position dans LIST,\nou vide toute la liste avec ALL."
     example:        "/msg %bot% BLACKMAIL DEL 1"
   list:
-    syntax:         "BLACKMAIL LIST"
+    syntax:         "BLACKMAIL LIST [motif]"
     short:          "Liste les domaines de messagerie bloqués."
-    help:           "Affiche les domaines de messagerie bloqués par ordre croissant.\nLes numéros affichés peuvent être utilisés avec BLACKMAIL DEL."
-    example:        "/msg %bot% BLACKMAIL LIST"
+    help:           "Sans motif, affiche le nombre de domaines bloqués. Avec un motif (* et ? acceptés),\naffiche les domaines correspondants. Les numéros affichés peuvent être utilisés avec BLACKMAIL DEL."
+    example:        "/msg %bot% BLACKMAIL LIST *chat*"

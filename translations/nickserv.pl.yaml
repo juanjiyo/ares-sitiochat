@@ -694,6 +694,8 @@ blackmail:
   list_header:      "\x0307ℹ\x03 Zablokowane domeny e-mail (\x02%count%\x02):"
   list_line:        "  \x02%index%.\x02 %domain%"
   list_empty:       "\x0307ℹ\x03 Brak zablokowanych domen e-mail."
+  list_total:       "\x0307ℹ\x03 Zablokowanych domen e-mail: \x02%count%\x02. Użyj \x02LIST <wzorzec>\x02, aby je zobaczyć, na przykład \x02LIST *chat*\x02."
+  list_no_matches:  "\x0307ℹ\x03 Żadna zablokowana domena e-mail nie pasuje do \x02%pattern%\x02."
   usage:            "\x0304✗\x03 Nieznane podpolecenie. Użycie: \x02%syntax%\x02"
   add:
     syntax:         "BLACKMAIL ADD <domena>"
@@ -706,7 +708,7 @@ blackmail:
     help:           "Usuwa domenę z listy blokad według jej pozycji w LIST,\nlub czyści całą listę za pomocą ALL."
     example:        "/msg %bot% BLACKMAIL DEL 1"
   list:
-    syntax:         "BLACKMAIL LIST"
+    syntax:         "BLACKMAIL LIST [wzorzec]"
     short:          "Wyświetla zablokowane domeny e-mail."
-    help:           "Pokazuje zablokowane domeny e-mail w kolejności rosnącej.\nWyświetlone numery można użyć z BLACKMAIL DEL."
-    example:        "/msg %bot% BLACKMAIL LIST"
+    help:           "Bez wzorca pokazuje liczbę zablokowanych domen. Ze wzorcem (dozwolone * i ?)\npokazuje pasujące domeny. Pokazanych numerów można użyć z BLACKMAIL DEL."
+    example:        "/msg %bot% BLACKMAIL LIST *chat*"

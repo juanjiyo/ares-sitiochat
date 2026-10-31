@@ -14,11 +14,13 @@ use App\NickServ\Domain\Entity\BlockedEmailDomain;
 
 use function count;
 use function ctype_digit;
+use function fnmatch;
+use function strtolower;
 use function strtoupper;
 use function trim;
 
 /**
- * BLACKMAIL {ADD <domain>|DEL <number|all>|LIST}; IRC parsing and presentation only.
+ * BLACKMAIL {ADD <domain>|DEL <number|all>|LIST [pattern]}; IRC parsing and presentation only.
  *
  * Maintains the e-mail domains on which user nickname registration is refused.
  * SAREGISTER is a staff-forced registration and deliberately bypasses this list.
@@ -183,12 +185,31 @@ final readonly class BlackmailCommand implements NickServCommandInterface
             return CommandOutcome::success();
         }
 
-        $context->reply('blackmail.list_header', ['count' => (string) count($entries)]);
+        // Hundreds of lines in one burst trip client-side notice flood protection, so the full list needs a pattern.
+        $pattern = $context->args[1] ?? null;
+        if (null === $pattern) {
+            $context->reply('blackmail.list_total', ['count' => (string) count($entries)]);
+
+            return CommandOutcome::success();
+        }
+
+        $pattern = strtolower($pattern);
+        $lines = [];
         foreach ($entries as $offset => $entry) {
-            $context->reply('blackmail.list_line', [
-                'index' => (string) ($offset + 1),
-                'domain' => $entry->getDomain(),
-            ]);
+            if (fnmatch($pattern, $entry->getDomain())) {
+                $lines[] = ['index' => (string) ($offset + 1), 'domain' => $entry->getDomain()];
+            }
+        }
+
+        if ([] === $lines) {
+            $context->reply('blackmail.list_no_matches', ['pattern' => $pattern]);
+
+            return CommandOutcome::success();
+        }
+
+        $context->reply('blackmail.list_header', ['count' => (string) count($lines)]);
+        foreach ($lines as $line) {
+            $context->reply('blackmail.list_line', $line);
         }
 
         return CommandOutcome::success();
