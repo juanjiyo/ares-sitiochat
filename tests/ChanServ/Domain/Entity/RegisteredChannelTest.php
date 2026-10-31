@@ -345,6 +345,16 @@ final class RegisteredChannelTest extends TestCase
     }
 
     #[Test]
+    public function isNotOfficialUntilMarked(): void
+    {
+        $channel = RegisteredChannel::register(new DateTimeImmutable(), '#SitioChat', 1, 'Desc');
+
+        self::assertFalse($channel->isOfficial());
+        $channel->markOfficial();
+        self::assertTrue($channel->isOfficial());
+    }
+
+    #[Test]
     public function isNoExpireReturnsFalseByDefault(): void
     {
         $channel = RegisteredChannel::register(new DateTimeImmutable(), '#test', 1, 'Desc');

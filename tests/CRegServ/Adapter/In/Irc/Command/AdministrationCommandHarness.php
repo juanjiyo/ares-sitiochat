@@ -14,7 +14,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 use function array_diff_key;
 
-/** Builds CReG contexts for the IG and APODERA command tests and records every reply with its parameters. */
+/** Builds CReG contexts for the IG, APODERA and OFICIAL command tests and records every reply with its parameters. */
 final class AdministrationCommandHarness implements TranslatorInterface, CRegServNotifierInterface
 {
     /** @var list<array{string, array<string, mixed>}> */

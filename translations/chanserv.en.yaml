@@ -53,6 +53,7 @@ info:
   pending_deletion_until: "    Hard delete on: %date%"
   pending_deletion_notice: "    07This channel is frozen and cannot be registered."
   status_registered: "    Status: Registered"
+  official: "    This is an official network channel."
   interest_general: "    This is a general interest channel."
   topic_set_at:    "    Topic set on: %date%"
   entrymsg:        "    Entry message: %message%"

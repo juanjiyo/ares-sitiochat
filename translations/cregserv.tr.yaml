@@ -166,3 +166,16 @@ apodera:
   is_ig: "\x0304✗\x03 \x02%channel%\x02 kanalı Genel İlgi kanalı: APODERA IG %channel% kullan."
   founder_not_registered: "\x0304✗\x03 \x02%nickname%\x02 nick'i kayıtlı değil."
   founder_suspended: "\x0304✗\x03 \x02%nickname%\x02 nick'i askıya alınmış."
+
+oficial:
+  syntax: "OFICIAL <#kanal> <kurucu> [açıklama]"
+  short: "Ağın resmî bir kanalını kaydeder."
+  help: "Ağın kendi kanallarından birini belirtilen kurucu adına (örneğin ağın nick'i) kaydeder ve resmî olarak işaretler; CHaN INFO bunu gösterir. Nick başına kanal sınırı uygulanmaz. Kurucu kayıtlı olmalı ve askıya alınmamış olmalıdır. \x02cregserv.oficial\x02 iznine ihtiyacın var."
+  example: "/msg CReG OFICIAL #Yardim SitioChat Ağın yardım kanalı"
+  done: "\x0303✔\x03 \x02%channel%\x02 kanalı resmî olarak kaydedildi, kurucusu \x02%nickname%\x02."
+  invalid_channel: "\x0304✗\x03 Kanal adı bir \x02#\x02 ile başlamalıdır."
+  already_registered: "\x0304✗\x03 \x02%channel%\x02 kanalı zaten kayıtlı."
+  pending_deletion: "\x0304✗\x03 \x02%channel%\x02 kanalı silinmeyi bekliyor ve kaydedilemez."
+  failed: "\x0304✗\x03 \x02%channel%\x02 kanalının kaydı tamamlanamadı."
+  founder_not_registered: "\x0304✗\x03 \x02%nickname%\x02 nick'i kayıtlı değil."
+  founder_suspended: "\x0304✗\x03 \x02%nickname%\x02 nick'i askıya alınmış."

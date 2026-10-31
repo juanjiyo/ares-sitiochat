@@ -166,3 +166,16 @@ apodera:
   is_ig: "\x0304✗\x03 Canalul \x02%channel%\x02 este de Interes General: folosește APODERA IG %channel%."
   founder_not_registered: "\x0304✗\x03 Nick-ul \x02%nickname%\x02 nu este înregistrat."
   founder_suspended: "\x0304✗\x03 Nick-ul \x02%nickname%\x02 este suspendat."
+
+oficial:
+  syntax: "OFICIAL <#canal> <fondator> [descriere]"
+  short: "Înregistrează un canal oficial al rețelei."
+  help: "Înregistrează un canal al rețelei înseși pe numele fondatorului indicat (de exemplu, nickul rețelei) și îl marchează ca oficial; CHaN INFO îl afișează. Limita de canale per nick nu se aplică. Fondatorul trebuie să fie înregistrat și nesuspendat. Ai nevoie de permisiunea \x02cregserv.oficial\x02."
+  example: "/msg CReG OFICIAL #Ajutor SitioChat Canalul de ajutor al rețelei"
+  done: "\x0303✔\x03 Canalul \x02%channel%\x02 a fost înregistrat ca oficial, cu \x02%nickname%\x02 ca fondator."
+  invalid_channel: "\x0304✗\x03 Numele canalului trebuie să înceapă cu un \x02#\x02."
+  already_registered: "\x0304✗\x03 Canalul \x02%channel%\x02 este deja înregistrat."
+  pending_deletion: "\x0304✗\x03 Canalul \x02%channel%\x02 este în așteptarea ștergerii și nu poate fi înregistrat."
+  failed: "\x0304✗\x03 Înregistrarea canalului \x02%channel%\x02 nu a putut fi finalizată."
+  founder_not_registered: "\x0304✗\x03 Nick-ul \x02%nickname%\x02 nu este înregistrat."
+  founder_suspended: "\x0304✗\x03 Nick-ul \x02%nickname%\x02 este suspendat."

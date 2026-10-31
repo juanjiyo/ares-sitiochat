@@ -166,3 +166,16 @@ apodera:
   is_ig: "\x0304✗\x03 \x02%channel%\x02 kanala Interes Orokorrekoa da: erabili APODERA IG %channel%."
   founder_not_registered: "\x0304✗\x03 \x02%nickname%\x02 nicka ez dago erregistratuta."
   founder_suspended: "\x0304✗\x03 \x02%nickname%\x02 nicka etenda dago."
+
+oficial:
+  syntax: "OFICIAL <#kanala> <sortzailea> [deskribapena]"
+  short: "Sareko kanal ofizial bat erregistratzen du."
+  help: "Sarearen beraren kanal bat erregistratzen du adierazitako sortzailearen izenean (adibidez, sarearen nicka) eta ofizial gisa markatzen du; CHaN INFOk erakusten du. Ez da nick bakoitzeko kanal-muga aplikatzen. Sortzaileak erregistratuta egon behar du eta ez etenda. \x02cregserv.oficial\x02 baimena behar duzu."
+  example: "/msg CReG OFICIAL #Laguntza SitioChat Sareko laguntza-kanala"
+  done: "\x0303✔\x03 \x02%channel%\x02 kanala ofizial gisa erregistratu da, \x02%nickname%\x02 sortzaile dela."
+  invalid_channel: "\x0304✗\x03 Kanalaren izenak \x02#\x02 batekin hasi behar du."
+  already_registered: "\x0304✗\x03 \x02%channel%\x02 kanala dagoeneko erregistratuta dago."
+  pending_deletion: "\x0304✗\x03 \x02%channel%\x02 kanala ezabatzeko zain dago eta ezin da erregistratu."
+  failed: "\x0304✗\x03 \x02%channel%\x02 kanalaren erregistroa ezin da burutu."
+  founder_not_registered: "\x0304✗\x03 \x02%nickname%\x02 nicka ez dago erregistratuta."
+  founder_suspended: "\x0304✗\x03 \x02%nickname%\x02 nicka etenda dago."

@@ -53,6 +53,7 @@ info:
   pending_deletion_until: "    Definitief op: %date%"
   pending_deletion_notice: "    07Dit kanaal is bevroren en kan niet worden geregistreerd."
   status_registered: "    Status: Geregistreerd"
+  official: "    Dit is een officieel kanaal van het netwerk."
   interest_general: "    Dit is een kanaal van algemeen belang."
   topic_set_at:    "    Onderwerp ingesteld op: %date%"
   entrymsg:        "    Welkomstbericht: %message%"

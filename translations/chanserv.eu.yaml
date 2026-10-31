@@ -53,6 +53,7 @@ info:
   pending_deletion_until: "    Behin betiko: %date%"
   pending_deletion_notice: "    07Kanal hau izoztuta dago eta ezin da erregistratu."
   status_registered: "    Egoera: Erregistratua"
+  official: "    Sareko kanal ofiziala da."
   interest_general: "    Interes orokorreko kanala da."
   topic_set_at:    "    Gaiaren data: %date%"
   entrymsg:        "    Sarrera mezua: %message%"

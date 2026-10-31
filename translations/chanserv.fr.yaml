@@ -53,6 +53,7 @@ info:
   pending_deletion_until: "    Suppr. définitive: %date%"
   pending_deletion_notice: "    07Ce canal est gelé et ne peut pas être enregistré."
   status_registered: "    Statut: Enregistré"
+  official: "    C'est un canal officiel du réseau."
   interest_general: "    C'est un canal d'intérêt général."
   topic_set_at:    "    Sujet défini le: %date%"
   entrymsg:        "    Message d'accueil: %message%"

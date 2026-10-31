@@ -1616,6 +1616,9 @@ services:
     App\CRegServ\Adapter\In\Irc\Command\ApoderaCommand:
         tags: ['cregserv.command']
 
+    App\CRegServ\Adapter\In\Irc\Command\OficialCommand:
+        tags: ['cregserv.command']
+
     App\CRegServ\Adapter\In\Irc\Command\HelpCommand:
         tags: ['cregserv.command']
 

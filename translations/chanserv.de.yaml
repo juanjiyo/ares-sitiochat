@@ -53,6 +53,7 @@ info:
   pending_deletion_until: "    Endgültig am: %date%"
   pending_deletion_notice: "    07Dieser Kanal ist eingefroren und kann nicht registriert werden."
   status_registered: "    Status: Registriert"
+  official: "    Dies ist ein offizieller Channel des Netzwerks."
   interest_general: "    Dies ist ein Channel von allgemeinem Interesse."
   topic_set_at:    "    Topic gesetzt am: %date%"
   entrymsg:        "    Begrüßungsnachricht: %message%"

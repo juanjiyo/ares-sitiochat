@@ -53,6 +53,7 @@ info:
   pending_deletion_until: "    Ștergere definitivă: %date%"
   pending_deletion_notice: "    07Acest canal este înghețat și nu poate fi înregistrat."
   status_registered: "    Stare: Înregistrat"
+  official: "    Este un canal oficial al rețelei."
   interest_general: "    Este un canal de interes general."
   topic_set_at:    "    Subiect setat la: %date%"
   entrymsg:        "    Mesaj de intrare: %message%"

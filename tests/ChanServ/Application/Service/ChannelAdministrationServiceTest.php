@@ -9,6 +9,9 @@ use App\ChanServ\Application\Model\ChannelMember;
 use App\ChanServ\Application\Model\ChannelRankNetworkState;
 use App\ChanServ\Application\Model\MemberRankChange;
 use App\ChanServ\Application\Port\In\ChannelAdministrationOutcome;
+use App\ChanServ\Application\Port\In\ChannelRegistration;
+use App\ChanServ\Application\Port\In\ChannelRegistrationOutcome;
+use App\ChanServ\Application\Port\In\OfficialRegistrationOutcome;
 use App\ChanServ\Application\Port\Out\ChannelAccessRepositoryInterface;
 use App\ChanServ\Application\Port\Out\ChannelRankActions;
 use App\ChanServ\Application\Port\Out\ChannelRankNetworkQuery;
@@ -48,6 +51,13 @@ final class ChannelAdministrationServiceTest extends TestCase
 
     /** @var list<array{string, list<MemberRankChange>}> */
     private array $rankChanges = [];
+
+    private ChannelRegistrationOutcome $registrationOutcome = ChannelRegistrationOutcome::Registered;
+
+    private bool $registrationStoresChannel = true;
+
+    /** @var list<array{string, string, int, string}> */
+    private array $registrations = [];
 
     protected function setUp(): void
     {
@@ -107,7 +117,17 @@ final class ChannelAdministrationServiceTest extends TestCase
             $this->rankChanges[] = [$channel, $typed];
         });
 
-        return new ChannelAdministrationService($repository, $access, $accounts, $events, $network, $ranks);
+        $registration = $this->createStub(ChannelRegistration::class);
+        $registration->method('registerApproved')->willReturnCallback(function (string $name, string $description, int $founderId, string $actor): ChannelRegistrationOutcome {
+            $this->registrations[] = [$name, $description, $founderId, $actor];
+            if (ChannelRegistrationOutcome::Registered === $this->registrationOutcome && $this->registrationStoresChannel) {
+                $this->channels[strtolower($name)] = RegisteredChannel::register(new DateTimeImmutable(), $name, $founderId, $description);
+            }
+
+            return $this->registrationOutcome;
+        });
+
+        return new ChannelAdministrationService($repository, $access, $accounts, $events, $network, $ranks, $registration);
     }
 
     #[Test]
@@ -213,5 +233,48 @@ final class ChannelAdministrationServiceTest extends TestCase
 
         self::assertSame(ChannelAdministrationOutcome::Updated, $this->service()->takeOver('#Madrid', true, 'SitioChat', 'NetAdmin', new DateTimeImmutable()));
         self::assertSame([], $this->rankChanges);
+    }
+
+    #[Test]
+    public function registersAnOfficialChannelForTheGivenFounder(): void
+    {
+        $outcome = $this->service()->registerOfficial('#Oficial', 'SitioChat', 'Canal de la red', 'Oper', new DateTimeImmutable());
+
+        self::assertSame(OfficialRegistrationOutcome::Registered, $outcome);
+        self::assertSame([['#Oficial', 'Canal de la red', 7, 'Oper']], $this->registrations);
+        self::assertTrue($this->channels['#oficial']->isOfficial());
+        self::assertSame([$this->channels['#oficial']], $this->saved);
+    }
+
+    #[Test]
+    public function refusesAnOfficialChannelForAnUnregisteredOrSuspendedFounder(): void
+    {
+        $service = $this->service();
+
+        self::assertSame(OfficialRegistrationOutcome::FounderNotRegistered, $service->registerOfficial('#Oficial', 'Nadie', '', 'Oper', new DateTimeImmutable()));
+        self::assertSame(OfficialRegistrationOutcome::FounderNotRegistered, $service->registerOfficial('#Oficial', 'Pending', '', 'Oper', new DateTimeImmutable()));
+        self::assertSame(OfficialRegistrationOutcome::FounderSuspended, $service->registerOfficial('#Oficial', 'Banned', '', 'Oper', new DateTimeImmutable()));
+        self::assertSame([], $this->registrations);
+    }
+
+    #[Test]
+    public function reportsWhyAnOfficialChannelWasNotRegistered(): void
+    {
+        $service = $this->service();
+        $cases = [
+            [ChannelRegistrationOutcome::AlreadyRegistered, OfficialRegistrationOutcome::AlreadyRegistered],
+            [ChannelRegistrationOutcome::PendingDeletion, OfficialRegistrationOutcome::PendingDeletion],
+            [ChannelRegistrationOutcome::Failed, OfficialRegistrationOutcome::Failed],
+        ];
+        foreach ($cases as [$registration, $expected]) {
+            $this->registrationOutcome = $registration;
+            self::assertSame($expected, $service->registerOfficial('#Casa', 'SitioChat', '', 'Oper', new DateTimeImmutable()));
+        }
+
+        $this->registrationOutcome = ChannelRegistrationOutcome::Registered;
+        $this->registrationStoresChannel = false;
+        self::assertSame(OfficialRegistrationOutcome::Failed, $service->registerOfficial('#Perdido', 'SitioChat', '', 'Oper', new DateTimeImmutable()));
+        self::assertFalse($this->channels['#casa']->isOfficial());
+        self::assertSame([], $this->saved);
     }
 }

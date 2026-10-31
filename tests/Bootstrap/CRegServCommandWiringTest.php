@@ -13,6 +13,7 @@ use App\CRegServ\Adapter\In\Irc\Command\DropCommand;
 use App\CRegServ\Adapter\In\Irc\Command\EstadoCommand;
 use App\CRegServ\Adapter\In\Irc\Command\HelpCommand;
 use App\CRegServ\Adapter\In\Irc\Command\IgCommand;
+use App\CRegServ\Adapter\In\Irc\Command\OficialCommand;
 use App\CRegServ\Adapter\In\Irc\Command\PendientesCommand;
 use App\CRegServ\Adapter\In\Irc\Command\RegistraCommand;
 use App\CRegServ\Adapter\In\Irc\Command\SaregisterCommand;
@@ -54,6 +55,7 @@ final class CRegServCommandWiringTest extends KernelTestCase
             'SAREGISTER' => [SaregisterCommand::class, 'SAREGISTER'],
             'IG' => [IgCommand::class, 'IG'],
             'APODERA' => [ApoderaCommand::class, 'APODERA'],
+            'OFICIAL' => [OficialCommand::class, 'OFICIAL'],
             'HELP' => [HelpCommand::class, 'HELP'],
         ];
     }
@@ -74,7 +76,7 @@ final class CRegServCommandWiringTest extends KernelTestCase
     }
 
     #[Test]
-    public function theRegistryHoldsExactlyTheTwelvePortedCommands(): void
+    public function theRegistryHoldsExactlyTheThirteenPortedCommands(): void
     {
         self::bootKernel();
 
@@ -88,7 +90,7 @@ final class CRegServCommandWiringTest extends KernelTestCase
         sort($names);
 
         self::assertSame(
-            ['APODERA', 'APROBAR', 'CANCEL', 'DENEGADOS', 'DENEGAR', 'DROP', 'ESTADO', 'HELP', 'IG', 'PENDIENTES', 'REGISTRA', 'SAREGISTER'],
+            ['APODERA', 'APROBAR', 'CANCEL', 'DENEGADOS', 'DENEGAR', 'DROP', 'ESTADO', 'HELP', 'IG', 'OFICIAL', 'PENDIENTES', 'REGISTRA', 'SAREGISTER'],
             $names,
         );
     }
@@ -107,6 +109,7 @@ final class CRegServCommandWiringTest extends KernelTestCase
             'SAREGISTER' => ['SAREGISTER', SaregisterCommand::class, CRegServPermission::SAREGISTER],
             'IG' => ['IG', IgCommand::class, CRegServPermission::IG],
             'APODERA' => ['APODERA', ApoderaCommand::class, CRegServPermission::APODERA],
+            'OFICIAL' => ['OFICIAL', OficialCommand::class, CRegServPermission::OFICIAL],
         ];
     }
 

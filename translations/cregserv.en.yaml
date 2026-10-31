@@ -166,3 +166,16 @@ apodera:
   is_ig: "\x0304✗\x03 The channel \x02%channel%\x02 is General Interest: use APODERA IG %channel%."
   founder_not_registered: "\x0304✗\x03 The nick \x02%nickname%\x02 is not registered."
   founder_suspended: "\x0304✗\x03 The nick \x02%nickname%\x02 is suspended."
+
+oficial:
+  syntax: "OFICIAL <#channel> <founder> [description]"
+  short: "Registers an official network channel."
+  help: "Registers one of the network's own channels in the name of the given founder (for example, the network nick) and marks it as official; CHaN INFO shows it. The per-nick channel limit does not apply. The founder must be registered and not suspended. You need the \x02cregserv.oficial\x02 permission."
+  example: "/msg CReG OFICIAL #Help SitioChat Network help channel"
+  done: "\x0303✔\x03 Channel \x02%channel%\x02 has been registered as official, with \x02%nickname%\x02 as founder."
+  invalid_channel: "\x0304✗\x03 The channel name must start with \x02#\x02."
+  already_registered: "\x0304✗\x03 Channel \x02%channel%\x02 is already registered."
+  pending_deletion: "\x0304✗\x03 Channel \x02%channel%\x02 is pending deletion and cannot be registered."
+  failed: "\x0304✗\x03 The registration of channel \x02%channel%\x02 could not be completed."
+  founder_not_registered: "\x0304✗\x03 The nick \x02%nickname%\x02 is not registered."
+  founder_suspended: "\x0304✗\x03 The nick \x02%nickname%\x02 is suspended."

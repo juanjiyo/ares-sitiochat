@@ -22,6 +22,7 @@ final readonly class ChannelInfoView
         public ?DateTimeImmutable $lastTopicSetAt,
         public string $entrymsg,
         public bool $interestGeneral,
+        public bool $official,
         public bool $keepTopic,
         public bool $private,
         public bool $topicLock,

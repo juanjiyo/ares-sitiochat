@@ -166,3 +166,16 @@ apodera:
   is_ig: "\x0304✗\x03 Kanał \x02%channel%\x02 jest kanałem Interesu Ogólnego: użyj APODERA IG %channel%."
   founder_not_registered: "\x0304✗\x03 Nick \x02%nickname%\x02 nie jest zarejestrowany."
   founder_suspended: "\x0304✗\x03 Nick \x02%nickname%\x02 jest zawieszony."
+
+oficial:
+  syntax: "OFICIAL <#kanał> <założyciel> [opis]"
+  short: "Rejestruje oficjalny kanał sieci."
+  help: "Rejestruje kanał samej sieci na wskazanego założyciela (na przykład nick sieci) i oznacza go jako oficjalny; CHaN INFO to pokazuje. Limit kanałów na nick nie obowiązuje. Założyciel musi być zarejestrowany i niezawieszony. Potrzebujesz uprawnienia \x02cregserv.oficial\x02."
+  example: "/msg CReG OFICIAL #Pomoc SitioChat Kanał pomocy sieci"
+  done: "\x0303✔\x03 Kanał \x02%channel%\x02 został zarejestrowany jako oficjalny, z założycielem \x02%nickname%\x02."
+  invalid_channel: "\x0304✗\x03 Nazwa kanału musi zaczynać się od \x02#\x02."
+  already_registered: "\x0304✗\x03 Kanał \x02%channel%\x02 jest już zarejestrowany."
+  pending_deletion: "\x0304✗\x03 Kanał \x02%channel%\x02 oczekuje na usunięcie i nie może być zarejestrowany."
+  failed: "\x0304✗\x03 Nie udało się zakończyć rejestracji kanału \x02%channel%\x02."
+  founder_not_registered: "\x0304✗\x03 Nick \x02%nickname%\x02 nie jest zarejestrowany."
+  founder_suspended: "\x0304✗\x03 Nick \x02%nickname%\x02 jest zawieszony."

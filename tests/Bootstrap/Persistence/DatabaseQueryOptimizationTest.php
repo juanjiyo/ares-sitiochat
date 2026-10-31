@@ -179,7 +179,7 @@ final class DatabaseQueryOptimizationTest extends TestCase
         $result = [];
         foreach (['registered_nicks', 'registered_channels'] as $table) {
             $columns = array_keys($this->connection->createSchemaManager()->listTableColumns($table));
-            $columns = array_values(array_diff($columns, ['list_search_key', 'keep_topic', 'default_topic', 'interest_general']));
+            $columns = array_values(array_diff($columns, ['list_search_key', 'keep_topic', 'default_topic', 'interest_general', 'official']));
             sort($columns);
             $sql = 'SELECT ' . implode(', ', $columns) . ' FROM ' . $table . ' ORDER BY id';
             $digest = hash_init('sha256');

@@ -53,6 +53,7 @@ info:
   pending_deletion_until: "    Οριστική διαγραφή: %date%"
   pending_deletion_notice: "    07Αυτό το κανάλι είναι παγωμένο και δεν μπορεί να καταχωρηθεί."
   status_registered: "    Κατάσταση: Καταχωρημένο"
+  official: "    Είναι επίσημο κανάλι του δικτύου."
   interest_general: "    Είναι κανάλι γενικού ενδιαφέροντος."
   topic_set_at:    "    Θέμα ορίστηκε στις: %date%"
   entrymsg:        "    Μήνυμα εισόδου: %message%"

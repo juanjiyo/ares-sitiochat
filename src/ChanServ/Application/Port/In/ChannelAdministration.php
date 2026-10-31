@@ -9,8 +9,8 @@ use DateTimeImmutable;
 /**
  * Administrative changes to registered channels, decided by the network staff.
  *
- * Public entry point for CReG: the Interés General (IG) mark and APODERA, the takeover
- * of a channel by the administration.
+ * Public entry point for CReG: the Interés General (IG) mark, APODERA (the takeover
+ * of a channel by the administration) and OFICIAL (registering a network channel).
  */
 interface ChannelAdministration
 {
@@ -33,4 +33,16 @@ interface ChannelAdministration
         string $actorNickname,
         DateTimeImmutable $occurredAt,
     ): ChannelAdministrationOutcome;
+
+    /**
+     * Registers a channel of the network itself in the name of a registered, unsuspended
+     * founder, without the per-nick channel limit, and marks it as official.
+     */
+    public function registerOfficial(
+        string $channelName,
+        string $founderNickname,
+        string $description,
+        string $actorNickname,
+        DateTimeImmutable $occurredAt,
+    ): OfficialRegistrationOutcome;
 }

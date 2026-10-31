@@ -53,6 +53,7 @@ info:
   pending_deletion_until: "    Trwale usunięcie: %date%"
   pending_deletion_notice: "    07Ten kanał jest zamrożony i nie może zostać zarejestrowany."
   status_registered: "    Status: Zarejestrowany"
+  official: "    To oficjalny kanał sieci."
   interest_general: "    To kanał ogólnego zainteresowania."
   topic_set_at:    "    Temat ustawiony: %date%"
   entrymsg:        "    Wiadomość powitalna: %message%"

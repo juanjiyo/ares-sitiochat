@@ -7,6 +7,9 @@ namespace App\ChanServ\Application\Service;
 use App\ChanServ\Application\Model\MemberRankChange;
 use App\ChanServ\Application\Port\In\ChannelAdministration;
 use App\ChanServ\Application\Port\In\ChannelAdministrationOutcome;
+use App\ChanServ\Application\Port\In\ChannelRegistration;
+use App\ChanServ\Application\Port\In\ChannelRegistrationOutcome;
+use App\ChanServ\Application\Port\In\OfficialRegistrationOutcome;
 use App\ChanServ\Application\Port\Out\ChannelAccessRepositoryInterface;
 use App\ChanServ\Application\Port\Out\ChannelRankActions;
 use App\ChanServ\Application\Port\Out\ChannelRankNetworkQuery;
@@ -34,6 +37,7 @@ final readonly class ChannelAdministrationService implements ChannelAdministrati
         private ChanServEventPublisher $events,
         private ChannelRankNetworkQuery $network,
         private ChannelRankActions $ranks,
+        private ChannelRegistration $registration,
     ) {}
 
     public function markInterestGeneral(string $channelName, bool $interestGeneral): ChannelAdministrationOutcome
@@ -124,6 +128,42 @@ final readonly class ChannelAdministrationService implements ChannelAdministrati
         $this->stripStaffRanks($channel->getName());
 
         return ChannelAdministrationOutcome::Updated;
+    }
+
+    public function registerOfficial(
+        string $channelName,
+        string $founderNickname,
+        string $description,
+        string $actorNickname,
+        DateTimeImmutable $occurredAt,
+    ): OfficialRegistrationOutcome {
+        $founder = $this->accounts->findAccountByNick($founderNickname);
+        if (null === $founder || !$founder->registered) {
+            return OfficialRegistrationOutcome::FounderNotRegistered;
+        }
+
+        if ($founder->suspended) {
+            return OfficialRegistrationOutcome::FounderSuspended;
+        }
+
+        $outcome = $this->registration->registerApproved($channelName, $description, $founder->id, $actorNickname, $occurredAt);
+        if (ChannelRegistrationOutcome::Registered !== $outcome) {
+            return match ($outcome) {
+                ChannelRegistrationOutcome::AlreadyRegistered => OfficialRegistrationOutcome::AlreadyRegistered,
+                ChannelRegistrationOutcome::PendingDeletion => OfficialRegistrationOutcome::PendingDeletion,
+                ChannelRegistrationOutcome::Failed => OfficialRegistrationOutcome::Failed,
+            };
+        }
+
+        $channel = $this->channels->findByChannelName($channelName);
+        if (null === $channel) {
+            return OfficialRegistrationOutcome::Failed;
+        }
+
+        $channel->markOfficial();
+        $this->channels->save($channel);
+
+        return OfficialRegistrationOutcome::Registered;
     }
 
     /** Removes +q, +a, +o and +h from every user in the channel except the services. */

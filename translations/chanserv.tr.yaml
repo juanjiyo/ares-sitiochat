@@ -53,6 +53,7 @@ info:
   pending_deletion_until: "    Kalıcı silinme: %date%"
   pending_deletion_notice: "    07Bu kanal dondurulmuştur ve kaydedilemez."
   status_registered: "    Durum: Kayıtlı"
+  official: "    Ağın resmî kanalıdır."
   interest_general: "    Genel ilgi kanalıdır."
   topic_set_at:    "    Başlık ayarlanma: %date%"
   entrymsg:        "    Giriş mesajı: %message%"

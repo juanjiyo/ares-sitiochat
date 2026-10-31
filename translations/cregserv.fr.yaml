@@ -166,3 +166,16 @@ apodera:
   is_ig: "\x0304✗\x03 Le salon \x02%channel%\x02 est d'Intérêt Général : utilise APODERA IG %channel%."
   founder_not_registered: "\x0304✗\x03 Le pseudo \x02%nickname%\x02 n'est pas enregistré."
   founder_suspended: "\x0304✗\x03 Le pseudo \x02%nickname%\x02 est suspendu."
+
+oficial:
+  syntax: "OFICIAL <#canal> <fondateur> [description]"
+  short: "Enregistre un canal officiel du réseau."
+  help: "Enregistre un canal du réseau lui-même au nom du fondateur indiqué (par exemple, le pseudo du réseau) et le marque comme officiel ; CHaN INFO l'affiche. La limite de canaux par pseudo ne s'applique pas. Le fondateur doit être enregistré et non suspendu. Vous avez besoin de la permission \x02cregserv.oficial\x02."
+  example: "/msg CReG OFICIAL #Aide SitioChat Canal d'aide du réseau"
+  done: "\x0303✔\x03 Le canal \x02%channel%\x02 a été enregistré comme officiel, avec \x02%nickname%\x02 comme fondateur."
+  invalid_channel: "\x0304✗\x03 Le nom du canal doit commencer par un \x02#\x02."
+  already_registered: "\x0304✗\x03 Le canal \x02%channel%\x02 est déjà enregistré."
+  pending_deletion: "\x0304✗\x03 Le canal \x02%channel%\x02 est en attente de suppression et ne peut pas être enregistré."
+  failed: "\x0304✗\x03 L'enregistrement du canal \x02%channel%\x02 n'a pas pu aboutir."
+  founder_not_registered: "\x0304✗\x03 Le pseudo \x02%nickname%\x02 n'est pas enregistré."
+  founder_suspended: "\x0304✗\x03 Le pseudo \x02%nickname%\x02 est suspendu."

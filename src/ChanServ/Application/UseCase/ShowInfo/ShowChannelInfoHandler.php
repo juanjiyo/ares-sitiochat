@@ -48,6 +48,7 @@ final readonly class ShowChannelInfoHandler implements ShowChannelInfoHandlerInt
             lastTopicSetAt: $channel->getLastTopicSetAt(),
             entrymsg: $channel->getEntrymsg(),
             interestGeneral: $channel->isInterestGeneral(),
+            official: $channel->isOfficial(),
             keepTopic: $channel->isKeepTopic(),
             private: $channel->isPrivate(),
             topicLock: $channel->isTopicLock(),

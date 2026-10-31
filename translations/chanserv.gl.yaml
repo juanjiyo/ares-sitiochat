@@ -53,6 +53,7 @@ info:
   pending_deletion_until: "    Elim. definitiva: %date%"
   pending_deletion_notice: "    07Esta canle está conxelada e non pode ser rexistrada."
   status_registered: "    Estado: Rexistrada"
+  official: "    É unha canle oficial da rede."
   interest_general: "    É unha canle de interese xeral."
   topic_set_at:    "    Tema cambiado o: %date%"
   entrymsg:        "    Mensaxe de entrada: %message%"

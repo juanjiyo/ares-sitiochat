@@ -35,6 +35,9 @@ final readonly class CRegServPermission
     /** Takes an IG channel over for the administration (APODERA). */
     public const string APODERA = 'cregserv.apodera';
 
+    /** Registers an official network channel for a given founder (OFICIAL). */
+    public const string OFICIAL = 'cregserv.oficial';
+
     /**
      * @return list<string>
      */
@@ -49,6 +52,7 @@ final readonly class CRegServPermission
             self::SAREGISTER,
             self::IG,
             self::APODERA,
+            self::OFICIAL,
         ];
     }
 

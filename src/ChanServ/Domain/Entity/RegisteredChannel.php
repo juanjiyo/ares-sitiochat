@@ -80,6 +80,9 @@ class RegisteredChannel
     /** Interés General (IG): a network-promoted channel the administration may take over. */
     private bool $interestGeneral = false;
 
+    /** Official: registered by the network staff with OFICIAL (CReG) as one of the network's own channels. */
+    private bool $official = false;
+
     private ?DateTimeImmutable $lastUsedAt = null;
 
     private DateTimeImmutable $createdAt;
@@ -469,6 +472,16 @@ class RegisteredChannel
     public function changeInterestGeneral(bool $interestGeneral): void
     {
         $this->interestGeneral = $interestGeneral;
+    }
+
+    public function isOfficial(): bool
+    {
+        return $this->official;
+    }
+
+    public function markOfficial(): void
+    {
+        $this->official = true;
     }
 
     private static function assertValidEntrymsg(string $entrymsg): void

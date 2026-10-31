@@ -313,6 +313,7 @@ final class InfoCommandTest extends TestCase
             self::assertContains('info.option_line:' . $option . '=info.option_off', $messages);
         }
         self::assertNotContains('info.interest_general', $messages);
+        self::assertNotContains('info.official', $messages);
         self::assertNotContains('info.entrymsg', $messages);
     }
 
@@ -860,10 +861,11 @@ final class InfoCommandTest extends TestCase
     }
 
     #[Test]
-    public function showsStatusGeneralInterestAndEntryMessage(): void
+    public function showsStatusOfficialGeneralInterestAndEntryMessage(): void
     {
         $channel = RegisteredChannel::register(new DateTimeImmutable(), '#Test', 1, 'Desc');
         $channel->changeInterestGeneral(true);
+        $channel->markOfficial();
         $channel->updateEntrymsg('Bienvenid@');
         $channelRepo = $this->createStub(RegisteredChannelRepositoryInterface::class);
         $channelRepo->method('findByChannelName')->willReturn($channel);
@@ -883,7 +885,7 @@ final class InfoCommandTest extends TestCase
 
         $this->createCommand($channelRepo, $nickRepo)->execute($this->createContext(['#Test'], $notifier, $translator));
 
-        self::assertSame(['info.header:#Test', 'info.status_registered', 'info.interest_general', 'info.founder'], array_slice($messages, 0, 4));
+        self::assertSame(['info.header:#Test', 'info.status_registered', 'info.official', 'info.interest_general', 'info.founder'], array_slice($messages, 0, 5));
         self::assertContains('info.entrymsg:Bienvenid@', $messages);
         self::assertSame('info.footer:#Test', $messages[array_key_last($messages)]);
     }

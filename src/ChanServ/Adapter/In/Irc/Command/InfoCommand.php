@@ -167,6 +167,9 @@ final readonly class InfoCommand implements ChanServCommandInterface
 
         $this->presentHeader($context, $channelName);
         $this->presentStatus($context, $info);
+        if ($info->official) {
+            $context->replyRaw($context->trans('info.official'));
+        }
         if ($info->interestGeneral) {
             $context->replyRaw($context->trans('info.interest_general'));
         }
