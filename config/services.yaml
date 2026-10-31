@@ -1617,6 +1617,8 @@ services:
         tags: ['cregserv.command']
 
     App\CRegServ\Adapter\In\Irc\Command\OficialCommand:
+        arguments:
+            $networkName: '%network.name%'
         tags: ['cregserv.command']
 
     App\CRegServ\Adapter\In\Irc\Command\HelpCommand:

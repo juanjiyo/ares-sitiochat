@@ -36,7 +36,7 @@ interface ChannelAdministration
 
     /**
      * Registers a channel of the network itself in the name of a registered, unsuspended
-     * founder, without the per-nick channel limit, and marks it as official.
+     * founder, without the per-nick channel limit, marks it as official and turns NOEXPIRE on.
      */
     public function registerOfficial(
         string $channelName,

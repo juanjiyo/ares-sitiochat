@@ -168,10 +168,11 @@ apodera:
   founder_suspended: "\x0304✗\x03 \x02%nickname%\x02 nicka etenda dago."
 
 oficial:
-  syntax: "OFICIAL <#kanala> <sortzailea> [deskribapena]"
+  syntax: "OFICIAL <#kanala> [sortzailea] [deskribapena]"
   short: "Sareko kanal ofizial bat erregistratzen du."
-  help: "Sarearen beraren kanal bat erregistratzen du adierazitako sortzailearen izenean (adibidez, sarearen nicka) eta ofizial gisa markatzen du; CHaN INFOk erakusten du. Ez da nick bakoitzeko kanal-muga aplikatzen. Sortzaileak erregistratuta egon behar du eta ez etenda. \x02cregserv.oficial\x02 baimena behar duzu."
-  example: "/msg CReG OFICIAL #Laguntza SitioChat Sareko laguntza-kanala"
+  help: "Sarearen beraren kanal bat erregistratzen du eta ofizial gisa markatzen du; CHaN INFOk erakusten du. Sortzailerik gabe, sortzailea sarearen nicka da; deskribapenik gabe, «Sareko kanal OFIZIALA» jartzen da. NOEXPIRE aktibatzen du eta ez da nick bakoitzeko kanal-muga aplikatzen. Sortzaileak erregistratuta egon behar du eta ez etenda. \x02cregserv.oficial\x02 baimena behar duzu."
+  example: "/msg CReG OFICIAL #Laguntza"
+  default_description: "Sareko kanal OFIZIALA"
   done: "\x0303✔\x03 \x02%channel%\x02 kanala ofizial gisa erregistratu da, \x02%nickname%\x02 sortzaile dela."
   invalid_channel: "\x0304✗\x03 Kanalaren izenak \x02#\x02 batekin hasi behar du."
   already_registered: "\x0304✗\x03 \x02%channel%\x02 kanala dagoeneko erregistratuta dago."

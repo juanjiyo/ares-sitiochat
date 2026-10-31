@@ -243,6 +243,7 @@ final class ChannelAdministrationServiceTest extends TestCase
         self::assertSame(OfficialRegistrationOutcome::Registered, $outcome);
         self::assertSame([['#Oficial', 'Canal de la red', 7, 'Oper']], $this->registrations);
         self::assertTrue($this->channels['#oficial']->isOfficial());
+        self::assertTrue($this->channels['#oficial']->isNoExpire());
         self::assertSame([$this->channels['#oficial']], $this->saved);
     }
 

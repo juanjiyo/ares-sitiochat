@@ -168,10 +168,11 @@ apodera:
   founder_suspended: "\x0304✗\x03 O nick \x02%nickname%\x02 está suspenso."
 
 oficial:
-  syntax: "OFICIAL <#canal> <fundador> [descrição]"
+  syntax: "OFICIAL <#canal> [fundador] [descrição]"
   short: "Regista um canal oficial da rede."
-  help: "Regista um canal da própria rede em nome do fundador indicado (por exemplo, o nick da rede) e marca-o como oficial; o CHaN INFO mostra-o. O limite de canais por nick não se aplica. O fundador tem de estar registado e não suspenso. Precisas da permissão \x02cregserv.oficial\x02."
-  example: "/msg CReG OFICIAL #Ajuda SitioChat Canal de ajuda da rede"
+  help: "Regista um canal da própria rede e marca-o como oficial; o CHaN INFO mostra-o. Sem fundador, o fundador é o nick da rede; sem descrição, recebe «Canal OFICIAL da rede». Ativa o NOEXPIRE e o limite de canais por nick não se aplica. O fundador tem de estar registado e não suspenso. Precisas da permissão \x02cregserv.oficial\x02."
+  example: "/msg CReG OFICIAL #Ajuda"
+  default_description: "Canal OFICIAL da rede"
   done: "\x0303✔\x03 O canal \x02%channel%\x02 foi registado como oficial, com \x02%nickname%\x02 como fundador."
   invalid_channel: "\x0304✗\x03 O nome do canal tem de começar por um \x02#\x02."
   already_registered: "\x0304✗\x03 O canal \x02%channel%\x02 já está registado."

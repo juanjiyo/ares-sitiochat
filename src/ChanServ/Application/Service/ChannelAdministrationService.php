@@ -161,6 +161,7 @@ final readonly class ChannelAdministrationService implements ChannelAdministrati
         }
 
         $channel->markOfficial();
+        $channel->changeNoExpire(true);
         $this->channels->save($channel);
 
         return OfficialRegistrationOutcome::Registered;

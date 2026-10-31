@@ -168,10 +168,11 @@ apodera:
   founder_suspended: "\x0304✗\x03 \x02%nickname%\x02 nick'i askıya alınmış."
 
 oficial:
-  syntax: "OFICIAL <#kanal> <kurucu> [açıklama]"
+  syntax: "OFICIAL <#kanal> [kurucu] [açıklama]"
   short: "Ağın resmî bir kanalını kaydeder."
-  help: "Ağın kendi kanallarından birini belirtilen kurucu adına (örneğin ağın nick'i) kaydeder ve resmî olarak işaretler; CHaN INFO bunu gösterir. Nick başına kanal sınırı uygulanmaz. Kurucu kayıtlı olmalı ve askıya alınmamış olmalıdır. \x02cregserv.oficial\x02 iznine ihtiyacın var."
-  example: "/msg CReG OFICIAL #Yardim SitioChat Ağın yardım kanalı"
+  help: "Ağın kendi kanallarından birini kaydeder ve resmî olarak işaretler; CHaN INFO bunu gösterir. Kurucu verilmezse kurucu ağın nick'i olur; açıklama verilmezse «Ağın RESMÎ kanalı» konur. NOEXPIRE'ı açar ve nick başına kanal sınırı uygulanmaz. Kurucu kayıtlı olmalı ve askıya alınmamış olmalıdır. \x02cregserv.oficial\x02 iznine ihtiyacın var."
+  example: "/msg CReG OFICIAL #Yardim"
+  default_description: "Ağın RESMÎ kanalı"
   done: "\x0303✔\x03 \x02%channel%\x02 kanalı resmî olarak kaydedildi, kurucusu \x02%nickname%\x02."
   invalid_channel: "\x0304✗\x03 Kanal adı bir \x02#\x02 ile başlamalıdır."
   already_registered: "\x0304✗\x03 \x02%channel%\x02 kanalı zaten kayıtlı."

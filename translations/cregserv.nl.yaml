@@ -168,10 +168,11 @@ apodera:
   founder_suspended: "\x0304✗\x03 De nick \x02%nickname%\x02 is geschorst."
 
 oficial:
-  syntax: "OFICIAL <#kanaal> <oprichter> [beschrijving]"
+  syntax: "OFICIAL <#kanaal> [oprichter] [beschrijving]"
   short: "Registreert een officieel kanaal van het netwerk."
-  help: "Registreert een kanaal van het netwerk zelf op naam van de opgegeven oprichter (bijvoorbeeld de nick van het netwerk) en markeert het als officieel; CHaN INFO toont dat. De kanaallimiet per nick geldt niet. De oprichter moet geregistreerd zijn en mag niet geschorst zijn. Je hebt de permissie \x02cregserv.oficial\x02 nodig."
-  example: "/msg CReG OFICIAL #Hulp SitioChat Hulpkanaal van het netwerk"
+  help: "Registreert een kanaal van het netwerk zelf en markeert het als officieel; CHaN INFO toont dat. Zonder oprichter is de nick van het netwerk de oprichter; zonder beschrijving krijgt het „OFFICIEEL kanaal van het netwerk”. NOEXPIRE wordt ingeschakeld en de kanaallimiet per nick geldt niet. De oprichter moet geregistreerd zijn en mag niet geschorst zijn. Je hebt de permissie \x02cregserv.oficial\x02 nodig."
+  example: "/msg CReG OFICIAL #Hulp"
+  default_description: "OFFICIEEL kanaal van het netwerk"
   done: "\x0303✔\x03 Kanaal \x02%channel%\x02 is als officieel geregistreerd, met \x02%nickname%\x02 als oprichter."
   invalid_channel: "\x0304✗\x03 De kanaalnaam moet beginnen met een \x02#\x02."
   already_registered: "\x0304✗\x03 Kanaal \x02%channel%\x02 is al geregistreerd."

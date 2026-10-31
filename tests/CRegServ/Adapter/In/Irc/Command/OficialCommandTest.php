@@ -19,11 +19,11 @@ final class OficialCommandTest extends TestCase
     #[Test]
     public function exposesOperOnlyPermissionAndHelpMetadata(): void
     {
-        $command = new OficialCommand($this->createStub(ChannelAdministration::class));
+        $command = new OficialCommand($this->createStub(ChannelAdministration::class), 'SitioChat');
 
         self::assertSame('OFICIAL', $command->getName());
         self::assertSame([], $command->getAliases());
-        self::assertSame(2, $command->getMinArgs());
+        self::assertSame(1, $command->getMinArgs());
         self::assertSame(9, $command->getOrder());
         self::assertSame('oficial.syntax', $command->getSyntaxKey());
         self::assertSame('oficial.help', $command->getHelpKey());
@@ -43,11 +43,28 @@ final class OficialCommandTest extends TestCase
             ->willReturn(OfficialRegistrationOutcome::Registered);
         $harness = new AdministrationCommandHarness();
 
-        $result = new OficialCommand($channels)->execute($harness->context('OFICIAL', ['#Ayuda', 'SitioChat', 'Canal', 'de', 'ayuda']));
+        $result = new OficialCommand($channels, 'Red')->execute($harness->context('OFICIAL', ['#Ayuda', 'SitioChat', 'Canal', 'de', 'ayuda']));
 
         self::assertSame([['oficial.done', ['%channel%' => '#Ayuda', '%nickname%' => 'SitioChat']]], $harness->replies);
         self::assertSame('#Ayuda', $result?->auditData?->target);
         self::assertSame(['founder' => 'SitioChat'], $result->auditData->extra);
+    }
+
+    #[Test]
+    public function defaultsToTheNetworkNickAndTheDefaultDescription(): void
+    {
+        $channels = $this->createMock(ChannelAdministration::class);
+        $channels->expects(self::once())->method('registerOfficial')
+            ->with('#Ayuda', 'SitioChat', 'oficial.default_description', 'NetAdmin', self::anything())
+            ->willReturn(OfficialRegistrationOutcome::Registered);
+        $harness = new AdministrationCommandHarness();
+
+        new OficialCommand($channels, 'SitioChat')->execute($harness->context('OFICIAL', ['#Ayuda']));
+
+        self::assertSame([
+            ['oficial.default_description', []],
+            ['oficial.done', ['%channel%' => '#Ayuda', '%nickname%' => 'SitioChat']],
+        ], $harness->replies);
     }
 
     #[Test]
@@ -57,7 +74,7 @@ final class OficialCommandTest extends TestCase
         $channels->expects(self::never())->method('registerOfficial');
         $harness = new AdministrationCommandHarness();
 
-        self::assertNull(new OficialCommand($channels)->execute($harness->context('OFICIAL', ['Ayuda', 'SitioChat'])));
+        self::assertNull(new OficialCommand($channels, 'SitioChat')->execute($harness->context('OFICIAL', ['Ayuda', 'SitioChat'])));
         self::assertSame([['oficial.invalid_channel', ['%channel%' => 'Ayuda']]], $harness->replies);
     }
 
@@ -79,7 +96,7 @@ final class OficialCommandTest extends TestCase
         $channels->method('registerOfficial')->willReturn($outcome);
         $harness = new AdministrationCommandHarness();
 
-        self::assertNull(new OficialCommand($channels)->execute($harness->context('OFICIAL', ['#Ayuda', 'SitioChat'])));
+        self::assertNull(new OficialCommand($channels, 'SitioChat')->execute($harness->context('OFICIAL', ['#Ayuda', 'SitioChat', 'Ayuda'])));
         self::assertSame([[$key, ['%channel%' => '#Ayuda', '%nickname%' => 'SitioChat']]], $harness->replies);
     }
 }

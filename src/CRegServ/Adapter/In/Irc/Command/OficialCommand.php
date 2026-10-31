@@ -18,15 +18,19 @@ use function implode;
 use function str_starts_with;
 
 /**
- * OFICIAL <#channel> <founder> [description]; IRC parsing and presentation only.
+ * OFICIAL <#channel> [founder] [description]; IRC parsing and presentation only.
  *
- * Registers one of the network's own channels in the name of the given founder (for
- * example the network nick, which founds many of them), without the per-nick channel
- * limit, and marks it as official.
+ * Registers one of the network's own channels in the name of the given founder or, by
+ * default, the network nick (which founds many of them), without the per-nick channel
+ * limit, marks it as official and turns NOEXPIRE on. Without a description it gets the
+ * default one, "Canal OFICIAL de la red" in Spanish.
  */
 final readonly class OficialCommand implements CRegServCommandInterface
 {
-    public function __construct(private ChannelAdministration $channels) {}
+    public function __construct(
+        private ChannelAdministration $channels,
+        private string $networkName,
+    ) {}
 
     public function getName(): string
     {
@@ -40,7 +44,7 @@ final readonly class OficialCommand implements CRegServCommandInterface
 
     public function getMinArgs(): int
     {
-        return 2;
+        return 1;
     }
 
     public function getSyntaxKey(): string
@@ -85,7 +89,9 @@ final readonly class OficialCommand implements CRegServCommandInterface
 
     public function execute(CRegServContext $context): ?CommandOutcome
     {
-        [$channelName, $founder] = $context->args;
+        $channelName = $context->args[0];
+        $founder = $context->args[1] ?? $this->networkName;
+        $description = implode(' ', array_slice($context->args, 2));
         if (!str_starts_with($channelName, '#')) {
             $context->reply('oficial.invalid_channel', ['%channel%' => $channelName]);
 
@@ -95,7 +101,7 @@ final readonly class OficialCommand implements CRegServCommandInterface
         $outcome = $this->channels->registerOfficial(
             $channelName,
             $founder,
-            implode(' ', array_slice($context->args, 2)),
+            '' !== $description ? $description : $context->trans('oficial.default_description'),
             $context->getSenderNickname() ?? '',
             new DateTimeImmutable(),
         );
