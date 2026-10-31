@@ -1272,6 +1272,34 @@ final class NetworkEventEnricherTest extends TestCase
     }
 
     #[Test]
+    public function applyOutgoingChannelModesRecordsPrefixChangesForMembers(): void
+    {
+        $channel = new Channel(new ChannelName('#chan'), '+n', new DateTimeImmutable('@0'));
+        $channel->syncMember(new Uid('001AAAAAA'), ChannelMemberRole::Owner, ['q']);
+        $channelRepo = $this->createStub(ChannelRepositoryInterface::class);
+        $channelRepo->method('findByName')->willReturn($channel);
+
+        $modeSupport = $this->createStub(ChannelModeSupportInterface::class);
+        $modeSupport->method('getListModeLetters')->willReturn(['b', 'e', 'I']);
+        $modeProvider = $this->createStub(ActiveChannelModeSupportProviderInterface::class);
+        $modeProvider->method('getSupport')->willReturn($modeSupport);
+
+        $enricher = new NetworkEventEnricher(
+            $channelRepo,
+            $this->createStub(NetworkUserRepositoryInterface::class),
+            $this->createStub(EventDispatcherInterface::class),
+            $this->createStub(SkipIdentifiedModeStripRegistry::class),
+            $modeProvider,
+            $this->createStub(ActiveProtocolModuleHolderInterface::class),
+        );
+
+        $enricher->applyOutgoingChannelModes('#chan', '+o-qb', ['001AAAAAA', '001AAAAAA', '*!*@bad']);
+        $enricher->applyOutgoingChannelModes('#chan', '+v', ['']);
+
+        self::assertSame(['o'], $channel->getMember(new Uid('001AAAAAA'))?->prefixLetters);
+    }
+
+    #[Test]
     public function applyOutgoingChannelModesWithParamsAppliesModeParam(): void
     {
         $channel = new Channel(new ChannelName('#chan'), '+n', new DateTimeImmutable('@0'));

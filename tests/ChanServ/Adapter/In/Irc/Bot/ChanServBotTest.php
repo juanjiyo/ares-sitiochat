@@ -263,8 +263,20 @@ final class ChanServBotTest extends TestCase
 
         $this->connectionHolder->onBurstComplete(new NetworkBurstCompleteEvent($this->createStub(ConnectionInterface::class), '001'));
         $this->connectionHolder->setProtocolModule($module);
+        $applyOutgoing = $this->createMock(ApplyOutgoingChannelModesPort::class);
+        $applyOutgoing->expects(self::once())->method('applyOutgoingChannelModes')->with('#channel', '-o', ['001USER']);
+        $bot = new ChanServBot(
+            $this->connectionHolder,
+            $this->channelLookup,
+            $applyOutgoing,
+            $this->channelRegistration,
+            $this->sendNoticePort,
+            $this->uidGenerator,
+            self::HOSTNAME,
+        );
+        $bot->onBurstComplete(new ServiceIntroductionRequestedEvent('001'));
 
-        $this->bot->setChannelMemberMode('#channel', '001USER', 'o', true);
+        $bot->setChannelMemberMode('#channel', '001USER', 'o', false);
     }
 
     #[Test]

@@ -8,6 +8,8 @@ use App\Irc\Application\Port\In\ChannelModeSupportInterface;
 use App\Irc\Domain\Network\Channel;
 use App\Irc\Domain\Network\ChannelMemberRole;
 use App\Irc\Domain\Network\NetworkUser;
+use App\Irc\Domain\ValueObject\Uid;
+use InvalidArgumentException;
 
 use function count;
 use function in_array;
@@ -146,8 +148,13 @@ final readonly class ChannelModeStateSynchronizer
                 $adding = false;
                 continue;
             }
-            if (null !== ChannelMemberRole::fromModeLetter($char) || in_array($char, $listLetters, true)) {
+            $role = ChannelMemberRole::fromModeLetter($char);
+            if (null !== $role || in_array($char, $listLetters, true)) {
                 if ($paramIdx < count($params)) {
+                    // The IRCd does not echo our own MODE, so prefix changes must be recorded here.
+                    if (null !== $role && '' !== $role->toModeLetter()) {
+                        $this->applyOutgoingPrefix($channel, $params[$paramIdx], $role->toModeLetter(), $adding);
+                    }
                     ++$paramIdx;
                 }
                 continue;
@@ -164,6 +171,17 @@ final readonly class ChannelModeStateSynchronizer
                 $channel->clearModeParam($char);
             }
         }
+    }
+
+    private function applyOutgoingPrefix(Channel $channel, string $target, string $letter, bool $adding): void
+    {
+        try {
+            $uid = new Uid($target);
+        } catch (InvalidArgumentException) {
+            return;
+        }
+
+        $channel->applyMemberPrefixChange($uid, $letter, $adding);
     }
 
     /**

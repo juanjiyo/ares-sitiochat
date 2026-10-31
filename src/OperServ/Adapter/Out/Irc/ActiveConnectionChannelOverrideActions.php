@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\OperServ\Adapter\Out\Irc;
 
 use App\Irc\Application\Port\In\ActiveProtocolModuleHolderInterface;
+use App\Irc\Application\Port\In\ApplyOutgoingChannelModesPort;
 use App\Irc\Application\Port\In\ChannelLookupPort;
 use App\Irc\Application\Port\In\ProtocolServiceActionsInterface;
 use App\Irc\Application\Port\In\ServiceUidRegistry;
@@ -25,6 +26,7 @@ final readonly class ActiveConnectionChannelOverrideActions implements ChannelOv
         private ActiveProtocolModuleHolderInterface $connection,
         private ServiceUidRegistry $serviceUids,
         private ChannelLookupPort $channels,
+        private ApplyOutgoingChannelModesPort $localState,
     ) {}
 
     public function kick(string $channelName, string $targetUid, string $reason): bool
@@ -38,6 +40,7 @@ final readonly class ActiveConnectionChannelOverrideActions implements ChannelOv
     {
         return $this->perform(function (ProtocolServiceActionsInterface $actions, string $serverSid, string $sourceUid) use ($channelName, $targetUid, $grant): void {
             $actions->setChannelMemberMode($serverSid, $channelName, $targetUid, self::OPERATOR_MODE, $grant, $sourceUid, $this->timestampOf($channelName));
+            $this->localState->applyOutgoingChannelModes($channelName, ($grant ? '+' : '-') . self::OPERATOR_MODE, [$targetUid]);
         });
     }
 
@@ -45,6 +48,7 @@ final readonly class ActiveConnectionChannelOverrideActions implements ChannelOv
     {
         return $this->perform(function (ProtocolServiceActionsInterface $actions, string $serverSid, string $sourceUid) use ($channelName, $modes, $params): void {
             $actions->setChannelModes($serverSid, $channelName, $modes, $params, $sourceUid, $this->timestampOf($channelName));
+            $this->localState->applyOutgoingChannelModes($channelName, $modes, $params);
         });
     }
 

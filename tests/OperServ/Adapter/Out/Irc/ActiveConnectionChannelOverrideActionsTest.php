@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\OperServ\Adapter\Out\Irc;
 
 use App\Irc\Application\Port\In\ActiveProtocolModuleHolderInterface;
+use App\Irc\Application\Port\In\ApplyOutgoingChannelModesPort;
 use App\Irc\Application\Port\In\ChannelLookupPort;
 use App\Irc\Application\Port\In\ChannelView;
 use App\Irc\Application\Port\In\ProtocolModuleInterface;
@@ -37,7 +38,13 @@ final class ActiveConnectionChannelOverrideActionsTest extends TestCase
             ->willReturnCallback(static function (string $sid, string $channel, string $uid, string $letter, bool $add, string $source, ?int $ts) use (&$calls): void {
                 $calls[] = [$sid, $channel, $uid, $letter, $add, $source, $ts];
             });
-        $adapter = $this->adapter($actions, timestamp: 1700000000);
+        $localState = $this->createMock(ApplyOutgoingChannelModesPort::class);
+        $local = [];
+        $localState->expects(self::exactly(2))->method('applyOutgoingChannelModes')
+            ->willReturnCallback(static function (string $channel, string $modes, array $params) use (&$local): void {
+                $local[] = [$channel, $modes, $params];
+            });
+        $adapter = $this->adapter($actions, timestamp: 1700000000, localState: $localState);
 
         self::assertTrue($adapter->setOperatorStatus('#help', 'UID1', true));
         self::assertTrue($adapter->setOperatorStatus('#help', 'UID1', false));
@@ -45,6 +52,7 @@ final class ActiveConnectionChannelOverrideActionsTest extends TestCase
             ['001', '#help', 'UID1', 'o', true, '001OS', 1700000000],
             ['001', '#help', 'UID1', 'o', false, '001OS', 1700000000],
         ], $calls);
+        self::assertSame([['#help', '+o', ['UID1']], ['#help', '-o', ['UID1']]], $local);
     }
 
     #[Test]
@@ -52,8 +60,10 @@ final class ActiveConnectionChannelOverrideActionsTest extends TestCase
     {
         $actions = $this->createMock(ProtocolServiceActionsInterface::class);
         $actions->expects(self::once())->method('setChannelModes')->with('001', '#help', '+kl', ['secret', '10'], '001OS', 1700000000);
+        $localState = $this->createMock(ApplyOutgoingChannelModesPort::class);
+        $localState->expects(self::once())->method('applyOutgoingChannelModes')->with('#help', '+kl', ['secret', '10']);
 
-        self::assertTrue($this->adapter($actions, timestamp: 1700000000)->setModes('#help', '+kl', ['secret', '10']));
+        self::assertTrue($this->adapter($actions, timestamp: 1700000000, localState: $localState)->setModes('#help', '+kl', ['secret', '10']));
     }
 
     #[Test]
@@ -88,7 +98,12 @@ final class ActiveConnectionChannelOverrideActionsTest extends TestCase
         $withoutSid->method('getServerSid')->willReturn(null);
 
         foreach ([$withoutModule, $withoutSid] as $connection) {
-            $adapter = new ActiveConnectionChannelOverrideActions($connection, new ServiceUidRegistry(), $this->createStub(ChannelLookupPort::class));
+            $adapter = new ActiveConnectionChannelOverrideActions(
+                $connection,
+                new ServiceUidRegistry(),
+                $this->createStub(ChannelLookupPort::class),
+                $this->createStub(ApplyOutgoingChannelModesPort::class),
+            );
 
             self::assertFalse($adapter->kick('#help', 'UID1', 'reason'));
             self::assertFalse($adapter->setOperatorStatus('#help', 'UID1', true));
@@ -97,8 +112,12 @@ final class ActiveConnectionChannelOverrideActionsTest extends TestCase
         }
     }
 
-    private function adapter(ProtocolServiceActionsInterface $actions, ?int $timestamp = null, bool $withOperServ = true): ActiveConnectionChannelOverrideActions
-    {
+    private function adapter(
+        ProtocolServiceActionsInterface $actions,
+        ?int $timestamp = null,
+        bool $withOperServ = true,
+        ?ApplyOutgoingChannelModesPort $localState = null,
+    ): ActiveConnectionChannelOverrideActions {
         $module = $this->createStub(ProtocolModuleInterface::class);
         $module->method('getServiceActions')->willReturn($actions);
         $connection = $this->createStub(ActiveProtocolModuleHolderInterface::class);
@@ -113,6 +132,7 @@ final class ActiveConnectionChannelOverrideActionsTest extends TestCase
             $connection,
             new ServiceUidRegistry($withOperServ ? ['operserv' => $provider] : []),
             $channels,
+            $localState ?? $this->createStub(ApplyOutgoingChannelModesPort::class),
         );
     }
 }

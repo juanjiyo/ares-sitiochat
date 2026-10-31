@@ -124,6 +124,7 @@ final class ChanServBot implements ChanServNotifierInterface, ChannelServiceActi
             $view = $this->channelLookup->findByChannelName($channelName);
             $channelTimestamp ??= $view?->timestamp;
             $module->getServiceActions()->setChannelMemberMode($sid, $channelName, $targetUid, $modeLetter, $add, $this->uid, $channelTimestamp);
+            $this->applyOutgoingChannelModes->applyOutgoingChannelModes($channelName, ($add ? '+' : '-') . $modeLetter, [$targetUid]);
         }
     }
 
