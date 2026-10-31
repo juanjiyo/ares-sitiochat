@@ -1108,7 +1108,7 @@ final class UnrealUdbNetworkStateAdapterTest extends TestCase
     }
 
     #[Test]
-    public function handleSjoinWithOwnerPrefixAssignsOwnerRole(): void
+    public function handleSjoinReadsAsteriskAsOwnerAndTildeAsAdmin(): void
     {
         $captured = null;
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
@@ -1120,12 +1120,15 @@ final class UnrealUdbNetworkStateAdapterTest extends TestCase
             });
 
         $adapter = new UnrealUdbNetworkStateAdapter($eventDispatcher);
-        $adapter->handleMessage(new IRCMessage('SJOIN', null, ['1704067200', '#test'], '~001ABC123'));
+        $adapter->handleMessage(new IRCMessage('SJOIN', null, ['1704067200', '#test'], '*001ABC123 ~001ABC124'));
 
         self::assertInstanceOf(ChannelJoinReceivedEvent::class, $captured);
-        self::assertCount(1, $captured->members);
+        self::assertCount(2, $captured->members);
         self::assertSame('001ABC123', $captured->members[0]['uid']->value);
         self::assertSame(ChannelMemberRole::Owner, $captured->members[0]['role']);
+        self::assertSame(['q'], $captured->members[0]['prefixLetters'] ?? null);
+        self::assertSame('001ABC124', $captured->members[1]['uid']->value);
+        self::assertSame(ChannelMemberRole::Admin, $captured->members[1]['role']);
     }
 
     #[Test]

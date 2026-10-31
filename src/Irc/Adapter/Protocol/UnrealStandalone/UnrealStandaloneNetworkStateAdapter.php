@@ -295,8 +295,8 @@ final class UnrealStandaloneNetworkStateAdapter implements NetworkStateAdapterIn
             '+' => ChannelMemberRole::Voice,
             '%' => ChannelMemberRole::HalfOp,
             '@' => ChannelMemberRole::Op,
-            '&' => ChannelMemberRole::Admin,
-            '~' => ChannelMemberRole::Owner,
+            '&', '~' => ChannelMemberRole::Admin,
+            '*' => ChannelMemberRole::Owner,
             default => ChannelMemberRole::None,
         };
     }
@@ -311,7 +311,7 @@ final class UnrealStandaloneNetworkStateAdapter implements NetworkStateAdapterIn
      */
     private static function parseSjoinEntryToLetters(string &$entry): array
     {
-        $prefixChars = ['+', '%', '@', '&', '~'];
+        $prefixChars = ['+', '%', '@', '&', '~', '*'];
         $letters = [];
         while ('' !== $entry && in_array($entry[0], $prefixChars, true)) {
             $role = self::roleFromSjoinPrefix($entry[0]);
