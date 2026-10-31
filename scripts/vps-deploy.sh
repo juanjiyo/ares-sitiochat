@@ -13,7 +13,8 @@
 #   3. backs up var/data and .env.local into ~/backups;
 #   4. swaps the directories (the old one is kept as ares-sitiochat.old-<timestamp>);
 #   5. clears the cache, applies the pending migrations and starts irc:connect again;
-#   6. reports the introduced service bots and the errors logged since the restart.
+#   6. reports the introduced service bots and the errors logged since the restart;
+#   7. prunes everything but the latest previous release, backup and staged archive.
 set -euo pipefail
 
 HOST_ALIAS="${ARES_VPS_HOST:-vps-irc}"
@@ -87,3 +88,8 @@ pgrep -fa "bin/console (irc:connect|messenger:consume)" | cut -c1-60
 tail -15 var/ares.log | grep -E "\[OK\]" | cut -c1-80 || true
 echo "bots introduced: $(awk -v s="[$START" '$0 >= s' var/log/irc-"$(date -u +%F)".log | grep -c 'introduced to network' || true)"
 echo "errors since restart: $(awk -v s="[$START" '$0 >= s' var/log/*-"$(date -u +%F)".log | grep -ciE '\.(ERROR|CRITICAL|ALERT|EMERGENCY)' || true)"
+
+# Only the latest rollback point is kept; each previous release alone takes about 300 MB.
+ls -1d "$LIVE".old-* | head -n -1 | xargs -r rm -rf
+ls -1 ~/backups/ares-data-*.tar.gz | head -n -1 | xargs -r rm -f
+find ~/deploy-staging -name '*.tar.gz' ! -name "$C.tar.gz" -delete
