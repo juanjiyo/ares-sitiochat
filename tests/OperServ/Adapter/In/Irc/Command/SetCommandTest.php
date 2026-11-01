@@ -7,7 +7,6 @@ namespace App\Tests\OperServ\Adapter\In\Irc\Command;
 use App\OperServ\Adapter\In\Irc\Command\SetCommand;
 use App\OperServ\Application\Port\In\Audit\CommandAuditRecord;
 use App\OperServ\Application\Port\In\CommandAuditRecorder;
-use App\OperServ\Application\Port\In\OperatorAuthorizationAttribute;
 use App\OperServ\Application\Port\In\OperatorAuthorizationQuery;
 use App\OperServ\Application\Port\Out\PasswordFloodSettings;
 use App\OperServ\Application\UseCase\SetPassProtect\SetPassProtectHandler;
@@ -37,7 +36,7 @@ final class SetCommandTest extends TestCase
             ['name' => 'PASSPROTECT', 'desc_key' => 'set.passprotect.short', 'help_key' => 'set.passprotect.help', 'syntax_key' => 'set.passprotect.syntax', 'example_key' => 'set.passprotect.example'],
         ], $command->getSubCommandHelp());
         self::assertTrue($command->isOperOnly());
-        self::assertSame(OperatorAuthorizationAttribute::ROOT, $command->getRequiredPermission());
+        self::assertSame('operserv.set', $command->getRequiredPermission());
         self::assertSame([], $command->getHelpParams());
     }
 

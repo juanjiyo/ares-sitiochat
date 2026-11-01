@@ -7,8 +7,8 @@ namespace App\OperServ\Application\UseCase\SetPassProtect;
 use App\OperServ\Application\Port\In\Audit\CommandAuditCategory;
 use App\OperServ\Application\Port\In\Audit\CommandAuditRecord;
 use App\OperServ\Application\Port\In\CommandAuditRecorder;
-use App\OperServ\Application\Port\In\OperatorAuthorizationAttribute;
 use App\OperServ\Application\Port\Out\PasswordFloodSettings;
+use App\OperServ\Application\Security\OperServPermission;
 
 use function preg_match;
 
@@ -41,13 +41,13 @@ final readonly class SetPassProtectHandler
         }
 
         $this->audit->record(new CommandAuditRecord(
-            category: CommandAuditCategory::RootAdministration,
+            category: CommandAuditCategory::OperatorAction,
             service: 'OperServ',
             actor: $command->actor,
             operation: 'SET PASSPROTECT',
             occurredAt: $command->occurredAt,
             target: $attempts . ':' . $seconds,
-            permission: OperatorAuthorizationAttribute::ROOT,
+            permission: OperServPermission::SET,
         ));
 
         return SetPassProtectOutcome::Set;

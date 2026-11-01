@@ -6,7 +6,7 @@ namespace App\OperServ\Adapter\In\Irc\Command;
 
 use App\OperServ\Adapter\In\Irc\OperServCommandInterface;
 use App\OperServ\Adapter\In\Irc\OperServContext;
-use App\OperServ\Application\Port\In\OperatorAuthorizationAttribute;
+use App\OperServ\Application\Security\OperServPermission;
 use App\OperServ\Application\UseCase\SetPassProtect\SetPassProtect;
 use App\OperServ\Application\UseCase\SetPassProtect\SetPassProtectHandler;
 use App\OperServ\Application\UseCase\SetPassProtect\SetPassProtectOutcome;
@@ -15,7 +15,7 @@ use DateTimeImmutable;
 use function strtoupper;
 use function trim;
 
-/** IRC adapter for SET: network-wide settings. Root only. */
+/** IRC adapter for SET: network-wide settings (operserv.set, granted to the ROOT rank). */
 final readonly class SetCommand implements OperServCommandInterface
 {
     public function __construct(private SetPassProtectHandler $passProtect) {}
@@ -74,7 +74,7 @@ final readonly class SetCommand implements OperServCommandInterface
 
     public function getRequiredPermission(): string
     {
-        return OperatorAuthorizationAttribute::ROOT;
+        return OperServPermission::SET;
     }
 
     /** @return array<string, string> */

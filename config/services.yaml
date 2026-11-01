@@ -178,6 +178,9 @@ parameters:
     operserv.realname: '%env(string:default:operserv.realname_default:OPERSERV_REALNAME)%'
     operserv.root_users_default: ''
     operserv.root_users: '%env(string:default:operserv.root_users_default:OPERSERV_ROOT_USERS)%'
+    # Domain of the staff rank vhosts: <nick>.<rank>.<domain> (e.g. pedro.oper.sitiochat.es).
+    operserv.staff_vhost_domain_default: 'sitiochat.es'
+    operserv.staff_vhost_domain: '%env(string:default:operserv.staff_vhost_domain_default:OPERSERV_STAFF_VHOST_DOMAIN)%'
     operserv.max_glines_default: 1000
     operserv.max_glines: '%env(int:default:operserv.max_glines_default:OPERSERV_MAX_GLINES)%'
     # OPeR JAIL: channel jailed users are kept in
@@ -2520,6 +2523,13 @@ services:
         alias: App\OperServ\Adapter\Out\Irc\ActiveConnectionElineNetworkActions
 
     App\OperServ\Adapter\In\Event\OperServElineSyncSubscriber:
+        tags: ['kernel.event_subscriber']
+
+    App\OperServ\Application\Service\StaffRankRoleSync:
+        arguments:
+            $vhostDomain: '%operserv.staff_vhost_domain%'
+
+    App\OperServ\Adapter\In\Event\OperServStaffRankSyncSubscriber:
         tags: ['kernel.event_subscriber']
 
     App\OperServ\Adapter\In\Irc\Command\ElineCommand:

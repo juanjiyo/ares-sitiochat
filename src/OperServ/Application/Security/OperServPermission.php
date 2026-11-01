@@ -40,5 +40,14 @@ final class OperServPermission
     /** Ban exceptions by IP (E-Lines). */
     public const string ELINE = 'operserv.eline';
 
+    /** Add and remove PREOPER and OPER staff. */
+    public const string STAFF = 'operserv.staff';
+
+    /** Add and remove ADMIN staff. */
+    public const string STAFF_ADMIN = 'operserv.staff.admin';
+
+    /** Network settings (SET PASSPROTECT). */
+    public const string SET = 'operserv.set';
+
     private function __construct() {}
 }

@@ -7,7 +7,6 @@ namespace App\Tests\OperServ\Application\UseCase\SetPassProtect;
 use App\OperServ\Application\Port\In\Audit\CommandAuditCategory;
 use App\OperServ\Application\Port\In\Audit\CommandAuditRecord;
 use App\OperServ\Application\Port\In\CommandAuditRecorder;
-use App\OperServ\Application\Port\In\OperatorAuthorizationAttribute;
 use App\OperServ\Application\Port\Out\PasswordFloodSettings;
 use App\OperServ\Application\UseCase\SetPassProtect\SetPassProtect;
 use App\OperServ\Application\UseCase\SetPassProtect\SetPassProtectHandler;
@@ -34,11 +33,11 @@ final class SetPassProtectHandlerTest extends TestCase
         self::assertSame(SetPassProtectOutcome::Set, $outcome);
         self::assertSame([[3, 120]], $settings->calls);
         self::assertCount(1, $audit->records);
-        self::assertSame(CommandAuditCategory::RootAdministration, $audit->records[0]->category);
+        self::assertSame(CommandAuditCategory::OperatorAction, $audit->records[0]->category);
         self::assertSame('Root', $audit->records[0]->actor);
         self::assertSame('SET PASSPROTECT', $audit->records[0]->operation);
         self::assertSame('3:120', $audit->records[0]->target);
-        self::assertSame(OperatorAuthorizationAttribute::ROOT, $audit->records[0]->permission);
+        self::assertSame('operserv.set', $audit->records[0]->permission);
         self::assertSame($at, $audit->records[0]->occurredAt);
     }
 

@@ -104,6 +104,16 @@ final class OperServPermissionTest extends TestCase
     }
 
     #[Test]
+    public function staffManagementAndSetConstantsHaveExpectedValues(): void
+    {
+        $reflection = new ReflectionClass(OperServPermission::class);
+
+        self::assertSame('operserv.staff', $reflection->getConstant('STAFF'));
+        self::assertSame('operserv.staff.admin', $reflection->getConstant('STAFF_ADMIN'));
+        self::assertSame('operserv.set', $reflection->getConstant('SET'));
+    }
+
+    #[Test]
     public function allConstantsAreStrings(): void
     {
         $reflection = new ReflectionClass(OperServPermission::class);
