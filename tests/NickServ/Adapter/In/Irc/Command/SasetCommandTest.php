@@ -88,7 +88,7 @@ final class SasetCommandTest extends TestCase
         $outcome = new SasetCommand($handler)->execute($this->context($this->sender(), ['Target', 'VHOST'], $messages));
 
         self::assertTrue($outcome->success);
-        self::assertSame(['set.vhost.cleared'], $messages);
+        self::assertSame(['saset.cleared'], $messages);
         self::assertSame(['option' => 'VHOST', 'value' => ''], $outcome->auditData?->extra);
     }
 
@@ -166,11 +166,43 @@ final class SasetCommandTest extends TestCase
         self::assertSame(['option' => 'LANGUAGE', 'value' => 'es'], $outcome->auditData?->extra);
     }
 
+    #[Test]
+    public function confirmsTheChangeNamingTheTargetNickAndTheValue(): void
+    {
+        $handler = $this->createStub(SetNickSettingHandlerInterface::class);
+        $handler->method('handle')->willReturn(new SetNickSettingResult(SetNickSettingOutcome::Changed, SetNickSettingOption::Vhost, 'Ayna}', 'Regla.De.Oro'));
+
+        $messages = [];
+        $params = [];
+        new SasetCommand($handler)->execute($this->context($this->sender(), ['Ayna}', 'VHOST', 'Regla.De.Oro'], $messages, $params));
+
+        self::assertSame(['saset.changed'], $messages);
+        self::assertSame('Ayna}', $params[0]['%nickname%']);
+        self::assertSame('VHOST', $params[0]['%option%']);
+        self::assertSame('Regla.De.Oro', $params[0]['%value%']);
+    }
+
+    #[Test]
+    public function neverEchoesTheNewPassword(): void
+    {
+        $handler = $this->createStub(SetNickSettingHandlerInterface::class);
+        $handler->method('handle')->willReturn(new SetNickSettingResult(SetNickSettingOutcome::Changed, SetNickSettingOption::Password, 'Target', 'secret123'));
+
+        $messages = [];
+        $params = [];
+        new SasetCommand($handler)->execute($this->context($this->sender(), ['Target', 'PASSWORD', 'secret123'], $messages, $params));
+
+        self::assertSame(['saset.changed_hidden'], $messages);
+        self::assertSame(['%nickname%' => 'Target', '%option%' => 'PASSWORD'], array_intersect_key($params[0], ['%nickname%' => 1, '%option%' => 1]));
+        self::assertNotContains('secret123', $params[0]);
+    }
+
     /**
-     * @param list<string> $args
-     * @param list<string> $messages
+     * @param list<string>               $args
+     * @param list<string>               $messages
+     * @param list<array<string, mixed>> $params
      */
-    private function context(?SenderView $sender, array $args, array &$messages = []): NickServContext
+    private function context(?SenderView $sender, array $args, array &$messages = [], array &$params = []): NickServContext
     {
         $notifier = $this->createStub(NickServNotifierInterface::class);
         $notifier->method('getNick')->willReturn('NickServ');
@@ -178,7 +210,11 @@ final class SasetCommandTest extends TestCase
             $messages[] = $message;
         });
         $translator = $this->createStub(TranslatorInterface::class);
-        $translator->method('trans')->willReturnCallback(static fn (string $id): string => $id);
+        $translator->method('trans')->willReturnCallback(static function (string $id, array $parameters = []) use (&$params): string {
+            $params[] = $parameters;
+
+            return $id;
+        });
         $provider = $this->createStub(ServiceNicknameProviderInterface::class);
         $provider->method('getServiceKey')->willReturn('nickserv');
         $provider->method('getNickname')->willReturn('NickServ');

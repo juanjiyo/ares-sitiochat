@@ -244,6 +244,9 @@ saset:
   example:          "/msg %bot% SASET Χρήστης PASSWORD νέοςκωδικός"
   unknown_option:   "\x0304✗\x03 Άγνωστη επιλογή \x02%option%\x02. Διαθέσιμες επιλογές: %options%."
   cannot_modify_oper: "\x0304✗\x03 Δεν μπορεί να τροποποιηθεί ψευδώνυμο IRC Operator."
+  changed:          "\x0303✔\x03 Το %option% του \x02%nickname%\x02 άλλαξε σε \x02%value%\x02."
+  changed_hidden:   "\x0303✔\x03 Το %option% του \x02%nickname%\x02 άλλαξε."
+  cleared:          "\x0303✔\x03 Το %option% του \x02%nickname%\x02 αφαιρέθηκε."
 
   password:
     syntax:         "SASET <ψευδώνυμο> PASSWORD <νέος_κωδικός>"

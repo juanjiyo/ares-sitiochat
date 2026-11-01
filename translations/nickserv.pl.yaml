@@ -244,6 +244,9 @@ saset:
   example:          "/msg %bot% SASET Użytkownik PASSWORD nowehasło"
   unknown_option:   "\x0304✗\x03 Nieznana opcja \x02%option%\x02. Dostępne opcje: %options%."
   cannot_modify_oper: "\x0304✗\x03 Nie można modyfikować nicka Operatora IRC."
+  changed:          "\x0303✔\x03 %option% dla \x02%nickname%\x02 zmieniono na \x02%value%\x02."
+  changed_hidden:   "\x0303✔\x03 %option% dla \x02%nickname%\x02 zmieniono."
+  cleared:          "\x0303✔\x03 %option% dla \x02%nickname%\x02 usunięto."
 
   password:
     syntax:         "SASET <nick> PASSWORD <nowe_hasło>"

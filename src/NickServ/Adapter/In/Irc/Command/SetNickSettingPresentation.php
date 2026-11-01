@@ -12,10 +12,13 @@ use App\NickServ\Domain\Entity\RegisteredNick;
 
 final class SetNickSettingPresentation
 {
-    public static function present(NickServContext $context, SetNickSettingResult $result): bool
+    /** @param bool $onAnotherNick SASET: confirm naming the target nick, not "your ..." */
+    public static function present(NickServContext $context, SetNickSettingResult $result, bool $onAnotherNick = false): bool
     {
         return match ($result->outcome) {
-            SetNickSettingOutcome::Changed => self::presentChanged($context, $result),
+            SetNickSettingOutcome::Changed => $onAnotherNick
+                ? self::presentChangedOnAnotherNick($context, $result)
+                : self::presentChanged($context, $result),
             SetNickSettingOutcome::SessionLanguageChanged => self::reply($context, 'set.language.success', ['language' => $result->value]),
             SetNickSettingOutcome::EmailConfirmationSent => self::reply($context, 'set.email.pending_sent', [
                 'current_email' => $result->currentEmail,
@@ -56,6 +59,17 @@ final class SetNickSettingPresentation
             SetNickSettingOption::Vhost => null === $result->value
                 ? self::reply($context, 'set.vhost.cleared')
                 : self::reply($context, 'set.vhost.success', ['vhost' => $result->value]),
+        };
+    }
+
+    private static function presentChangedOnAnotherNick(NickServContext $context, SetNickSettingResult $result): bool
+    {
+        $params = ['nickname' => $result->targetNickname, 'option' => $result->option->value];
+
+        return match (true) {
+            SetNickSettingOption::Password === $result->option => self::reply($context, 'saset.changed_hidden', $params),
+            null === $result->value => self::reply($context, 'saset.cleared', $params),
+            default => self::reply($context, 'saset.changed', $params + ['value' => $result->value]),
         };
     }
 

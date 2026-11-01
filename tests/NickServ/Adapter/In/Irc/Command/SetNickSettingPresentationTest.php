@@ -57,6 +57,29 @@ final class SetNickSettingPresentationTest extends TestCase
         self::assertSame([$expectedKey], $messages);
     }
 
+    /** @return iterable<string, array{SetNickSettingOption, ?string, string}> */
+    public static function changesOnAnotherNick(): iterable
+    {
+        yield 'value shown' => [SetNickSettingOption::Vhost, 'alice.users', 'saset.changed'];
+        yield 'password hidden' => [SetNickSettingOption::Password, 'secret', 'saset.changed_hidden'];
+        yield 'cleared' => [SetNickSettingOption::Timezone, null, 'saset.cleared'];
+    }
+
+    #[Test]
+    #[DataProvider('changesOnAnotherNick')]
+    public function namesTheTargetNickWhenChangingAnotherNick(SetNickSettingOption $option, ?string $value, string $expectedKey): void
+    {
+        $messages = [];
+
+        self::assertTrue(SetNickSettingPresentation::present($this->context($messages), new SetNickSettingResult(
+            SetNickSettingOutcome::Changed,
+            $option,
+            'Alice',
+            $value,
+        ), true));
+        self::assertSame([$expectedKey], $messages);
+    }
+
     /** @return iterable<string, array{SetNickSettingOutcome, SetNickSettingOption, ?string, string, bool}> */
     public static function otherOutcomes(): iterable
     {

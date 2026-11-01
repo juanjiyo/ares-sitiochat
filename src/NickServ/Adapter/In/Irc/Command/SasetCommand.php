@@ -133,7 +133,7 @@ final readonly class SasetCommand implements NickServCommandInterface, IrcopAudi
             $context->getLanguage(),
         ));
 
-        if (!SetNickSettingPresentation::present($context, $result)) {
+        if (!SetNickSettingPresentation::present($context, $result, true)) {
             return CommandOutcome::rejected();
         }
 

@@ -244,6 +244,9 @@ saset:
   example:          "/msg %bot% SASET Utilizator PASSWORD parolanouă"
   unknown_option:   "\x0304✗\x03 Opțiune necunoscută \x02%option%\x02. Opțiuni disponibile: %options%."
   cannot_modify_oper: "\x0304✗\x03 Nu se poate modifica o poreclă de operator IRC."
+  changed:          "\x0303✔\x03 %option% pentru \x02%nickname%\x02 schimbat în \x02%value%\x02."
+  changed_hidden:   "\x0303✔\x03 %option% pentru \x02%nickname%\x02 schimbat."
+  cleared:          "\x0303✔\x03 %option% pentru \x02%nickname%\x02 eliminat."
 
   password:
     syntax:         "SASET <poreclă> PASSWORD <parolă_nouă>"
