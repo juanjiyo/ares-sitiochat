@@ -11,12 +11,12 @@ use function trim;
 /**
  * Validates and normalizes vhost (user part only, without suffix).
  * Rules: a-z A-Z 0-9; hyphen and dot allowed but not at start/end of string or of any label.
- * Max length: 48 characters.
+ * Max length: 55 characters (vhost + "." + 7-char suffix = IRCd HOSTLEN 63).
  */
 final readonly class VhostValidator
 {
     /** Max length for the user-chosen vhost part (suffix is appended for display). */
-    public const int MAX_LENGTH = 48;
+    public const int MAX_LENGTH = 55;
 
     /**
      * Each label: alphanumeric, optional internal hyphens. Labels separated by dots.

@@ -219,11 +219,11 @@ set:
   vhost:
     syntax:         "SET VHOST [vhost]"
     short:          "Özel sanal ana makinenizi (görüntülenen host adı) ayarlayın veya temizleyin."
-    help:           "Kimlik doğrulandığınızda başkalarının gördüğü özel bir host adı ayarlar.\nTemizlemek için \x02SET VHOST\x02 komutunu değer olmadan kullanın. Yalnızca harfler (a-z, A-Z), rakamlar, tire ve nokta;\nher bloğun başında/sonunda tire veya nokta olmaz; maks 48 karakter. Her rumuz için benzersiz."
+    help:           "Kimlik doğrulandığınızda başkalarının gördüğü özel bir host adı ayarlar.\nTemizlemek için \x02SET VHOST\x02 komutunu değer olmadan kullanın. Yalnızca harfler (a-z, A-Z), rakamlar, tire ve nokta;\nher bloğun başında/sonunda tire veya nokta olmaz; maks 55 karakter. Her rumuz için benzersiz."
     example:        "/msg %bot% SET VHOST kullanıcılar.örnek.com"
     success:        "\x0303✔\x03 Sanal host'unuz \x02%vhost%\x02 olarak ayarlandı."
     cleared:        "\x0303✔\x03 Sanal host'unuz temizlendi."
-    invalid:        "\x0304✗\x03 Geçersiz vhost. Yalnızca harfler, rakamlar, tire ve nokta (blok başında/sonunda olamaz); maks 48 karakter."
+    invalid:        "\x0304✗\x03 Geçersiz vhost. Yalnızca harfler, rakamlar, tire ve nokta (blok başında/sonunda olamaz); maks 55 karakter."
     taken:          "\x0304✗\x03 Bu vhost zaten başka bir rumuz tarafından kullanılıyor."
     forced:         "\x0304✗\x03 Vhost'unuz otomatik olarak yapılandırılmıştır ve SET VHOST ile değiştirilemez."
 

@@ -219,11 +219,11 @@ set:
   vhost:
     syntax:         "SET VHOST [vhost]"
     short:          "Ustaw lub wyczyść swój niestandardowy host wirtualny (wyświetlany hostname)."
-    help:           "Ustawia niestandardową nazwę hosta, którą inni widzą gdy jesteś zidentyfikowany.\nUżyj \x02SET VHOST\x02 bez wartości aby wyczyścić. Tylko litery (a-z, A-Z), cyfry, myślnik i kropka;\nbez myślnika lub kropki na początku/końcu bloku; maks. 48 znaków. Unikalny na nick."
+    help:           "Ustawia niestandardową nazwę hosta, którą inni widzą gdy jesteś zidentyfikowany.\nUżyj \x02SET VHOST\x02 bez wartości aby wyczyścić. Tylko litery (a-z, A-Z), cyfry, myślnik i kropka;\nbez myślnika lub kropki na początku/końcu bloku; maks. 55 znaków. Unikalny na nick."
     example:        "/msg %bot% SET VHOST użytkownicy.przykład.com"
     success:        "\x0303✔\x03 Twój host wirtualny został ustawiony na \x02%vhost%\x02."
     cleared:        "\x0303✔\x03 Twój host wirtualny został wyczyszczony."
-    invalid:        "\x0304✗\x03 Nieprawidłowy vhost. Tylko litery, cyfry, myślnik i kropka (nie na początku/końcu bloku); maks. 48 znaków."
+    invalid:        "\x0304✗\x03 Nieprawidłowy vhost. Tylko litery, cyfry, myślnik i kropka (nie na początku/końcu bloku); maks. 55 znaków."
     taken:          "\x0304✗\x03 Ten vhost jest już używany przez inny nick."
     forced:         "\x0304✗\x03 Twój vhost jest konfigurowany automatycznie i nie może być zmieniony przez SET VHOST."
 

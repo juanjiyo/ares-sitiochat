@@ -58,6 +58,17 @@ final class VhostValidatorTest extends TestCase
     }
 
     #[Test]
+    public function allowsUpTo55CharactersSoVhostDotSuffixFitsTheIrcdHostLength(): void
+    {
+        $v = new VhostValidator();
+        $fits = 'Regla.De.Oro.No.Hacer.Caso.a.Ninguna.Regla.Incluida.Est';
+        $tooLong = 'Regla.De.Oro.No.Hacer.Caso.a.Ninguna.Regla.Incluida.Esta';
+
+        self::assertSame($fits, $v->normalize($fits));
+        self::assertNull($v->normalize($tooLong));
+    }
+
+    #[Test]
     public function normalizeReturnsNullWhenInvalidChars(): void
     {
         $v = new VhostValidator();
