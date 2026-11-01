@@ -143,6 +143,36 @@ final class GlineCommandTest extends TestCase
     }
 
     #[Test]
+    public function presentsIrcdGlinesInTheirOwnBlockNumberedAfterTheServicesOnes(): void
+    {
+        $notifier = new RecordingGlineCommandNotifier();
+        $result = new ManageGlineResult(
+            ManageGlineOutcome::Listed,
+            entries: [new GlineListEntry('*@one.test', null, null, null)],
+            ircdEntries: [new GlineListEntry('*@203.0.113.7', 'Too many failed password attempts', 'IRCd', null)],
+        );
+
+        new GlineCommand(new RecordingGlineCommandHandler($result))->execute($this->context(['LIST'], $notifier));
+
+        self::assertSame(['gline.list.header', 'gline.list.entry', 'gline.list.ircd_header', 'gline.list.entry'], $notifier->messages);
+        self::assertSame('2', $notifier->translations->entryParameters[1]['%index%']);
+        self::assertSame("\x0304*@203.0.113.7\x03", $notifier->translations->entryParameters[1]['%mask%']);
+        self::assertSame('IRCd', $notifier->translations->entryParameters[1]['%nickname%']);
+    }
+
+    #[Test]
+    public function presentsOnlyTheIrcdBlockWhenServicesHaveNoGlines(): void
+    {
+        $notifier = new RecordingGlineCommandNotifier();
+        $result = new ManageGlineResult(ManageGlineOutcome::Listed, ircdEntries: [new GlineListEntry('*@203.0.113.7', 'r', 'IRCd', null)]);
+
+        new GlineCommand(new RecordingGlineCommandHandler($result))->execute($this->context(['LIST'], $notifier));
+
+        self::assertSame(['gline.list.ircd_header', 'gline.list.entry'], $notifier->messages);
+        self::assertSame('1', $notifier->translations->entryParameters[0]['%index%']);
+    }
+
+    #[Test]
     public function ignoresMissingSender(): void
     {
         $handler = new RecordingGlineCommandHandler();

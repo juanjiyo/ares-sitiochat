@@ -243,6 +243,7 @@ gline:
     never_expires:  "Permanente"
     unknown_creator: "descoñecido"
     entry:          "\x0310%index%.\x03 \x02%mask%\x02 - %reason% (\x0314%nickname%\x03, caduca: %expiration%)"
+    ircd_header:    "\x0307---\x03 \x02G-lines do IRCd: forza bruta (%count%)\x02 \x0307---\x03"
 
   clear:
     syntax:         "GLINE CLEAR"

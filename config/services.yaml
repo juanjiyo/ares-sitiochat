@@ -971,6 +971,10 @@ services:
     App\Irc\Application\Port\In\NetworkUserLookupPort:
         class: App\Irc\Adapter\ServiceBridge\CoreNetworkUserLookupAdapter
 
+    # Password-flood G-Lines: owned by the IRCd, mirrored in memory from TKL.
+    App\Irc\Application\Port\In\PasswordFloodGlinePort:
+        alias: App\Irc\Adapter\Network\InMemoryPasswordFloodGlineRegistry
+
     App\Irc\Application\Port\In\BurstCompletePort:
         class: App\Irc\Adapter\ServiceBridge\CoreBurstCompleteAdapter
 
@@ -2341,6 +2345,9 @@ services:
 
     App\OperServ\Application\Port\Out\GlineUserLookup:
         alias: App\OperServ\Adapter\Out\Irc\NetworkGlineUserLookup
+
+    App\OperServ\Application\Port\Out\IrcdGlines:
+        alias: App\OperServ\Adapter\Out\Irc\IrcPasswordFloodGlines
 
     App\OperServ\Application\Port\Out\ProtectedGlineSubjects:
         alias: App\OperServ\Adapter\Out\Projection\DoctrineProtectedGlineSubjects

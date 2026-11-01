@@ -243,6 +243,7 @@ gline:
     never_expires:  "Kalıcı"
     unknown_creator: "bilinmiyor"
     entry:          "\x0310%index%.\x03 \x02%mask%\x02 - %reason% (\x0314%nickname%\x03, bitiş: %expiration%)"
+    ircd_header:    "\x0307---\x03 \x02IRCd G-line'ları: kaba kuvvet (%count%)\x02 \x0307---\x03"
 
   clear:
     syntax:         "GLINE CLEAR"

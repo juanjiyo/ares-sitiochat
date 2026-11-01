@@ -14,6 +14,8 @@ use App\OperServ\Application\Port\Out\GlineNetworkActions;
 use App\OperServ\Application\Port\Out\GlineRepository;
 use App\OperServ\Application\Port\Out\GlineUser;
 use App\OperServ\Application\Port\Out\GlineUserLookup;
+use App\OperServ\Application\Port\Out\IrcdGlineEntry;
+use App\OperServ\Application\Port\Out\IrcdGlines;
 use App\OperServ\Application\Port\Out\KillNetworkUser;
 use App\OperServ\Application\Port\Out\NetworkUser;
 use App\OperServ\Application\Port\Out\ProtectedGlineSubjects;
@@ -31,6 +33,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
 
+use function array_map;
 use function count;
 
 use const DATE_ATOM;
@@ -226,6 +229,104 @@ final class ManageGlineHandlerTest extends TestCase
         self::assertSame(ManageGlineOutcome::Listed, $result->outcome);
         self::assertSame('Creator', $result->entries[0]->creatorNickname);
         self::assertSame('*@host.test', $result->entries[0]->mask);
+        self::assertSame([], $result->ircdEntries);
+    }
+
+    #[Test]
+    public function listsIrcdGlinesAfterTheServicesOnesFilteredByTheSamePattern(): void
+    {
+        $repository = new RecordingGlineRepository(entries: [new GlineEntry('*@host.test', null, null, new DateTimeImmutable('2026-09-01'), null)]);
+        $expiry = new DateTimeImmutable('2026-11-01 11:00:00');
+        $ircd = new GlineTestIrcdGlines([
+            new IrcdGlineEntry('*@203.0.113.7', 'Too many failed password attempts', $expiry),
+            new IrcdGlineEntry('*@198.51.100.1', 'Too many failed password attempts', null),
+        ]);
+        $handler = $this->handler($repository, new RecordingGlineNetworkActions(), new RecordingGlineAuditRecorder(), ircd: $ircd);
+
+        $all = $handler->handle(new ManageGline(GlineAction::List, 'Oper', 44, new DateTimeImmutable()));
+        self::assertSame(ManageGlineOutcome::Listed, $all->outcome);
+        self::assertCount(1, $all->entries);
+        self::assertSame([
+            ['*@203.0.113.7', 'Too many failed password attempts', 'IRCd', $expiry],
+            ['*@198.51.100.1', 'Too many failed password attempts', 'IRCd', null],
+        ], array_map(static fn (GlineListEntry $entry): array => [$entry->mask, $entry->reason, $entry->creatorNickname, $entry->expiresAt], $all->ircdEntries));
+
+        $filtered = $handler->handle(new ManageGline(GlineAction::List, 'Oper', 44, new DateTimeImmutable(), listPattern: '203.0'));
+        self::assertSame(['*@203.0.113.7'], array_map(static fn (GlineListEntry $entry): string => $entry->mask, $filtered->ircdEntries));
+    }
+
+    #[Test]
+    public function listsOnlyIrcdGlinesWhenServicesHaveNone(): void
+    {
+        $ircd = new GlineTestIrcdGlines([new IrcdGlineEntry('*@203.0.113.7', 'Too many failed password attempts', null)]);
+
+        $result = $this->handler(new RecordingGlineRepository(), new RecordingGlineNetworkActions(), new RecordingGlineAuditRecorder(), ircd: $ircd)
+            ->handle(new ManageGline(GlineAction::List, 'Oper', 44, new DateTimeImmutable()));
+
+        self::assertSame(ManageGlineOutcome::Listed, $result->outcome);
+        self::assertSame([], $result->entries);
+        self::assertCount(1, $result->ircdEntries);
+    }
+
+    #[Test]
+    public function deletesIrcdGlineByNumberAfterTheServicesOnesWithoutTouchingTheRepository(): void
+    {
+        $repository = new RecordingGlineRepository(entries: [new GlineEntry('*@host.test', null, null, new DateTimeImmutable('2026-09-01'), null)]);
+        $network = new RecordingGlineNetworkActions();
+        $audit = new RecordingGlineAuditRecorder();
+        $ircd = new GlineTestIrcdGlines([
+            new IrcdGlineEntry('*@203.0.113.7', 'r', null),
+            new IrcdGlineEntry('*@198.51.100.1', 'r', null),
+        ]);
+
+        $result = $this->handler($repository, $network, $audit, ircd: $ircd)->handle(new ManageGline(GlineAction::Delete, 'Oper', 44, new DateTimeImmutable(), '3'));
+
+        self::assertSame(ManageGlineOutcome::Deleted, $result->outcome);
+        self::assertSame('*@198.51.100.1', $result->mask);
+        self::assertSame(['*@198.51.100.1'], $ircd->removed);
+        self::assertSame([], $repository->removed);
+        self::assertSame([], $network->removed);
+        self::assertSame('GLINE DEL', $audit->records[0]->operation);
+        self::assertSame('*@198.51.100.1', $audit->records[0]->target);
+    }
+
+    #[Test]
+    public function deletesIrcdGlineByCaseInsensitiveMask(): void
+    {
+        $ircd = new GlineTestIrcdGlines([new IrcdGlineEntry('*@Host.Example', 'r', null)]);
+
+        $result = $this->handler(new RecordingGlineRepository(), new RecordingGlineNetworkActions(), new RecordingGlineAuditRecorder(), ircd: $ircd)
+            ->handle(new ManageGline(GlineAction::Delete, 'Oper', 44, new DateTimeImmutable(), '*@host.example'));
+
+        self::assertSame(ManageGlineOutcome::Deleted, $result->outcome);
+        self::assertSame(['*@Host.Example'], $ircd->removed);
+    }
+
+    #[Test]
+    public function reportsNotFoundWhenNoIrcdGlineMatchesOrItIsGoneMeanwhile(): void
+    {
+        $now = new DateTimeImmutable();
+        $ircd = new GlineTestIrcdGlines([new IrcdGlineEntry('*@203.0.113.7', 'r', null)]);
+        $handler = $this->handler(new RecordingGlineRepository(), new RecordingGlineNetworkActions(), new RecordingGlineAuditRecorder(), ircd: $ircd);
+
+        self::assertSame(ManageGlineOutcome::NotFound, $handler->handle(new ManageGline(GlineAction::Delete, 'Oper', 1, $now, '*@192.0.2.1'))->outcome);
+        self::assertSame(ManageGlineOutcome::NotFound, $handler->handle(new ManageGline(GlineAction::Delete, 'Oper', 1, $now, '2'))->outcome);
+
+        $gone = new GlineTestIrcdGlines([new IrcdGlineEntry('*@203.0.113.7', 'r', null)], removable: false);
+        $result = $this->handler(new RecordingGlineRepository(), new RecordingGlineNetworkActions(), new RecordingGlineAuditRecorder(), ircd: $gone)
+            ->handle(new ManageGline(GlineAction::Delete, 'Oper', 1, $now, '1'));
+        self::assertSame(ManageGlineOutcome::NotFound, $result->outcome);
+    }
+
+    #[Test]
+    public function clearLeavesIrcdGlinesAlone(): void
+    {
+        $ircd = new GlineTestIrcdGlines([new IrcdGlineEntry('*@203.0.113.7', 'r', null)]);
+        $repository = new RecordingGlineRepository(entries: [new GlineEntry('*@host.test', null, null, new DateTimeImmutable('2026-09-01'), null)]);
+
+        $this->handler($repository, new RecordingGlineNetworkActions(), new RecordingGlineAuditRecorder(), ircd: $ircd)->handle(new ManageGline(GlineAction::Clear, 'Oper', 44, new DateTimeImmutable()));
+
+        self::assertSame([], $ircd->removed);
     }
 
     /** @param array<string, GlineUser> $users */
@@ -295,6 +396,7 @@ final class ManageGlineHandlerTest extends TestCase
             new GlineTestConnectedUsers([]),
             new RecordingGlineKills(),
             new InMemoryElineRepository(),
+            new GlineTestIrcdGlines([]),
             1,
         );
 
@@ -355,7 +457,7 @@ final class ManageGlineHandlerTest extends TestCase
      * @param array<int, string>       $accountNicknames
      * @param list<NetworkUser>        $connected
      */
-    private function handler(RecordingGlineRepository $repository, RecordingGlineNetworkActions $network, RecordingGlineAuditRecorder $audit, array $users = [], array $protected = [], array $accountNicknames = [], array $connected = [], ?RecordingGlineKills $kills = null, ?InMemoryElineRepository $elines = null): ManageGlineHandler
+    private function handler(RecordingGlineRepository $repository, RecordingGlineNetworkActions $network, RecordingGlineAuditRecorder $audit, array $users = [], array $protected = [], array $accountNicknames = [], array $connected = [], ?RecordingGlineKills $kills = null, ?InMemoryElineRepository $elines = null, ?GlineTestIrcdGlines $ircd = null): ManageGlineHandler
     {
         return new ManageGlineHandler(
             $repository,
@@ -366,6 +468,7 @@ final class ManageGlineHandlerTest extends TestCase
             new GlineTestConnectedUsers($connected),
             $kills ?? new RecordingGlineKills(),
             $elines ?? new InMemoryElineRepository(),
+            $ircd ?? new GlineTestIrcdGlines([]),
         );
     }
 }
@@ -527,5 +630,29 @@ final class RecordingGlineAuditRecorder implements CommandAuditRecorder
     public function record(CommandAuditRecord $record): void
     {
         $this->records[] = $record;
+    }
+}
+
+final class GlineTestIrcdGlines implements IrcdGlines
+{
+    /** @var list<string> */
+    public array $removed = [];
+
+    /** @param list<IrcdGlineEntry> $entries */
+    public function __construct(private readonly array $entries, private readonly bool $removable = true) {}
+
+    public function all(): array
+    {
+        return $this->entries;
+    }
+
+    public function remove(string $mask): bool
+    {
+        if (!$this->removable) {
+            return false;
+        }
+        $this->removed[] = $mask;
+
+        return true;
     }
 }

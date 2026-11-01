@@ -9,6 +9,7 @@ use App\Irc\Adapter\Network\Event\ChannelKickReceivedEvent;
 use App\Irc\Adapter\Network\Event\ChannelModeReceivedEvent;
 use App\Irc\Adapter\Network\Event\ChannelPartReceivedEvent;
 use App\Irc\Adapter\Network\Event\ChannelTopicReceivedEvent;
+use App\Irc\Adapter\Network\Event\GlineReceivedEvent;
 use App\Irc\Adapter\Network\Event\UserHostReceivedEvent;
 use App\Irc\Adapter\Network\Event\UserMetadataReceivedEvent;
 use App\Irc\Adapter\Network\Event\UserModeReceivedEvent;
@@ -20,10 +21,12 @@ use App\Irc\Domain\Event\ServerDelinkedEvent;
 use App\Irc\Domain\Event\UserJoinedNetworkEvent;
 use App\Irc\Domain\Network\ChannelMemberRole;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+use function array_map;
 use function count;
 
 #[CoversClass(UnrealUdbNetworkStateAdapter::class)]
@@ -1169,5 +1172,78 @@ final class UnrealUdbNetworkStateAdapterTest extends TestCase
 
         $adapter = new UnrealUdbNetworkStateAdapter($eventDispatcher);
         $adapter->handleMessage(new IRCMessage('SVSMODE', '001', ['001ABC', '+r'], null));
+    }
+
+    #[Test]
+    public function handleTklAddDispatchesGlineWithExpiryAndReason(): void
+    {
+        $events = $this->dispatchedFor(new IRCMessage('TKL', '001', ['+', 'G', '*', '203.0.113.7', 'UDB:password-flood', '1800000000', '1799996400'], 'Too many failed password attempts'));
+
+        self::assertSame([(array) new GlineReceivedEvent(true, '*', '203.0.113.7', 'UDB:password-flood', 1800000000, 'Too many failed password attempts')], $this->glineEvents($events));
+    }
+
+    #[Test]
+    public function handleTklRemovalDispatchesGlineRemoval(): void
+    {
+        $events = $this->dispatchedFor(new IRCMessage('TKL', '001', ['-', 'G', '*', '203.0.113.7', 'JuanJo'], null));
+
+        self::assertSame([(array) new GlineReceivedEvent(false, '*', '203.0.113.7', 'JuanJo')], $this->glineEvents($events));
+    }
+
+    #[Test]
+    public function handleTklAddWithoutReasonUsesEmptyReason(): void
+    {
+        $events = $this->dispatchedFor(new IRCMessage('TKL', '001', ['+', 'G', '*', '203.0.113.7', 'UDB:password-flood', '0', '1799996400'], null));
+
+        self::assertSame([(array) new GlineReceivedEvent(true, '*', '203.0.113.7', 'UDB:password-flood', 0, '')], $this->glineEvents($events));
+    }
+
+    /** @param list<string> $params */
+    #[Test]
+    #[DataProvider('ignoredTklProvider')]
+    public function handleTklIgnoresOtherTypesAndMalformedLines(array $params): void
+    {
+        self::assertSame([], $this->dispatchedFor(new IRCMessage('TKL', '001', $params, 'reason')));
+    }
+
+    /** @return iterable<string, array{list<string>}> */
+    public static function ignoredTklProvider(): iterable
+    {
+        yield 'shun' => [['+', 's', '*', '203.0.113.7', 'oper', '0', '1']];
+        yield 'missing setter' => [['+', 'G', '*', '203.0.113.7']];
+        yield 'empty host' => [['-', 'G', '*', '', 'oper']];
+        yield 'empty user' => [['-', 'G', '', '203.0.113.7', 'oper']];
+        yield 'missing expiry' => [['+', 'G', '*', '203.0.113.7', 'oper']];
+        yield 'non numeric expiry' => [['+', 'G', '*', '203.0.113.7', 'oper', 'soon', '1']];
+        yield 'unknown sign' => [['?', 'G', '*', '203.0.113.7', 'oper', '0', '1']];
+        yield 'no params' => [[]];
+    }
+
+    /**
+     * @param list<object> $events
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function glineEvents(array $events): array
+    {
+        self::assertContainsOnlyInstancesOf(GlineReceivedEvent::class, $events);
+
+        return array_map(static fn (object $event): array => (array) $event, $events);
+    }
+
+    /** @return list<object> */
+    private function dispatchedFor(IRCMessage $message): array
+    {
+        $events = [];
+        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
+        $eventDispatcher->method('dispatch')->willReturnCallback(static function (object $event) use (&$events): object {
+            $events[] = $event;
+
+            return $event;
+        });
+
+        new UnrealUdbNetworkStateAdapter($eventDispatcher)->handleMessage($message);
+
+        return $events;
     }
 }

@@ -9,6 +9,7 @@ use App\Irc\Adapter\Network\Event\ChannelKickReceivedEvent;
 use App\Irc\Adapter\Network\Event\ChannelModeReceivedEvent;
 use App\Irc\Adapter\Network\Event\ChannelPartReceivedEvent;
 use App\Irc\Adapter\Network\Event\ChannelTopicReceivedEvent;
+use App\Irc\Adapter\Network\Event\GlineReceivedEvent;
 use App\Irc\Adapter\Network\Event\UserHostReceivedEvent;
 use App\Irc\Adapter\Network\Event\UserMetadataReceivedEvent;
 use App\Irc\Adapter\Network\Event\UserModeReceivedEvent;
@@ -72,8 +73,35 @@ final class UnrealUdbNetworkStateAdapter implements NetworkStateAdapterInterface
             'MD' => $this->handleMd($message),
             'TOPIC' => $this->handleTopic($message),
             'MODE', 'SMODE' => $this->handleMode($message),
+            'TKL' => $this->handleTkl($message),
             default => null,
         };
+    }
+
+    /**
+     * Global G-Lines only (other TKL types are not needed by services):
+     * TKL + G <user> <host> <set_by> <expire_at> <set_at> :<reason>
+     * TKL - G <user> <host> <set_by>.
+     */
+    private function handleTkl(IRCMessage $message): void
+    {
+        [$sign, $type, $user, $host, $setBy] = $message->params + ['', '', '', '', ''];
+        if ('G' !== $type || '' === $user || '' === $host || '' === $setBy) {
+            return;
+        }
+
+        if ('-' === $sign) {
+            $this->eventDispatcher->dispatch(new GlineReceivedEvent(false, $user, $host, $setBy));
+
+            return;
+        }
+
+        $expiresAt = $message->params[5] ?? '';
+        if ('+' !== $sign || 1 !== preg_match('/^\d+$/', $expiresAt)) {
+            return;
+        }
+
+        $this->eventDispatcher->dispatch(new GlineReceivedEvent(true, $user, $host, $setBy, (int) $expiresAt, $message->trailing ?? ''));
     }
 
     /**

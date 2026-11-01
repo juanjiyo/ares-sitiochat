@@ -14,6 +14,8 @@ use App\OperServ\Application\Port\Out\GlineEntry;
 use App\OperServ\Application\Port\Out\GlineNetworkActions;
 use App\OperServ\Application\Port\Out\GlineRepository;
 use App\OperServ\Application\Port\Out\GlineUserLookup;
+use App\OperServ\Application\Port\Out\IrcdGlineEntry;
+use App\OperServ\Application\Port\Out\IrcdGlines;
 use App\OperServ\Application\Port\Out\KillNetworkUser;
 use App\OperServ\Application\Port\Out\ProtectedGlineSubjects;
 use App\OperServ\Domain\Policy\ElineMaskPolicy;
@@ -25,6 +27,7 @@ use function count;
 use function ctype_digit;
 use function fnmatch;
 use function sprintf;
+use function str_contains;
 use function strpos;
 use function strtolower;
 use function substr;
@@ -40,6 +43,7 @@ final readonly class ManageGlineHandler implements ManageGlineHandlerInterface
         private ConnectedUsersDirectory $connectedUsers,
         private KillNetworkUser $kills,
         private ElineRepository $elines,
+        private IrcdGlines $ircdGlines,
         private int $maxGlines = 1000,
     ) {}
 
@@ -118,15 +122,22 @@ final readonly class ManageGlineHandler implements ManageGlineHandlerInterface
         }
 
         $gline = $this->findByItem($item);
-        if (null === $gline) {
-            return new ManageGlineResult(ManageGlineOutcome::NotFound, mask: $item);
+        if (null !== $gline) {
+            $this->glines->remove($gline);
+            $this->network->remove($gline->mask);
+            $this->recordAudit($command, 'GLINE DEL', $gline->mask, null);
+
+            return new ManageGlineResult(ManageGlineOutcome::Deleted, $gline->mask);
         }
 
-        $this->glines->remove($gline);
-        $this->network->remove($gline->mask);
-        $this->recordAudit($command, 'GLINE DEL', $gline->mask, null);
+        // Not one of ours: it may be a G-Line the IRCd owns, which only the IRCd can remove.
+        $ircdGline = $this->findIrcdByItem($item);
+        if (null === $ircdGline || !$this->ircdGlines->remove($ircdGline->mask)) {
+            return new ManageGlineResult(ManageGlineOutcome::NotFound, mask: $item);
+        }
+        $this->recordAudit($command, 'GLINE DEL', $ircdGline->mask, null);
 
-        return new ManageGlineResult(ManageGlineOutcome::Deleted, $gline->mask);
+        return new ManageGlineResult(ManageGlineOutcome::Deleted, $ircdGline->mask);
     }
 
     /** Removes every G-Line at once, from the services and from the IRCd. */
@@ -150,7 +161,13 @@ final readonly class ManageGlineHandler implements ManageGlineHandlerInterface
     {
         $pattern = $command->listPattern;
         $glines = null === $pattern || '' === $pattern ? $this->glines->findAll() : $this->glines->findByMaskPattern($pattern);
-        if ([] === $glines) {
+        $ircdEntries = [];
+        foreach ($this->ircdGlines->all() as $ircdGline) {
+            if (null === $pattern || '' === $pattern || str_contains(strtolower($ircdGline->mask), strtolower($pattern))) {
+                $ircdEntries[] = new GlineListEntry($ircdGline->mask, $ircdGline->reason, 'IRCd', $ircdGline->expiresAt);
+            }
+        }
+        if ([] === $glines && [] === $ircdEntries) {
             return new ManageGlineResult(ManageGlineOutcome::ListEmpty);
         }
 
@@ -164,7 +181,7 @@ final readonly class ManageGlineHandler implements ManageGlineHandlerInterface
             );
         }
 
-        return new ManageGlineResult(ManageGlineOutcome::Listed, entries: $entries);
+        return new ManageGlineResult(ManageGlineOutcome::Listed, entries: $entries, ircdEntries: $ircdEntries);
     }
 
     private function protectedNicknameMatching(string $mask): ?string
@@ -237,6 +254,24 @@ final readonly class ManageGlineHandler implements ManageGlineHandlerInterface
         }
 
         return $this->glines->findAll()[$index] ?? null;
+    }
+
+    /** IRCd G-Lines are numbered after the services' own ones, as LIST shows them. */
+    private function findIrcdByItem(string $item): ?IrcdGlineEntry
+    {
+        if (!ctype_digit($item)) {
+            foreach ($this->ircdGlines->all() as $ircdGline) {
+                if (strtolower($ircdGline->mask) === strtolower($item)) {
+                    return $ircdGline;
+                }
+            }
+
+            return null;
+        }
+
+        $index = (int) $item - 1 - count($this->glines->findAll());
+
+        return 0 > $index ? null : $this->ircdGlines->all()[$index] ?? null;
     }
 
     /** @param array<string, bool|float|int|string|null> $metadata */

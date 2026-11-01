@@ -6,7 +6,10 @@ namespace App\OperServ\Application\UseCase\ManageGline;
 
 final readonly class ManageGlineResult
 {
-    /** @param list<GlineListEntry> $entries */
+    /**
+     * @param list<GlineListEntry> $entries     G-Lines owned by services
+     * @param list<GlineListEntry> $ircdEntries G-Lines owned by the IRCd, numbered after $entries
+     */
     public function __construct(
         public ManageGlineOutcome $outcome,
         public ?string $mask = null,
@@ -16,5 +19,6 @@ final readonly class ManageGlineResult
         public ?int $limit = null,
         public array $entries = [],
         public int $count = 0,
+        public array $ircdEntries = [],
     ) {}
 }

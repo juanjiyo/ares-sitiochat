@@ -243,6 +243,7 @@ gline:
     never_expires:  "Dauerhaft"
     unknown_creator: "unbekannt"
     entry:          "\x0310%index%.\x03 \x02%mask%\x02 - %reason% (\x0314%nickname%\x03, läuft ab: %expiration%)"
+    ircd_header:    "\x0307---\x03 \x02IRCd-G-Lines: Passwort-Flood (%count%)\x02 \x0307---\x03"
 
   clear:
     syntax:         "GLINE CLEAR"

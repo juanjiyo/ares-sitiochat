@@ -150,9 +150,21 @@ final readonly class GlineCommand implements OperServCommandInterface
 
     private function presentList(OperServContext $context, ManageGlineResult $result): void
     {
-        $context->reply('gline.list.header', ['%count%' => (string) count($result->entries)]);
-        foreach ($result->entries as $index => $entry) {
-            $this->presentEntry($context, $index, $entry);
+        if ([] !== $result->entries) {
+            $context->reply('gline.list.header', ['%count%' => (string) count($result->entries)]);
+            foreach ($result->entries as $index => $entry) {
+                $this->presentEntry($context, $index, $entry);
+            }
+        }
+
+        if ([] === $result->ircdEntries) {
+            return;
+        }
+
+        // Numbered after the services' entries, so GLINE DEL <number> reaches them too.
+        $context->reply('gline.list.ircd_header', ['%count%' => (string) count($result->ircdEntries)]);
+        foreach ($result->ircdEntries as $index => $entry) {
+            $this->presentEntry($context, count($result->entries) + $index, $entry);
         }
     }
 
