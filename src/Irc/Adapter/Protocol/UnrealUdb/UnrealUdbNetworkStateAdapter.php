@@ -10,7 +10,6 @@ use App\Irc\Adapter\Network\Event\ChannelModeReceivedEvent;
 use App\Irc\Adapter\Network\Event\ChannelPartReceivedEvent;
 use App\Irc\Adapter\Network\Event\ChannelTopicReceivedEvent;
 use App\Irc\Adapter\Network\Event\GlineReceivedEvent;
-use App\Irc\Adapter\Network\Event\SpamfilterReceivedEvent;
 use App\Irc\Adapter\Network\Event\UserHostReceivedEvent;
 use App\Irc\Adapter\Network\Event\UserMetadataReceivedEvent;
 use App\Irc\Adapter\Network\Event\UserModeReceivedEvent;
@@ -32,13 +31,11 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-use function array_fill;
 use function array_slice;
 use function count;
 use function in_array;
 use function preg_match;
 use function sprintf;
-use function str_replace;
 use function str_starts_with;
 use function strpos;
 use function substr;
@@ -89,12 +86,6 @@ final class UnrealUdbNetworkStateAdapter implements NetworkStateAdapterInterface
     private function handleTkl(IRCMessage $message): void
     {
         [$sign, $type, $user, $host, $setBy] = $message->params + ['', '', '', '', ''];
-        if ('F' === $type) {
-            $this->handleSpamfilterTkl($message);
-
-            return;
-        }
-
         if ('G' !== $type || '' === $user || '' === $host || '' === $setBy) {
             return;
         }
@@ -111,31 +102,6 @@ final class UnrealUdbNetworkStateAdapter implements NetworkStateAdapterInterface
         }
 
         $this->eventDispatcher->dispatch(new GlineReceivedEvent(true, $user, $host, $setBy, (int) $expiresAt, $message->trailing ?? ''));
-    }
-
-    /**
-     * Global spamfilter: + F targets action set_by expire_at set_at tkl_duration tkl_reason match_type :match.
-     * Removals carry the same fields, set_by being the remover.
-     */
-    private function handleSpamfilterTkl(IRCMessage $message): void
-    {
-        [$sign, , $targets, $action, $setBy, , , $duration, $reason, $matchType] = $message->params + array_fill(0, 10, '');
-        $match = $message->trailing ?? '';
-        if (('+' !== $sign && '-' !== $sign) || '' === $match || ('simple' !== $matchType && 'regex' !== $matchType)
-            || 1 !== preg_match('/^\d+$/', $duration)) {
-            return;
-        }
-
-        $this->eventDispatcher->dispatch(new SpamfilterReceivedEvent(
-            '+' === $sign,
-            $targets,
-            $action,
-            $setBy,
-            $matchType,
-            $match,
-            (int) $duration,
-            str_replace('_', ' ', $reason),
-        ));
     }
 
     /**

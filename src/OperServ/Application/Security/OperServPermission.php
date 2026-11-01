@@ -40,8 +40,5 @@ final class OperServPermission
     /** Ban exceptions by IP (E-Lines). */
     public const string ELINE = 'operserv.eline';
 
-    /** Global spamfilters of the IRCd. */
-    public const string SPAMFILTER = 'operserv.spamfilter';
-
     private function __construct() {}
 }

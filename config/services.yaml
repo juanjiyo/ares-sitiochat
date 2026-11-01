@@ -979,10 +979,6 @@ services:
     App\Irc\Application\Port\In\PasswordFloodSettingPort:
         alias: App\Irc\Adapter\Protocol\UnrealUdb\UdbPasswordFloodSetting
 
-    # Global spamfilters: owned by the IRCd, mirrored in memory from TKL F.
-    App\Irc\Application\Port\In\SpamfilterPort:
-        alias: App\Irc\Adapter\Network\InMemorySpamfilterRegistry
-
     App\Irc\Application\Port\In\BurstCompletePort:
         class: App\Irc\Adapter\ServiceBridge\CoreBurstCompleteAdapter
 
@@ -2360,9 +2356,6 @@ services:
     App\OperServ\Application\Port\Out\PasswordFloodSettings:
         alias: App\OperServ\Adapter\Out\Irc\IrcPasswordFloodSettings
 
-    App\OperServ\Application\Port\Out\NetworkSpamfilters:
-        alias: App\OperServ\Adapter\Out\Irc\IrcNetworkSpamfilters
-
     App\OperServ\Application\Port\Out\ProtectedGlineSubjects:
         alias: App\OperServ\Adapter\Out\Projection\DoctrineProtectedGlineSubjects
 
@@ -2473,9 +2466,6 @@ services:
         tags: ['operserv.command.new']
 
     App\OperServ\Adapter\In\Irc\Command\SetCommand:
-        tags: ['operserv.command.new']
-
-    App\OperServ\Adapter\In\Irc\Command\SpamfilterCommand:
         tags: ['operserv.command.new']
 
     App\OperServ\Adapter\In\Irc\Command\IrcopsCommand:

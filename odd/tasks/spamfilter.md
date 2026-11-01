@@ -22,4 +22,5 @@ Branch: `main`. Delivery: deploy to VPS (`scripts/vps-deploy.sh`), user tests li
 
 - L1 (2026-11-01, user): «Para el bot de SPAM podemos "aprovechar" este módulo de mirc de dbots … pasarlo a PHP y mejorarlo.»
 - L2 (2026-11-01, user): «Respecto al antispam, hazlo como quieras» → chosen: OperServ command first (≈10 files following the GLINE/IRCd-G-Line pattern) instead of a new bot context (≈25 boilerplate files); the trap needs its own nick, so the bot comes with T2.
+- L3 (2026-11-01, user, correction): «ALTO! quería un bot llamado AntiSpam para meterlo en canales y que vigile» → T1 as an OperServ command was the wrong interpretation (commit `867bcd77`, deployed, not pushed). Work stopped pending the user's answer.
 - Engram mirror: pending (Engram tools not loaded this session).

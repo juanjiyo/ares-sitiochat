@@ -589,38 +589,3 @@ set:
     done:       "\x0303✓\x03 Όριο λανθασμένων κωδικών: \x02%value%\x02."
     invalid:    "\x0304✗\x03 Μη έγκυρη τιμή. Χρησιμοποίησε \x02προσπάθειες:δευτερόλεπτα\x02, και τα δύο μεγαλύτερα του μηδενός (π.χ. \x025:60\x02)."
     rejected:   "\x0304✗\x03 Το δίκτυο απέρριψε την τιμή."
-
-# --- SPAMFILTER ------------------------------------------------------------------
-spamfilter:
-  syntax:       "SPAMFILTER {ADD|DEL|LIST}"
-  short:        "Διαχειρίζεται τα καθολικά spamfilters του IRCd."
-  help:         "Διαχειρίζεται τα καθολικά spamfilters του IRCd: μοτίβα spam που ψάχνει ο IRCd σε μηνύματα, notices, topics, quits... και την ενέργεια όταν τα βρει. Ο IRCd τα κατέχει και τα αποθηκεύει μόνος του· οι κανόνες του spamfilter.conf δεν εμφανίζονται ούτε αλλάζουν από εδώ.\nΤο ADD προσθέτει, το DEL διαγράφει και το LIST τα εμφανίζει.\nΑυτή η εντολή απαιτεί το δικαίωμα operserv.spamfilter."
-  example:      "/msg %bot% SPAMFILTER ADD cpn warn *casino* Casino spam"
-  unknown_sub:  "\x0304✗\x03 Άγνωστη υποεντολή. Χρησιμοποίησε: \x02ADD\x02, \x02DEL\x02, \x02LIST\x02"
-  unavailable:  "\x0304✗\x03 Δεν υπάρχει σύνδεση με τον IRCd. Δοκίμασε ξανά σε λίγα δευτερόλεπτα."
-  add:
-    syntax:           "SPAMFILTER ADD [-regex] [+διάρκεια] <στόχοι|ALL> <ενέργεια> <μοτίβο> <αιτία>"
-    short:            "Προσθέτει ένα spamfilter."
-    help:             "Στόχοι: c κανάλι, p ιδιωτικό, n ιδιωτικό notice, N notice καναλιού, P έξοδος από κανάλι, q quit, d dcc, a away, t topic· ALL = cpnNPqat.\nΕνέργειες: warn (μόνο ειδοποίηση), block, kill, tempshun, shun, kline, gline, zline, gzline, dccblock, viruschan.\nΤο μοτίβο δέχεται τους χαρακτήρες * και ?· με -regex είναι κανονική έκφραση. Το +διάρκεια (π.χ. +2h, +7d· προεπιλογή 1d) είναι η διάρκεια του ban για kline, gline, zline, gzline και shun."
-    example:          "/msg %bot% SPAMFILTER ADD +7d cpnN gline *freebitcoin* Spam"
-    done:             "\x0303✓\x03 Το spamfilter \x02%pattern%\x02 προστέθηκε (ενέργεια: %action%)."
-    exists:           "\x0304✗\x03 Υπάρχει ήδη ίδιο spamfilter για \x02%pattern%\x02."
-    invalid_targets:  "\x0304✗\x03 Μη έγκυροι στόχοι. Χρησιμοποίησε γράμματα από \x02%valid%\x02 ή \x02ALL\x02."
-    invalid_action:   "\x0304✗\x03 Μη έγκυρη ενέργεια. Χρησιμοποίησε: %valid%."
-    invalid_regex:    "\x0304✗\x03 Η κανονική έκφραση δεν είναι έγκυρη."
-    invalid_duration: "\x0304✗\x03 Μη έγκυρη διάρκεια. Χρησιμοποίησε π.χ. \x02+30m\x02, \x02+2h\x02 ή \x02+7d\x02."
-  del:
-    syntax:     "SPAMFILTER DEL <αριθμός|μοτίβο>"
-    short:      "Διαγράφει ένα spamfilter."
-    help:       "Διαγράφει ένα spamfilter με τον αριθμό του στο LIST ή με το ακριβές μοτίβο του."
-    example:    "/msg %bot% SPAMFILTER DEL 1"
-    done:       "\x0303✓\x03 Το spamfilter \x02%pattern%\x02 διαγράφηκε."
-    not_found:  "\x0304✗\x03 Δεν υπάρχει spamfilter \x02%item%\x02."
-  list:
-    syntax:     "SPAMFILTER LIST [φίλτρο]"
-    short:      "Εμφανίζει τα καθολικά spamfilters."
-    help:       "Εμφανίζει τα καθολικά spamfilters του IRCd. Με φίλτρο, μόνο όσα περιέχουν αυτό το κείμενο στο μοτίβο· οι αριθμοί είναι αυτοί που δέχεται το DEL."
-    example:    "/msg %bot% SPAMFILTER LIST casino"
-    header:     "--- Spamfilters (%count%) ---"
-    entry:      "\x02%number%.\x02 %pattern% (%type%) · στόχοι: %targets% · ενέργεια: %action% · ban: %duration% · %reason% (από %by%)"
-    empty:      "\x0310ℹ\x03 Δεν υπάρχουν καθολικά spamfilters."

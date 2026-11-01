@@ -589,38 +589,3 @@ set:
     done:       "\x0303✓\x03 Pasahitz okerren muga: \x02%value%\x02."
     invalid:    "\x0304✗\x03 Balio baliogabea. Erabili \x02aldiz:segundo\x02, biak zero baino handiagoak (adib. \x025:60\x02)."
     rejected:   "\x0304✗\x03 Sareak balioa baztertu du."
-
-# --- SPAMFILTER ------------------------------------------------------------------
-spamfilter:
-  syntax:       "SPAMFILTER {ADD|DEL|LIST}"
-  short:        "IRCdaren spamfilter globalak kudeatzen ditu."
-  help:         "IRCdaren spamfilter globalak kudeatzen ditu: IRCdak mezuetan, notice-etan, topic-etan, quit-etan... bilatzen dituen spam ereduak eta aurkitzean hartzen duen ekintza. IRCda da jabea eta berak gordetzen ditu; spamfilter.conf-eko arauak ez dira hemendik ikusten ez aldatzen.\nADD-ek bat gehitzen du, DEL-ek ezabatzen du eta LIST-ek erakusten ditu.\nKomando honek operserv.spamfilter baimena behar du."
-  example:      "/msg %bot% SPAMFILTER ADD cpn warn *casino* Casino spam"
-  unknown_sub:  "\x0304✗\x03 Azpikomando ezezaguna. Erabili: \x02ADD\x02, \x02DEL\x02, \x02LIST\x02"
-  unavailable:  "\x0304✗\x03 Ez dago loturarik IRCdarekin. Saiatu berriro segundo batzuk barru."
-  add:
-    syntax:           "SPAMFILTER ADD [-regex] [+iraupena] <lekuak|ALL> <ekintza> <eredua> <arrazoia>"
-    short:            "Spamfilter bat gehitzen du."
-    help:             "Lekuak: c kanala, p pribatua, n notice pribatua, N kanaleko notice, P kanaletik irtetea, q quit, d dcc, a absentzia, t topic; ALL = cpnNPqat.\nEkintzak: warn (abisua soilik), block, kill, tempshun, shun, kline, gline, zline, gzline, dccblock, viruschan.\nEreduak * eta ? komodinak onartzen ditu; -regex-ekin adierazpen erregularra da. +iraupena (adib. +2h, +7d; lehenetsia 1d) ban-aren iraupena da kline, gline, zline, gzline eta shun-en."
-    example:          "/msg %bot% SPAMFILTER ADD +7d cpnN gline *freebitcoin* Spam"
-    done:             "\x0303✓\x03 \x02%pattern%\x02 spamfilterra gehitu da (ekintza: %action%)."
-    exists:           "\x0304✗\x03 Badago jada \x02%pattern%\x02-rako spamfilter berdin bat."
-    invalid_targets:  "\x0304✗\x03 Leku baliogabeak. Erabili \x02%valid%\x02-ko letrak edo \x02ALL\x02."
-    invalid_action:   "\x0304✗\x03 Ekintza baliogabea. Erabili: %valid%."
-    invalid_regex:    "\x0304✗\x03 Adierazpen erregularra ez da baliozkoa."
-    invalid_duration: "\x0304✗\x03 Iraupen baliogabea. Erabili adibidez \x02+30m\x02, \x02+2h\x02 edo \x02+7d\x02."
-  del:
-    syntax:     "SPAMFILTER DEL <zenbakia|eredua>"
-    short:      "Spamfilter bat ezabatzen du."
-    help:       "Spamfilter bat ezabatzen du LIST-eko zenbakiaren edo eredu zehatzaren bidez."
-    example:    "/msg %bot% SPAMFILTER DEL 1"
-    done:       "\x0303✓\x03 \x02%pattern%\x02 spamfilterra ezabatu da."
-    not_found:  "\x0304✗\x03 Ez dago \x02%item%\x02 spamfilterrik."
-  list:
-    syntax:     "SPAMFILTER LIST [iragazkia]"
-    short:      "Spamfilter globalak zerrendatzen ditu."
-    help:       "IRCdaren spamfilter globalak zerrendatzen ditu. Iragazkiarekin, ereduan testu hori dutenak soilik; zenbakiak DEL-ek erabiltzen dituenak dira."
-    example:    "/msg %bot% SPAMFILTER LIST casino"
-    header:     "--- Spamfilterrak (%count%) ---"
-    entry:      "\x02%number%.\x02 %pattern% (%type%) · lekuak: %targets% · ekintza: %action% · ban: %duration% · %reason% (%by%)"
-    empty:      "\x0310ℹ\x03 Ez dago spamfilter globalik."

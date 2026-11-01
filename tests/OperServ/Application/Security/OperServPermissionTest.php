@@ -104,14 +104,6 @@ final class OperServPermissionTest extends TestCase
     }
 
     #[Test]
-    public function spamfilterConstantHasExpectedValue(): void
-    {
-        $constant = new ReflectionClass(OperServPermission::class)->getConstant('SPAMFILTER');
-
-        self::assertSame('operserv.spamfilter', $constant);
-    }
-
-    #[Test]
     public function allConstantsAreStrings(): void
     {
         $reflection = new ReflectionClass(OperServPermission::class);

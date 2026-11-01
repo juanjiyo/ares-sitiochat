@@ -10,7 +10,6 @@ use App\Irc\Adapter\Network\Event\ChannelModeReceivedEvent;
 use App\Irc\Adapter\Network\Event\ChannelPartReceivedEvent;
 use App\Irc\Adapter\Network\Event\ChannelTopicReceivedEvent;
 use App\Irc\Adapter\Network\Event\GlineReceivedEvent;
-use App\Irc\Adapter\Network\Event\SpamfilterReceivedEvent;
 use App\Irc\Adapter\Network\Event\UserHostReceivedEvent;
 use App\Irc\Adapter\Network\Event\UserMetadataReceivedEvent;
 use App\Irc\Adapter\Network\Event\UserModeReceivedEvent;
@@ -1197,44 +1196,6 @@ final class UnrealUdbNetworkStateAdapterTest extends TestCase
         $events = $this->dispatchedFor(new IRCMessage('TKL', '001', ['+', 'G', '*', '203.0.113.7', 'UDB:password-flood', '0', '1799996400'], null));
 
         self::assertSame([(array) new GlineReceivedEvent(true, '*', '203.0.113.7', 'UDB:password-flood', 0, '')], $this->glineEvents($events));
-    }
-
-    #[Test]
-    public function handleTklSpamfilterAddDispatchesSpamfilterWithDecodedReason(): void
-    {
-        $events = $this->dispatchedFor(new IRCMessage('TKL', '001', ['+', 'F', 'cpn', 'g', 'JuanJo', '0', '1799996400', '86400', 'No_spam_here', 'simple'], '*free money*'));
-
-        self::assertContainsOnlyInstancesOf(SpamfilterReceivedEvent::class, $events);
-        self::assertSame([(array) new SpamfilterReceivedEvent(true, 'cpn', 'g', 'JuanJo', 'simple', '*free money*', 86400, 'No spam here')], array_map(static fn (object $event): array => (array) $event, $events));
-    }
-
-    #[Test]
-    public function handleTklSpamfilterRemovalDispatchesSpamfilterRemoval(): void
-    {
-        $events = $this->dispatchedFor(new IRCMessage('TKL', '001', ['-', 'F', 'c', 'w', 'Oper', '0', '1799996400', '0', '-', 'regex'], 'casino[0-9]+'));
-
-        self::assertContainsOnlyInstancesOf(SpamfilterReceivedEvent::class, $events);
-        self::assertSame([(array) new SpamfilterReceivedEvent(false, 'c', 'w', 'Oper', 'regex', 'casino[0-9]+', 0, '-')], array_map(static fn (object $event): array => (array) $event, $events));
-    }
-
-    /** @param list<string> $params */
-    #[Test]
-    #[DataProvider('ignoredSpamfilterProvider')]
-    public function handleTklIgnoresMalformedSpamfilters(array $params, ?string $match): void
-    {
-        self::assertSame([], $this->dispatchedFor(new IRCMessage('TKL', '001', $params, $match)));
-    }
-
-    /** @return iterable<string, array{list<string>, ?string}> */
-    public static function ignoredSpamfilterProvider(): iterable
-    {
-        yield 'local spamfilter' => [['+', 'f', 'c', 'g', 'oper', '0', '1', '0', 'r', 'simple'], '*x*'];
-        yield 'old protocol without match type' => [['+', 'F', 'c', 'g', 'oper', '0', '1', 'regex'], '*x*'];
-        yield 'unknown match type' => [['+', 'F', 'c', 'g', 'oper', '0', '1', '0', 'r', 'glob'], '*x*'];
-        yield 'non numeric duration' => [['+', 'F', 'c', 'g', 'oper', '0', '1', 'long', 'r', 'simple'], '*x*'];
-        yield 'empty match' => [['+', 'F', 'c', 'g', 'oper', '0', '1', '0', 'r', 'simple'], ''];
-        yield 'no match' => [['+', 'F', 'c', 'g', 'oper', '0', '1', '0', 'r', 'simple'], null];
-        yield 'unknown sign' => [['?', 'F', 'c', 'g', 'oper', '0', '1', '0', 'r', 'simple'], '*x*'];
     }
 
     /** @param list<string> $params */
