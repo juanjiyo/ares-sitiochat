@@ -50,10 +50,11 @@ final class PasswordFloodGlineSubscriberTest extends TestCase
     {
         [$registry, $subscriber] = $this->subscriber();
         $subscriber->onGline(new GlineReceivedEvent(true, '*', '203.0.113.7', 'UDB:password-flood', 0, 'r'));
-        $subscriber->onGline(new GlineReceivedEvent(false, '*', '198.51.100.1', 'UDB:password-flood'));
+        $subscriber->onGline(new GlineReceivedEvent(false, '*', '198.51.100.1', 'JuanJo!JuanJo@host'));
         self::assertCount(1, $registry->list());
 
-        $subscriber->onGline(new GlineReceivedEvent(false, '*', '203.0.113.7', 'UDB:password-flood'));
+        // On TKL - the setter field carries the remover (e.g. an oper's /gline -).
+        $subscriber->onGline(new GlineReceivedEvent(false, '*', '203.0.113.7', 'JuanJo_Jaen!JuanJo@69ED61D.B49BA445.DA67D15E.IP'));
 
         self::assertSame([], $registry->list());
     }

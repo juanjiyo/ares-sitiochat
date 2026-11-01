@@ -32,13 +32,14 @@ final class PasswordFloodGlineSubscriber implements EventSubscriberInterface
 
     public function onGline(GlineReceivedEvent $event): void
     {
-        if (InMemoryPasswordFloodGlineRegistry::SET_BY !== $event->setBy) {
-            return;
-        }
-
+        // On TKL - the setter field carries whoever removed it, so removals match by mask only.
         if (!$event->added) {
             $this->registry->forget($event->user, $event->host);
 
+            return;
+        }
+
+        if (InMemoryPasswordFloodGlineRegistry::SET_BY !== $event->setBy) {
             return;
         }
 

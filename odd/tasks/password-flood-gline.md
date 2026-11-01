@@ -24,4 +24,5 @@ Branch: `main` (user works directly on main). Delivery: push to `sitiochat` + `s
 - L1 (2026-11-01, user): «¿Se puede hacer que sea visible en Ares para hacer: /msg OPeR GLINE DEL <IDQUESEA>?»
 - L2 (2026-11-01, user): «Pero entonces … habrían dos propietarios de un mismo GLINED. ¿Cómo podríamos gestionar eso para que solo haya un propietario pero que OPeR puede eliminar ese GLINED independiente de sei hago /gline -@ip?» → design: IRCd owns, Ares is a view.
 - L3: evidence — Ares ignores inbound TKL (`src/DebugServ/Adapter/In/Irc/NetworkEventTranslator.php:65`); Unreal sends all global TKLs on link (`tkl_sync`) and does not broadcast expiry (`tkl_expire_entry`); UDB only treats `UDB:managed` lines as its own (`udb.c:25096`).
+- L4 (2026-11-01 11:41, user live test): 5 wrong passwords for JuanJo_Jaen → "G-Lined: Too many failed password attempts … [ID: G2581X2NTM7]". S1 verified live. S4–S5 pending.
 - Engram mirror: pending (Engram tools unavailable this session).
