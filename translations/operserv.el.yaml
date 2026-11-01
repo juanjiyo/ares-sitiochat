@@ -589,3 +589,41 @@ set:
     done:       "\x0303✓\x03 Όριο λανθασμένων κωδικών: \x02%value%\x02."
     invalid:    "\x0304✗\x03 Μη έγκυρη τιμή. Χρησιμοποίησε \x02προσπάθειες:δευτερόλεπτα\x02, και τα δύο μεγαλύτερα του μηδενός (π.χ. \x025:60\x02)."
     rejected:   "\x0304✗\x03 Το δίκτυο απέρριψε την τιμή."
+
+# --- Staff ranks (PREOPER, OPER, ADMIN, ROOT) ----------------------------------
+staff:
+  title:
+    preoper: "Pre-Operator"
+    oper: "Operator"
+    admin: "Administrator"
+    root: "Root"
+  added:            "\x0303✓\x03 Ο \x02%nickname%\x02 προστέθηκε ως %rank% του δικτύου."
+  deleted:          "\x0303✓\x03 Ο \x02%nickname%\x02 αφαιρέθηκε από %rank% του δικτύου."
+  already_rank:     "\x0304✗\x03 Ο \x02%nickname%\x02 είναι ήδη %rank% του δικτύου. Αφαίρεσέ τον πρώτα από αυτόν τον βαθμό."
+  already_staff:    "\x0304✗\x03 Ο \x02%nickname%\x02 ανήκει ήδη στο staff."
+  not_this_rank:    "\x0304✗\x03 Ο \x02%nickname%\x02 δεν είναι %rank% του δικτύου."
+  nick_not_active:  "\x0304✗\x03 Το ψευδώνυμο \x02%nickname%\x02 δεν είναι ενεργό καταχωρημένο ψευδώνυμο."
+  unavailable:      "\x0304✗\x03 Οι βαθμοί δεν είναι ακόμη έτοιμοι. Δοκίμασε ξανά σε λίγα δευτερόλεπτα."
+  list:
+    header:         "--- %rank% (%count%) ---"
+    empty:          "\x0310ℹ\x03 Δεν υπάρχει κανένας %rank%."
+  preoper:
+    syntax:         "PREOPER {ADD|DEL|LIST} [<ψευδώνυμο>]"
+    short:          "Διαχειρίζεται τους Pre-Operators του δικτύου."
+    help:           "Διαχειρίζεται τους Pre-Operators του δικτύου.\nΤο ADD δίνει στο ψευδώνυμο τον βαθμό με τα δικαιώματά του, την operclass locop και το vhost nick.preoper.<domain>· το DEL τα αφαιρεί όλα και το σβήνει από τη βάση δεδομένων· το LIST τους εμφανίζει.\nΤο ψευδώνυμο πρέπει να είναι καταχωρημένο και να μην ανήκει ήδη στο staff.\nΑπαιτεί το δικαίωμα operserv.staff."
+    example:        "/msg %bot% PREOPER ADD Pedro"
+  oper:
+    syntax:         "OPER {ADD|DEL|LIST} [<ψευδώνυμο>]"
+    short:          "Διαχειρίζεται τους Operators του δικτύου."
+    help:           "Διαχειρίζεται τους Operators του δικτύου.\nΤο ADD δίνει στο ψευδώνυμο τον βαθμό με τα δικαιώματά του, την operclass globop και το vhost nick.oper.<domain>· το DEL τα αφαιρεί όλα και το σβήνει από τη βάση δεδομένων· το LIST τους εμφανίζει.\nΤο ψευδώνυμο πρέπει να είναι καταχωρημένο και να μην ανήκει ήδη στο staff.\nΑπαιτεί το δικαίωμα operserv.staff."
+    example:        "/msg %bot% OPER ADD Pedro"
+  admin:
+    syntax:         "ADMIN {ADD|DEL|LIST} [<ψευδώνυμο>]"
+    short:          "Διαχειρίζεται τους Administrators του δικτύου."
+    help:           "Διαχειρίζεται τους Administrators του δικτύου.\nΤο ADD δίνει στο ψευδώνυμο τον βαθμό με τα δικαιώματά του, την operclass admin και το vhost nick.admin.<domain>· το DEL τα αφαιρεί όλα και το σβήνει από τη βάση δεδομένων· το LIST τους εμφανίζει.\nΤο ψευδώνυμο πρέπει να είναι καταχωρημένο και να μην ανήκει ήδη στο staff.\nΑπαιτεί το δικαίωμα operserv.staff.admin."
+    example:        "/msg %bot% ADMIN ADD Pedro"
+  root:
+    syntax:         "ROOT {ADD|DEL|LIST} [<ψευδώνυμο>]"
+    short:          "Διαχειρίζεται τους Roots του δικτύου."
+    help:           "Διαχειρίζεται τους Roots του δικτύου.\nΤο ADD δίνει στο ψευδώνυμο τον βαθμό με τα δικαιώματά του, την operclass netadmin και το vhost nick.root.<domain>· το DEL τα αφαιρεί όλα και το σβήνει από τη βάση δεδομένων· το LIST τους εμφανίζει.\nΤο ψευδώνυμο πρέπει να είναι καταχωρημένο και να μην ανήκει ήδη στο staff.\nΜόνο ο κύριος Root (ρυθμίσεις) μπορεί να το χρησιμοποιήσει."
+    example:        "/msg %bot% ROOT ADD Pedro"

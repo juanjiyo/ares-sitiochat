@@ -589,3 +589,41 @@ set:
     done:       "\x0303✓\x03 Limit für falsche Passwörter: \x02%value%\x02."
     invalid:    "\x0304✗\x03 Ungültiger Wert. Verwende \x02versuche:sekunden\x02, beide größer als null (z. B. \x025:60\x02)."
     rejected:   "\x0304✗\x03 Das Netzwerk hat den Wert abgelehnt."
+
+# --- Staff ranks (PREOPER, OPER, ADMIN, ROOT) ----------------------------------
+staff:
+  title:
+    preoper: "Pre-Operator"
+    oper: "Operator"
+    admin: "Administrator"
+    root: "Root"
+  added:            "\x0303✓\x03 \x02%nickname%\x02 als Netzwerk-%rank% hinzugefügt."
+  deleted:          "\x0303✓\x03 \x02%nickname%\x02 als Netzwerk-%rank% entfernt."
+  already_rank:     "\x0304✗\x03 \x02%nickname%\x02 ist bereits Netzwerk-%rank%. Entferne ihn zuerst aus diesem Rang."
+  already_staff:    "\x0304✗\x03 \x02%nickname%\x02 gehört bereits zum Staff."
+  not_this_rank:    "\x0304✗\x03 \x02%nickname%\x02 ist kein Netzwerk-%rank%."
+  nick_not_active:  "\x0304✗\x03 Nickname \x02%nickname%\x02 ist kein aktiver registrierter Nickname."
+  unavailable:      "\x0304✗\x03 Die Ränge sind noch nicht bereit. Versuche es in ein paar Sekunden erneut."
+  list:
+    header:         "--- %rank% (%count%) ---"
+    empty:          "\x0310ℹ\x03 Es gibt keinen %rank%."
+  preoper:
+    syntax:         "PREOPER {ADD|DEL|LIST} [<nick>]"
+    short:          "Verwaltet die Pre-Operatoren des Netzwerks."
+    help:           "Verwaltet die Pre-Operatoren des Netzwerks.\nADD gibt dem Nickname den Rang mit seinen Berechtigungen, der Operclass locop und dem VHost nick.preoper.<domain>; DEL nimmt alles wieder weg und löscht ihn aus der Datenbank; LIST zeigt sie an.\nDer Nickname muss registriert sein und darf noch nicht zum Staff gehören.\nErfordert die Berechtigung operserv.staff."
+    example:        "/msg %bot% PREOPER ADD Pedro"
+  oper:
+    syntax:         "OPER {ADD|DEL|LIST} [<nick>]"
+    short:          "Verwaltet die Operatoren des Netzwerks."
+    help:           "Verwaltet die Operatoren des Netzwerks.\nADD gibt dem Nickname den Rang mit seinen Berechtigungen, der Operclass globop und dem VHost nick.oper.<domain>; DEL nimmt alles wieder weg und löscht ihn aus der Datenbank; LIST zeigt sie an.\nDer Nickname muss registriert sein und darf noch nicht zum Staff gehören.\nErfordert die Berechtigung operserv.staff."
+    example:        "/msg %bot% OPER ADD Pedro"
+  admin:
+    syntax:         "ADMIN {ADD|DEL|LIST} [<nick>]"
+    short:          "Verwaltet die Administratoren des Netzwerks."
+    help:           "Verwaltet die Administratoren des Netzwerks.\nADD gibt dem Nickname den Rang mit seinen Berechtigungen, der Operclass admin und dem VHost nick.admin.<domain>; DEL nimmt alles wieder weg und löscht ihn aus der Datenbank; LIST zeigt sie an.\nDer Nickname muss registriert sein und darf noch nicht zum Staff gehören.\nErfordert die Berechtigung operserv.staff.admin."
+    example:        "/msg %bot% ADMIN ADD Pedro"
+  root:
+    syntax:         "ROOT {ADD|DEL|LIST} [<nick>]"
+    short:          "Verwaltet die Roots des Netzwerks."
+    help:           "Verwaltet die Roots des Netzwerks.\nADD gibt dem Nickname den Rang mit seinen Berechtigungen, der Operclass netadmin und dem VHost nick.root.<domain>; DEL nimmt alles wieder weg und löscht ihn aus der Datenbank; LIST zeigt sie an.\nDer Nickname muss registriert sein und darf noch nicht zum Staff gehören.\nNur der Haupt-Root (Konfiguration) kann ihn verwenden."
+    example:        "/msg %bot% ROOT ADD Pedro"

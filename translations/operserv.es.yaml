@@ -590,3 +590,41 @@ set:
     done:       "\x0303✓\x03 Límite de contraseñas fallidas: \x02%value%\x02."
     invalid:    "\x0304✗\x03 Valor no válido. Usa \x02veces:segundos\x02, ambos mayores que cero (p. ej. \x025:60\x02)."
     rejected:   "\x0304✗\x03 La red rechazó el valor."
+
+# --- Staff ranks (PREOPER, OPER, ADMIN, ROOT) ----------------------------------
+staff:
+  title:
+    preoper: "Pre-Operador"
+    oper: "Operador"
+    admin: "Administrador"
+    root: "Root"
+  added:            "\x0303✓\x03 \x02%nickname%\x02 añadido como %rank% de la red."
+  deleted:          "\x0303✓\x03 \x02%nickname%\x02 borrado de %rank% de la red."
+  already_rank:     "\x0304✗\x03 \x02%nickname%\x02 ya es %rank% de la red. Bórralo antes de ese rango."
+  already_staff:    "\x0304✗\x03 \x02%nickname%\x02 ya forma parte del staff."
+  not_this_rank:    "\x0304✗\x03 \x02%nickname%\x02 no es %rank% de la red."
+  nick_not_active:  "\x0304✗\x03 El apodo \x02%nickname%\x02 no es un apodo registrado activo."
+  unavailable:      "\x0304✗\x03 Los rangos aún no están listos. Inténtalo de nuevo en unos segundos."
+  list:
+    header:         "--- %rank% (%count%) ---"
+    empty:          "\x0310ℹ\x03 No hay ningún %rank%."
+  preoper:
+    syntax:         "PREOPER {ADD|DEL|LIST} [<apodo>]"
+    short:          "Gestiona los Pre-Operadores de la red."
+    help:           "Gestiona los Pre-Operadores de la red.\nADD da al apodo el rango con sus permisos, la operclass locop y el vhost apodo.preoper.<dominio>; DEL se lo quita todo y lo borra de la base de datos; LIST los muestra.\nEl apodo debe estar registrado y no pertenecer ya al staff.\nRequiere el permiso operserv.staff."
+    example:        "/msg %bot% PREOPER ADD Pedro"
+  oper:
+    syntax:         "OPER {ADD|DEL|LIST} [<apodo>]"
+    short:          "Gestiona los Operadores de la red."
+    help:           "Gestiona los Operadores de la red.\nADD da al apodo el rango con sus permisos, la operclass globop y el vhost apodo.oper.<dominio>; DEL se lo quita todo y lo borra de la base de datos; LIST los muestra.\nEl apodo debe estar registrado y no pertenecer ya al staff.\nRequiere el permiso operserv.staff."
+    example:        "/msg %bot% OPER ADD Pedro"
+  admin:
+    syntax:         "ADMIN {ADD|DEL|LIST} [<apodo>]"
+    short:          "Gestiona los Administradores de la red."
+    help:           "Gestiona los Administradores de la red.\nADD da al apodo el rango con sus permisos, la operclass admin y el vhost apodo.admin.<dominio>; DEL se lo quita todo y lo borra de la base de datos; LIST los muestra.\nEl apodo debe estar registrado y no pertenecer ya al staff.\nRequiere el permiso operserv.staff.admin."
+    example:        "/msg %bot% ADMIN ADD Pedro"
+  root:
+    syntax:         "ROOT {ADD|DEL|LIST} [<apodo>]"
+    short:          "Gestiona los Roots de la red."
+    help:           "Gestiona los Roots de la red.\nADD da al apodo el rango con sus permisos, la operclass netadmin y el vhost apodo.root.<dominio>; DEL se lo quita todo y lo borra de la base de datos; LIST los muestra.\nEl apodo debe estar registrado y no pertenecer ya al staff.\nSolo el Root principal (configuración) puede usarlo."
+    example:        "/msg %bot% ROOT ADD Pedro"

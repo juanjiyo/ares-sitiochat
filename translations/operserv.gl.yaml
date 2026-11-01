@@ -589,3 +589,41 @@ set:
     done:       "\x0303✓\x03 Límite de contrasinais erróneos: \x02%value%\x02."
     invalid:    "\x0304✗\x03 Valor non válido. Usa \x02veces:segundos\x02, ambos maiores ca cero (p. ex. \x025:60\x02)."
     rejected:   "\x0304✗\x03 A rede rexeitou o valor."
+
+# --- Staff ranks (PREOPER, OPER, ADMIN, ROOT) ----------------------------------
+staff:
+  title:
+    preoper: "Pre-Operador"
+    oper: "Operador"
+    admin: "Administrador"
+    root: "Root"
+  added:            "\x0303✓\x03 \x02%nickname%\x02 engadido como %rank% da rede."
+  deleted:          "\x0303✓\x03 \x02%nickname%\x02 borrado de %rank% da rede."
+  already_rank:     "\x0304✗\x03 \x02%nickname%\x02 xa é %rank% da rede. Bórrao antes dese rango."
+  already_staff:    "\x0304✗\x03 \x02%nickname%\x02 xa forma parte do staff."
+  not_this_rank:    "\x0304✗\x03 \x02%nickname%\x02 non é %rank% da rede."
+  nick_not_active:  "\x0304✗\x03 O alcume \x02%nickname%\x02 non é un alcume rexistrado activo."
+  unavailable:      "\x0304✗\x03 Os rangos aínda non están listos. Téntao de novo nuns segundos."
+  list:
+    header:         "--- %rank% (%count%) ---"
+    empty:          "\x0310ℹ\x03 Non hai ningún %rank%."
+  preoper:
+    syntax:         "PREOPER {ADD|DEL|LIST} [<alcume>]"
+    short:          "Xestiona os Pre-Operadores da rede."
+    help:           "Xestiona os Pre-Operadores da rede.\nADD dálle ao alcume o rango cos seus permisos, a operclass locop e o vhost alcume.preoper.<dominio>; DEL quítallo todo e bórrao da base de datos; LIST amósaos.\nO alcume debe estar rexistrado e non pertencer xa ao staff.\nRequire o permiso operserv.staff."
+    example:        "/msg %bot% PREOPER ADD Pedro"
+  oper:
+    syntax:         "OPER {ADD|DEL|LIST} [<alcume>]"
+    short:          "Xestiona os Operadores da rede."
+    help:           "Xestiona os Operadores da rede.\nADD dálle ao alcume o rango cos seus permisos, a operclass globop e o vhost alcume.oper.<dominio>; DEL quítallo todo e bórrao da base de datos; LIST amósaos.\nO alcume debe estar rexistrado e non pertencer xa ao staff.\nRequire o permiso operserv.staff."
+    example:        "/msg %bot% OPER ADD Pedro"
+  admin:
+    syntax:         "ADMIN {ADD|DEL|LIST} [<alcume>]"
+    short:          "Xestiona os Administradores da rede."
+    help:           "Xestiona os Administradores da rede.\nADD dálle ao alcume o rango cos seus permisos, a operclass admin e o vhost alcume.admin.<dominio>; DEL quítallo todo e bórrao da base de datos; LIST amósaos.\nO alcume debe estar rexistrado e non pertencer xa ao staff.\nRequire o permiso operserv.staff.admin."
+    example:        "/msg %bot% ADMIN ADD Pedro"
+  root:
+    syntax:         "ROOT {ADD|DEL|LIST} [<alcume>]"
+    short:          "Xestiona os Roots da rede."
+    help:           "Xestiona os Roots da rede.\nADD dálle ao alcume o rango cos seus permisos, a operclass netadmin e o vhost alcume.root.<dominio>; DEL quítallo todo e bórrao da base de datos; LIST amósaos.\nO alcume debe estar rexistrado e non pertencer xa ao staff.\nSó o Root principal (configuración) pode usalo."
+    example:        "/msg %bot% ROOT ADD Pedro"

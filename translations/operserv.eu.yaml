@@ -589,3 +589,41 @@ set:
     done:       "\x0303✓\x03 Pasahitz okerren muga: \x02%value%\x02."
     invalid:    "\x0304✗\x03 Balio baliogabea. Erabili \x02aldiz:segundo\x02, biak zero baino handiagoak (adib. \x025:60\x02)."
     rejected:   "\x0304✗\x03 Sareak balioa baztertu du."
+
+# --- Staff ranks (PREOPER, OPER, ADMIN, ROOT) ----------------------------------
+staff:
+  title:
+    preoper: "Pre-Operadore"
+    oper: "Operadore"
+    admin: "Administratzaile"
+    root: "Root"
+  added:            "\x0303✓\x03 \x02%nickname%\x02 sareko %rank% gisa gehitu da."
+  deleted:          "\x0303✓\x03 \x02%nickname%\x02 sareko %rank% izateari utzi dio."
+  already_rank:     "\x0304✗\x03 \x02%nickname%\x02 sareko %rank% da jada. Kendu lehenik maila horretatik."
+  already_staff:    "\x0304✗\x03 \x02%nickname%\x02 staffeko kidea da jada."
+  not_this_rank:    "\x0304✗\x03 \x02%nickname%\x02 ez da sareko %rank%."
+  nick_not_active:  "\x0304✗\x03 \x02%nickname%\x02 ezizena ez da ezizen erregistratu aktibo bat."
+  unavailable:      "\x0304✗\x03 Mailak ez daude prest oraindik. Saiatu berriro segundo batzuk barru."
+  list:
+    header:         "--- %rank% (%count%) ---"
+    empty:          "\x0310ℹ\x03 Ez dago %rank%-rik."
+  preoper:
+    syntax:         "PREOPER {ADD|DEL|LIST} [<ezizena>]"
+    short:          "Sareko Pre-Operadoreak kudeatzen ditu."
+    help:           "Sareko Pre-Operadoreak kudeatzen ditu.\nADD-ek ezizenari maila ematen dio bere baimenekin, locop operclass-arekin eta ezizena.preoper.<domeinua> vhost-arekin; DEL-ek dena kentzen dio eta datu-basetik ezabatzen du; LIST-ek erakusten ditu.\nEzizenak erregistratuta egon behar du eta ez staffeko kide izan.\noperserv.staff baimena behar du."
+    example:        "/msg %bot% PREOPER ADD Pedro"
+  oper:
+    syntax:         "OPER {ADD|DEL|LIST} [<ezizena>]"
+    short:          "Sareko Operadoreak kudeatzen ditu."
+    help:           "Sareko Operadoreak kudeatzen ditu.\nADD-ek ezizenari maila ematen dio bere baimenekin, globop operclass-arekin eta ezizena.oper.<domeinua> vhost-arekin; DEL-ek dena kentzen dio eta datu-basetik ezabatzen du; LIST-ek erakusten ditu.\nEzizenak erregistratuta egon behar du eta ez staffeko kide izan.\noperserv.staff baimena behar du."
+    example:        "/msg %bot% OPER ADD Pedro"
+  admin:
+    syntax:         "ADMIN {ADD|DEL|LIST} [<ezizena>]"
+    short:          "Sareko Administratzaileak kudeatzen ditu."
+    help:           "Sareko Administratzaileak kudeatzen ditu.\nADD-ek ezizenari maila ematen dio bere baimenekin, admin operclass-arekin eta ezizena.admin.<domeinua> vhost-arekin; DEL-ek dena kentzen dio eta datu-basetik ezabatzen du; LIST-ek erakusten ditu.\nEzizenak erregistratuta egon behar du eta ez staffeko kide izan.\noperserv.staff.admin baimena behar du."
+    example:        "/msg %bot% ADMIN ADD Pedro"
+  root:
+    syntax:         "ROOT {ADD|DEL|LIST} [<ezizena>]"
+    short:          "Sareko Root-ak kudeatzen ditu."
+    help:           "Sareko Root-ak kudeatzen ditu.\nADD-ek ezizenari maila ematen dio bere baimenekin, netadmin operclass-arekin eta ezizena.root.<domeinua> vhost-arekin; DEL-ek dena kentzen dio eta datu-basetik ezabatzen du; LIST-ek erakusten ditu.\nEzizenak erregistratuta egon behar du eta ez staffeko kide izan.\nRoot nagusiak (konfigurazioa) bakarrik erabil dezake."
+    example:        "/msg %bot% ROOT ADD Pedro"

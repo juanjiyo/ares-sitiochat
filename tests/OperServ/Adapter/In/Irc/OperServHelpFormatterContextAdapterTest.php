@@ -105,6 +105,17 @@ final class OperServHelpFormatterContextAdapterTest extends TestCase
     }
 
     #[Test]
+    public function groupsTheStaffRanksFirst(): void
+    {
+        $groups = new OperServHelpFormatterContextAdapter($this->context())->getHelpGroups();
+
+        self::assertSame(
+            ['group_key' => 'help.group.operators_roles', 'commands' => ['PREOPER', 'OPER', 'ADMIN', 'ROOT', 'IRCOP', 'ROLE'], 'admin' => false, 'subgroup' => false],
+            $groups[0],
+        );
+    }
+
+    #[Test]
     public function groupsCloneBansWithNetworkSecurity(): void
     {
         $groups = new OperServHelpFormatterContextAdapter($this->context())->getHelpGroups();

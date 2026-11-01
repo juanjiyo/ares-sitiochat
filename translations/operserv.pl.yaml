@@ -589,3 +589,41 @@ set:
     done:       "\x0303✓\x03 Limit błędnych haseł: \x02%value%\x02."
     invalid:    "\x0304✗\x03 Nieprawidłowa wartość. Użyj \x02próby:sekundy\x02, obie większe od zera (np. \x025:60\x02)."
     rejected:   "\x0304✗\x03 Sieć odrzuciła wartość."
+
+# --- Staff ranks (PREOPER, OPER, ADMIN, ROOT) ----------------------------------
+staff:
+  title:
+    preoper: "Pre-Operator"
+    oper: "Operator"
+    admin: "Administrator"
+    root: "Root"
+  added:            "\x0303✓\x03 \x02%nickname%\x02 dodany jako %rank% sieci."
+  deleted:          "\x0303✓\x03 \x02%nickname%\x02 usunięty z rangi %rank% sieci."
+  already_rank:     "\x0304✗\x03 \x02%nickname%\x02 jest już %rank% sieci. Najpierw usuń go z tej rangi."
+  already_staff:    "\x0304✗\x03 \x02%nickname%\x02 należy już do staffu."
+  not_this_rank:    "\x0304✗\x03 \x02%nickname%\x02 nie jest %rank% sieci."
+  nick_not_active:  "\x0304✗\x03 Nick \x02%nickname%\x02 nie jest aktywnym zarejestrowanym nickiem."
+  unavailable:      "\x0304✗\x03 Rangi nie są jeszcze gotowe. Spróbuj ponownie za kilka sekund."
+  list:
+    header:         "--- %rank% (%count%) ---"
+    empty:          "\x0310ℹ\x03 Brak: %rank%."
+  preoper:
+    syntax:         "PREOPER {ADD|DEL|LIST} [<nick>]"
+    short:          "Zarządza Pre-Operatorów sieci."
+    help:           "Zarządza Pre-Operatorów sieci.\nADD nadaje nickowi rangę z jej uprawnieniami, operclass locop i vhostem nick.preoper.<domena>; DEL odbiera wszystko i usuwa go z bazy danych; LIST ich wyświetla.\nNick musi być zarejestrowany i nie należeć jeszcze do staffu.\nWymaga uprawnienia operserv.staff."
+    example:        "/msg %bot% PREOPER ADD Pedro"
+  oper:
+    syntax:         "OPER {ADD|DEL|LIST} [<nick>]"
+    short:          "Zarządza Operatorów sieci."
+    help:           "Zarządza Operatorów sieci.\nADD nadaje nickowi rangę z jej uprawnieniami, operclass globop i vhostem nick.oper.<domena>; DEL odbiera wszystko i usuwa go z bazy danych; LIST ich wyświetla.\nNick musi być zarejestrowany i nie należeć jeszcze do staffu.\nWymaga uprawnienia operserv.staff."
+    example:        "/msg %bot% OPER ADD Pedro"
+  admin:
+    syntax:         "ADMIN {ADD|DEL|LIST} [<nick>]"
+    short:          "Zarządza Administratorów sieci."
+    help:           "Zarządza Administratorów sieci.\nADD nadaje nickowi rangę z jej uprawnieniami, operclass admin i vhostem nick.admin.<domena>; DEL odbiera wszystko i usuwa go z bazy danych; LIST ich wyświetla.\nNick musi być zarejestrowany i nie należeć jeszcze do staffu.\nWymaga uprawnienia operserv.staff.admin."
+    example:        "/msg %bot% ADMIN ADD Pedro"
+  root:
+    syntax:         "ROOT {ADD|DEL|LIST} [<nick>]"
+    short:          "Zarządza Rootów sieci."
+    help:           "Zarządza Rootów sieci.\nADD nadaje nickowi rangę z jej uprawnieniami, operclass netadmin i vhostem nick.root.<domena>; DEL odbiera wszystko i usuwa go z bazy danych; LIST ich wyświetla.\nNick musi być zarejestrowany i nie należeć jeszcze do staffu.\nMoże go używać tylko główny Root (konfiguracja)."
+    example:        "/msg %bot% ROOT ADD Pedro"

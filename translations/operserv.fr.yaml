@@ -589,3 +589,41 @@ set:
     done:       "\x0303✓\x03 Limite de mots de passe erronés : \x02%value%\x02."
     invalid:    "\x0304✗\x03 Valeur invalide. Utilise \x02tentatives:secondes\x02, tous deux supérieurs à zéro (ex. \x025:60\x02)."
     rejected:   "\x0304✗\x03 Le réseau a refusé la valeur."
+
+# --- Staff ranks (PREOPER, OPER, ADMIN, ROOT) ----------------------------------
+staff:
+  title:
+    preoper: "Pré-Opérateur"
+    oper: "Opérateur"
+    admin: "Administrateur"
+    root: "Root"
+  added:            "\x0303✓\x03 \x02%nickname%\x02 ajouté comme %rank% du réseau."
+  deleted:          "\x0303✓\x03 \x02%nickname%\x02 retiré des %rank% du réseau."
+  already_rank:     "\x0304✗\x03 \x02%nickname%\x02 est déjà %rank% du réseau. Retire-le d'abord de ce rang."
+  already_staff:    "\x0304✗\x03 \x02%nickname%\x02 fait déjà partie du staff."
+  not_this_rank:    "\x0304✗\x03 \x02%nickname%\x02 n'est pas %rank% du réseau."
+  nick_not_active:  "\x0304✗\x03 Le surnom \x02%nickname%\x02 n'est pas un surnom enregistré actif."
+  unavailable:      "\x0304✗\x03 Les rangs ne sont pas encore prêts. Réessaie dans quelques secondes."
+  list:
+    header:         "--- %rank% (%count%) ---"
+    empty:          "\x0310ℹ\x03 Aucun %rank%."
+  preoper:
+    syntax:         "PREOPER {ADD|DEL|LIST} [<pseudo>]"
+    short:          "Gère les Pré-Opérateurs du réseau."
+    help:           "Gère les Pré-Opérateurs du réseau.\nADD donne au pseudo le rang avec ses permissions, l'operclass locop et le vhost pseudo.preoper.<domaine> ; DEL lui retire tout et le supprime de la base de données ; LIST les affiche.\nLe pseudo doit être enregistré et ne pas faire déjà partie du staff.\nNécessite la permission operserv.staff."
+    example:        "/msg %bot% PREOPER ADD Pedro"
+  oper:
+    syntax:         "OPER {ADD|DEL|LIST} [<pseudo>]"
+    short:          "Gère les Opérateurs du réseau."
+    help:           "Gère les Opérateurs du réseau.\nADD donne au pseudo le rang avec ses permissions, l'operclass globop et le vhost pseudo.oper.<domaine> ; DEL lui retire tout et le supprime de la base de données ; LIST les affiche.\nLe pseudo doit être enregistré et ne pas faire déjà partie du staff.\nNécessite la permission operserv.staff."
+    example:        "/msg %bot% OPER ADD Pedro"
+  admin:
+    syntax:         "ADMIN {ADD|DEL|LIST} [<pseudo>]"
+    short:          "Gère les Administrateurs du réseau."
+    help:           "Gère les Administrateurs du réseau.\nADD donne au pseudo le rang avec ses permissions, l'operclass admin et le vhost pseudo.admin.<domaine> ; DEL lui retire tout et le supprime de la base de données ; LIST les affiche.\nLe pseudo doit être enregistré et ne pas faire déjà partie du staff.\nNécessite la permission operserv.staff.admin."
+    example:        "/msg %bot% ADMIN ADD Pedro"
+  root:
+    syntax:         "ROOT {ADD|DEL|LIST} [<pseudo>]"
+    short:          "Gère les Roots du réseau."
+    help:           "Gère les Roots du réseau.\nADD donne au pseudo le rang avec ses permissions, l'operclass netadmin et le vhost pseudo.root.<domaine> ; DEL lui retire tout et le supprime de la base de données ; LIST les affiche.\nLe pseudo doit être enregistré et ne pas faire déjà partie du staff.\nSeul le Root principal (configuration) peut l'utiliser."
+    example:        "/msg %bot% ROOT ADD Pedro"

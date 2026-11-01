@@ -157,6 +157,8 @@ final class TranslationCatalogTest extends TestCase
         '/^(op|deop|voice|devoice|halfop|dehalfop|admin|deadmin)\\.(done|notice_grant)$/',
         '/^(admin|halfop|op|voice)\\.(not_supported|user_not_on_channel)$/',
         '/^ignore\\.[a-z_]+\\.(syntax|short|help)$/',
+        '/^staff\\.(preoper|oper|admin|root)\\.(syntax|short|help|example)$/',
+        '/^staff\\.title\\.(preoper|oper|admin|root)$/',
     ];
 
     #[Test]

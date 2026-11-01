@@ -589,3 +589,41 @@ set:
     done:       "\x0303✓\x03 Límit de contrasenyes errònies: \x02%value%\x02."
     invalid:    "\x0304✗\x03 Valor no vàlid. Fes servir \x02vegades:segons\x02, tots dos més grans que zero (p. ex. \x025:60\x02)."
     rejected:   "\x0304✗\x03 La xarxa ha rebutjat el valor."
+
+# --- Staff ranks (PREOPER, OPER, ADMIN, ROOT) ----------------------------------
+staff:
+  title:
+    preoper: "Pre-Operador"
+    oper: "Operador"
+    admin: "Administrador"
+    root: "Root"
+  added:            "\x0303✓\x03 \x02%nickname%\x02 afegit com a %rank% de la xarxa."
+  deleted:          "\x0303✓\x03 \x02%nickname%\x02 esborrat de %rank% de la xarxa."
+  already_rank:     "\x0304✗\x03 \x02%nickname%\x02 ja és %rank% de la xarxa. Esborra'l abans d'aquest rang."
+  already_staff:    "\x0304✗\x03 \x02%nickname%\x02 ja forma part de l'staff."
+  not_this_rank:    "\x0304✗\x03 \x02%nickname%\x02 no és %rank% de la xarxa."
+  nick_not_active:  "\x0304✗\x03 El sobrenom \x02%nickname%\x02 no és un sobrenom registrat actiu."
+  unavailable:      "\x0304✗\x03 Els rangs encara no estan a punt. Torna-ho a provar d'aquí a uns segons."
+  list:
+    header:         "--- %rank% (%count%) ---"
+    empty:          "\x0310ℹ\x03 No hi ha cap %rank%."
+  preoper:
+    syntax:         "PREOPER {ADD|DEL|LIST} [<sobrenom>]"
+    short:          "Gestiona els Pre-Operadors de la xarxa."
+    help:           "Gestiona els Pre-Operadors de la xarxa.\nADD dona al sobrenom el rang amb els seus permisos, l'operclass locop i el vhost sobrenom.preoper.<domini>; DEL l'hi treu tot i l'esborra de la base de dades; LIST els mostra.\nEl sobrenom ha d'estar registrat i no pertànyer ja a l'staff.\nRequereix el permís operserv.staff."
+    example:        "/msg %bot% PREOPER ADD Pedro"
+  oper:
+    syntax:         "OPER {ADD|DEL|LIST} [<sobrenom>]"
+    short:          "Gestiona els Operadors de la xarxa."
+    help:           "Gestiona els Operadors de la xarxa.\nADD dona al sobrenom el rang amb els seus permisos, l'operclass globop i el vhost sobrenom.oper.<domini>; DEL l'hi treu tot i l'esborra de la base de dades; LIST els mostra.\nEl sobrenom ha d'estar registrat i no pertànyer ja a l'staff.\nRequereix el permís operserv.staff."
+    example:        "/msg %bot% OPER ADD Pedro"
+  admin:
+    syntax:         "ADMIN {ADD|DEL|LIST} [<sobrenom>]"
+    short:          "Gestiona els Administradors de la xarxa."
+    help:           "Gestiona els Administradors de la xarxa.\nADD dona al sobrenom el rang amb els seus permisos, l'operclass admin i el vhost sobrenom.admin.<domini>; DEL l'hi treu tot i l'esborra de la base de dades; LIST els mostra.\nEl sobrenom ha d'estar registrat i no pertànyer ja a l'staff.\nRequereix el permís operserv.staff.admin."
+    example:        "/msg %bot% ADMIN ADD Pedro"
+  root:
+    syntax:         "ROOT {ADD|DEL|LIST} [<sobrenom>]"
+    short:          "Gestiona els Roots de la xarxa."
+    help:           "Gestiona els Roots de la xarxa.\nADD dona al sobrenom el rang amb els seus permisos, l'operclass netadmin i el vhost sobrenom.root.<domini>; DEL l'hi treu tot i l'esborra de la base de dades; LIST els mostra.\nEl sobrenom ha d'estar registrat i no pertànyer ja a l'staff.\nNomés el Root principal (configuració) el pot fer servir."
+    example:        "/msg %bot% ROOT ADD Pedro"

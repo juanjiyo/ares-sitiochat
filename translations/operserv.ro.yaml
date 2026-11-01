@@ -589,3 +589,41 @@ set:
     done:       "\x0303✓\x03 Limita de parole greșite: \x02%value%\x02."
     invalid:    "\x0304✗\x03 Valoare invalidă. Folosește \x02încercări:secunde\x02, ambele mai mari decât zero (ex. \x025:60\x02)."
     rejected:   "\x0304✗\x03 Rețeaua a respins valoarea."
+
+# --- Staff ranks (PREOPER, OPER, ADMIN, ROOT) ----------------------------------
+staff:
+  title:
+    preoper: "Pre-Operator"
+    oper: "Operator"
+    admin: "Administrator"
+    root: "Root"
+  added:            "\x0303✓\x03 \x02%nickname%\x02 a fost adăugat ca %rank% al rețelei."
+  deleted:          "\x0303✓\x03 \x02%nickname%\x02 a fost scos din %rank% al rețelei."
+  already_rank:     "\x0304✗\x03 \x02%nickname%\x02 este deja %rank% al rețelei. Scoate-l mai întâi din acel rang."
+  already_staff:    "\x0304✗\x03 \x02%nickname%\x02 face deja parte din staff."
+  not_this_rank:    "\x0304✗\x03 \x02%nickname%\x02 nu este %rank% al rețelei."
+  nick_not_active:  "\x0304✗\x03 Porecla \x02%nickname%\x02 nu este o poreclă înregistrată activă."
+  unavailable:      "\x0304✗\x03 Rangurile nu sunt încă pregătite. Încearcă din nou peste câteva secunde."
+  list:
+    header:         "--- %rank% (%count%) ---"
+    empty:          "\x0310ℹ\x03 Nu există niciun %rank%."
+  preoper:
+    syntax:         "PREOPER {ADD|DEL|LIST} [<nick>]"
+    short:          "Gestionează Pre-Operatorii rețelei."
+    help:           "Gestionează Pre-Operatorii rețelei.\nADD îi dă nickului rangul cu permisiunile sale, operclass-ul locop și vhost-ul nick.preoper.<domeniu>; DEL îi ia totul și îl șterge din baza de date; LIST îi afișează.\nNickul trebuie să fie înregistrat și să nu facă deja parte din staff.\nNecesită permisiunea operserv.staff."
+    example:        "/msg %bot% PREOPER ADD Pedro"
+  oper:
+    syntax:         "OPER {ADD|DEL|LIST} [<nick>]"
+    short:          "Gestionează Operatorii rețelei."
+    help:           "Gestionează Operatorii rețelei.\nADD îi dă nickului rangul cu permisiunile sale, operclass-ul globop și vhost-ul nick.oper.<domeniu>; DEL îi ia totul și îl șterge din baza de date; LIST îi afișează.\nNickul trebuie să fie înregistrat și să nu facă deja parte din staff.\nNecesită permisiunea operserv.staff."
+    example:        "/msg %bot% OPER ADD Pedro"
+  admin:
+    syntax:         "ADMIN {ADD|DEL|LIST} [<nick>]"
+    short:          "Gestionează Administratorii rețelei."
+    help:           "Gestionează Administratorii rețelei.\nADD îi dă nickului rangul cu permisiunile sale, operclass-ul admin și vhost-ul nick.admin.<domeniu>; DEL îi ia totul și îl șterge din baza de date; LIST îi afișează.\nNickul trebuie să fie înregistrat și să nu facă deja parte din staff.\nNecesită permisiunea operserv.staff.admin."
+    example:        "/msg %bot% ADMIN ADD Pedro"
+  root:
+    syntax:         "ROOT {ADD|DEL|LIST} [<nick>]"
+    short:          "Gestionează Root-ii rețelei."
+    help:           "Gestionează Root-ii rețelei.\nADD îi dă nickului rangul cu permisiunile sale, operclass-ul netadmin și vhost-ul nick.root.<domeniu>; DEL îi ia totul și îl șterge din baza de date; LIST îi afișează.\nNickul trebuie să fie înregistrat și să nu facă deja parte din staff.\nDoar Root-ul principal (configurație) îl poate folosi."
+    example:        "/msg %bot% ROOT ADD Pedro"

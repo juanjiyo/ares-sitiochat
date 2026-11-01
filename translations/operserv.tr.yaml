@@ -589,3 +589,41 @@ set:
     done:       "\x0303✓\x03 Hatalı parola sınırı: \x02%value%\x02."
     invalid:    "\x0304✗\x03 Geçersiz değer. \x02deneme:saniye\x02 kullan, ikisi de sıfırdan büyük olmalı (ör. \x025:60\x02)."
     rejected:   "\x0304✗\x03 Ağ değeri reddetti."
+
+# --- Staff ranks (PREOPER, OPER, ADMIN, ROOT) ----------------------------------
+staff:
+  title:
+    preoper: "Pre-Operatör"
+    oper: "Operatör"
+    admin: "Yönetici"
+    root: "Root"
+  added:            "\x0303✓\x03 \x02%nickname%\x02 ağ %rank% olarak eklendi."
+  deleted:          "\x0303✓\x03 \x02%nickname%\x02 ağ %rank% görevinden çıkarıldı."
+  already_rank:     "\x0304✗\x03 \x02%nickname%\x02 zaten ağ %rank%. Önce onu o rütbeden çıkar."
+  already_staff:    "\x0304✗\x03 \x02%nickname%\x02 zaten staff üyesi."
+  not_this_rank:    "\x0304✗\x03 \x02%nickname%\x02 ağ %rank% değil."
+  nick_not_active:  "\x0304✗\x03 \x02%nickname%\x02 rumuzu etkin bir kayıtlı rumuz değil."
+  unavailable:      "\x0304✗\x03 Rütbeler henüz hazır değil. Birkaç saniye sonra tekrar dene."
+  list:
+    header:         "--- %rank% (%count%) ---"
+    empty:          "\x0310ℹ\x03 Hiç %rank% yok."
+  preoper:
+    syntax:         "PREOPER {ADD|DEL|LIST} [<rumuz>]"
+    short:          "Ağın Pre-Operatörleri yönetir."
+    help:           "Ağın Pre-Operatörleri yönetir.\nADD, rumuza rütbeyi yetkileri, locop operclass'ı ve rumuz.preoper.<alan> vhost'u ile verir; DEL hepsini geri alır ve veritabanından siler; LIST onları gösterir.\nRumuz kayıtlı olmalı ve zaten staff üyesi olmamalıdır.\noperserv.staff iznini gerektirir."
+    example:        "/msg %bot% PREOPER ADD Pedro"
+  oper:
+    syntax:         "OPER {ADD|DEL|LIST} [<rumuz>]"
+    short:          "Ağın Operatörleri yönetir."
+    help:           "Ağın Operatörleri yönetir.\nADD, rumuza rütbeyi yetkileri, globop operclass'ı ve rumuz.oper.<alan> vhost'u ile verir; DEL hepsini geri alır ve veritabanından siler; LIST onları gösterir.\nRumuz kayıtlı olmalı ve zaten staff üyesi olmamalıdır.\noperserv.staff iznini gerektirir."
+    example:        "/msg %bot% OPER ADD Pedro"
+  admin:
+    syntax:         "ADMIN {ADD|DEL|LIST} [<rumuz>]"
+    short:          "Ağın Yöneticileri yönetir."
+    help:           "Ağın Yöneticileri yönetir.\nADD, rumuza rütbeyi yetkileri, admin operclass'ı ve rumuz.admin.<alan> vhost'u ile verir; DEL hepsini geri alır ve veritabanından siler; LIST onları gösterir.\nRumuz kayıtlı olmalı ve zaten staff üyesi olmamalıdır.\noperserv.staff.admin iznini gerektirir."
+    example:        "/msg %bot% ADMIN ADD Pedro"
+  root:
+    syntax:         "ROOT {ADD|DEL|LIST} [<rumuz>]"
+    short:          "Ağın Root'ları yönetir."
+    help:           "Ağın Root'ları yönetir.\nADD, rumuza rütbeyi yetkileri, netadmin operclass'ı ve rumuz.root.<alan> vhost'u ile verir; DEL hepsini geri alır ve veritabanından siler; LIST onları gösterir.\nRumuz kayıtlı olmalı ve zaten staff üyesi olmamalıdır.\nYalnızca ana Root (yapılandırma) kullanabilir."
+    example:        "/msg %bot% ROOT ADD Pedro"

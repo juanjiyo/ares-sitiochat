@@ -589,3 +589,41 @@ set:
     done:       "\x0303✓\x03 Limiet voor foute wachtwoorden: \x02%value%\x02."
     invalid:    "\x0304✗\x03 Ongeldige waarde. Gebruik \x02pogingen:seconden\x02, beide groter dan nul (bijv. \x025:60\x02)."
     rejected:   "\x0304✗\x03 Het netwerk heeft de waarde geweigerd."
+
+# --- Staff ranks (PREOPER, OPER, ADMIN, ROOT) ----------------------------------
+staff:
+  title:
+    preoper: "Pre-Operator"
+    oper: "Operator"
+    admin: "Beheerder"
+    root: "Root"
+  added:            "\x0303✓\x03 \x02%nickname%\x02 toegevoegd als netwerk-%rank%."
+  deleted:          "\x0303✓\x03 \x02%nickname%\x02 verwijderd als netwerk-%rank%."
+  already_rank:     "\x0304✗\x03 \x02%nickname%\x02 is al netwerk-%rank%. Verwijder hem eerst uit die rang."
+  already_staff:    "\x0304✗\x03 \x02%nickname%\x02 hoort al bij de staff."
+  not_this_rank:    "\x0304✗\x03 \x02%nickname%\x02 is geen netwerk-%rank%."
+  nick_not_active:  "\x0304✗\x03 Bijnaam \x02%nickname%\x02 is geen actieve geregistreerde bijnaam."
+  unavailable:      "\x0304✗\x03 De rangen zijn nog niet klaar. Probeer het over een paar seconden opnieuw."
+  list:
+    header:         "--- %rank% (%count%) ---"
+    empty:          "\x0310ℹ\x03 Er is geen %rank%."
+  preoper:
+    syntax:         "PREOPER {ADD|DEL|LIST} [<bijnaam>]"
+    short:          "Beheert de Pre-Operators van het netwerk."
+    help:           "Beheert de Pre-Operators van het netwerk.\nADD geeft de bijnaam de rang met zijn rechten, de operclass locop en de vhost nick.preoper.<domein>; DEL neemt alles weer af en verwijdert hem uit de database; LIST toont ze.\nDe bijnaam moet geregistreerd zijn en nog niet bij de staff horen.\nVereist de permissie operserv.staff."
+    example:        "/msg %bot% PREOPER ADD Pedro"
+  oper:
+    syntax:         "OPER {ADD|DEL|LIST} [<bijnaam>]"
+    short:          "Beheert de Operators van het netwerk."
+    help:           "Beheert de Operators van het netwerk.\nADD geeft de bijnaam de rang met zijn rechten, de operclass globop en de vhost nick.oper.<domein>; DEL neemt alles weer af en verwijdert hem uit de database; LIST toont ze.\nDe bijnaam moet geregistreerd zijn en nog niet bij de staff horen.\nVereist de permissie operserv.staff."
+    example:        "/msg %bot% OPER ADD Pedro"
+  admin:
+    syntax:         "ADMIN {ADD|DEL|LIST} [<bijnaam>]"
+    short:          "Beheert de Beheerders van het netwerk."
+    help:           "Beheert de Beheerders van het netwerk.\nADD geeft de bijnaam de rang met zijn rechten, de operclass admin en de vhost nick.admin.<domein>; DEL neemt alles weer af en verwijdert hem uit de database; LIST toont ze.\nDe bijnaam moet geregistreerd zijn en nog niet bij de staff horen.\nVereist de permissie operserv.staff.admin."
+    example:        "/msg %bot% ADMIN ADD Pedro"
+  root:
+    syntax:         "ROOT {ADD|DEL|LIST} [<bijnaam>]"
+    short:          "Beheert de Roots van het netwerk."
+    help:           "Beheert de Roots van het netwerk.\nADD geeft de bijnaam de rang met zijn rechten, de operclass netadmin en de vhost nick.root.<domein>; DEL neemt alles weer af en verwijdert hem uit de database; LIST toont ze.\nDe bijnaam moet geregistreerd zijn en nog niet bij de staff horen.\nAlleen de hoofd-Root (configuratie) kan het gebruiken."
+    example:        "/msg %bot% ROOT ADD Pedro"

@@ -589,3 +589,41 @@ set:
     done:       "\x0303✓\x03 Limite de palavras-passe erradas: \x02%value%\x02."
     invalid:    "\x0304✗\x03 Valor inválido. Usa \x02vezes:segundos\x02, ambos maiores que zero (ex. \x025:60\x02)."
     rejected:   "\x0304✗\x03 A rede rejeitou o valor."
+
+# --- Staff ranks (PREOPER, OPER, ADMIN, ROOT) ----------------------------------
+staff:
+  title:
+    preoper: "Pré-Operador"
+    oper: "Operador"
+    admin: "Administrador"
+    root: "Root"
+  added:            "\x0303✓\x03 \x02%nickname%\x02 adicionado como %rank% da rede."
+  deleted:          "\x0303✓\x03 \x02%nickname%\x02 removido de %rank% da rede."
+  already_rank:     "\x0304✗\x03 \x02%nickname%\x02 já é %rank% da rede. Remove-o primeiro desse posto."
+  already_staff:    "\x0304✗\x03 \x02%nickname%\x02 já faz parte do staff."
+  not_this_rank:    "\x0304✗\x03 \x02%nickname%\x02 não é %rank% da rede."
+  nick_not_active:  "\x0304✗\x03 O nickname \x02%nickname%\x02 não é um nickname registado ativo."
+  unavailable:      "\x0304✗\x03 Os postos ainda não estão prontos. Tenta novamente dentro de alguns segundos."
+  list:
+    header:         "--- %rank% (%count%) ---"
+    empty:          "\x0310ℹ\x03 Não há nenhum %rank%."
+  preoper:
+    syntax:         "PREOPER {ADD|DEL|LIST} [<nickname>]"
+    short:          "Gere os Pré-Operadores da rede."
+    help:           "Gere os Pré-Operadores da rede.\nADD dá ao nickname o posto com as suas permissões, a operclass locop e o vhost nick.preoper.<domínio>; DEL tira-lhe tudo e apaga-o da base de dados; LIST mostra-os.\nO nickname tem de estar registado e não fazer já parte do staff.\nRequer a permissão operserv.staff."
+    example:        "/msg %bot% PREOPER ADD Pedro"
+  oper:
+    syntax:         "OPER {ADD|DEL|LIST} [<nickname>]"
+    short:          "Gere os Operadores da rede."
+    help:           "Gere os Operadores da rede.\nADD dá ao nickname o posto com as suas permissões, a operclass globop e o vhost nick.oper.<domínio>; DEL tira-lhe tudo e apaga-o da base de dados; LIST mostra-os.\nO nickname tem de estar registado e não fazer já parte do staff.\nRequer a permissão operserv.staff."
+    example:        "/msg %bot% OPER ADD Pedro"
+  admin:
+    syntax:         "ADMIN {ADD|DEL|LIST} [<nickname>]"
+    short:          "Gere os Administradores da rede."
+    help:           "Gere os Administradores da rede.\nADD dá ao nickname o posto com as suas permissões, a operclass admin e o vhost nick.admin.<domínio>; DEL tira-lhe tudo e apaga-o da base de dados; LIST mostra-os.\nO nickname tem de estar registado e não fazer já parte do staff.\nRequer a permissão operserv.staff.admin."
+    example:        "/msg %bot% ADMIN ADD Pedro"
+  root:
+    syntax:         "ROOT {ADD|DEL|LIST} [<nickname>]"
+    short:          "Gere os Roots da rede."
+    help:           "Gere os Roots da rede.\nADD dá ao nickname o posto com as suas permissões, a operclass netadmin e o vhost nick.root.<domínio>; DEL tira-lhe tudo e apaga-o da base de dados; LIST mostra-os.\nO nickname tem de estar registado e não fazer já parte do staff.\nSó o Root principal (configuração) o pode usar."
+    example:        "/msg %bot% ROOT ADD Pedro"

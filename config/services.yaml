@@ -2402,6 +2402,30 @@ services:
     App\OperServ\Adapter\In\Irc\Command\IrcopCommand:
         tags: ['operserv.command.new']
 
+    operserv.command.staff_preoper:
+        class: App\OperServ\Adapter\In\Irc\Command\StaffRankCommand
+        arguments:
+            $rank: !php/enum App\OperServ\Domain\ValueObject\StaffRank::PREOPER
+        tags: ['operserv.command.new']
+
+    operserv.command.staff_oper:
+        class: App\OperServ\Adapter\In\Irc\Command\StaffRankCommand
+        arguments:
+            $rank: !php/enum App\OperServ\Domain\ValueObject\StaffRank::OPER
+        tags: ['operserv.command.new']
+
+    operserv.command.staff_admin:
+        class: App\OperServ\Adapter\In\Irc\Command\StaffRankCommand
+        arguments:
+            $rank: !php/enum App\OperServ\Domain\ValueObject\StaffRank::ADMIN
+        tags: ['operserv.command.new']
+
+    operserv.command.staff_root:
+        class: App\OperServ\Adapter\In\Irc\Command\StaffRankCommand
+        arguments:
+            $rank: !php/enum App\OperServ\Domain\ValueObject\StaffRank::ROOT
+        tags: ['operserv.command.new']
+
     App\OperServ\Application\UseCase\ManageRole\ManageRoleHandlerInterface:
         alias: App\OperServ\Application\UseCase\ManageRole\ManageRoleHandler
 
