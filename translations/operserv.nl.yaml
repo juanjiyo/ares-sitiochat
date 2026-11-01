@@ -589,3 +589,38 @@ set:
     done:       "\x0303✓\x03 Limiet voor foute wachtwoorden: \x02%value%\x02."
     invalid:    "\x0304✗\x03 Ongeldige waarde. Gebruik \x02pogingen:seconden\x02, beide groter dan nul (bijv. \x025:60\x02)."
     rejected:   "\x0304✗\x03 Het netwerk heeft de waarde geweigerd."
+
+# --- SPAMFILTER ------------------------------------------------------------------
+spamfilter:
+  syntax:       "SPAMFILTER {ADD|DEL|LIST}"
+  short:        "Beheert de globale spamfilters van de IRCd."
+  help:         "Beheert de globale spamfilters van de IRCd: spampatronen die de IRCd zoekt in berichten, notices, topics, quits... en de actie bij een treffer. De IRCd is de eigenaar en slaat ze zelf op; regels uit spamfilter.conf worden hier niet getoond of gewijzigd.\nADD voegt er een toe, DEL verwijdert hem en LIST toont ze.\nDit commando vereist de permissie operserv.spamfilter."
+  example:      "/msg %bot% SPAMFILTER ADD cpn warn *casino* Casino spam"
+  unknown_sub:  "\x0304✗\x03 Onbekend subcommando. Gebruik: \x02ADD\x02, \x02DEL\x02, \x02LIST\x02"
+  unavailable:  "\x0304✗\x03 Er is geen verbinding met de IRCd. Probeer het over een paar seconden opnieuw."
+  add:
+    syntax:           "SPAMFILTER ADD [-regex] [+duur] <doelen|ALL> <actie> <patroon> <reden>"
+    short:            "Voegt een spamfilter toe."
+    help:             "Doelen: c kanaal, p privé, n privé-notice, N kanaal-notice, P part, q quit, d dcc, a away, t topic; ALL = cpnNPqat.\nActies: warn (alleen waarschuwing), block, kill, tempshun, shun, kline, gline, zline, gzline, dccblock, viruschan.\nHet patroon accepteert de jokers * en ?; met -regex is het een reguliere expressie. +duur (bijv. +2h, +7d; standaard 1d) is hoe lang de ban duurt bij kline, gline, zline, gzline en shun."
+    example:          "/msg %bot% SPAMFILTER ADD +7d cpnN gline *freebitcoin* Spam"
+    done:             "\x0303✓\x03 Spamfilter \x02%pattern%\x02 toegevoegd (actie: %action%)."
+    exists:           "\x0304✗\x03 Er bestaat al een gelijke spamfilter voor \x02%pattern%\x02."
+    invalid_targets:  "\x0304✗\x03 Ongeldige doelen. Gebruik letters uit \x02%valid%\x02 of \x02ALL\x02."
+    invalid_action:   "\x0304✗\x03 Ongeldige actie. Gebruik: %valid%."
+    invalid_regex:    "\x0304✗\x03 De reguliere expressie is ongeldig."
+    invalid_duration: "\x0304✗\x03 Ongeldige duur. Gebruik bijvoorbeeld \x02+30m\x02, \x02+2h\x02 of \x02+7d\x02."
+  del:
+    syntax:     "SPAMFILTER DEL <nummer|patroon>"
+    short:      "Verwijdert een spamfilter."
+    help:       "Verwijdert een spamfilter via zijn LIST-nummer of zijn exacte patroon."
+    example:    "/msg %bot% SPAMFILTER DEL 1"
+    done:       "\x0303✓\x03 Spamfilter \x02%pattern%\x02 verwijderd."
+    not_found:  "\x0304✗\x03 Er is geen spamfilter \x02%item%\x02."
+  list:
+    syntax:     "SPAMFILTER LIST [filter]"
+    short:      "Toont de globale spamfilters."
+    help:       "Toont de globale spamfilters van de IRCd. Met een filter alleen die waarvan het patroon die tekst bevat; de nummers zijn die DEL gebruikt."
+    example:    "/msg %bot% SPAMFILTER LIST casino"
+    header:     "--- Spamfilters (%count%) ---"
+    entry:      "\x02%number%.\x02 %pattern% (%type%) · doelen: %targets% · actie: %action% · ban: %duration% · %reason% (door %by%)"
+    empty:      "\x0310ℹ\x03 Er zijn geen globale spamfilters."

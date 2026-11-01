@@ -589,3 +589,38 @@ set:
     done:       "\x0303✓\x03 Limita de parole greșite: \x02%value%\x02."
     invalid:    "\x0304✗\x03 Valoare invalidă. Folosește \x02încercări:secunde\x02, ambele mai mari decât zero (ex. \x025:60\x02)."
     rejected:   "\x0304✗\x03 Rețeaua a respins valoarea."
+
+# --- SPAMFILTER ------------------------------------------------------------------
+spamfilter:
+  syntax:       "SPAMFILTER {ADD|DEL|LIST}"
+  short:        "Gestionează spamfilterele globale ale IRCd-ului."
+  help:         "Gestionează spamfilterele globale ale IRCd-ului: modele de spam pe care IRCd-ul le caută în mesaje, notice-uri, topicuri, quit-uri... și acțiunea la o potrivire. IRCd-ul este proprietarul și le salvează singur; regulile din spamfilter.conf nu se văd și nu se modifică de aici.\nADD adaugă unul, DEL îl șterge și LIST le afișează.\nAceastă comandă necesită permisiunea operserv.spamfilter."
+  example:      "/msg %bot% SPAMFILTER ADD cpn warn *casino* Casino spam"
+  unknown_sub:  "\x0304✗\x03 Subcomandă necunoscută. Folosește: \x02ADD\x02, \x02DEL\x02, \x02LIST\x02"
+  unavailable:  "\x0304✗\x03 Nu există legătură cu IRCd-ul. Încearcă din nou peste câteva secunde."
+  add:
+    syntax:           "SPAMFILTER ADD [-regex] [+durată] <ținte|ALL> <acțiune> <model> <motiv>"
+    short:            "Adaugă un spamfilter."
+    help:             "Ținte: c canal, p privat, n notice privat, N notice pe canal, P ieșire din canal, q quit, d dcc, a away, t topic; ALL = cpnNPqat.\nAcțiuni: warn (doar avertisment), block, kill, tempshun, shun, kline, gline, zline, gzline, dccblock, viruschan.\nModelul acceptă caracterele * și ?; cu -regex este o expresie regulată. +durată (ex. +2h, +7d; implicit 1d) este cât durează banul la kline, gline, zline, gzline și shun."
+    example:          "/msg %bot% SPAMFILTER ADD +7d cpnN gline *freebitcoin* Spam"
+    done:             "\x0303✓\x03 Spamfilterul \x02%pattern%\x02 a fost adăugat (acțiune: %action%)."
+    exists:           "\x0304✗\x03 Există deja un spamfilter identic pentru \x02%pattern%\x02."
+    invalid_targets:  "\x0304✗\x03 Ținte invalide. Folosește litere din \x02%valid%\x02 sau \x02ALL\x02."
+    invalid_action:   "\x0304✗\x03 Acțiune invalidă. Folosește: %valid%."
+    invalid_regex:    "\x0304✗\x03 Expresia regulată nu este validă."
+    invalid_duration: "\x0304✗\x03 Durată invalidă. Folosește de exemplu \x02+30m\x02, \x02+2h\x02 sau \x02+7d\x02."
+  del:
+    syntax:     "SPAMFILTER DEL <număr|model>"
+    short:      "Șterge un spamfilter."
+    help:       "Șterge un spamfilter după numărul său din LIST sau după modelul exact."
+    example:    "/msg %bot% SPAMFILTER DEL 1"
+    done:       "\x0303✓\x03 Spamfilterul \x02%pattern%\x02 a fost șters."
+    not_found:  "\x0304✗\x03 Nu există spamfilterul \x02%item%\x02."
+  list:
+    syntax:     "SPAMFILTER LIST [filtru]"
+    short:      "Listează spamfilterele globale."
+    help:       "Listează spamfilterele globale ale IRCd-ului. Cu filtru, doar cele al căror model conține acel text; numerele sunt cele folosite de DEL."
+    example:    "/msg %bot% SPAMFILTER LIST casino"
+    header:     "--- Spamfiltere (%count%) ---"
+    entry:      "\x02%number%.\x02 %pattern% (%type%) · ținte: %targets% · acțiune: %action% · ban: %duration% · %reason% (de %by%)"
+    empty:      "\x0310ℹ\x03 Nu există spamfiltere globale."

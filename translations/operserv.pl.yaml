@@ -589,3 +589,38 @@ set:
     done:       "\x0303✓\x03 Limit błędnych haseł: \x02%value%\x02."
     invalid:    "\x0304✗\x03 Nieprawidłowa wartość. Użyj \x02próby:sekundy\x02, obie większe od zera (np. \x025:60\x02)."
     rejected:   "\x0304✗\x03 Sieć odrzuciła wartość."
+
+# --- SPAMFILTER ------------------------------------------------------------------
+spamfilter:
+  syntax:       "SPAMFILTER {ADD|DEL|LIST}"
+  short:        "Zarządza globalnymi spamfiltrami IRCd."
+  help:         "Zarządza globalnymi spamfiltrami IRCd: wzorcami spamu, których IRCd szuka w wiadomościach, notice'ach, tematach, quitach... oraz akcją po dopasowaniu. Właścicielem jest IRCd i to on je zapisuje; reguł z spamfilter.conf nie widać ani nie można zmienić stąd.\nADD dodaje, DEL usuwa, a LIST wyświetla.\nTo polecenie wymaga uprawnienia operserv.spamfilter."
+  example:      "/msg %bot% SPAMFILTER ADD cpn warn *casino* Casino spam"
+  unknown_sub:  "\x0304✗\x03 Nieznane podpolecenie. Użyj: \x02ADD\x02, \x02DEL\x02, \x02LIST\x02"
+  unavailable:  "\x0304✗\x03 Brak połączenia z IRCd. Spróbuj ponownie za kilka sekund."
+  add:
+    syntax:           "SPAMFILTER ADD [-regex] [+czas] <miejsca|ALL> <akcja> <wzorzec> <powód>"
+    short:            "Dodaje spamfiltr."
+    help:             "Miejsca: c kanał, p prywatne, n prywatny notice, N notice na kanale, P wyjście z kanału, q quit, d dcc, a away, t temat; ALL = cpnNPqat.\nAkcje: warn (tylko ostrzeżenie), block, kill, tempshun, shun, kline, gline, zline, gzline, dccblock, viruschan.\nWzorzec akceptuje symbole * i ?; z -regex jest wyrażeniem regularnym. +czas (np. +2h, +7d; domyślnie 1d) to długość bana dla kline, gline, zline, gzline i shun."
+    example:          "/msg %bot% SPAMFILTER ADD +7d cpnN gline *freebitcoin* Spam"
+    done:             "\x0303✓\x03 Spamfiltr \x02%pattern%\x02 dodany (akcja: %action%)."
+    exists:           "\x0304✗\x03 Taki sam spamfiltr dla \x02%pattern%\x02 już istnieje."
+    invalid_targets:  "\x0304✗\x03 Nieprawidłowe miejsca. Użyj liter z \x02%valid%\x02 lub \x02ALL\x02."
+    invalid_action:   "\x0304✗\x03 Nieprawidłowa akcja. Użyj: %valid%."
+    invalid_regex:    "\x0304✗\x03 Wyrażenie regularne jest nieprawidłowe."
+    invalid_duration: "\x0304✗\x03 Nieprawidłowy czas. Użyj na przykład \x02+30m\x02, \x02+2h\x02 lub \x02+7d\x02."
+  del:
+    syntax:     "SPAMFILTER DEL <numer|wzorzec>"
+    short:      "Usuwa spamfiltr."
+    help:       "Usuwa spamfiltr według numeru z LIST lub dokładnego wzorca."
+    example:    "/msg %bot% SPAMFILTER DEL 1"
+    done:       "\x0303✓\x03 Spamfiltr \x02%pattern%\x02 usunięty."
+    not_found:  "\x0304✗\x03 Nie ma spamfiltra \x02%item%\x02."
+  list:
+    syntax:     "SPAMFILTER LIST [filtr]"
+    short:      "Wyświetla globalne spamfiltry."
+    help:       "Wyświetla globalne spamfiltry IRCd. Z filtrem tylko te, których wzorzec zawiera ten tekst; numery to te, których używa DEL."
+    example:    "/msg %bot% SPAMFILTER LIST casino"
+    header:     "--- Spamfiltry (%count%) ---"
+    entry:      "\x02%number%.\x02 %pattern% (%type%) · miejsca: %targets% · akcja: %action% · ban: %duration% · %reason% (przez %by%)"
+    empty:      "\x0310ℹ\x03 Brak globalnych spamfiltrów."

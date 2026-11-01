@@ -589,3 +589,38 @@ set:
     done:       "\x0303✓\x03 Hatalı parola sınırı: \x02%value%\x02."
     invalid:    "\x0304✗\x03 Geçersiz değer. \x02deneme:saniye\x02 kullan, ikisi de sıfırdan büyük olmalı (ör. \x025:60\x02)."
     rejected:   "\x0304✗\x03 Ağ değeri reddetti."
+
+# --- SPAMFILTER ------------------------------------------------------------------
+spamfilter:
+  syntax:       "SPAMFILTER {ADD|DEL|LIST}"
+  short:        "IRCd'nin genel spamfilter'larını yönetir."
+  help:         "IRCd'nin genel spamfilter'larını yönetir: IRCd'nin mesajlarda, notice'larda, topic'lerde, quit'lerde... aradığı spam kalıpları ve eşleşmede uyguladığı eylem. Sahibi IRCd'dir ve onları kendisi saklar; spamfilter.conf kuralları buradan görünmez ve değiştirilemez.\nADD ekler, DEL siler ve LIST listeler.\nBu komut operserv.spamfilter iznini gerektirir."
+  example:      "/msg %bot% SPAMFILTER ADD cpn warn *casino* Casino spam"
+  unknown_sub:  "\x0304✗\x03 Bilinmeyen alt komut. Kullan: \x02ADD\x02, \x02DEL\x02, \x02LIST\x02"
+  unavailable:  "\x0304✗\x03 IRCd ile bağlantı yok. Birkaç saniye sonra tekrar dene."
+  add:
+    syntax:           "SPAMFILTER ADD [-regex] [+süre] <hedefler|ALL> <eylem> <kalıp> <sebep>"
+    short:            "Bir spamfilter ekler."
+    help:             "Hedefler: c kanal, p özel, n özel notice, N kanal notice, P kanaldan çıkış, q quit, d dcc, a away, t topic; ALL = cpnNPqat.\nEylemler: warn (yalnızca uyarı), block, kill, tempshun, shun, kline, gline, zline, gzline, dccblock, viruschan.\nKalıp * ve ? joker karakterlerini kabul eder; -regex ile düzenli ifadedir. +süre (ör. +2h, +7d; varsayılan 1d) kline, gline, zline, gzline ve shun için ban süresidir."
+    example:          "/msg %bot% SPAMFILTER ADD +7d cpnN gline *freebitcoin* Spam"
+    done:             "\x0303✓\x03 \x02%pattern%\x02 spamfilter'ı eklendi (eylem: %action%)."
+    exists:           "\x0304✗\x03 \x02%pattern%\x02 için aynı spamfilter zaten var."
+    invalid_targets:  "\x0304✗\x03 Geçersiz hedefler. \x02%valid%\x02 harflerini veya \x02ALL\x02 kullan."
+    invalid_action:   "\x0304✗\x03 Geçersiz eylem. Kullan: %valid%."
+    invalid_regex:    "\x0304✗\x03 Düzenli ifade geçerli değil."
+    invalid_duration: "\x0304✗\x03 Geçersiz süre. Örneğin \x02+30m\x02, \x02+2h\x02 veya \x02+7d\x02 kullan."
+  del:
+    syntax:     "SPAMFILTER DEL <numara|kalıp>"
+    short:      "Bir spamfilter siler."
+    help:       "Bir spamfilter'ı LIST numarasıyla veya tam kalıbıyla siler."
+    example:    "/msg %bot% SPAMFILTER DEL 1"
+    done:       "\x0303✓\x03 \x02%pattern%\x02 spamfilter'ı silindi."
+    not_found:  "\x0304✗\x03 \x02%item%\x02 diye bir spamfilter yok."
+  list:
+    syntax:     "SPAMFILTER LIST [filtre]"
+    short:      "Genel spamfilter'ları listeler."
+    help:       "IRCd'nin genel spamfilter'larını listeler. Filtreyle yalnızca kalıbında o metni içerenler; numaralar DEL'in kullandıklarıdır."
+    example:    "/msg %bot% SPAMFILTER LIST casino"
+    header:     "--- Spamfilter'lar (%count%) ---"
+    entry:      "\x02%number%.\x02 %pattern% (%type%) · hedefler: %targets% · eylem: %action% · ban: %duration% · %reason% (%by%)"
+    empty:      "\x0310ℹ\x03 Genel spamfilter yok."

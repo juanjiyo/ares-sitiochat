@@ -589,3 +589,38 @@ set:
     done:       "\x0303✓\x03 Límit de contrasenyes errònies: \x02%value%\x02."
     invalid:    "\x0304✗\x03 Valor no vàlid. Fes servir \x02vegades:segons\x02, tots dos més grans que zero (p. ex. \x025:60\x02)."
     rejected:   "\x0304✗\x03 La xarxa ha rebutjat el valor."
+
+# --- SPAMFILTER ------------------------------------------------------------------
+spamfilter:
+  syntax:       "SPAMFILTER {ADD|DEL|LIST}"
+  short:        "Gestiona els spamfilters globals de l'IRCd."
+  help:         "Gestiona els spamfilters globals de l'IRCd: patrons de spam que l'IRCd busca en missatges, notices, topics, quits... i l'acció que pren quan els troba. L'IRCd n'és el propietari i els desa ell mateix; les regles de spamfilter.conf no es veuen ni es toquen des d'aquí.\nADD n'afegeix un, DEL l'esborra i LIST els mostra.\nAquesta ordre requereix el permís operserv.spamfilter."
+  example:      "/msg %bot% SPAMFILTER ADD cpn warn *casino* Casino spam"
+  unknown_sub:  "\x0304✗\x03 Subordre desconeguda. Fes servir: \x02ADD\x02, \x02DEL\x02, \x02LIST\x02"
+  unavailable:  "\x0304✗\x03 No hi ha enllaç amb l'IRCd. Torna-ho a provar d'aquí a uns segons."
+  add:
+    syntax:           "SPAMFILTER ADD [-regex] [+durada] <llocs|ALL> <acció> <patró> <motiu>"
+    short:            "Afegeix un spamfilter."
+    help:             "Llocs: c canal, p privat, n notice en privat, N notice en canal, P sortida de canal, q quit, d dcc, a absència, t topic; ALL = cpnNPqat.\nAccions: warn (només avisa), block, kill, tempshun, shun, kline, gline, zline, gzline, dccblock, viruschan.\nEl patró admet comodins * i ?; amb -regex és una expressió regular. +durada (p. ex. +2h, +7d; per defecte 1d) és el que dura el ban en kline, gline, zline, gzline i shun."
+    example:          "/msg %bot% SPAMFILTER ADD +7d cpnN gline *freebitcoin* Spam"
+    done:             "\x0303✓\x03 Spamfilter \x02%pattern%\x02 afegit (acció: %action%)."
+    exists:           "\x0304✗\x03 Ja existeix un spamfilter igual per a \x02%pattern%\x02."
+    invalid_targets:  "\x0304✗\x03 Llocs no vàlids. Fes servir lletres de \x02%valid%\x02 o \x02ALL\x02."
+    invalid_action:   "\x0304✗\x03 Acció no vàlida. Fes servir: %valid%."
+    invalid_regex:    "\x0304✗\x03 L'expressió regular no és vàlida."
+    invalid_duration: "\x0304✗\x03 Durada no vàlida. Fes servir per exemple \x02+30m\x02, \x02+2h\x02 o \x02+7d\x02."
+  del:
+    syntax:     "SPAMFILTER DEL <número|patró>"
+    short:      "Esborra un spamfilter."
+    help:       "Esborra un spamfilter pel seu número de LIST o pel seu patró exacte."
+    example:    "/msg %bot% SPAMFILTER DEL 1"
+    done:       "\x0303✓\x03 Spamfilter \x02%pattern%\x02 esborrat."
+    not_found:  "\x0304✗\x03 No hi ha cap spamfilter \x02%item%\x02."
+  list:
+    syntax:     "SPAMFILTER LIST [filtre]"
+    short:      "Llista els spamfilters globals."
+    help:       "Llista els spamfilters globals de l'IRCd. Amb filtre, només els que contenen aquest text al patró; els números són els que fa servir DEL."
+    example:    "/msg %bot% SPAMFILTER LIST casino"
+    header:     "--- Spamfilters (%count%) ---"
+    entry:      "\x02%number%.\x02 %pattern% (%type%) · llocs: %targets% · acció: %action% · ban: %duration% · %reason% (per %by%)"
+    empty:      "\x0310ℹ\x03 No hi ha spamfilters globals."

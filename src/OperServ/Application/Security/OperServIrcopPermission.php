@@ -28,6 +28,7 @@ final readonly class OperServIrcopPermission implements PermissionProviderInterf
             OperServPermission::UMODE,
             OperServPermission::JAIL,
             OperServPermission::ELINE,
+            OperServPermission::SPAMFILTER,
         ];
     }
 }
