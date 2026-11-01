@@ -42,6 +42,19 @@ final class BlockedEmailDomainDoctrineRepositoryTest extends DoctrineIntegration
     }
 
     #[Test]
+    public function blocksSubdomainsOfABlockedDomain(): void
+    {
+        $this->repository->add($this->domain('10minutemail.com'));
+        $this->flushAndClear();
+
+        self::assertTrue($this->repository->isBlocked('abc.10minutemail.com'));
+        self::assertTrue($this->repository->isBlocked('x.y.10minutemail.com'));
+        self::assertFalse($this->repository->isBlocked('not10minutemail.com'));
+        self::assertFalse($this->repository->isBlocked('10minutemail.com.example.org'));
+        self::assertFalse($this->repository->isBlocked('com'));
+    }
+
+    #[Test]
     public function listsDomainsInAscendingOrder(): void
     {
         $this->repository->add($this->domain('zeta.com'));

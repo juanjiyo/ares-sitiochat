@@ -685,7 +685,7 @@ vreg:
 blackmail:
   syntax:           "BLACKMAIL {ADD|DEL|LIST} [argument]"
   short:            "Erabiltzaileen erregistrotik blokeatutako posta-domeinuak kudeatzen ditu."
-  help:             "Erabiltzaileen ezizenak erregistratzea ukatzen den posta-domeinuak kudeatzen ditu.\nADD-ek domeinu bat gehitzen du, DEL-ek sarrera bat kentzen du zerrendako posizioaren arabera edo zerrenda osoa husten du,\neta LIST-ek uneko sarrerak erakusten ditu.\nZerrendak erabiltzaileen erregistroan bakarrik eragiten du; SAREGISTER (langileek behartutako erregistroa) ez da eragiten.\nKomando honek nickserv.blackmail IRCop baimena behar du."
+  help:             "Erabiltzaileen ezizenak erregistratzea ukatzen den posta-domeinuak kudeatzen ditu.\nADD-ek domeinu bat gehitzen du, DEL-ek sarrera bat kentzen du zerrendako posizioaren arabera edo zerrenda osoa husten du,\neta LIST-ek uneko sarrerak erakusten ditu.\nDomeinu batek bere azpidomeinuak ere blokeatzen ditu (example.com-ek mail.example.com barne hartzen du).\nZerrendak erabiltzaileen erregistroan bakarrik eragiten du; SAREGISTER (langileek behartutako erregistroa) ez da eragiten.\nKomando honek nickserv.blackmail IRCop baimena behar du."
   example:          "/msg %bot% BLACKMAIL LIST"
   added:            "\x0303✔\x03 %domain% posta-domeinua blokeatuta dago orain erregistrorako."
   already_listed:   "\x0307ℹ\x03 %domain% posta-domeinua dagoeneko blokeatuta dago."

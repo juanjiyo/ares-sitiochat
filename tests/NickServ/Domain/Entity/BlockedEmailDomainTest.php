@@ -88,4 +88,13 @@ final class BlockedEmailDomainTest extends TestCase
 
         new BlockedEmailDomain('not-a-domain', new DateTimeImmutable());
     }
+
+    #[Test]
+    public function lookupCandidatesAreTheDomainAndItsParentsWithoutTheBareTld(): void
+    {
+        self::assertSame(['a.b.example.com', 'b.example.com', 'example.com'], BlockedEmailDomain::lookupCandidates('a.b.example.com'));
+        self::assertSame(['example.com'], BlockedEmailDomain::lookupCandidates('example.com'));
+        self::assertSame([], BlockedEmailDomain::lookupCandidates('localhost'));
+        self::assertSame([], BlockedEmailDomain::lookupCandidates(''));
+    }
 }

@@ -685,7 +685,7 @@ vreg:
 blackmail:
   syntax:           "BLACKMAIL {ADD|DEL|LIST} [argument]"
   short:            "Gestionează domeniile de e-mail blocate pentru înregistrarea utilizatorilor."
-  help:             "Gestionează domeniile de e-mail pentru care înregistrarea poreclelor de utilizator este refuzată.\nADD adaugă un domeniu, DEL elimină o intrare după poziția din listă sau golește întreaga listă,\niar LIST afișează intrările curente.\nLista afectează doar înregistrarea utilizatorilor; SAREGISTER (înregistrare forțată de personal) nu este afectat.\nAceastă comandă necesită permisiunea IRCop nickserv.blackmail."
+  help:             "Gestionează domeniile de e-mail pentru care înregistrarea poreclelor de utilizator este refuzată.\nADD adaugă un domeniu, DEL elimină o intrare după poziția din listă sau golește întreaga listă,\niar LIST afișează intrările curente.\nUn domeniu blochează și subdomeniile sale (example.com acoperă mail.example.com).\nLista afectează doar înregistrarea utilizatorilor; SAREGISTER (înregistrare forțată de personal) nu este afectat.\nAceastă comandă necesită permisiunea IRCop nickserv.blackmail."
   example:          "/msg %bot% BLACKMAIL LIST"
   added:            "\x0303✔\x03 Domeniul de e-mail \x02%domain%\x02 este acum blocat pentru înregistrare."
   already_listed:   "\x0307ℹ\x03 Domeniul de e-mail \x02%domain%\x02 este deja blocat."

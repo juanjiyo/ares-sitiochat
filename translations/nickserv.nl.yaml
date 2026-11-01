@@ -685,7 +685,7 @@ vreg:
 blackmail:
   syntax:           "BLACKMAIL {ADD|DEL|LIST} [argument]"
   short:            "Beheert e-maildomeinen die voor gebruikersregistratie zijn geblokkeerd."
-  help:             "Beheert de e-maildomeinen waarvoor registratie van gebruikersbijnamen wordt geweigerd.\nADD voegt een domein toe, DEL verwijdert er een op basis van de positie in de lijst of leegt de hele lijst,\nen LIST toont de huidige items.\nDe lijst geldt alleen voor gebruikersregistratie; SAREGISTER (door staf geforceerde registratie) wordt niet beïnvloed.\nDit commando vereist de IRCop-permissie nickserv.blackmail."
+  help:             "Beheert de e-maildomeinen waarvoor registratie van gebruikersbijnamen wordt geweigerd.\nADD voegt een domein toe, DEL verwijdert er een op basis van de positie in de lijst of leegt de hele lijst,\nen LIST toont de huidige items.\nEen domein blokkeert ook zijn subdomeinen (example.com dekt mail.example.com).\nDe lijst geldt alleen voor gebruikersregistratie; SAREGISTER (door staf geforceerde registratie) wordt niet beïnvloed.\nDit commando vereist de IRCop-permissie nickserv.blackmail."
   example:          "/msg %bot% BLACKMAIL LIST"
   added:            "\x0303✔\x03 Het e-maildomein \x02%domain%\x02 is nu geblokkeerd voor registratie."
   already_listed:   "\x0307ℹ\x03 Het e-maildomein \x02%domain%\x02 is al geblokkeerd."

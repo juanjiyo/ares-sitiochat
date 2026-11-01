@@ -16,7 +16,10 @@ final readonly class BlockedEmailDomainDoctrineRepository implements BlockedEmai
 
     public function isBlocked(string $domain): bool
     {
-        return null !== $this->em->getRepository(BlockedEmailDomain::class)->findOneBy(['domain' => $domain]);
+        $candidates = BlockedEmailDomain::lookupCandidates($domain);
+
+        return [] !== $candidates
+            && null !== $this->em->getRepository(BlockedEmailDomain::class)->findOneBy(['domain' => $candidates]);
     }
 
     public function add(BlockedEmailDomain $blockedEmailDomain): void

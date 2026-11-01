@@ -13,7 +13,9 @@ use function str_contains;
 use function str_ends_with;
 use function str_starts_with;
 use function strlen;
+use function strpos;
 use function strtolower;
+use function substr;
 use function trim;
 
 /**
@@ -47,6 +49,22 @@ class BlockedEmailDomain
     public static function normalize(string $domain): string
     {
         return strtolower(trim($domain));
+    }
+
+    /**
+     * The domain and every parent domain that still has a dot, so a block on
+     * "example.com" also covers "mail.example.com" (but never a bare TLD).
+     *
+     * @return list<string>
+     */
+    public static function lookupCandidates(string $domain): array
+    {
+        $candidates = [];
+        for ($rest = $domain; str_contains($rest, '.'); $rest = substr($rest, (int) strpos($rest, '.') + 1)) {
+            $candidates[] = $rest;
+        }
+
+        return $candidates;
     }
 
     public static function isValid(string $domain): bool

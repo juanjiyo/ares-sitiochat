@@ -685,7 +685,7 @@ vreg:
 blackmail:
   syntax:           "BLACKMAIL {ADD|DEL|LIST} [argument]"
   short:            "Kullanıcı kaydı için engellenen e-posta alan adlarını yönetir."
-  help:             "Kullanıcı takma adı kaydının reddedildiği e-posta alan adlarını yönetir.\nADD bir alan adı ekler, DEL listedeki konumuna göre bir kaydı kaldırır veya tüm listeyi temizler,\nLIST ise mevcut kayıtları gösterir.\nListe yalnızca kullanıcı kaydını etkiler; SAREGISTER (personel tarafından zorunlu kayıt) etkilenmez.\nBu komut nickserv.blackmail IRCop iznini gerektirir."
+  help:             "Kullanıcı takma adı kaydının reddedildiği e-posta alan adlarını yönetir.\nADD bir alan adı ekler, DEL listedeki konumuna göre bir kaydı kaldırır veya tüm listeyi temizler,\nLIST ise mevcut kayıtları gösterir.\nBir alan adı alt alan adlarını da engeller (example.com, mail.example.com'u kapsar).\nListe yalnızca kullanıcı kaydını etkiler; SAREGISTER (personel tarafından zorunlu kayıt) etkilenmez.\nBu komut nickserv.blackmail IRCop iznini gerektirir."
   example:          "/msg %bot% BLACKMAIL LIST"
   added:            "\x0303✔\x03 %domain% e-posta alan adı artık kayıt için engelli."
   already_listed:   "\x0307ℹ\x03 %domain% e-posta alan adı zaten engelli."

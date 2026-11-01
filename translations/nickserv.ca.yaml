@@ -685,7 +685,7 @@ vreg:
 blackmail:
   syntax:           "BLACKMAIL {ADD|DEL|LIST} [argument]"
   short:            "Gestiona els dominis de correu bloquejats per al registre d'usuaris."
-  help:             "Gestiona els dominis de correu en què es refusa el registre de sobrenoms d'usuari.\nADD afegeix un domini, DEL n'elimina un per la seva posició a la llista o buida tota la llista,\ni LIST mostra les entrades actuals.\nLa llista només afecta el registre d'usuaris; SAREGISTER (registre forçat pel personal) no s'hi veu afectat.\nAquesta ordre requereix el permís d'IRCop nickserv.blackmail."
+  help:             "Gestiona els dominis de correu en què es refusa el registre de sobrenoms d'usuari.\nADD afegeix un domini, DEL n'elimina un per la seva posició a la llista o buida tota la llista,\ni LIST mostra les entrades actuals.\nUn domini bloqueja també els seus subdominis (exemple.com cobreix mail.exemple.com).\nLa llista només afecta el registre d'usuaris; SAREGISTER (registre forçat pel personal) no s'hi veu afectat.\nAquesta ordre requereix el permís d'IRCop nickserv.blackmail."
   example:          "/msg %bot% BLACKMAIL LIST"
   added:            "\x0303✔\x03 El domini de correu \x02%domain%\x02 ara està bloquejat per al registre."
   already_listed:   "\x0307ℹ\x03 El domini de correu \x02%domain%\x02 ja està bloquejat."

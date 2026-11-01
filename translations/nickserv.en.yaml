@@ -685,7 +685,7 @@ vreg:
 blackmail:
   syntax:           "BLACKMAIL {ADD|DEL|LIST} [argument]"
   short:            "Manage e-mail domains blocked from user registration."
-  help:             "Manages the e-mail domains on which user nickname registrations are refused.\nADD adds a domain, DEL removes one by its list position or clears the whole list,\nand LIST shows the current entries.\nThe list only affects user registration; SAREGISTER (staff-forced registration) is not affected.\nThis command requires the nickserv.blackmail IRCop permission."
+  help:             "Manages the e-mail domains on which user nickname registrations are refused.\nADD adds a domain, DEL removes one by its list position or clears the whole list,\nand LIST shows the current entries.\nA domain also blocks its subdomains (example.com covers mail.example.com).\nThe list only affects user registration; SAREGISTER (staff-forced registration) is not affected.\nThis command requires the nickserv.blackmail IRCop permission."
   example:          "/msg %bot% BLACKMAIL LIST"
   added:            "\x0303✔\x03 E-mail domain \x02%domain%\x02 is now blocked from registration."
   already_listed:   "\x0307ℹ\x03 E-mail domain \x02%domain%\x02 is already blocked."

@@ -685,7 +685,7 @@ vreg:
 blackmail:
   syntax:           "BLACKMAIL {ADD|DEL|LIST} [argument]"
   short:            "Gère les domaines de messagerie bloqués pour l'enregistrement des utilisateurs."
-  help:             "Gère les domaines de messagerie pour lesquels l'enregistrement des surnoms d'utilisateur est refusé.\nADD ajoute un domaine, DEL en retire un selon sa position dans la liste ou vide toute la liste,\net LIST affiche les entrées actuelles.\nLa liste ne concerne que l'enregistrement des utilisateurs ; SAREGISTER (enregistrement forcé par le personnel) n'est pas affecté.\nCette commande requiert la permission IRCop nickserv.blackmail."
+  help:             "Gère les domaines de messagerie pour lesquels l'enregistrement des surnoms d'utilisateur est refusé.\nADD ajoute un domaine, DEL en retire un selon sa position dans la liste ou vide toute la liste,\net LIST affiche les entrées actuelles.\nUn domaine bloque aussi ses sous-domaines (example.com couvre mail.example.com).\nLa liste ne concerne que l'enregistrement des utilisateurs ; SAREGISTER (enregistrement forcé par le personnel) n'est pas affecté.\nCette commande requiert la permission IRCop nickserv.blackmail."
   example:          "/msg %bot% BLACKMAIL LIST"
   added:            "\x0303✔\x03 Le domaine de messagerie \x02%domain%\x02 est désormais bloqué pour l'enregistrement."
   already_listed:   "\x0307ℹ\x03 Le domaine de messagerie \x02%domain%\x02 est déjà bloqué."
