@@ -17,7 +17,7 @@ Branch: `main` (user works directly on main). Delivery: push to `sitiochat` + `s
 
 - T1 — S1 — module: setter `UDB:password-flood`, `TKL +` via `do_cmd` + `find_tkline_match` — inline — done, deployed on the IRCd 2026-11-01 10:21 (rehash; client probe gets 001).
 - T2 — S2–S6 — Ares: inbound TKL registry, `GLINE LIST` block, `GLINE DEL` path, tests, 14 languages — inline — done: lint:container, lint:yaml, PHPStan max (src+tests), CS-Fixer, Deptrac (0 errors), `check-coverage.sh 100` = 100% (26109/26109). Commit: see git log `feat(operserv): show and remove IRCd password-flood G-Lines`.
-- T3 — S1–S6 — deploy module + Ares, live test — pending.
+- T3 — S1–S6 — deploy module + Ares, live test — done 2026-11-01: live test found `/gline -` not dropping the entry (fix `75c88c35`); all 4 live steps pass; pushed `cc08b728`+`75c88c35` to `sitiochat`.
 
 ## Log
 
@@ -25,4 +25,5 @@ Branch: `main` (user works directly on main). Delivery: push to `sitiochat` + `s
 - L2 (2026-11-01, user): «Pero entonces … habrían dos propietarios de un mismo GLINED. ¿Cómo podríamos gestionar eso para que solo haya un propietario pero que OPeR puede eliminar ese GLINED independiente de sei hago /gline -@ip?» → design: IRCd owns, Ares is a view.
 - L3: evidence — Ares ignores inbound TKL (`src/DebugServ/Adapter/In/Irc/NetworkEventTranslator.php:65`); Unreal sends all global TKLs on link (`tkl_sync`) and does not broadcast expiry (`tkl_expire_entry`); UDB only treats `UDB:managed` lines as its own (`udb.c:25096`).
 - L4 (2026-11-01 11:41, user live test): 5 wrong passwords for JuanJo_Jaen → "G-Lined: Too many failed password attempts … [ID: G2581X2NTM7]". S1 verified live. S4–S5 pending.
+- L5 (11:43): `GLINE DEL 1` removed it on the IRCd and from the list. 11:46: after `/gline -*@104.28.229.63` the entry stayed in `GLINE LIST` — on TKL - the setter field is the remover; subscriber filtered removals by setter. Fixed in `75c88c35`, redeployed. 11:56: retest → "No hay G-lines." All S verified live.
 - Engram mirror: pending (Engram tools unavailable this session).

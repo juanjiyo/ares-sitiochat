@@ -14,6 +14,6 @@ interface IrcdGlines
     /** @return list<IrcdGlineEntry> */
     public function all(): array;
 
-    /** Asks the IRCd to remove the G-Line with that exact mask; false when there is none. */
-    public function remove(string $mask): bool;
+    /** Asks the IRCd to remove the G-Line with that exact mask on behalf of $removedBy; false when there is none. */
+    public function remove(string $mask, string $removedBy): bool;
 }

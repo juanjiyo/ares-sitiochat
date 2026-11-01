@@ -283,7 +283,7 @@ final class ManageGlineHandlerTest extends TestCase
 
         self::assertSame(ManageGlineOutcome::Deleted, $result->outcome);
         self::assertSame('*@198.51.100.1', $result->mask);
-        self::assertSame(['*@198.51.100.1'], $ircd->removed);
+        self::assertSame(['*@198.51.100.1 by Oper'], $ircd->removed);
         self::assertSame([], $repository->removed);
         self::assertSame([], $network->removed);
         self::assertSame('GLINE DEL', $audit->records[0]->operation);
@@ -299,7 +299,7 @@ final class ManageGlineHandlerTest extends TestCase
             ->handle(new ManageGline(GlineAction::Delete, 'Oper', 44, new DateTimeImmutable(), '*@host.example'));
 
         self::assertSame(ManageGlineOutcome::Deleted, $result->outcome);
-        self::assertSame(['*@Host.Example'], $ircd->removed);
+        self::assertSame(['*@Host.Example by Oper'], $ircd->removed);
     }
 
     #[Test]
@@ -646,12 +646,12 @@ final class GlineTestIrcdGlines implements IrcdGlines
         return $this->entries;
     }
 
-    public function remove(string $mask): bool
+    public function remove(string $mask, string $removedBy): bool
     {
         if (!$this->removable) {
             return false;
         }
-        $this->removed[] = $mask;
+        $this->removed[] = $mask . ' by ' . $removedBy;
 
         return true;
     }

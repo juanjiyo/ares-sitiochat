@@ -13,6 +13,6 @@ interface PasswordFloodGlinePort
     /** @return list<PasswordFloodGline> active entries, oldest first */
     public function list(): array;
 
-    /** Asks the IRCd to remove the G-Line from the whole network. */
-    public function remove(PasswordFloodGline $gline): void;
+    /** Asks the IRCd to remove the G-Line from the whole network, naming who removed it. */
+    public function remove(PasswordFloodGline $gline, string $removedBy): void;
 }

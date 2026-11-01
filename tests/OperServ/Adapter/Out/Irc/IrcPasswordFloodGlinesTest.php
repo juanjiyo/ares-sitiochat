@@ -37,8 +37,9 @@ final class IrcPasswordFloodGlinesTest extends TestCase
         $match = new PasswordFloodGline('*', 'Host.Example', 'r', null);
         $port = new RecordingPasswordFloodGlinePort([new PasswordFloodGline('*', '198.51.100.1', 'r', null), $match]);
 
-        self::assertTrue(new IrcPasswordFloodGlines($port)->remove('*@host.example'));
+        self::assertTrue(new IrcPasswordFloodGlines($port)->remove('*@host.example', 'JuanJo'));
         self::assertSame([$match], $port->removed);
+        self::assertSame(['JuanJo'], $port->removedBy);
     }
 
     #[Test]
@@ -46,7 +47,7 @@ final class IrcPasswordFloodGlinesTest extends TestCase
     {
         $port = new RecordingPasswordFloodGlinePort([new PasswordFloodGline('*', '198.51.100.1', 'r', null)]);
 
-        self::assertFalse(new IrcPasswordFloodGlines($port)->remove('*@203.0.113.7'));
+        self::assertFalse(new IrcPasswordFloodGlines($port)->remove('*@203.0.113.7', 'JuanJo'));
         self::assertSame([], $port->removed);
     }
 }
@@ -56,6 +57,9 @@ final class RecordingPasswordFloodGlinePort implements PasswordFloodGlinePort
     /** @var list<PasswordFloodGline> */
     public array $removed = [];
 
+    /** @var list<string> */
+    public array $removedBy = [];
+
     /** @param list<PasswordFloodGline> $glines */
     public function __construct(private readonly array $glines) {}
 
@@ -64,8 +68,9 @@ final class RecordingPasswordFloodGlinePort implements PasswordFloodGlinePort
         return $this->glines;
     }
 
-    public function remove(PasswordFloodGline $gline): void
+    public function remove(PasswordFloodGline $gline, string $removedBy): void
     {
         $this->removed[] = $gline;
+        $this->removedBy[] = $removedBy;
     }
 }

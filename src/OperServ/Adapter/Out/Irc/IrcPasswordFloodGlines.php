@@ -26,11 +26,11 @@ final readonly class IrcPasswordFloodGlines implements IrcdGlines
         return $entries;
     }
 
-    public function remove(string $mask): bool
+    public function remove(string $mask, string $removedBy): bool
     {
         foreach ($this->glines->list() as $gline) {
             if (0 === strcasecmp($gline->mask(), $mask)) {
-                $this->glines->remove($gline);
+                $this->glines->remove($gline, $removedBy);
 
                 return true;
             }

@@ -66,9 +66,9 @@ final class InMemoryPasswordFloodGlineRegistryTest extends TestCase
         $gline = $this->gline('203.0.113.7', null);
         $registry->record($gline);
 
-        $registry->remove($gline);
+        $registry->remove($gline, 'JuanJo');
 
-        self::assertSame([':001 TKL - G * 203.0.113.7 UDB:password-flood'], $connection->lines);
+        self::assertSame([':001 TKL - G * 203.0.113.7 JuanJo'], $connection->lines);
         self::assertSame([], $registry->list());
     }
 
@@ -81,7 +81,7 @@ final class InMemoryPasswordFloodGlineRegistryTest extends TestCase
             $registry = $this->registry($connection);
             $gline = $this->gline('203.0.113.7', null);
             $registry->record($gline);
-            $registry->remove($gline);
+            $registry->remove($gline, 'JuanJo');
 
             self::assertSame([], $connection->lines);
             self::assertSame([], $registry->list());

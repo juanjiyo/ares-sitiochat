@@ -132,7 +132,7 @@ final readonly class ManageGlineHandler implements ManageGlineHandlerInterface
 
         // Not one of ours: it may be a G-Line the IRCd owns, which only the IRCd can remove.
         $ircdGline = $this->findIrcdByItem($item);
-        if (null === $ircdGline || !$this->ircdGlines->remove($ircdGline->mask)) {
+        if (null === $ircdGline || !$this->ircdGlines->remove($ircdGline->mask, $command->actor)) {
             return new ManageGlineResult(ManageGlineOutcome::NotFound, mask: $item);
         }
         $this->recordAudit($command, 'GLINE DEL', $ircdGline->mask, null);

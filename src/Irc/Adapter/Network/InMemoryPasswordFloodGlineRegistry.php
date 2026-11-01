@@ -59,11 +59,12 @@ final class InMemoryPasswordFloodGlineRegistry implements PasswordFloodGlinePort
         return array_values($this->glines);
     }
 
-    public function remove(PasswordFloodGline $gline): void
+    public function remove(PasswordFloodGline $gline, string $removedBy): void
     {
         $serverSid = $this->connection->getServerSid();
         if (null !== $serverSid && $this->connection->isConnected()) {
-            $this->connection->writeLine(sprintf(':%s TKL - G %s %s %s', $serverSid, $gline->user, $gline->host, self::SET_BY));
+            // The last TKL - field is who removed it; the IRCd shows it in its removal notice.
+            $this->connection->writeLine(sprintf(':%s TKL - G %s %s %s', $serverSid, $gline->user, $gline->host, $removedBy));
         }
 
         // The IRCd does not echo our own TKL back, so the mirror forgets it here.
