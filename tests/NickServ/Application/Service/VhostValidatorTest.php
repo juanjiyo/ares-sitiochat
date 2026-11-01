@@ -75,7 +75,19 @@ final class VhostValidatorTest extends TestCase
 
         self::assertNull($v->normalize('-leading'));
         self::assertNull($v->normalize('trailing-'));
-        self::assertNull($v->normalize('under_score'));
+        self::assertNull($v->normalize('_leading'));
+        self::assertNull($v->normalize('trailing_'));
+        self::assertNull($v->normalize('juanjo_.admin'));
+        self::assertNull($v->normalize('bad!char'));
+    }
+
+    #[Test]
+    public function acceptsUnderscoresInsideALabelAsTheIrcdDoes(): void
+    {
+        $v = new VhostValidator();
+
+        self::assertSame('juanjo_jaen.admin.sitiochat.es', $v->normalize('juanjo_jaen.admin.sitiochat.es'));
+        self::assertSame('a_b-c_d', $v->normalize('a_b-c_d'));
     }
 
     #[Test]

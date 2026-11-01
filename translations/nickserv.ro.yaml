@@ -219,11 +219,11 @@ set:
   vhost:
     syntax:         "SET VHOST [vhost]"
     short:          "Setați sau ștergeți gazda virtuală personalizată (hostname afișat)."
-    help:           "Setează un hostname personalizat pe care ceilalți îl văd când sunteți identificat.\nFolosiți \x02SET VHOST\x02 fără valoare pentru a șterge. Doar litere (a-z, A-Z), cifre, cratimă și punct;\nfără cratimă sau punct la începutul/sfârșitul niciunui bloc; max 55 de caractere. Unic per poreclă."
+    help:           "Setează un hostname personalizat pe care ceilalți îl văd când sunteți identificat.\nFolosiți \x02SET VHOST\x02 fără valoare pentru a șterge. Doar litere (a-z, A-Z), cifre, cratimă, liniuță de subliniere și punct;\nfără cratimă, liniuță de subliniere sau punct la începutul/sfârșitul niciunui bloc; max 55 de caractere. Unic per poreclă."
     example:        "/msg %bot% SET VHOST utilizatori.exemplu.com"
     success:        "\x0303✔\x03 Gazda dumneavoastră virtuală a fost setată la \x02%vhost%\x02."
     cleared:        "\x0303✔\x03 Gazda dumneavoastră virtuală a fost ștearsă."
-    invalid:        "\x0304✗\x03 Vhost invalid. Doar litere, cifre, cratimă și punct (nu la începutul/sfârșitul blocului); max 55 de caractere."
+    invalid:        "\x0304✗\x03 Vhost invalid. Doar litere, cifre, cratimă, liniuță de subliniere și punct (nu la începutul/sfârșitul blocului); max 55 de caractere."
     taken:          "\x0304✗\x03 Acel vhost este deja folosit de o altă poreclă."
     forced:         "\x0304✗\x03 Vhostul dumneavoastră este configurat automat și nu poate fi schimbat cu SET VHOST."
 

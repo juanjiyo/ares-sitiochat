@@ -219,11 +219,11 @@ set:
   vhost:
     syntax:         "SET VHOST [vhost-a]"
     short:          "Ezarri edo garbitu zure ostalari birtual pertsonalizatua (erakutsitako ostalari izena)."
-    help:           "Identifikatuta zaudenean besteek ikusten duten ostalari izen pertsonalizatu bat ezartzen du.\nErabili \x02SET VHOST\x02 baliorik gabe garbitzeko. Letrak (a-z, A-Z), digituak, marra eta puntua soilik;\nbloke baten hasieran/amaieran marra edo punturik ez; gehienez 55 karaktere. Ezizen bakoitzeko bakarra."
+    help:           "Identifikatuta zaudenean besteek ikusten duten ostalari izen pertsonalizatu bat ezartzen du.\nErabili \x02SET VHOST\x02 baliorik gabe garbitzeko. Letrak (a-z, A-Z), digituak, marra, azpimarra eta puntua soilik;\nbloke baten hasieran/amaieran marra, azpimarra edo punturik ez; gehienez 55 karaktere. Ezizen bakoitzeko bakarra."
     example:        "/msg %bot% SET VHOST erabiltzaileak.adibidea.com"
     success:        "\x0303✔\x03 Zure ostalari birtuala \x02%vhost%\x02 gisa ezarri da."
     cleared:        "\x0303✔\x03 Zure ostalari birtuala garbitu da."
-    invalid:        "\x0304✗\x03 Vhost baliogabea. Letrak, digituak, marra eta puntua soilik (ez blokearen hasieran/amaieran); gehienez 55 karaktere."
+    invalid:        "\x0304✗\x03 Vhost baliogabea. Letrak, digituak, marra, azpimarra eta puntua soilik (ez blokearen hasieran/amaieran); gehienez 55 karaktere."
     taken:          "\x0304✗\x03 Vhost hori jada beste ezizen batek erabiltzen du."
     forced:         "\x0304✗\x03 Zure vhost-a automatikoki konfiguratuta dago eta ezin da SET VHOST bidez aldatu."
 

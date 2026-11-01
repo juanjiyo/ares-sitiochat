@@ -219,11 +219,11 @@ set:
   vhost:
     syntax:         "SET VHOST [vhost]"
     short:          "Establir o esborrar el vostre amfitrió virtual personalitzat (nom d'amfitrió mostrat)."
-    help:           "Estableix un nom d'amfitrió personalitzat que els altres veuen quan esteu identificat.\nExecuteu \x02SET VHOST\x02 sense cap valor per esborrar-lo. Només lletres (a-z, A-Z), dígits, guionet i punt;\nsense guionet ni punt al principi/final de cap bloc; màx. 55 caràcters. Únic per sobrenom."
+    help:           "Estableix un nom d'amfitrió personalitzat que els altres veuen quan esteu identificat.\nExecuteu \x02SET VHOST\x02 sense cap valor per esborrar-lo. Només lletres (a-z, A-Z), dígits, guionet, guió baix i punt;\nsense guionet, guió baix ni punt al principi/final de cap bloc; màx. 55 caràcters. Únic per sobrenom."
     example:        "/msg %bot% SET VHOST usuaris.exemple.com"
     success:        "\x0303✔\x03 El vostre amfitrió virtual s'ha establert a \x02%vhost%\x02."
     cleared:        "\x0303✔\x03 El vostre amfitrió virtual s'ha esborrat."
-    invalid:        "\x0304✗\x03 Vhost no vàlid. Només lletres, dígits, guionet i punt (no al principi/final de bloc); màx. 55 caràcters."
+    invalid:        "\x0304✗\x03 Vhost no vàlid. Només lletres, dígits, guionet, guió baix i punt (no al principi/final de bloc); màx. 55 caràcters."
     taken:          "\x0304✗\x03 Aquest vhost ja està en ús per un altre sobrenom."
     forced:         "\x0304✗\x03 El vostre vhost es configura automàticament i no es pot canviar amb SET VHOST."
 

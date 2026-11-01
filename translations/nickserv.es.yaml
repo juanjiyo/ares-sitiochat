@@ -219,11 +219,11 @@ set:
   vhost:
     syntax:         "SET VHOST [vhost]"
     short:          "Establece o quita tu host virtual (hostname visible)."
-    help:           "Establece un hostname personalizado que otros ven cuando estás identificado.\nEjecuta \x02SET VHOST\x02 sin valor para quitarlo. Solo letras (a-z, A-Z), dígitos, guión y punto;\nni guión ni punto al inicio/final de cada bloque; máximo 55 caracteres. Es único por apodo."
+    help:           "Establece un hostname personalizado que otros ven cuando estás identificado.\nEjecuta \x02SET VHOST\x02 sin valor para quitarlo. Solo letras (a-z, A-Z), dígitos, guion, guion bajo y punto;\nni guion, guion bajo ni punto al inicio/final de cada bloque; máximo 55 caracteres. Es único por apodo."
     example:        "/msg %bot% SET VHOST usuarios.ejemplo.com"
     success:        "\x0303✔\x03 Tu host virtual se ha establecido a \x02%vhost%\x02."
     cleared:        "\x0303✔\x03 Tu host virtual ha sido eliminado."
-    invalid:        "\x0304✗\x03 Vhost no válido. Solo letras, dígitos, guión y punto (no al inicio/fin de bloque); máx. 55 caracteres."
+    invalid:        "\x0304✗\x03 Vhost no válido. Solo letras, dígitos, guion, guion bajo y punto (no al inicio/fin de bloque); máx. 55 caracteres."
     taken:          "\x0304✗\x03 Ese vhost ya está en uso por otro apodo."
     forced:         "\x0304✗\x03 Tu vhost está configurado automáticamente y no puede cambiarse con SET VHOST."
 

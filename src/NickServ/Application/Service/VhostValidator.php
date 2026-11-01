@@ -10,7 +10,7 @@ use function trim;
 
 /**
  * Validates and normalizes vhost (user part only, without suffix).
- * Rules: a-z A-Z 0-9; hyphen and dot allowed but not at start/end of string or of any label.
+ * Rules: a-z A-Z 0-9; hyphen, underscore and dot allowed but not at start/end of string or of any label.
  * Max length: 55 characters (vhost + "." + 7-char suffix = IRCd HOSTLEN 63).
  */
 final readonly class VhostValidator
@@ -19,10 +19,10 @@ final readonly class VhostValidator
     public const int MAX_LENGTH = 55;
 
     /**
-     * Each label: alphanumeric, optional internal hyphens. Labels separated by dots.
+     * Each label: alphanumeric, optional internal hyphens or underscores. Labels separated by dots.
      * No leading/trailing dot or hyphen on the whole string or on any label.
      */
-    private const string LABEL_PATTERN = '[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*';
+    private const string LABEL_PATTERN = '[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*';
 
     private const string VHOST_PATTERN = '/^' . self::LABEL_PATTERN . '(\\.' . self::LABEL_PATTERN . ')*$/';
 
