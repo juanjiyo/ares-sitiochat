@@ -573,3 +573,19 @@ eline:
     help:     "Borra dunha vez todas as E-Lines activas, dos servizos e do IRCd."
     example:  "/msg %bot% ELINE CLEAR"
     done:     "\x0303✓\x03 E-Lines borradas: \x02%count%\x02."
+
+# --- SET -------------------------------------------------------------------------
+set:
+  syntax:       "SET PASSPROTECT <veces:segundos>"
+  short:        "Cambia axustes de toda a rede."
+  help:         "Cambia axustes que se aplican a toda a rede.\nSó Root."
+  example:      "/msg %bot% SET PASSPROTECT 5:60"
+  unknown_sub:  "\x0304✗\x03 Subcomando descoñecido. Usa: \x02PASSPROTECT\x02"
+  passprotect:
+    syntax:     "SET PASSPROTECT <veces:segundos>"
+    short:      "Fixa o límite de contrasinais erróneos."
+    help:       "Fixa cantos contrasinais erróneos tolera o IRCd desde unha IP nun período. Ao superalo bloquea os intentos e, se está activado no IRCd, pon unha G-Line á IP.\nExemplo: 5:60 = 5 fallos en 60 segundos."
+    example:    "/msg %bot% SET PASSPROTECT 5:60"
+    done:       "\x0303✓\x03 Límite de contrasinais erróneos: \x02%value%\x02."
+    invalid:    "\x0304✗\x03 Valor non válido. Usa \x02veces:segundos\x02, ambos maiores ca cero (p. ex. \x025:60\x02)."
+    rejected:   "\x0304✗\x03 A rede rexeitou o valor."

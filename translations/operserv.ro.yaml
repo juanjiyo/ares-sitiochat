@@ -573,3 +573,19 @@ eline:
     help:     "Șterge deodată toate E-Lines active, din servicii și din IRCd."
     example:  "/msg %bot% ELINE CLEAR"
     done:     "\x0303✓\x03 E-Lines șterse: \x02%count%\x02."
+
+# --- SET -------------------------------------------------------------------------
+set:
+  syntax:       "SET PASSPROTECT <încercări:secunde>"
+  short:        "Modifică setări pentru toată rețeaua."
+  help:         "Modifică setări care se aplică întregii rețele.\nDoar Root."
+  example:      "/msg %bot% SET PASSPROTECT 5:60"
+  unknown_sub:  "\x0304✗\x03 Subcomandă necunoscută. Folosește: \x02PASSPROTECT\x02"
+  passprotect:
+    syntax:     "SET PASSPROTECT <încercări:secunde>"
+    short:      "Setează limita de parole greșite."
+    help:       "Setează câte parole greșite tolerează IRCd-ul de la un IP într-o perioadă. Peste ea blochează încercările și, dacă este activat în IRCd, pune un G-Line pe IP.\nExemplu: 5:60 = 5 eșecuri în 60 de secunde."
+    example:    "/msg %bot% SET PASSPROTECT 5:60"
+    done:       "\x0303✓\x03 Limita de parole greșite: \x02%value%\x02."
+    invalid:    "\x0304✗\x03 Valoare invalidă. Folosește \x02încercări:secunde\x02, ambele mai mari decât zero (ex. \x025:60\x02)."
+    rejected:   "\x0304✗\x03 Rețeaua a respins valoarea."

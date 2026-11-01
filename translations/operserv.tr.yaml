@@ -573,3 +573,19 @@ eline:
     help:     "Tüm etkin E-Line'ları servislerden ve IRCd'den tek seferde siler."
     example:  "/msg %bot% ELINE CLEAR"
     done:     "\x0303✓\x03 Silinen E-Line sayısı: \x02%count%\x02."
+
+# --- SET -------------------------------------------------------------------------
+set:
+  syntax:       "SET PASSPROTECT <deneme:saniye>"
+  short:        "Ağ genelindeki ayarları değiştirir."
+  help:         "Tüm ağa uygulanan ayarları değiştirir.\nYalnızca Root."
+  example:      "/msg %bot% SET PASSPROTECT 5:60"
+  unknown_sub:  "\x0304✗\x03 Bilinmeyen alt komut. Kullan: \x02PASSPROTECT\x02"
+  passprotect:
+    syntax:     "SET PASSPROTECT <deneme:saniye>"
+    short:      "Hatalı parola sınırını ayarlar."
+    help:       "IRCd'nin bir IP'den belirli bir sürede kaç hatalı parolaya izin vereceğini ayarlar. Aşılınca denemeleri engeller ve IRCd'de etkinse IP'ye G-Line uygular.\nÖrnek: 5:60 = 60 saniyede 5 hata."
+    example:    "/msg %bot% SET PASSPROTECT 5:60"
+    done:       "\x0303✓\x03 Hatalı parola sınırı: \x02%value%\x02."
+    invalid:    "\x0304✗\x03 Geçersiz değer. \x02deneme:saniye\x02 kullan, ikisi de sıfırdan büyük olmalı (ör. \x025:60\x02)."
+    rejected:   "\x0304✗\x03 Ağ değeri reddetti."

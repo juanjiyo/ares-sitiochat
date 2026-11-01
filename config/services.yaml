@@ -975,6 +975,10 @@ services:
     App\Irc\Application\Port\In\PasswordFloodGlinePort:
         alias: App\Irc\Adapter\Network\InMemoryPasswordFloodGlineRegistry
 
+    # Password brute-force threshold: UDB S::flood record.
+    App\Irc\Application\Port\In\PasswordFloodSettingPort:
+        alias: App\Irc\Adapter\Protocol\UnrealUdb\UdbPasswordFloodSetting
+
     App\Irc\Application\Port\In\BurstCompletePort:
         class: App\Irc\Adapter\ServiceBridge\CoreBurstCompleteAdapter
 
@@ -2349,6 +2353,9 @@ services:
     App\OperServ\Application\Port\Out\IrcdGlines:
         alias: App\OperServ\Adapter\Out\Irc\IrcPasswordFloodGlines
 
+    App\OperServ\Application\Port\Out\PasswordFloodSettings:
+        alias: App\OperServ\Adapter\Out\Irc\IrcPasswordFloodSettings
+
     App\OperServ\Application\Port\Out\ProtectedGlineSubjects:
         alias: App\OperServ\Adapter\Out\Projection\DoctrineProtectedGlineSubjects
 
@@ -2456,6 +2463,9 @@ services:
         alias: App\OperServ\Adapter\Out\Irc\IrcConnectedUsersDirectory
 
     App\OperServ\Adapter\In\Irc\Command\StatsCommand:
+        tags: ['operserv.command.new']
+
+    App\OperServ\Adapter\In\Irc\Command\SetCommand:
         tags: ['operserv.command.new']
 
     App\OperServ\Adapter\In\Irc\Command\IrcopsCommand:

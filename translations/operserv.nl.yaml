@@ -573,3 +573,19 @@ eline:
     help:     "Verwijdert alle actieve E-Lines in één keer, uit de services en uit de IRCd."
     example:  "/msg %bot% ELINE CLEAR"
     done:     "\x0303✓\x03 Verwijderde E-Lines: \x02%count%\x02."
+
+# --- SET -------------------------------------------------------------------------
+set:
+  syntax:       "SET PASSPROTECT <pogingen:seconden>"
+  short:        "Wijzigt netwerkbrede instellingen."
+  help:         "Wijzigt instellingen die voor het hele netwerk gelden.\nAlleen Root."
+  example:      "/msg %bot% SET PASSPROTECT 5:60"
+  unknown_sub:  "\x0304✗\x03 Onbekend subcommando. Gebruik: \x02PASSPROTECT\x02"
+  passprotect:
+    syntax:     "SET PASSPROTECT <pogingen:seconden>"
+    short:      "Stelt de limiet voor foute wachtwoorden in."
+    help:       "Stelt in hoeveel foute wachtwoorden de IRCd van één IP binnen een periode toestaat. Daarboven worden de pogingen geblokkeerd en, indien ingeschakeld op de IRCd, krijgt het IP een G-Line.\nVoorbeeld: 5:60 = 5 fouten in 60 seconden."
+    example:    "/msg %bot% SET PASSPROTECT 5:60"
+    done:       "\x0303✓\x03 Limiet voor foute wachtwoorden: \x02%value%\x02."
+    invalid:    "\x0304✗\x03 Ongeldige waarde. Gebruik \x02pogingen:seconden\x02, beide groter dan nul (bijv. \x025:60\x02)."
+    rejected:   "\x0304✗\x03 Het netwerk heeft de waarde geweigerd."

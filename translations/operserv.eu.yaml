@@ -573,3 +573,19 @@ eline:
     help:     "E-Line aktibo guztiak batera ezabatzen ditu, zerbitzuetatik eta IRCdtik."
     example:  "/msg %bot% ELINE CLEAR"
     done:     "\x0303✓\x03 Ezabatutako E-Lineak: \x02%count%\x02."
+
+# --- SET -------------------------------------------------------------------------
+set:
+  syntax:       "SET PASSPROTECT <aldiz:segundo>"
+  short:        "Sare osoko ezarpenak aldatzen ditu."
+  help:         "Sare osoari aplikatzen zaizkion ezarpenak aldatzen ditu.\nRoot soilik."
+  example:      "/msg %bot% SET PASSPROTECT 5:60"
+  unknown_sub:  "\x0304✗\x03 Azpikomando ezezaguna. Erabili: \x02PASSPROTECT\x02"
+  passprotect:
+    syntax:     "SET PASSPROTECT <aldiz:segundo>"
+    short:      "Pasahitz okerren muga ezartzen du."
+    help:       "IRCdak IP batetik epe batean onartzen dituen pasahitz oker kopurua ezartzen du. Hori gaindituz gero saiakerak blokeatzen ditu eta, IRCdan aktibatuta badago, G-Line bat jartzen dio IPari.\nAdibidea: 5:60 = 5 hutsegite 60 segundotan."
+    example:    "/msg %bot% SET PASSPROTECT 5:60"
+    done:       "\x0303✓\x03 Pasahitz okerren muga: \x02%value%\x02."
+    invalid:    "\x0304✗\x03 Balio baliogabea. Erabili \x02aldiz:segundo\x02, biak zero baino handiagoak (adib. \x025:60\x02)."
+    rejected:   "\x0304✗\x03 Sareak balioa baztertu du."

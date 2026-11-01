@@ -573,3 +573,19 @@ eline:
     help:     "Esborra de cop totes les E-Lines actives, dels serveis i de l'IRCd."
     example:  "/msg %bot% ELINE CLEAR"
     done:     "\x0303✓\x03 E-Lines esborrades: \x02%count%\x02."
+
+# --- SET -------------------------------------------------------------------------
+set:
+  syntax:       "SET PASSPROTECT <vegades:segons>"
+  short:        "Canvia ajustos de tota la xarxa."
+  help:         "Canvia ajustos que s'apliquen a tota la xarxa.\nNomés Root."
+  example:      "/msg %bot% SET PASSPROTECT 5:60"
+  unknown_sub:  "\x0304✗\x03 Subordre desconeguda. Fes servir: \x02PASSPROTECT\x02"
+  passprotect:
+    syntax:     "SET PASSPROTECT <vegades:segons>"
+    short:      "Fixa el límit de contrasenyes errònies."
+    help:       "Fixa quantes contrasenyes errònies tolera l'IRCd des d'una IP en un període. En superar-lo bloqueja els intents i, si està activat a l'IRCd, posa una G-Line a la IP.\nExemple: 5:60 = 5 errors en 60 segons."
+    example:    "/msg %bot% SET PASSPROTECT 5:60"
+    done:       "\x0303✓\x03 Límit de contrasenyes errònies: \x02%value%\x02."
+    invalid:    "\x0304✗\x03 Valor no vàlid. Fes servir \x02vegades:segons\x02, tots dos més grans que zero (p. ex. \x025:60\x02)."
+    rejected:   "\x0304✗\x03 La xarxa ha rebutjat el valor."
