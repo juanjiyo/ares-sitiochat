@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\OperServ\Application\Service;
 
 use App\OperServ\Application\Port\In\OperatorPermissionCatalog;
+use App\OperServ\Application\Port\Out\OperatorRoleNetworkProjection;
 use App\OperServ\Application\Port\Out\OperatorRoleStore;
 use App\OperServ\Domain\ValueObject\StaffRank;
 
@@ -31,6 +32,7 @@ final readonly class StaffRankRoleSync
     public function __construct(
         private OperatorRoleStore $roles,
         private OperatorPermissionCatalog $catalog,
+        private OperatorRoleNetworkProjection $network,
         private string $vhostDomain,
     ) {}
 
@@ -38,12 +40,22 @@ final readonly class StaffRankRoleSync
     {
         foreach (StaffRank::cases() as $rank) {
             $name = $rank->value;
-            if (null === $this->roles->findByName($name)) {
+            $vhost = $rank->vhostLabel() . '.' . $this->vhostDomain;
+            $existing = $this->roles->findByName($name);
+            if (null === $existing) {
                 $this->roles->create($name, self::DESCRIPTIONS[$name]);
             }
             $this->roles->setPermissions($name, $this->permissionsFor($rank));
             $this->roles->setOperclass($name, $rank->operclass());
-            $this->roles->setForcedVhostPattern($name, $rank->vhostLabel() . '.' . $this->vhostDomain);
+            $this->roles->setForcedVhostPattern($name, $vhost);
+
+            // Operators already holding an existing role get the changed settings on the network.
+            if (null !== $existing && $existing->operclass !== $rank->operclass()) {
+                $this->network->refreshOperclass($existing->id, $rank->operclass());
+            }
+            if (null !== $existing && $existing->forcedVhostPattern !== $vhost) {
+                $this->network->refreshVhost($existing->id, $vhost);
+            }
         }
     }
 

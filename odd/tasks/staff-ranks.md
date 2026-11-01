@@ -20,9 +20,10 @@ Branch: `main`. Delivery: deploy to VPS (`scripts/vps-deploy.sh`), user tests li
 
 Design: keep the role/assignment model (`oper_roles`, `oper_ircops`, permissions) and the existing `ManageIrcopHandler` (registration check, assignment, network apply of operclass/modes/vhost, audit); the four ranks become code-defined roles named PREOPER/OPER/ADMIN/ROOT, synced into the role store on every link (the existing `ROOT` role and its 2 IRCops become the ROOT rank). Management permissions: `operserv.staff` (manage PREOPER/OPER, granted to ADMIN), `operserv.staff.admin` (manage ADMIN, granted to ROOT); managing ROOT requires the configured main Root; SET requires new `operserv.set` (granted to ROOT). Vhost pattern `<rank>.sitiochat.es` → `<nick>.<rank>.sitiochat.es`.
 
-- T1 — S2, S4, S5 — `StaffRank` (operclass, vhost, cumulative permissions; ROOT = whole catalog), role sync on link, new permissions, SET → `operserv.set` — inline — pending.
-- T2 — S1, S3, S6 — `PREOPER|OPER|ADMIN|ROOT ADD|DEL|LIST <nick>` on top of `ManageIrcopHandler`; reject a nick that is already staff; help group; 14 locales — inline — pending.
-- T3 — S1 — remove `IRCOP` and `ROLE` commands (and the `ManageRole` use case, its texts and tests) — inline — pending.
+- T1 — S2, S4, S5 — `StaffRank` (operclass, vhost, cumulative permissions; ROOT = whole catalog), role sync on link, new permissions, SET → `operserv.set` — inline — done `19379f97`.
+- T2 — S1, S3, S6 — `PREOPER|OPER|ADMIN|ROOT ADD|DEL|LIST <nick>` on top of `ManageIrcopHandler`; reject a nick that is already staff; help group; 14 locales — inline — done `4a17f9d6`.
+- T3 — S1 — remove `IRCOP` and `ROLE` commands (and the `ManageRole` use case, its texts and tests) — inline — done (see git log `refactor(operserv): remove IRCOP and ROLE`); also removed the ROLE-only ports/adapters, kept and trimmed `OperatorRoleNetworkProjection` (refreshVhost/refreshOperclass) so the rank sync applies changed vhost/operclass to existing holders.
+- T4 — S1–S6 — deploy, live test, push — pending.
 
 ## Log
 

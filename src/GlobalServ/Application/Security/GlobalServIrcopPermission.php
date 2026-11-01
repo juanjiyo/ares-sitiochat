@@ -8,7 +8,7 @@ use App\OperServ\Application\Security\PermissionProviderInterface;
 
 /**
  * Registers the GlobalServ IRCop permissions in the shared operclass catalog so
- * they can be assigned with ROLE PERMS and listed alongside the other services.
+ * they are part of the permission catalog the staff ranks are built from.
  */
 final readonly class GlobalServIrcopPermission implements PermissionProviderInterface
 {

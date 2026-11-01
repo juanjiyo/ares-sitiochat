@@ -6,32 +6,27 @@ namespace App\Tests\OperServ\Adapter\Out\Projection;
 
 use App\Irc\Application\Port\In\ActiveProtocolModuleHolderInterface;
 use App\Irc\Application\Port\In\NetworkUserLookupPort;
-use App\Irc\Application\Port\In\ProtocolModuleInterface;
-use App\Irc\Application\Port\In\ProtocolServiceActionsInterface;
 use App\NickServ\Adapter\In\Irc\NickServNotifierInterface;
 use App\NickServ\Adapter\Out\InMemory\IdentifiedSessionRegistry;
 use App\NickServ\Application\Port\In\NickProjectionQuery;
 use App\NickServ\Application\Service\VhostDisplayResolver;
 use App\OperServ\Adapter\In\Event\ForcedVhostApplier;
-use App\OperServ\Adapter\In\Event\IrcopModeApplier;
 use App\OperServ\Adapter\In\Event\IrcopOperclassApplier;
 use App\OperServ\Adapter\Out\Projection\DoctrineOperatorRoleNetworkProjection;
 use App\OperServ\Application\PublishedEvent\OperRoleForcedVhostChangedEvent;
 use App\OperServ\Domain\Repository\OperIrcopRepositoryInterface;
 use App\Shared\Application\Port\EventBusInterface;
-use App\Tests\OperServ\Adapter\In\Event\RecordingOperclassActions;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
-use ReflectionClass;
 
 #[CoversClass(DoctrineOperatorRoleNetworkProjection::class)]
 #[CoversClass(OperRoleForcedVhostChangedEvent::class)]
 final class DoctrineOperatorRoleNetworkProjectionTest extends TestCase
 {
     #[Test]
-    public function refreshesEachProjectedRoleSetting(): void
+    public function refreshesTheVhostAndOperclassOfTheRoleHolders(): void
     {
         $connection = $this->createStub(ActiveProtocolModuleHolderInterface::class);
         $operators = $this->createStub(OperIrcopRepositoryInterface::class);
@@ -44,14 +39,6 @@ final class DoctrineOperatorRoleNetworkProjectionTest extends TestCase
                 && 'staff.example.net' === $event->pattern,
         ));
         $projection = new DoctrineOperatorRoleNetworkProjection(
-            new IrcopModeApplier(
-                $sessions,
-                $connection,
-                $operators,
-                $nicks,
-                $this->createStub(NetworkUserLookupPort::class),
-                new NullLogger(),
-            ),
             new ForcedVhostApplier(
                 $operators,
                 $nicks,
@@ -63,64 +50,10 @@ final class DoctrineOperatorRoleNetworkProjectionTest extends TestCase
                 new NullLogger(),
             ),
             new IrcopOperclassApplier($sessions, $connection, $operators, $nicks),
-            $connection,
             $events,
         );
 
-        $projection->refreshModes(7, [], []);
         $projection->refreshVhost(7, 'staff.example.net');
         $projection->refreshOperclass(7, 'netadmin');
-    }
-
-    #[Test]
-    public function reportsAnUnsupportedProtocolSeparatelyFromItsMissingCatalog(): void
-    {
-        $actions = $this->createStub(ProtocolServiceActionsInterface::class);
-        $projection = $this->projection($actions);
-
-        self::assertFalse($projection->supportsOperclass());
-        self::assertNull($projection->availableOperclasses());
-    }
-
-    #[Test]
-    public function preservesANullCatalogForAProtocolThatSupportsOperclasses(): void
-    {
-        $actions = new RecordingOperclassActions();
-        $actions->availableOperclasses = null;
-        $projection = $this->projection($actions);
-
-        self::assertTrue($projection->supportsOperclass());
-        self::assertNull($projection->availableOperclasses());
-    }
-
-    #[Test]
-    public function exposesTheCatalogFromASupportedProtocol(): void
-    {
-        $actions = new RecordingOperclassActions();
-        $actions->availableOperclasses = ['locop', 'netadmin'];
-        $projection = $this->projection($actions);
-
-        self::assertTrue($projection->supportsOperclass());
-        self::assertSame(['locop', 'netadmin'], $projection->availableOperclasses());
-    }
-
-    private function projection(ProtocolServiceActionsInterface $actions): DoctrineOperatorRoleNetworkProjection
-    {
-        $module = $this->createStub(ProtocolModuleInterface::class);
-        $module->method('getServiceActions')->willReturn($actions);
-        $connection = $this->createStub(ActiveProtocolModuleHolderInterface::class);
-        $connection->method('getProtocolModule')->willReturn($module);
-
-        $modes = new ReflectionClass(IrcopModeApplier::class)->newInstanceWithoutConstructor();
-        $vhost = new ReflectionClass(ForcedVhostApplier::class)->newInstanceWithoutConstructor();
-        $operclass = new ReflectionClass(IrcopOperclassApplier::class)->newInstanceWithoutConstructor();
-
-        return new DoctrineOperatorRoleNetworkProjection(
-            $modes,
-            $vhost,
-            $operclass,
-            $connection,
-            $this->createStub(EventBusInterface::class),
-        );
     }
 }

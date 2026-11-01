@@ -99,7 +99,7 @@ Offline messaging for users and channels. SEND notes that are delivered on next 
 
 ### OperServ
 
-IRC operator management with a role-based permission system. **IRCOP** ADD/DEL/LIST for registering IRC operators assigned to roles. **ROLE** system (ADD/DEL/LIST) with **PERMS** subcommand for fine-grained permissions (LIST/ADD/DEL/CLEAR with ALL shortcut), **MODES** for IRCOP user modes, and **VHOST** for forced vhost patterns. Protected default roles (ADMIN, OPER, PREOPER). Role **OPERCLASS** configuration is available on Unreal protocols. Permissions auto-register from code into the database on first use. **GLINE** network-wide bans with duration and expiry. **MOTD** system (add/del/list/clean messages per bot with expiry). **GLOBAL** notices, **KILL** (force-disconnect), and **RAW** (arbitrary IRC command injection). Configurable **root users** have unrestricted access.
+Staff management by rank, as in the dbots CeNTeR module: **PREOPER**, **OPER**, **ADMIN** and **ROOT** (netadmin), each with ADD/DEL/LIST. ADD gives a registered nick the rank with its permissions (cumulative: each rank has its own plus every lower rank's; ROOT has all), its operclass (locop, globop, admin, netadmin) and the forced vhost `<nick>.<rank>.<domain>` (`OPERSERV_STAFF_VHOST_DOMAIN`, default `sitiochat.es`); DEL removes all of it. The rank roles are defined in code and synced into the database on every link. PREOPER and OPER are managed with `operserv.staff` (ADMIN rank), ADMIN with `operserv.staff.admin` (ROOT rank) and ROOT only by the configured main Root. **GLINE** network-wide bans with duration and expiry. **MOTD** system (add/del/list/clean messages per bot with expiry). **GLOBAL** notices, **KILL** (force-disconnect), and **RAW** (arbitrary IRC command injection). Configurable **root users** have unrestricted access.
 
 ---
 
@@ -447,10 +447,8 @@ Channel settings use `SET <#channel> <option> [value]` (channel before option).
 | `HISTORY` | `<#channel> {ADD\|DEL\|VIEW\|CLEAR} [args]` | Manage history; VIEW accepts a page number or ALL |
 | `HELP` | `[command [option]]` | Show command help |
 
-`IRCOPONLY` appears in ChanServ's IRCop `HELP` section for identified operators whose role has
-`chanserv.ircoponly`. A Root user can grant it with
-`/msg OperServ ROLE PERMS <role> ADD chanserv.ircoponly` and inspect a role with
-`/msg OperServ ROLE PERMS <role> LIST`. Identified Root users have this permission automatically.
+`IRCOPONLY` appears in ChanServ's IRCop `HELP` section for identified operators whose staff rank has
+`chanserv.ircoponly` (ADMIN and ROOT). Identified Root users have this permission automatically.
 
 ### MemoServ
 
@@ -469,16 +467,10 @@ Channel settings use `SET <#channel> <option> [value]` (channel before option).
 
 | Command | Parameters | Description |
 |---------|------------|-------------|
-| `IRCOP ADD` | `<nick> <role>` | Add an IRC operator |
-| `IRCOP DEL` | `<nick>` | Remove an IRC operator |
-| `IRCOP LIST` | | List registered IRC operators |
-| `ROLE ADD` | `<name> [description]` | Create a new role |
-| `ROLE DEL` | `<name>` | Delete a role |
-| `ROLE LIST` | | List all roles |
-| `ROLE PERMS` | `<role> {LIST\|ADD\|DEL\|CLEAR} [permission\|ALL]` | Manage role permissions |
-| `ROLE MODES` | `<role> {VIEW\|SET} [modes]` | Manage IRCOP user modes for a role |
-| `ROLE VHOST` | `<role> {VIEW\|SET} [pattern]` | Manage forced vhost pattern for a role |
-| `ROLE OPERCLASS` | `{LIST\|<role>} [{VIEW\|SET}] [operclass]` | Manage role operclasses (Unreal protocols only) |
+| `PREOPER` | `{ADD\|DEL\|LIST} [nick]` | Manage Pre-Operators (`operserv.staff`) |
+| `OPER` | `{ADD\|DEL\|LIST} [nick]` | Manage Operators (`operserv.staff`) |
+| `ADMIN` | `{ADD\|DEL\|LIST} [nick]` | Manage Administrators (`operserv.staff.admin`) |
+| `ROOT` | `{ADD\|DEL\|LIST} [nick]` | Manage Roots / netadmin (configured main Root only) |
 | `GLINE` | `{ADD\|DEL\|LIST} [mask] [expiry] [reason]` | Manage G-lines |
 | `MOTD ADD` | `{service\|nick!ident@vhost} {PRIVMSG\|NOTICE} <expiry> <message>` | Add a MOTD message |
 | `MOTD DEL` | `<id>` | Delete a MOTD message |

@@ -2399,9 +2399,6 @@ services:
     App\OperServ\Application\Port\Out\OperatorRoleStore:
         alias: App\OperServ\Adapter\Out\Projection\DoctrineOperatorRoleStore
 
-    App\OperServ\Adapter\In\Irc\Command\IrcopCommand:
-        tags: ['operserv.command.new']
-
     operserv.command.staff_preoper:
         class: App\OperServ\Adapter\In\Irc\Command\StaffRankCommand
         arguments:
@@ -2426,26 +2423,8 @@ services:
             $rank: !php/enum App\OperServ\Domain\ValueObject\StaffRank::ROOT
         tags: ['operserv.command.new']
 
-    App\OperServ\Application\UseCase\ManageRole\ManageRoleHandlerInterface:
-        alias: App\OperServ\Application\UseCase\ManageRole\ManageRoleHandler
-
-    App\OperServ\Application\Port\Out\OperatorPermissionCatalog:
-        alias: App\OperServ\Adapter\Out\Irc\IrcOperatorPermissionCatalog
-
-    App\Irc\Application\Port\In\NetworkPermissionCatalog:
-        alias: App\Irc\Adapter\Out\Security\RegisteredNetworkPermissionCatalog
-
     App\OperServ\Application\Port\Out\OperatorRoleNetworkProjection:
         alias: App\OperServ\Adapter\Out\Projection\DoctrineOperatorRoleNetworkProjection
-
-    App\OperServ\Application\Port\Out\OperatorModeCatalog:
-        alias: App\OperServ\Adapter\Out\Projection\DoctrineOperatorModeCatalog
-
-    App\OperServ\Application\Port\Out\ForcedVhostPolicy:
-        alias: App\OperServ\Adapter\Out\Projection\DoctrineForcedVhostPolicy
-
-    App\OperServ\Adapter\In\Irc\Command\RoleCommand:
-        tags: ['operserv.command.new']
 
     App\OperServ\Application\Port\Out\NetworkUserLookup:
         alias: App\OperServ\Adapter\Out\Irc\IrcNetworkUserLookup

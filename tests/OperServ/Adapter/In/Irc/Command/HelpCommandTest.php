@@ -291,7 +291,7 @@ final class HelpCommandTest extends TestCase
 
         $command->execute($this->context(
             [],
-            [new HelpFixtureCommand('ROLE')],
+            [new HelpFixtureCommand('STATS')],
             $notifier,
             $this->authorization(true),
             $translation,
@@ -304,7 +304,7 @@ final class HelpCommandTest extends TestCase
             explode("\n", $generalHelp)[0],
         );
         self::assertStringContainsString(
-            "    \x0310›\x03\x0F \x02\x0303ROLE        \x03\x0FManage operator roles.",
+            "    \x0310›\x03\x0F \x02\x0303STATS       \x03\x0FShow network statistics.",
             $generalHelp,
         );
 

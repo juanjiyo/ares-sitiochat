@@ -7,6 +7,7 @@ namespace App\Tests\OperServ\Application\Service;
 use App\Irc\Application\PublishedEvent\NetworkSynchronizationCompletedEvent;
 use App\OperServ\Adapter\In\Event\OperServStaffRankSyncSubscriber;
 use App\OperServ\Application\Port\In\OperatorPermissionCatalog;
+use App\OperServ\Application\Port\Out\OperatorRoleNetworkProjection;
 use App\OperServ\Application\Port\Out\OperatorRoleRecord;
 use App\OperServ\Application\Port\Out\OperatorRoleStore;
 use App\OperServ\Application\Service\StaffRankRoleSync;
@@ -14,8 +15,6 @@ use App\OperServ\Domain\ValueObject\StaffRank;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-
-use function in_array;
 
 #[CoversClass(StaffRankRoleSync::class)]
 #[CoversClass(OperServStaffRankSyncSubscriber::class)]
@@ -29,9 +28,10 @@ final class StaffRankRoleSyncTest extends TestCase
     #[Test]
     public function createsMissingRolesAndKeepsExistingOnesAlignedWithTheLadder(): void
     {
-        $store = new SyncRecordingRoleStore(['ROOT']);
+        $store = new SyncRecordingRoleStore(['ROOT' => ['netadmin', null]]);
+        $projection = new SyncRecordingProjection();
 
-        $this->sync($store)->sync();
+        $this->sync($store, $projection)->sync();
 
         self::assertSame(['PREOPER', 'OPER', 'ADMIN'], array_column($store->created, 0));
         self::assertSame(['Pre-Operador', 'Operador', 'Administrador'], array_column($store->created, 1));
@@ -48,6 +48,20 @@ final class StaffRankRoleSyncTest extends TestCase
             'ADMIN' => 'admin.sitiochat.es',
             'ROOT' => 'root.sitiochat.es',
         ], $store->vhosts);
+        // Only the existing ROOT role changed on the network (its vhost); new roles have no holders yet.
+        self::assertSame([[4, 'root.sitiochat.es']], $projection->vhosts);
+        self::assertSame([], $projection->operclasses);
+    }
+
+    #[Test]
+    public function refreshesTheHoldersOfAnExistingRoleWhoseOperclassChanged(): void
+    {
+        $projection = new SyncRecordingProjection();
+
+        $this->sync(new SyncRecordingRoleStore(['OPER' => ['locop', 'oper.sitiochat.es']]), $projection)->sync();
+
+        self::assertSame([[2, 'globop']], $projection->operclasses);
+        self::assertSame([], $projection->vhosts);
     }
 
     #[Test]
@@ -64,22 +78,30 @@ final class StaffRankRoleSyncTest extends TestCase
     #[Test]
     public function runsOnceTheLinkIsSynced(): void
     {
-        $store = new SyncRecordingRoleStore(['PREOPER', 'OPER', 'ADMIN', 'ROOT']);
-        $subscriber = new OperServStaffRankSyncSubscriber($this->sync($store));
+        $store = new SyncRecordingRoleStore([
+            'PREOPER' => ['locop', 'preoper.sitiochat.es'],
+            'OPER' => ['globop', 'oper.sitiochat.es'],
+            'ADMIN' => ['admin', 'admin.sitiochat.es'],
+            'ROOT' => ['netadmin', 'root.sitiochat.es'],
+        ]);
+        $projection = new SyncRecordingProjection();
+        $subscriber = new OperServStaffRankSyncSubscriber($this->sync($store, $projection));
 
         self::assertSame([NetworkSynchronizationCompletedEvent::class => ['onSyncComplete', -30]], OperServStaffRankSyncSubscriber::getSubscribedEvents());
         $subscriber->onSyncComplete(new NetworkSynchronizationCompletedEvent('001'));
 
         self::assertSame([], $store->created);
         self::assertCount(4, $store->operclasses);
+        self::assertSame([], $projection->vhosts);
+        self::assertSame([], $projection->operclasses);
     }
 
-    private function sync(SyncRecordingRoleStore $store): StaffRankRoleSync
+    private function sync(SyncRecordingRoleStore $store, ?SyncRecordingProjection $projection = null): StaffRankRoleSync
     {
         $catalog = $this->createStub(OperatorPermissionCatalog::class);
         $catalog->method('getAllPermissions')->willReturn(self::CATALOG);
 
-        return new StaffRankRoleSync($store, $catalog, 'sitiochat.es');
+        return new StaffRankRoleSync($store, $catalog, $projection ?? new SyncRecordingProjection(), 'sitiochat.es');
     }
 }
 
@@ -97,12 +119,14 @@ final class SyncRecordingRoleStore implements OperatorRoleStore
     /** @var array<string, ?string> */
     public array $vhosts = [];
 
-    /** @param list<string> $existing */
+    private const array IDS = ['PREOPER' => 1, 'OPER' => 2, 'ADMIN' => 3, 'ROOT' => 4];
+
+    /** @param array<string, array{?string, ?string}> $existing role => [operclass, vhost pattern] */
     public function __construct(private array $existing = []) {}
 
     public function findByName(string $name): ?OperatorRoleRecord
     {
-        return in_array($name, $this->existing, true) ? $this->record($name) : null;
+        return isset($this->existing[$name]) ? $this->record($name) : null;
     }
 
     public function all(): array
@@ -113,7 +137,7 @@ final class SyncRecordingRoleStore implements OperatorRoleStore
     public function create(string $name, string $description): OperatorRoleRecord
     {
         $this->created[] = [$name, $description];
-        $this->existing[] = $name;
+        $this->existing[$name] = [null, null];
 
         return $this->record($name);
     }
@@ -139,6 +163,27 @@ final class SyncRecordingRoleStore implements OperatorRoleStore
 
     private function record(string $name): OperatorRoleRecord
     {
-        return new OperatorRoleRecord(1, $name, '', false);
+        [$operclass, $vhost] = $this->existing[$name];
+
+        return new OperatorRoleRecord(self::IDS[$name], $name, '', false, forcedVhostPattern: $vhost, operclass: $operclass);
+    }
+}
+
+final class SyncRecordingProjection implements OperatorRoleNetworkProjection
+{
+    /** @var list<array{int, ?string}> */
+    public array $vhosts = [];
+
+    /** @var list<array{int, ?string}> */
+    public array $operclasses = [];
+
+    public function refreshVhost(int $roleId, ?string $pattern): void
+    {
+        $this->vhosts[] = [$roleId, $pattern];
+    }
+
+    public function refreshOperclass(int $roleId, ?string $operclass): void
+    {
+        $this->operclasses[] = [$roleId, $operclass];
     }
 }
