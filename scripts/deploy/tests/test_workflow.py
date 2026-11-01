@@ -27,7 +27,9 @@ class WorkflowTests(unittest.TestCase):
         conditions = [line.strip() for line in deploy_settings.splitlines()
                       if line.startswith('    if:')]
         # Keep GitHub's implicit success() guard; never allow always()/failure().
-        self.assertEqual(["if: github.event_name == 'push' && github.ref == 'refs/heads/main'"],
+        # Only the upstream repository has the self-hosted ares-deploy runner;
+        # forks deploy with scripts/vps-deploy.sh and would queue forever.
+        self.assertEqual(["if: github.repository == 'davidlig/ares-irc-services' && github.event_name == 'push' && github.ref == 'refs/heads/main'"],
                          conditions)
 
     def test_deploy_gates_and_isolation(self):

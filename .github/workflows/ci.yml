@@ -180,7 +180,8 @@ jobs:
 
   deploy:
     name: Deploy Ares IRC Services
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # Only upstream has the ares-deploy runner; forks deploy with scripts/vps-deploy.sh.
+    if: github.repository == 'davidlig/ares-irc-services' && github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: [test, migrations]
     runs-on: [self-hosted, linux, x64, ares-deploy]
     timeout-minutes: 35
