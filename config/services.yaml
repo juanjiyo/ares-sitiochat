@@ -181,6 +181,11 @@ parameters:
     # Domain of the staff rank vhosts: <nick>.<rank>.<domain> (e.g. pedro.oper.sitiochat.es).
     operserv.staff_vhost_domain_default: 'sitiochat.es'
     operserv.staff_vhost_domain: '%env(string:default:operserv.staff_vhost_domain_default:OPERSERV_STAFF_VHOST_DOMAIN)%'
+    # Channels a removed staff member is parted from (SVSPART); ADMIN and ROOT also leave the admin channels.
+    operserv.staff_channels_default: '#OPers,#DeBuG'
+    operserv.staff_channels: '%env(string:default:operserv.staff_channels_default:OPERSERV_STAFF_CHANNELS)%'
+    operserv.admin_channels_default: '#ADMINs'
+    operserv.admin_channels: '%env(string:default:operserv.admin_channels_default:OPERSERV_ADMIN_CHANNELS)%'
     operserv.max_glines_default: 1000
     operserv.max_glines: '%env(int:default:operserv.max_glines_default:OPERSERV_MAX_GLINES)%'
     # OPeR JAIL: channel jailed users are kept in
@@ -2395,6 +2400,11 @@ services:
 
     App\OperServ\Application\Port\Out\OperatorAssignmentNetworkProjection:
         alias: App\OperServ\Adapter\Out\Projection\DoctrineOperatorAssignmentNetworkProjection
+
+    App\OperServ\Adapter\Out\Projection\DoctrineOperatorAssignmentNetworkProjection:
+        arguments:
+            $staffChannels: '%operserv.staff_channels%'
+            $adminChannels: '%operserv.admin_channels%'
 
     App\OperServ\Application\Port\Out\OperatorRoleStore:
         alias: App\OperServ\Adapter\Out\Projection\DoctrineOperatorRoleStore
