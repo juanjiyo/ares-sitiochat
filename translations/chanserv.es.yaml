@@ -12,7 +12,7 @@ error:
   invalid_channel: "\x0304✗\x03 Nombre de canal no válido. Usa \x02#canal\x02."
   channel_not_registered: "\x0304✗\x03 El canal \x02%channel%\x02 no está registrado."
   generic:        "\x0304✗\x03 Ocurrió un error. Inténtalo de nuevo."
-  nick_not_registered: "\x0304✗\x03 El apodo \x02%nickname%\x02 no está registrado."
+  nick_not_registered: "\x0304✗\x03 El nick \x02%nickname%\x02 no está registrado."
   insufficient_access: "\x0304✗\x03 Acceso insuficiente para \x02%operation%\x02 en el canal \x02%channel%\x02."
   mail_failed: "\x0304✗\x03 No se pudo enviar el correo. Inténtalo más tarde."
 
@@ -95,19 +95,19 @@ help:
   ircop_header: "\x02 ■ Comandos disponibles para IRCops:\x02"
 
 op:
-  syntax:           "OP <#canal> <apodo>"
+  syntax:           "OP <#canal> <nick>"
   short:            "Dar modo operador en el canal."
   help:             "Dar modo operador en el canal."
-  example:          "/msg %bot% OP #canal apodo"
+  example:          "/msg %bot% OP #canal nick"
   done:             "\x0303✔\x03 \x02%nickname%\x02 ha recibido estatus de operador de canal."
-  user_not_on_channel: "\x0304✗\x03 El apodo \x02%nickname%\x02 no está en la red."
+  user_not_on_channel: "\x0304✗\x03 El nick \x02%nickname%\x02 no está en la red."
   notice_grant:     "\x0303✔\x03 \x0302%from%\x03 da \x0304%mode%\x03 a \x0314%to%\x03"
 
 deop:
-  syntax:           "DEOP <#canal> <apodo>"
+  syntax:           "DEOP <#canal> <nick>"
   short:            "Quitar modo operador en el canal."
   help:             "Quitar modo operador en el canal."
-  example:          "/msg %bot% DEOP #canal apodo"
+  example:          "/msg %bot% DEOP #canal nick"
   done:             "\x0303✔\x03 \x02%nickname%\x02 ha sido deopado."
 
 secure:
@@ -120,8 +120,8 @@ set:
   example:          "/msg %bot% SET #canal DESC un lugar para charlar"
   unknown_option:   "\x0304✗\x03 Opción desconocida \x02%option%\x02. Usa una de: %options%."
   founder:
-    syntax:         "SET <#canal> FOUNDER <apodo> [token]"
-    short:          "Transferir canal a otro apodo registrado."
+    syntax:         "SET <#canal> FOUNDER <nick> [token]"
+    short:          "Transferir canal a otro nick registrado."
     help:           "Sin token: envía un token al email del fundador actual. Con token: completa la transferencia."
     token_sent:     "\x0303✔\x03 Se ha enviado un token de cambio de fundador a %email_hint%."
     invalid_token:  "\x0304✗\x03 Token inválido o expirado."
@@ -135,9 +135,9 @@ set:
     limit_exceeded: "\x0304✗\x03 \x02%nickname%\x02 ha alcanzado el máximo de %max% canales registrados."
     notice_channel:   "\x02%from%\x02 asigna como fundador del canal a \x02%nickname%\x02."
   successor:
-    syntax:         "SET <#canal> SUCCESSOR [apodo]"
+    syntax:         "SET <#canal> SUCCESSOR [nick]"
     short:          "Establecer el sucesor del canal."
-    help:           "Asigna un apodo como sucesor de un canal. Si no se establece un apodo borra el actual. El apodo debe estar registrado y activado."
+    help:           "Asigna un nick como sucesor de un canal. Si no se establece un nick borra el actual. El nick debe estar registrado y activado."
     cleared:        "\x0303✔\x03 Sucesor borrado."
     updated:        "\x0303✔\x03 Sucesor establecido en \x02%nickname%\x02."
     must_be_registered: "\x0304✗\x03 \x02%nickname%\x02 debe estar registrado y activado."
@@ -219,39 +219,39 @@ set:
   secure:
     syntax:         "SET <#canal> SECURE {ON|OFF}"
     short:          "Exigir rangos de canal solo a lista de acceso."
-    help:           "Bloquea la posibilidad de asignar rangos en el canal a apodos que no estén en la lista de acceso."
+    help:           "Bloquea la posibilidad de asignar rangos en el canal a nicks que no estén en la lista de acceso."
     on:             "\x0303✔\x03 SECURE activado."
     off:            "\x0303✔\x03 SECURE desactivado."
     notice_on:      "\x0303✔\x03 \x0302%nickname%\x03 activa el modo SECURE."
     notice_off:     "\x0304✗\x03 \x0302%nickname%\x03 desactiva el modo SECURE."
 
 access:
-  syntax:           "ACCESS <#canal> {ADD|DEL|LIST} [apodo] [nivel]"
+  syntax:           "ACCESS <#canal> {ADD|DEL|LIST} [nick] [nivel]"
   short:            "Gestionar lista de acceso."
-  help:             "LIST: mostrar lista (apodo y nivel por entrada). ADD: añadir o actualizar nivel de un apodo (1-499). DEL: quitar un apodo de la lista. Usa \x0303HELP ACCESS <opción>\x03 para cada una."
-  example:          "/msg %bot% ACCESS #canal ADD apodo 10"
+  help:             "LIST: mostrar lista (nick y nivel por entrada). ADD: añadir o actualizar nivel de un nick (1-499). DEL: quitar un nick de la lista. Usa \x0303HELP ACCESS <opción>\x03 para cada una."
+  example:          "/msg %bot% ACCESS #canal ADD nick 10"
   unknown_sub:      "\x0304✗\x03 Subcomando desconocido \x02%sub%\x02. Usa LIST, ADD o DEL."
   level_range:      "\x0304✗\x03 El nivel de acceso debe estar entre %min% y %max%."
-  cannot_manage_level: "\x0304✗\x03 Solo puedes gestionar apodos con nivel estrictamente menor al tuyo."
+  cannot_manage_level: "\x0304✗\x03 Solo puedes gestionar nicks con nivel estrictamente menor al tuyo."
   founder_not_in_list: "\x0304✗\x03 El fundador no está en la lista de acceso."
   max_entries:      "\x0304✗\x03 Máximo %max% entradas de acceso por canal."
   list:
     syntax:         "ACCESS <#canal> LIST"
     short:          "Listar lista de acceso (requiere nivel ACCESSLIST)."
-    help:           "Muestra apodo y nivel de cada entrada."
+    help:           "Muestra nick y nivel de cada entrada."
     header:         "\x0303Lista de acceso de \x02%channel%\x02\x03"
     empty:          "\x0307ℹ\x03 El canal \x02%channel%\x02 no tiene entradas de acceso."
     entry:          "  #%index%: %nickname% (nivel %level%)"
   add:
-    syntax:         "ACCESS <#canal> ADD <apodo> <nivel>"
+    syntax:         "ACCESS <#canal> ADD <nick> <nivel>"
     short:          "Añadir o actualizar nivel (requiere nivel ACCESSCHANGE)."
     help:           "Nivel 1-499. Solo puedes asignar niveles por debajo del tuyo."
     done:           "\x0303✔\x03 \x02%nickname%\x02 establecido a nivel %level%."
     notice_channel: "\x0303✔\x03 \x0302%from%\x03 establece a \x0314%to%\x03 a nivel \x0304%level%\x03"
   del:
-    syntax:         "ACCESS <#canal> DEL <apodo>"
+    syntax:         "ACCESS <#canal> DEL <nick>"
     short:          "Quitar de la lista (requiere nivel ACCESSCHANGE)."
-    help:           "Solo puedes quitar apodos con nivel menor al tuyo."
+    help:           "Solo puedes quitar nicks con nivel menor al tuyo."
     not_in_list:    "\x0304✗\x03 \x02%nickname%\x02 no está en la lista de acceso."
     done:           "\x0303✔\x03 \x02%nickname%\x02 eliminado de la lista de acceso."
     notice_channel: "\x0304✗\x03 \x0302%from%\x03 quita a \x0314%to%\x03 de la lista de acceso"
@@ -291,19 +291,19 @@ levels:
     done:           "\x0303✔\x03 Niveles restaurados por defecto."
 
 voice:
-  syntax:           "VOICE <#canal> <apodo>"
+  syntax:           "VOICE <#canal> <nick>"
   short:            "Dar modo voz en el canal."
   help:             "Dar modo voz en el canal."
-  example:          "/msg %bot% VOICE #canal apodo"
+  example:          "/msg %bot% VOICE #canal nick"
   done:             "\x0303✔\x03 \x02%nickname%\x02 ha recibido voz."
-  user_not_on_channel: "\x0304✗\x03 El apodo \x02%nickname%\x02 no está en la red."
+  user_not_on_channel: "\x0304✗\x03 El nick \x02%nickname%\x02 no está en la red."
   notice_grant:     "\x0303✔\x03 \x0302%from%\x03 da \x0304%mode%\x03 a \x0314%to%\x03"
 
 devoice:
-  syntax:           "DEVOICE <#canal> <apodo>"
+  syntax:           "DEVOICE <#canal> <nick>"
   short:            "Quitar modo voz en el canal."
   help:             "Quitar modo voz en el canal."
-  example:          "/msg %bot% DEVOICE #canal apodo"
+  example:          "/msg %bot% DEVOICE #canal nick"
   done:             "\x0303✔\x03 \x02%nickname%\x02 ha sido devoiceado."
 
 invite:
@@ -315,57 +315,57 @@ invite:
   notice_channel:   "\x0303✔\x03 \x0302%nickname%\x03 se invita al canal."
 
 unban:
-  syntax:           "UNBAN <#canal> [máscara|apodo]"
+  syntax:           "UNBAN <#canal> [máscara|nick]"
   short:            "Retira los bloqueos que afectan a un usuario."
-  help:             "Retira todos los bloqueos del canal que afectan al usuario indicado, comparando apodo, ident y host. Sin argumento retira los bloqueos que te afectan, y una máscara literal retira exactamente esa entrada. Necesitas el nivel UNBAN del canal."
+  help:             "Retira todos los bloqueos del canal que afectan al usuario indicado, comparando nick, ident y host. Sin argumento retira los bloqueos que te afectan, y una máscara literal retira exactamente esa entrada. Necesitas el nivel UNBAN del canal."
   example:          "/msg %bot% UNBAN #canal *!*@bad.host"
   done:             "\x0303✔\x03 Se han retirado %count% bloqueo(s) que afectaban a \x02%target%\x02."
   no_bans:          "\x0307ℹ\x03 Ningún bloqueo afecta a \x02%target%\x02."
-  user_not_found:   "\x0304✗\x03 El apodo \x02%nick%\x02 no está conectado a la red."
+  user_not_found:   "\x0304✗\x03 El nick \x02%nick%\x02 no está conectado a la red."
 
 admin:
-  syntax:           "ADMIN <#canal> <apodo>"
+  syntax:           "ADMIN <#canal> <nick>"
   short:            "Dar modo admin en el canal."
   help:             "Dar modo admin en el canal. Solo si el IRCd soporta +a."
-  example:          "/msg %bot% ADMIN #canal apodo"
+  example:          "/msg %bot% ADMIN #canal nick"
   done:             "\x0303✔\x03 \x02%nickname%\x02 ha recibido admin de canal."
-  user_not_on_channel: "\x0304✗\x03 El apodo \x02%nickname%\x02 no está en la red."
+  user_not_on_channel: "\x0304✗\x03 El nick \x02%nickname%\x02 no está en la red."
   notice_grant:     "\x0303✔\x03 \x0302%from%\x03 da \x0304%mode%\x03 a \x0314%to%\x03"
   not_supported:    "\x0304✗\x03 Esta red no soporta el modo admin de canal (+a)."
 
 deadmin:
-  syntax:           "DEADMIN <#canal> <apodo>"
+  syntax:           "DEADMIN <#canal> <nick>"
   short:            "Quitar modo admin en el canal."
   help:             "Quitar modo admin en el canal."
-  example:          "/msg %bot% DEADMIN #canal apodo"
+  example:          "/msg %bot% DEADMIN #canal nick"
   done:             "\x0303✔\x03 \x02%nickname%\x02 ha sido deadminado."
 
 halfop:
-  syntax:           "HALFOP <#canal> <apodo>"
+  syntax:           "HALFOP <#canal> <nick>"
   short:            "Dar modo semi-operador en el canal."
   help:             "Dar modo semi-operador en el canal. Solo si el IRCd soporta +h."
-  example:          "/msg %bot% HALFOP #canal apodo"
+  example:          "/msg %bot% HALFOP #canal nick"
   done:             "\x0303✔\x03 \x02%nickname%\x02 ha recibido halfop."
-  user_not_on_channel: "\x0304✗\x03 El apodo \x02%nickname%\x02 no está en la red."
+  user_not_on_channel: "\x0304✗\x03 El nick \x02%nickname%\x02 no está en la red."
   notice_grant:     "\x0303✔\x03 \x0302%from%\x03 da \x0304%mode%\x03 a \x0314%to%\x03"
   not_supported:    "\x0304✗\x03 Esta red no soporta el modo halfop (+h)."
 
 dehalfop:
-  syntax:           "DEHALFOP <#canal> <apodo>"
+  syntax:           "DEHALFOP <#canal> <nick>"
   short:            "Quitar modo semi-operador en el canal."
   help:             "Quitar modo semi-operador en el canal."
-  example:          "/msg %bot% DEHALFOP #canal apodo"
+  example:          "/msg %bot% DEHALFOP #canal nick"
   done:             "\x0303✔\x03 \x02%nickname%\x02 ha sido dehalfopeado."
 
 akick:
   syntax:           "AKICK <#canal> {ADD|DEL|LIST|SET|CLEAR|COUNT|CHECK|ENFORCE|VIEW|LASTUSE} [máscara] [expiración] [razón]"
   short:            "Gestionar lista de auto-kick."
-  help:             "Gestiona la lista de auto-kick de un canal: las entradas que banean y expulsan al usuario que coincide al conectar, la razón que las explica, el apodo que las añadió y el momento en que caducan. También puede cambiar la razón de una entrada sin perder su autor, vaciar la lista entera, contar las entradas, decir qué entradas atraparían a un usuario conectado y aplicar la lista a los miembros conectados ahora mismo. Vaciar la lista es la operación destructiva y necesita el nivel de canal AKICKCHANGE además del AKICK. Las entradas también se pueden inspeccionar una a una, con el momento en que se crearon, cuántas veces atraparon a un miembro y cuándo se aplicaron por última vez."
+  help:             "Gestiona la lista de auto-kick de un canal: las entradas que banean y expulsan al usuario que coincide al conectar, la razón que las explica, el nick que las añadió y el momento en que caducan. También puede cambiar la razón de una entrada sin perder su autor, vaciar la lista entera, contar las entradas, decir qué entradas atraparían a un usuario conectado y aplicar la lista a los miembros conectados ahora mismo. Vaciar la lista es la operación destructiva y necesita el nivel de canal AKICKCHANGE además del AKICK. Las entradas también se pueden inspeccionar una a una, con el momento en que se crearon, cuántas veces atraparon a un miembro y cuándo se aplicaron por última vez."
   example:          "/msg %bot% AKICK #canal ADD *!*@*.isp.com 7d spam"
   unknown_sub:      "\x0304✗\x03 Subcomando desconocido \x02%sub%\x02. Usa ADD, DEL, LIST, SET, CLEAR, COUNT, CHECK, ENFORCE, VIEW o LASTUSE."
-  invalid_mask:     "\x0304✗\x03 Formato de máscara inválido. Usa \x02apodo!ident@host\x02 con comodines (*)."
+  invalid_mask:     "\x0304✗\x03 Formato de máscara inválido. Usa \x02nick!ident@host\x02 con comodines (*)."
   dangerous_mask:   "\x0304✗\x03 La máscara \x02%mask%\x02 es demasiado amplia. Debe contener al menos 4 caracteres alfanuméricos."
-  protected_user:   "\x0304✗\x03 El apodo \x02%nickname%\x02 tiene acceso en este canal."
+  protected_user:   "\x0304✗\x03 El nick \x02%nickname%\x02 tiene acceso en este canal."
   max_entries:      "\x0304✗\x03 Máximo %max% entradas AKICK por canal."
   add:
     syntax:         "AKICK <#canal> ADD <máscara> [expiración] [razón]"
@@ -394,7 +394,7 @@ akick:
   set:
     syntax:         "AKICK <#canal> SET <máscara|número> [razón]"
     short:          "Cambiar la razón de una entrada AKICK."
-    help:           "Sustituye la razón de una entrada existente, elegida por su máscara exacta o por su número en la lista. El apodo que la añadió sigue siendo su autor y la expiración se conserva. Sin razón, la entrada se queda sin ninguna."
+    help:           "Sustituye la razón de una entrada existente, elegida por su máscara exacta o por su número en la lista. El nick que la añadió sigue siendo su autor y la expiración se conserva. Sin razón, la entrada se queda sin ninguna."
     example:        "/msg %bot% AKICK #canal SET *!*@bad.host Spam repetido"
     done:           "\x0303✔\x03 Razón del AKICK \x02%mask%\x02 actualizada."
     not_found:      "\x0304✗\x03 AKICK \x02%mask%\x02 no encontrado."
@@ -414,13 +414,13 @@ akick:
     example:        "/msg %bot% AKICK #canal COUNT"
     result:         "\x0307ℹ\x03 Entradas AKICK en \x02%channel%\x02: %count%."
   check:
-    syntax:         "AKICK <#canal> CHECK <apodo>"
+    syntax:         "AKICK <#canal> CHECK <nick>"
     short:          "Mostrar las entradas AKICK que coinciden con un usuario."
-    help:           "Dice qué entradas de la lista atraparían al usuario indicado. El apodo tiene que estar conectado a la red, y los operadores de IRC nunca son atrapados por la lista."
+    help:           "Dice qué entradas de la lista atraparían al usuario indicado. El nick tiene que estar conectado a la red, y los operadores de IRC nunca son atrapados por la lista."
     example:        "/msg %bot% AKICK #canal CHECK MalNick"
     header:         "\x0303Entradas AKICK que coinciden con \x02%nickname%\x02 en \x02%channel%\x02\x03"
     empty:          "\x0307ℹ\x03 Ninguna entrada AKICK de \x02%channel%\x02 coincide con \x02%nickname%\x02."
-    not_connected:  "\x0304✗\x03 El apodo \x02%nickname%\x02 no está conectado a la red."
+    not_connected:  "\x0304✗\x03 El nick \x02%nickname%\x02 no está conectado a la red."
   enforce:
     syntax:         "AKICK <#canal> ENFORCE"
     short:          "Aplicar la lista AKICK a los miembros conectados ahora."
@@ -430,7 +430,7 @@ akick:
   view:
     syntax:         "AKICK <#canal> VIEW"
     short:          "Mostrar los detalles de cada entrada AKICK."
-    help:           "Muestra los detalles de cada entrada de la lista: la máscara, la razón, el apodo que la añadió, el momento en que se creó, cuándo caduca, cuántas veces atrapó a un miembro y cuándo se aplicó por última vez."
+    help:           "Muestra los detalles de cada entrada de la lista: la máscara, la razón, el nick que la añadió, el momento en que se creó, cuándo caduca, cuántas veces atrapó a un miembro y cuándo se aplicó por última vez."
     example:        "/msg %bot% AKICK #canal VIEW"
     header:         "\x0303Entradas AKICK de \x02%channel%\x02\x03"
     entry:          "  #%index% %mask% %reason% (por %nickname%, creada: %created%, expira: %expiration%, usos: %uses%, último uso: %lastuse%)"
@@ -676,9 +676,9 @@ listsuspend:
   empty: "No hay canales suspendidos."
 
 kick:
-  syntax:         "KICK <#canal> <apodo> [motivo]"
+  syntax:         "KICK <#canal> <nick> [motivo]"
   short:          "Expulsa a un usuario del canal."
-  help:           "Expulsa al apodo indicado del canal. Requiere el nivel FOUNDER o ser operador de servicios."
+  help:           "Expulsa al nick indicado del canal. Requiere el nivel FOUNDER o ser operador de servicios."
   done:           "\x0303\u2714\x03 \x02%nick%\x02 expulsado de \x02%channel%\x02."
-  not_connected:  "\x0304\u2717\x03 El apodo \x02%nick%\x02 no está conectado."
+  not_connected:  "\x0304\u2717\x03 El nick \x02%nick%\x02 no está conectado."
   default_reason: "Comando KICK de %bot%."

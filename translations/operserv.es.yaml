@@ -9,7 +9,7 @@ error:
   not_identified:   "\x0304✗\x03 No estás identificado. Usa \x0303/msg %nickserv% IDENTIFY\x03."
   permission_denied: "\x0304✗\x03 No tienes permisos suficientes para ejecutar este comando."
   root_only:        "\x0304✗\x03 Este comando está restringido a administradores root de la red."
-  nick_not_registered: "\x0304✗\x03 El apodo \x02%nickname%\x02 no está registrado."
+  nick_not_registered: "\x0304✗\x03 El nick \x02%nickname%\x02 no está registrado."
 
 # --- HELP --------------------------------------------------------------------
 help:
@@ -43,11 +43,11 @@ help:
 
 # --- KILL --------------------------------------------------------------------
 kill:
-  syntax:           "KILL <apodo> <razón>"
+  syntax:           "KILL <nick> <razón>"
   short:            "Desconecta forzosamente a un usuario de la red."
   help:             "Desconecta a un usuario de la red IRC.\nLos IRCops y usuarios Root no pueden ser killeados.\nEste comando requiere el permiso operserv.kill."
   example:          "/msg %bot% KILL BadUser Flooding en canales"
-  user_not_online:  "\x0304✗\x03 El apodo \x02%nickname%\x02 no está conectado."
+  user_not_online:  "\x0304✗\x03 El nick \x02%nickname%\x02 no está conectado."
   protected_root:   "\x0304✗\x03 No se puede hacer KILL al usuario Root \x02%nickname%\x02."
   protected_ircop:  "\x0304✗\x03 No se puede hacer KILL al IRC operator \x02%nickname%\x02."
   done:             "\x0303✓\x03 Usuario \x02%nickname%\x02 desconectado (%reason%)."
@@ -67,7 +67,7 @@ gline:
   already_exists:   "\x0304✗\x03 Ya existe un G-line para \x02%mask%\x02."
   max_entries:      "\x0304✗\x03 Se alcanzó el máximo de G-lines (%max%)."
   not_found:        "\x0304✗\x03 G-line \x02%mask%\x02 no encontrado."
-  user_not_found:   "\x0304✗\x03 El apodo \x02%nickname%\x02 no está conectado."
+  user_not_found:   "\x0304✗\x03 El nick \x02%nickname%\x02 no está conectado."
   permanent:        "permanente"
 
   add:
@@ -175,7 +175,7 @@ motd:
   example:          "/msg %bot% MOTD ADD Network!staff@staff.example.com NOTICE 7d ¡Bienvenido a la red!"
   unknown_sub:      "\x0304✗\x03 Subcomando desconocido. Usa: \x02ADD\x02, \x02DEL\x02, \x02LIST\x02, \x02CLEAN\x02"
   add:
-    syntax:         "MOTD ADD {servicio|apodo!ident@vhost} {PRIVMSG|NOTICE} <expiración> <mensaje>"
+    syntax:         "MOTD ADD {servicio|nick!ident@vhost} {PRIVMSG|NOTICE} <expiración> <mensaje>"
     syntax_hint:    "\x0304✗\x03 Uso: \x02%syntax%\x02"
     short:          "Añade una entrada MOTD."
     help:           "Añade un nuevo mensaje MOTD que se enviará a cada usuario cuando se conecte a la red.\n\n"
@@ -455,28 +455,28 @@ staff:
   already_rank:     "\x0304✗\x03 \x02%nickname%\x02 ya es %rank% de la red. Bórralo antes de ese rango."
   already_staff:    "\x0304✗\x03 \x02%nickname%\x02 ya forma parte del staff."
   not_this_rank:    "\x0304✗\x03 \x02%nickname%\x02 no es %rank% de la red."
-  nick_not_active:  "\x0304✗\x03 El apodo \x02%nickname%\x02 no es un apodo registrado activo."
+  nick_not_active:  "\x0304✗\x03 El nick \x02%nickname%\x02 no es un nick registrado activo."
   unavailable:      "\x0304✗\x03 Los rangos aún no están listos. Inténtalo de nuevo en unos segundos."
   list:
     header:         "--- %rank% (%count%) ---"
     empty:          "\x0310ℹ\x03 No hay ningún %rank%."
   preoper:
-    syntax:         "PREOPER {ADD|DEL|LIST} [<apodo>]"
+    syntax:         "PREOPER {ADD|DEL|LIST} [<nick>]"
     short:          "Gestiona los Pre-Operadores de la red."
-    help:           "Gestiona los Pre-Operadores de la red.\nADD da al apodo el rango con sus permisos, la operclass locop y el vhost apodo.preoper.<dominio>; DEL se lo quita todo y lo borra de la base de datos; LIST los muestra.\nEl apodo debe estar registrado y no pertenecer ya al staff.\nRequiere el permiso operserv.staff."
+    help:           "Gestiona los Pre-Operadores de la red.\nADD da al nick el rango con sus permisos, la operclass locop y el vhost nick.preoper.<dominio>; DEL se lo quita todo y lo borra de la base de datos; LIST los muestra.\nEl nick debe estar registrado y no pertenecer ya al staff.\nRequiere el permiso operserv.staff."
     example:        "/msg %bot% PREOPER ADD Pedro"
   oper:
-    syntax:         "OPER {ADD|DEL|LIST} [<apodo>]"
+    syntax:         "OPER {ADD|DEL|LIST} [<nick>]"
     short:          "Gestiona los Operadores de la red."
-    help:           "Gestiona los Operadores de la red.\nADD da al apodo el rango con sus permisos, la operclass globop y el vhost apodo.oper.<dominio>; DEL se lo quita todo y lo borra de la base de datos; LIST los muestra.\nEl apodo debe estar registrado y no pertenecer ya al staff.\nRequiere el permiso operserv.staff."
+    help:           "Gestiona los Operadores de la red.\nADD da al nick el rango con sus permisos, la operclass globop y el vhost nick.oper.<dominio>; DEL se lo quita todo y lo borra de la base de datos; LIST los muestra.\nEl nick debe estar registrado y no pertenecer ya al staff.\nRequiere el permiso operserv.staff."
     example:        "/msg %bot% OPER ADD Pedro"
   admin:
-    syntax:         "ADMIN {ADD|DEL|LIST} [<apodo>]"
+    syntax:         "ADMIN {ADD|DEL|LIST} [<nick>]"
     short:          "Gestiona los Administradores de la red."
-    help:           "Gestiona los Administradores de la red.\nADD da al apodo el rango con sus permisos, la operclass admin y el vhost apodo.admin.<dominio>; DEL se lo quita todo y lo borra de la base de datos; LIST los muestra.\nEl apodo debe estar registrado y no pertenecer ya al staff.\nRequiere el permiso operserv.staff.admin."
+    help:           "Gestiona los Administradores de la red.\nADD da al nick el rango con sus permisos, la operclass admin y el vhost nick.admin.<dominio>; DEL se lo quita todo y lo borra de la base de datos; LIST los muestra.\nEl nick debe estar registrado y no pertenecer ya al staff.\nRequiere el permiso operserv.staff.admin."
     example:        "/msg %bot% ADMIN ADD Pedro"
   root:
-    syntax:         "ROOT {ADD|DEL|LIST} [<apodo>]"
+    syntax:         "ROOT {ADD|DEL|LIST} [<nick>]"
     short:          "Gestiona los Roots de la red."
-    help:           "Gestiona los Roots de la red.\nADD da al apodo el rango con sus permisos, la operclass netadmin y el vhost apodo.root.<dominio>; DEL se lo quita todo y lo borra de la base de datos; LIST los muestra.\nEl apodo debe estar registrado y no pertenecer ya al staff.\nSolo el Root principal (configuración) puede usarlo."
+    help:           "Gestiona los Roots de la red.\nADD da al nick el rango con sus permisos, la operclass netadmin y el vhost nick.root.<dominio>; DEL se lo quita todo y lo borra de la base de datos; LIST los muestra.\nEl nick debe estar registrado y no pertenecer ya al staff.\nSolo el Root principal (configuración) puede usarlo."
     example:        "/msg %bot% ROOT ADD Pedro"

@@ -170,7 +170,7 @@ final class WhoipCommandTest extends TestCase
         yield 'de' => ['de', 'Übereinstimmende Nicknamen:'];
         yield 'el' => ['el', 'Ψευδώνυμα που ταιριάζουν:'];
         yield 'en' => ['en', 'Matching nicknames:'];
-        yield 'es' => ['es', 'Apodos coincidentes:'];
+        yield 'es' => ['es', 'Nicks coincidentes:'];
         yield 'eu' => ['eu', 'Bat datozen ezizenak:'];
         yield 'fr' => ['fr', 'Surnoms correspondants :'];
         yield 'gl' => ['gl', 'Alcumes coincidentes:'];

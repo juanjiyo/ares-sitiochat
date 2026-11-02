@@ -186,7 +186,7 @@ final class TranslationCatalogTest extends TestCase
                 'chanserv' => 'Channel registration and management service.',
             ],
             'es' => [
-                'nickserv' => 'Gestión y protección de apodos.',
+                'nickserv' => 'Gestión y protección de nicks.',
                 'operserv' => 'Servicio de gestión de red para operadores.',
                 'chanserv' => 'Servicio de registro y gestión de canales.',
             ],

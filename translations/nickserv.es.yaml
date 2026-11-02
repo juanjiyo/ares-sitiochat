@@ -16,36 +16,36 @@ unknown_command: "\x0304✗\x03 Comando desconocido \x02%command%\x02. Usa \x030
 error:
   syntax:            "\x0304✗\x03 Sintaxis incorrecta. Uso: \x02%syntax%\x02"
   oper_only:         "\x0304✗\x03 Este comando está restringido a Operadores IRC."
-  not_identified:    "\x0304✗\x03 No estás identificado. Usa \x0303/msg %bot% IDENTIFY <apodo> <contraseña>\x03"
+  not_identified:    "\x0304✗\x03 No estás identificado. Usa \x0303/msg %bot% IDENTIFY <nick> <contraseña>\x03"
   permission_denied: "\x0304✗\x03 Permiso denegado. No tienes acceso a este comando."
   mail_failed:       "\x0304✗\x03 No se pudo enviar el correo. Comprueba tu dirección o inténtalo más tarde."
 
 # --- REGISTER ---------------------------------------------------------------
 register:
   syntax:           "REGISTER <contraseña> <email>"
-  short:            "Registra tu apodo en los servicios."
-  help:             "Inicia el registro de tu apodo actual. Se enviará un token de verificación\nal correo indicado. El registro se completará cuando ejecutes\n\x0303/msg %bot% VERIFY <token>\x03. El token expira en 1 hora.\nSi no te llega, revisa la carpeta de spam o usa \x0303RESEND\x03."
+  short:            "Registra tu nick en los servicios."
+  help:             "Inicia el registro de tu nick actual. Se enviará un token de verificación\nal correo indicado. El registro se completará cuando ejecutes\n\x0303/msg %bot% VERIFY <token>\x03. El token expira en 1 hora.\nSi no te llega, revisa la carpeta de spam o usa \x0303RESEND\x03."
   example:          "/msg %bot% REGISTER s3cret ana@example.com"
   pending:          "\x0307→\x03 Se ha enviado un token de verificación a \x02%email%\x02.\n  Ejecuta \x0303/msg %bot% VERIFY <token>\x03 para completar el registro.\n  ¿No te llega? Revisa spam o usa \x0303/msg %bot% RESEND\x03\n  El token expirará en \x021 hora\x02."
-  registered:       "\x0303✔\x03 El apodo \x02%nickname%\x02 ha sido registrado."
-  already_registered: "\x0304✗\x03 El apodo \x02%nickname%\x02 ya está registrado."
-  already_pending:  "\x0304✗\x03 El apodo \x02%nickname%\x02 ya tiene un registro pendiente de verificación.\n  Usa \x0303/msg %bot% VERIFY <token>\x03 o \x0303/msg %bot% RESEND\x03."
-  forbidden:        "\x0304✗\x03 El apodo \x02%nickname%\x02 no puede ser registrado en esta red."
-  pending_deletion: "\x0304✗\x03 El apodo \x02%nickname%\x02 está pendiente de eliminación y no puede ser registrado."
+  registered:       "\x0303✔\x03 El nick \x02%nickname%\x02 ha sido registrado."
+  already_registered: "\x0304✗\x03 El nick \x02%nickname%\x02 ya está registrado."
+  already_pending:  "\x0304✗\x03 El nick \x02%nickname%\x02 ya tiene un registro pendiente de verificación.\n  Usa \x0303/msg %bot% VERIFY <token>\x03 o \x0303/msg %bot% RESEND\x03."
+  forbidden:        "\x0304✗\x03 El nick \x02%nickname%\x02 no puede ser registrado en esta red."
+  pending_deletion: "\x0304✗\x03 El nick \x02%nickname%\x02 está pendiente de eliminación y no puede ser registrado."
   invalid_email:    "\x0304✗\x03 La dirección de correo electrónico no es válida."
   email_domain_blocked: "\x0304✗\x03 El dominio de correo \x02%domain%\x02 no está permitido para el registro."
   email_already_used: "\x0304✗\x03 El correo \x02%email%\x02 ya está en uso por el máximo de \x02%max%\x02 nicks. Usa otra dirección."
   throttled:          "\x0304✗\x03 Debes esperar \x02%minutes%\x02 minuto(s) antes de intentar registrar de nuevo."
-  guest_prefix_forbidden: "\x0304✗\x03 No puedes registrar un apodo que empiece por \x02%prefix%\x02."
+  guest_prefix_forbidden: "\x0304✗\x03 No puedes registrar un nick que empiece por \x02%prefix%\x02."
 
 # --- VERIFY -----------------------------------------------------------------
 verify:
   syntax:           "VERIFY <token>"
-  short:            "Confirma tu dirección de email y activa tu apodo."
+  short:            "Confirma tu dirección de email y activa tu nick."
   help:             "Completa el registro verificando el token enviado a tu correo.\nEl token tiene una validez de 1 hora desde el momento del registro."
   example:          "/msg %bot% VERIFY 4XZ9KQ2M"
-  success:          "\x0303✔\x03 El apodo \x02%nickname%\x02 ha sido registrado y ya estás identificado."
-  success_native:   "\x0303✔\x03 El apodo \x02%nickname%\x02 ha sido registrado correctamente. Usa la autenticación nativa que se muestra a continuación."
+  success:          "\x0303✔\x03 El nick \x02%nickname%\x02 ha sido registrado y ya estás identificado."
+  success_native:   "\x0303✔\x03 El nick \x02%nickname%\x02 ha sido registrado correctamente. Usa la autenticación nativa que se muestra a continuación."
   invalid_token:    "\x0304✗\x03 El token no es válido o ha expirado. Usa \x0303/msg %bot% REGISTER\x03 para iniciar el proceso de nuevo."
   no_pending:       "\x0304✗\x03 No tienes ningún registro pendiente de verificación."
 
@@ -61,16 +61,16 @@ resend:
 
 # --- RECOVER -----------------------------------------------------------------
 recover:
-  syntax:           "RECOVER <apodo> [token]"
-  short:            "Recupera tu apodo si has perdido la contraseña."
-  help:             "Recupera el acceso a un apodo registrado cuando has perdido la contraseña.\n1) \x0303RECOVER <apodo>\x03 — se envía un token al correo del apodo.\n2) \x0303RECOVER <apodo> <token>\x03 — introduce el token del correo para restablecer la contraseña.\nRecibirás una contraseña temporal y el comando para cambiarla."
-  example:          "/msg %bot% RECOVER apodo"
+  syntax:           "RECOVER <nick> [token]"
+  short:            "Recupera tu nick si has perdido la contraseña."
+  help:             "Recupera el acceso a un nick registrado cuando has perdido la contraseña.\n1) \x0303RECOVER <nick>\x03 — se envía un token al correo del nick.\n2) \x0303RECOVER <nick> <token>\x03 — introduce el token del correo para restablecer la contraseña.\nRecibirás una contraseña temporal y el comando para cambiarla."
+  example:          "/msg %bot% RECOVER nick"
   email_sent:       "\x0307→\x03 Se ha enviado un token de recuperación a \x02%email_hint%\x02. Revisa tu bandeja (y la de spam)."
-  not_registered:   "\x0304✗\x03 El apodo \x02%nickname%\x02 no está registrado."
-  pending:          "\x0304✗\x03 El apodo \x02%nickname%\x02 está pendiente de verificación de email."
-  suspended:        "\x0304✗\x03 El apodo \x02%nickname%\x02 está suspendido. Razón: %reason%"
-  forbidden:        "\x0304✗\x03 El apodo \x02%nickname%\x02 no puede usarse en esta red."
-  no_email:         "\x0304✗\x03 No hay email configurado para el apodo \x02%nickname%\x02. La recuperación no está disponible."
+  not_registered:   "\x0304✗\x03 El nick \x02%nickname%\x02 no está registrado."
+  pending:          "\x0304✗\x03 El nick \x02%nickname%\x02 está pendiente de verificación de email."
+  suspended:        "\x0304✗\x03 El nick \x02%nickname%\x02 está suspendido. Razón: %reason%"
+  forbidden:        "\x0304✗\x03 El nick \x02%nickname%\x02 no puede usarse en esta red."
+  no_email:         "\x0304✗\x03 No hay email configurado para el nick \x02%nickname%\x02. La recuperación no está disponible."
   throttled:        "\x0304✗\x03 Debes esperar \x02%minutes%\x02 minuto(s) antes de solicitar otro correo de recuperación."
   invalid_token:    "\x0304✗\x03 El token no es válido o ha expirado. Solicita uno nuevo con \x0303RECOVER %nickname%\x03."
   success_identify: "\x0303✔\x03 Contraseña restablecida. Identifícate ahora: \x0303%identify_cmd%\x03"
@@ -78,33 +78,33 @@ recover:
 
 # --- IDENTIFY ---------------------------------------------------------------
 identify:
-  syntax:           "IDENTIFY <apodo> <contraseña>"
-  short:            "Acredita tu identidad como dueño de un apodo."
-  help:             "Autentica tu sesión con %nickserv% indicando tu apodo y contraseña.\nTras identificarte recibirás el modo registrado \x02+r\x02 y, si estabas usando\nun apodo de invitado, recuperarás tu apodo registrado automáticamente."
-  example:          "/msg %bot% IDENTIFY apodo s3cret"
-  native_syntax:    "/NICK <apodo>:<contraseña> | /NICK <apodo>!<contraseña>"
-  native_short:     "Muestra la sintaxis de autenticación nativa por cambio de apodo."
-  native_help:      "Este protocolo autentica las cuentas mediante cambios de apodo.\nUsa /NICK <apodo>:<contraseña> o, si el apodo está ocupado, /NICK <apodo>!<contraseña>."
-  native_authentication: "\x0307ℹ\x03 Este protocolo gestiona la autenticación mediante cambios de apodo. Usa \x0303/NICK <apodo>:<contraseña>\x03 o, si el apodo está ocupado, \x0303/NICK <apodo>!<contraseña>\x03."
+  syntax:           "IDENTIFY <nick> <contraseña>"
+  short:            "Acredita tu identidad como dueño de un nick."
+  help:             "Autentica tu sesión con %nickserv% indicando tu nick y contraseña.\nTras identificarte recibirás el modo registrado \x02+r\x02 y, si estabas usando\nun nick de invitado, recuperarás tu nick registrado automáticamente."
+  example:          "/msg %bot% IDENTIFY nick s3cret"
+  native_syntax:    "/NICK <nick>:<contraseña> | /NICK <nick>!<contraseña>"
+  native_short:     "Muestra la sintaxis de autenticación nativa por cambio de nick."
+  native_help:      "Este protocolo autentica las cuentas mediante cambios de nick.\nUsa /NICK <nick>:<contraseña> o, si el nick está ocupado, /NICK <nick>!<contraseña>."
+  native_authentication: "\x0307ℹ\x03 Este protocolo gestiona la autenticación mediante cambios de nick. Usa \x0303/NICK <nick>:<contraseña>\x03 o, si el nick está ocupado, \x0303/NICK <nick>!<contraseña>\x03."
   success:          "\x0303✔\x03 Ahora estás identificado como \x02%nickname%\x02."
   already_identified: "\x0307ℹ\x03 Ya estás identificado como \x02%nickname%\x02."
-  not_registered:   "\x0304✗\x03 El apodo \x02%nickname%\x02 no está registrado."
+  not_registered:   "\x0304✗\x03 El nick \x02%nickname%\x02 no está registrado."
   invalid_credentials: "\x0304✗\x03 Contraseña incorrecta. Inténtalo de nuevo."
   locked_out:         "\x0304✗\x03 Demasiados intentos fallidos. Intenta de nuevo en \x02%minutes%\x02 minuto(s)."
   ghost_released:   "\x0307⚡\x03 La sesión fantasma que ocupaba \x02%nickname%\x02 ha sido desconectada."
-  kill_reason:      "Apodo %nickname% reclamado por %source% (el propietario registrado se ha identificado)"
-  pending:          "\x0304✗\x03 El apodo \x02%nickname%\x02 está pendiente de verificación de email.\n  Ejecuta \x0303/msg %bot% VERIFY <token>\x03 o \x0303/msg %bot% RESEND\x03."
-  suspended:        "\x0304✗\x03 El apodo \x02%nickname%\x02 está suspendido. Razón: %reason%"
-  forbidden:        "\x0304✗\x03 El apodo \x02%nickname%\x02 no puede ser utilizado en esta red."
-  pending_deletion: "\x0304✗\x03 El apodo \x02%nickname%\x02 está pendiente de eliminación y no puede ser usado."
+  kill_reason:      "Nick %nickname% reclamado por %source% (el propietario registrado se ha identificado)"
+  pending:          "\x0304✗\x03 El nick \x02%nickname%\x02 está pendiente de verificación de email.\n  Ejecuta \x0303/msg %bot% VERIFY <token>\x03 o \x0303/msg %bot% RESEND\x03."
+  suspended:        "\x0304✗\x03 El nick \x02%nickname%\x02 está suspendido. Razón: %reason%"
+  forbidden:        "\x0304✗\x03 El nick \x02%nickname%\x02 no puede ser utilizado en esta red."
+  pending_deletion: "\x0304✗\x03 El nick \x02%nickname%\x02 está pendiente de eliminación y no puede ser usado."
 
 # --- STATUS -----------------------------------------------------------------
 status:
-  syntax:           "STATUS <apodo>"
-  short:            "Muestra el estado de registro de un apodo."
-  help:             "Muestra el estado actual de un apodo: si está registrado,\npendiente de verificación, suspendido o prohibido."
-  example:          "/msg %bot% STATUS apodo"
-  header:           "\x02Estado del apodo \x0307%nickname%\x03\x02"
+  syntax:           "STATUS <nick>"
+  short:            "Muestra el estado de registro de un nick."
+  help:             "Muestra el estado actual de un nick: si está registrado,\npendiente de verificación, suspendido o prohibido."
+  example:          "/msg %bot% STATUS nick"
+  header:           "\x02Estado del nick \x0307%nickname%\x03\x02"
   unregistered:     "  Estado          : Sin registrar"
   not_registered_offline: "  Estado          : \x0315No registrado\x03"
   pending:          "  Estado          : \x0307Pendiente de validación\x03"
@@ -125,13 +125,13 @@ status:
 
 # --- INFO -------------------------------------------------------------------
 info:
-  syntax:           "INFO <apodo>"
-  short:            "Muestra la información de un apodo registrado."
-  help:             "Muestra los datos de registro de un apodo: fecha de alta, estado de\nconexión, último mensaje de salida y correo electrónico. El correo solo es\nvisible para el propietario identificado. Con PRIVATE ON solo el dueño y\nlos Operadores IRC pueden ver la información."
-  example:          "/msg %bot% INFO apodo"
-  not_registered:   "\x0304✗\x03 El apodo \x02%nickname%\x02 no está registrado."
-  private:          "\x0304✗\x03 La información del apodo \x02%nickname%\x02 es privada."
-  header:           "\x02Información del apodo \x0307%nickname%\x03\x02"
+  syntax:           "INFO <nick>"
+  short:            "Muestra la información de un nick registrado."
+  help:             "Muestra los datos de registro de un nick: fecha de alta, estado de\nconexión, último mensaje de salida y correo electrónico. El correo solo es\nvisible para el propietario identificado. Con PRIVATE ON solo el dueño y\nlos Operadores IRC pueden ver la información."
+  example:          "/msg %bot% INFO nick"
+  not_registered:   "\x0304✗\x03 El nick \x02%nickname%\x02 no está registrado."
+  private:          "\x0304✗\x03 La información del nick \x02%nickname%\x02 es privada."
+  header:           "\x02Información del nick \x0307%nickname%\x03\x02"
   status:           "  \x0314Estado\x03                 : %status%"
   status_registered:  "\x0303Registrado\x03"
   status_suspended:   "\x0304Suspendido\x03"
@@ -152,7 +152,7 @@ info:
   no_expire:        "  \x0314Nunca expira\x03           : Sí"
   pending_deletion_at: "  \x0314Eliminado\x03              : %date%"
   pending_deletion_until: "  \x0314Elim. definitiva\x03       : %date%"
-  pending_deletion_notice: "  \x0307Este apodo está pendiente de eliminación y no puede ser registrado.\x03"
+  pending_deletion_notice: "  \x0307Este nick está pendiente de eliminación y no puede ser registrado.\x03"
   footer:           "\x0314─────────────────────────────\x03"
   channels_header:  "\x0314\x0ACanales con acceso:\x03"
   channels_entry_founder:   "  %channel% (\x0303Fundador\x03)"
@@ -162,21 +162,21 @@ info:
 # --- SET --------------------------------------------------------------------
 set:
   syntax:           "SET <opción> <valor>"
-  short:            "Cambiar opciones de tu apodo."
-  help:             "Modifica la configuración de tu apodo de %nickserv%.\nDebes estar identificado para usar este comando."
+  short:            "Cambiar opciones de tu nick."
+  help:             "Modifica la configuración de tu nick de %nickserv%.\nDebes estar identificado para usar este comando."
   example:          "/msg %bot% SET PASSWORD n3wpass"
   unknown_option:   "\x0304✗\x03 Opción desconocida \x02%option%\x02. Opciones disponibles: %options%."
 
   password:
     syntax:         "SET PASSWORD <nueva_contraseña>"
-    short:          "Cambia la contraseña de tu apodo."
-    help:           "Cambia la contraseña de acceso a tu apodo. La nueva contraseña entra en\nvigor de inmediato. Elige una contraseña segura de al menos 6 caracteres\nque no uses en otros servicios."
+    short:          "Cambia la contraseña de tu nick."
+    help:           "Cambia la contraseña de acceso a tu nick. La nueva contraseña entra en\nvigor de inmediato. Elige una contraseña segura de al menos 6 caracteres\nque no uses en otros servicios."
     example:        "/msg %bot% SET PASSWORD nuevopass123"
     success:        "\x0303✔\x03 Tu contraseña ha sido actualizada correctamente."
 
   email:
     syntax:         "SET EMAIL <nuevo_email> [token]"
-    short:          "Cambia el correo electrónico de tu apodo (confirmación en dos pasos)."
+    short:          "Cambia el correo electrónico de tu nick (confirmación en dos pasos)."
     help:           "Cambio de correo en dos pasos por seguridad.\n1) \x0303SET EMAIL <nuevo_email>\x03 — se envía un token a tu correo actual.\n2) \x0303SET EMAIL <nuevo_email> <token>\x03 — confirmas con el token recibido.\nEl token expira en 1 hora."
     example:        "/msg %bot% SET EMAIL usuario@ejemplo.com"
     success:        "\x0303✔\x03 Tu correo ha sido actualizado a \x02%email%\x02."
@@ -205,8 +205,8 @@ set:
     short:          "Activa o desactiva la privacidad de tu información."
     help:           "Controla la visibilidad de tu información en el comando INFO.\nCon \x02PRIVATE ON\x02 solo tú y los Operadores IRC podrán ver tus datos.\nCon \x02PRIVATE OFF\x02 la información es pública para todos."
     example:        "/msg %bot% SET PRIVATE ON"
-    on:             "\x0303✔\x03 La información de tu apodo es ahora \x02privada\x02."
-    off:            "\x0303✔\x03 La información de tu apodo es ahora \x02pública\x02."
+    on:             "\x0303✔\x03 La información de tu nick es ahora \x02privada\x02."
+    off:            "\x0303✔\x03 La información de tu nick es ahora \x02pública\x02."
 
   msg:
     syntax:         "SET MSG {ON|OFF}"
@@ -219,21 +219,21 @@ set:
   vhost:
     syntax:         "SET VHOST [vhost]"
     short:          "Establece o quita tu host virtual (hostname visible)."
-    help:           "Establece un hostname personalizado que otros ven cuando estás identificado.\nEjecuta \x02SET VHOST\x02 sin valor para quitarlo. Solo letras (a-z, A-Z), dígitos, guion, guion bajo y punto;\nni guion, guion bajo ni punto al inicio/final de cada bloque; máximo 55 caracteres. Es único por apodo."
+    help:           "Establece un hostname personalizado que otros ven cuando estás identificado.\nEjecuta \x02SET VHOST\x02 sin valor para quitarlo. Solo letras (a-z, A-Z), dígitos, guion, guion bajo y punto;\nni guion, guion bajo ni punto al inicio/final de cada bloque; máximo 55 caracteres. Es único por nick."
     example:        "/msg %bot% SET VHOST usuarios.ejemplo.com"
     success:        "\x0303✔\x03 Tu host virtual se ha establecido a \x02%vhost%\x02."
     cleared:        "\x0303✔\x03 Tu host virtual ha sido eliminado."
     invalid:        "\x0304✗\x03 Vhost no válido. Solo letras, dígitos, guion, guion bajo y punto (no al inicio/fin de bloque); máx. 55 caracteres."
-    taken:          "\x0304✗\x03 Ese vhost ya está en uso por otro apodo."
+    taken:          "\x0304✗\x03 Ese vhost ya está en uso por otro nick."
     forced:         "\x0304✗\x03 Tu vhost está configurado automáticamente y no puede cambiarse con SET VHOST."
 
 # --- SASET (IRCop) --------------------------------------------------------------
 saset:
-  syntax:           "SASET <apodo> <opción> <valor>"
-  short:            "Modifica la configuración de otro apodo."
+  syntax:           "SASET <nick> <opción> <valor>"
+  short:            "Modifica la configuración de otro nick."
   help:             |
-    Permite a un IRCop modificar la configuración de un apodo registrado.
-    El apodo objetivo no puede ser un usuario Root, IRCop ni un servicio.
+    Permite a un IRCop modificar la configuración de un nick registrado.
+    El nick objetivo no puede ser un usuario Root, IRCop ni un servicio.
 
     Opciones disponibles: PASSWORD, EMAIL, LANGUAGE, TIMEZONE, PRIVATE, MSG, VHOST
 
@@ -243,51 +243,51 @@ saset:
     Este comando requiere permiso IRCop: nickserv.saset
   example:          "/msg %bot% SASET Usuario PASSWORD nuevopass"
   unknown_option:   "\x0304✗\x03 Opción desconocida \x02%option%\x02. Opciones disponibles: %options%."
-  cannot_modify_oper: "\x0304✗\x03 No puedes modificar un apodo de Operador IRC."
+  cannot_modify_oper: "\x0304✗\x03 No puedes modificar un nick de Operador IRC."
   changed:          "\x0303✔\x03 %option% de \x02%nickname%\x02 cambiado a \x02%value%\x02."
   changed_hidden:   "\x0303✔\x03 %option% de \x02%nickname%\x02 cambiado."
   cleared:          "\x0303✔\x03 %option% de \x02%nickname%\x02 eliminado."
 
   password:
-    syntax:         "SASET <apodo> PASSWORD <nueva_contraseña>"
-    short:          "Cambia la contraseña de un apodo."
-    help:           "Cambia la contraseña de otro apodo.\nEl cambio es inmediato."
+    syntax:         "SASET <nick> PASSWORD <nueva_contraseña>"
+    short:          "Cambia la contraseña de un nick."
+    help:           "Cambia la contraseña de otro nick.\nEl cambio es inmediato."
     example:        "/msg %bot% SASET Usuario PASSWORD nuevopass123"
 
   email:
-    syntax:         "SASET <apodo> EMAIL <nuevo_email>"
-    short:          "Cambia el correo de un apodo."
-    help:           "Cambia el correo electrónico de otro apodo.\nNo se envía confirmación—el cambio es inmediato."
+    syntax:         "SASET <nick> EMAIL <nuevo_email>"
+    short:          "Cambia el correo de un nick."
+    help:           "Cambia el correo electrónico de otro nick.\nNo se envía confirmación—el cambio es inmediato."
     example:        "/msg %bot% SASET Usuario EMAIL usuario@ejemplo.com"
 
   language:
-    syntax:         "SASET <apodo> LANGUAGE <código>"
-    short:          "Cambia el idioma de un apodo."
-    help:           "Cambia el idioma de otro apodo.\nIdiomas disponibles: en (inglés), es (español)."
+    syntax:         "SASET <nick> LANGUAGE <código>"
+    short:          "Cambia el idioma de un nick."
+    help:           "Cambia el idioma de otro nick.\nIdiomas disponibles: en (inglés), es (español)."
     example:        "/msg %bot% SASET Usuario LANGUAGE es"
 
   timezone:
-    syntax:         "SASET <apodo> TIMEZONE <zona|OFF>"
-    short:          "Cambia la zona horaria de un apodo."
-    help:           "Establece o quita la zona horaria de otro apodo.\nUsa OFF para quitarla."
+    syntax:         "SASET <nick> TIMEZONE <zona|OFF>"
+    short:          "Cambia la zona horaria de un nick."
+    help:           "Establece o quita la zona horaria de otro nick.\nUsa OFF para quitarla."
     example:        "/msg %bot% SASET Usuario TIMEZONE Europe/Madrid"
 
   private:
-    syntax:         "SASET <apodo> PRIVATE {ON|OFF}"
-    short:          "Cambia la privacidad de un apodo."
-    help:           "Activa o desactiva la privacidad de la información de otro apodo."
+    syntax:         "SASET <nick> PRIVATE {ON|OFF}"
+    short:          "Cambia la privacidad de un nick."
+    help:           "Activa o desactiva la privacidad de la información de otro nick."
     example:        "/msg %bot% SASET Usuario PRIVATE ON"
 
   msg:
-    syntax:         "SASET <apodo> MSG {ON|OFF}"
-    short:          "Cambia la preferencia de mensajes de un apodo."
-    help:           "Establece si otro apodo recibe respuestas como PRIVMSG (ON) o NOTICE (OFF)."
+    syntax:         "SASET <nick> MSG {ON|OFF}"
+    short:          "Cambia la preferencia de mensajes de un nick."
+    help:           "Establece si otro nick recibe respuestas como PRIVMSG (ON) o NOTICE (OFF)."
     example:        "/msg %bot% SASET Usuario MSG ON"
 
   vhost:
-    syntax:         "SASET <apodo> VHOST [vhost]"
-    short:          "Cambia el host virtual de un apodo."
-    help:           "Establece o quita el host virtual de otro apodo.\nEjecuta \x02SASET <apodo> VHOST\x02 sin valor para quitarlo."
+    syntax:         "SASET <nick> VHOST [vhost]"
+    short:          "Cambia el host virtual de un nick."
+    help:           "Establece o quita el host virtual de otro nick.\nEjecuta \x02SASET <nick> VHOST\x02 sin valor para quitarlo."
     example:        "/msg %bot% SASET Usuario VHOST usuarios.ejemplo.com"
 
 # --- HELP -------------------------------------------------------------------
@@ -301,7 +301,7 @@ help:
   info_marker:       "\x0310ℹ\x03\x0F"
   error_marker:      "\x0307✗\x03\x0F"
   warning_marker:    "\x0304⚠\x03\x0F"
-  intro:            "Gestión y protección de apodos."
+  intro:            "Gestión y protección de nicks."
   intro_expiration: "%marker% %label%: Los nicks que no se utilicen durante más de \x1F\x0304%days% días\x03\x1F se eliminarán automáticamente."
   intro_expiration_label: "NOTA"
   general_header: "\x02 ■ Comandos disponibles:\x02"
@@ -337,154 +337,154 @@ help:
 
 # --- Nick Protection --------------------------------------------------------
 protection:
-  nick_in_use:      "\x0304⚠\x03 El apodo \x02%nickname%\x02 está registrado. Serás renombrado si no te identificas."
-  renamed_to:       "\x0307→\x03 Has sido renombrado a \x02%guest_nick%\x02. Para recuperar tu apodo:\n\x0303/msg %bot% IDENTIFY %nickname% <contraseña>\x03"
-  nick_forbidden:   "\x0304✗\x03 El apodo \x02%nickname%\x02 está prohibido: %reason%"
+  nick_in_use:      "\x0304⚠\x03 El nick \x02%nickname%\x02 está registrado. Serás renombrado si no te identificas."
+  renamed_to:       "\x0307→\x03 Has sido renombrado a \x02%guest_nick%\x02. Para recuperar tu nick:\n\x0303/msg %bot% IDENTIFY %nickname% <contraseña>\x03"
+  nick_forbidden:   "\x0304✗\x03 El nick \x02%nickname%\x02 está prohibido: %reason%"
 
 # --- IRCop Commands ---------------------------------------------------------
 userip:
-  syntax:           "USERIP <apodo>"
-  short:            "Obtiene la dirección IP/Host real del apodo."
+  syntax:           "USERIP <nick>"
+  short:            "Obtiene la dirección IP/Host real del nick."
   help:             |
-    Muestra la dirección IP real y el hostname del apodo especificado.
+    Muestra la dirección IP real y el hostname del nick especificado.
     Solo disponible para IRCops con permiso 'nickserv.userip'.
 
-    Este comando muestra información sensible del apodo.
+    Este comando muestra información sensible del nick.
     Úsalo con responsabilidad.
   example:          "/msg %bot% USERIP SomeUser"
-  not_online:       "\x0304✗\x03 El apodo \x02%nickname%\x02 no está conectado."
-  result:           "\x0307ℹ\x03 Apodo: \x02%nickname%\x02 | IP: \x0307%ip%\x03 | Host: \x0307%host%\x03"
+  not_online:       "\x0304✗\x03 El nick \x02%nickname%\x02 no está conectado."
+  result:           "\x0307ℹ\x03 Nick: \x02%nickname%\x02 | IP: \x0307%ip%\x03 | Host: \x0307%host%\x03"
 
 whoip:
   syntax:           "WHOIP <ip>"
-  short:            "Busca apodos por la IP de su última conexión identificada."
+  short:            "Busca nicks por la IP de su última conexión identificada."
   help:             |
-    Muestra los apodos registrados cuya última conexión identificada utilizó esta dirección IP.
+    Muestra los nicks registrados cuya última conexión identificada utilizó esta dirección IP.
     La dirección guardada puede estar desactualizada.
   example:          "/msg %bot% WHOIP 203.0.113.42"
-  empty:            "No hay apodos registrados que coincidan con esta dirección IP."
-  header:           "Apodos coincidentes:"
+  empty:            "No hay nicks registrados que coincidan con esta dirección IP."
+  header:           "Nicks coincidentes:"
 
 # --- SUSPEND (IRCop) ---------------------------------------------------------
 suspend:
-  syntax:           "SUSPEND <apodo> <duración> <razón>"
-  short:            "Suspende un apodo."
+  syntax:           "SUSPEND <nick> <duración> <razón>"
+  short:            "Suspende un nick."
   help:             |
-    Suspende un apodo, impidiendo que el propietario se identifique.
+    Suspende un nick, impidiendo que el propietario se identifique.
     La suspensión puede ser temporal o permanente.
 
     Formatos de duración: \x0303%d\x03 (días), \x0303%h\x03 (horas), \x0303%m\x03 (minutos) o \x03030\x03 (permanente).
 
-    Los usuarios suspendidos no pueden identificarse con su apodo.
+    Los usuarios suspendidos no pueden identificarse con su nick.
     Los operadores IRC y usuarios root no pueden ser suspendidos.
   example:          "/msg %bot% SUSPEND MalUsuario 7d Spam en #ayuda"
-  success:            "\x0303✔\x03 El apodo \x02%nickname%\x02 ha sido suspendido hasta \x02%duration%\x02."
-  already_suspended:  "\x0304✗\x03 El apodo \x02%nickname%\x02 ya está suspendido."
-  not_registered:     "\x0304✗\x03 El apodo \x02%nickname%\x02 no está registrado."
-  forbidden:          "\x0304✗\x03 El apodo \x02%nickname%\x02 está prohibido y no puede suspenderse."
+  success:            "\x0303✔\x03 El nick \x02%nickname%\x02 ha sido suspendido hasta \x02%duration%\x02."
+  already_suspended:  "\x0304✗\x03 El nick \x02%nickname%\x02 ya está suspendido."
+  not_registered:     "\x0304✗\x03 El nick \x02%nickname%\x02 no está registrado."
+  forbidden:          "\x0304✗\x03 El nick \x02%nickname%\x02 está prohibido y no puede suspenderse."
   cannot_suspend_oper: "\x0304✗\x03 No se puede suspender al operador IRC \x02%nickname%\x02."
   cannot_suspend_root: "\x0304✗\x03 No se puede suspender al usuario root \x02%nickname%\x02."
-  cannot_suspend_service: "\x0304✗\x03 No se puede suspender el apodo de servicio \x02%nickname%\x02."
+  cannot_suspend_service: "\x0304✗\x03 No se puede suspender el nick de servicio \x02%nickname%\x02."
   invalid_duration:   "\x0304✗\x03 Duración inválida. Usa: \x0303<d><h><m>\x03 (ej: 7d, 12h, 30m) o \x03030\x03 para permanente."
   permanent:          "permanente"
 
 # --- UNSUSPEND (IRCop) -------------------------------------------------------
 unsuspend:
-  syntax:           "UNSUSPEND <apodo>"
-  short:            "Quita la suspensión de un apodo."
+  syntax:           "UNSUSPEND <nick>"
+  short:            "Quita la suspensión de un nick."
   help:             |
-    Quita una suspensión activa de un apodo, permitiendo que el propietario se identifique de nuevo.
+    Quita una suspensión activa de un nick, permitiendo que el propietario se identifique de nuevo.
   example:          "/msg %bot% UNSUSPEND AlgunUsuario"
   success:          "\x0303✔\x03 Se ha levantado la suspensión de \x02%nickname%\x02."
-  not_registered:   "\x0304✗\x03 El apodo \x02%nickname%\x02 no está registrado."
-  not_suspended:    "\x0304✗\x03 El apodo \x02%nickname%\x02 no está suspendido."
+  not_registered:   "\x0304✗\x03 El nick \x02%nickname%\x02 no está registrado."
+  not_suspended:    "\x0304✗\x03 El nick \x02%nickname%\x02 no está suspendido."
 
 # --- RENAME (IRCop) -----------------------------------------------------------
 rename:
-  syntax:           "RENAME <apodo>"
-  short:            "Fuerza el cambio de apodo de un apodo conectado a uno aleatorio."
+  syntax:           "RENAME <nick>"
+  short:            "Fuerza el cambio de nick de un nick conectado a uno aleatorio."
   help:             |
-    Fuerza a un apodo conectado a cambiar su apodo a uno generado aleatoriamente.
+    Fuerza a un nick conectado a cambiar su nick a uno generado aleatoriamente.
     Útil para hacer cumplir las políticas de la red sin desconectar al usuario.
 
-    El formato del nuevo apodo usa el prefijo configurado (%prefix%).
+    El formato del nuevo nick usa el prefijo configurado (%prefix%).
 
     Este comando requiere permiso de IRCop: nickserv.rename
   example:          "/msg %bot% RENAME Guest-4F21AB"
-  not_online:        "\x0304✗\x03 El apodo \x02%nickname%\x02 no está conectado."
+  not_online:        "\x0304✗\x03 El nick \x02%nickname%\x02 no está conectado."
   cannot_rename_root: "\x0304✗\x03 No se puede renombrar al usuario root \x02%nickname%\x02."
   cannot_rename_oper: "\x0304✗\x03 No se puede renombrar al IRC operator \x02%nickname%\x02."
-  cannot_rename_service: "\x0304✗\x03 No se puede renombrar el apodo de servicio \x02%nickname%\x02."
-  success:           "\x0303✓\x03 El apodo \x02%nickname%\x02 ha sido nombrado a \x02%new_nick%\x02."
+  cannot_rename_service: "\x0304✗\x03 No se puede renombrar el nick de servicio \x02%nickname%\x02."
+  success:           "\x0303✓\x03 El nick \x02%nickname%\x02 ha sido nombrado a \x02%new_nick%\x02."
 
 # --- DROP (IRCop) --------------------------------------------------------------
 drop:
-  syntax:           "DROP <apodo> [FORCE]"
-  short:            "Elimina un apodo registrado."
+  syntax:           "DROP <nick> [FORCE]"
+  short:            "Elimina un nick registrado."
   help:             |
-    Elimina un apodo registrado de la base de datos.
+    Elimina un nick registrado de la base de datos.
     Esta acción no se puede deshacer.
 
-    Si el usuario está conectado, será renombrado a un apodo Guest-.
+    Si el usuario está conectado, será renombrado a un nick Guest-.
     Los usuarios root y operadores IRC no pueden ser eliminados.
-    No puedes eliminar tu propio apodo.
+    No puedes eliminar tu propio nick.
 
     Este comando requiere permiso de IRCop: nickserv.drop
   example:          "/msg %bot% DROP CuentaAntigua"
-  not_registered:     "\x0304✗\x03 El apodo \x02%nickname%\x02 no está registrado."
-  suspended:         "\x0304✗\x03 El apodo \x02%nickname%\x02 está suspendido. Desuspende primero."
-  forbidden:         "\x0304✗\x03 El apodo \x02%nickname%\x02 está prohibido."
+  not_registered:     "\x0304✗\x03 El nick \x02%nickname%\x02 no está registrado."
+  suspended:         "\x0304✗\x03 El nick \x02%nickname%\x02 está suspendido. Desuspende primero."
+  forbidden:         "\x0304✗\x03 El nick \x02%nickname%\x02 está prohibido."
   cannot_drop_root:   "\x0304✗\x03 No se puede eliminar al usuario root \x02%nickname%\x02."
   cannot_drop_oper:   "\x0304✗\x03 No se puede eliminar al IRC operator \x02%nickname%\x02."
-  cannot_drop_self:    "\x0304✗\x03 No puedes eliminar tu propio apodo."
-  success:            "\x0303✓\x03 El apodo \x02%nickname%\x02 ha sido marcado para eliminación y puede ser restaurado durante el periodo de gracia."
-  force_success:      "\x0303✓\x03 El apodo \x02%nickname%\x02 ha sido eliminado permanentemente."
-  pending_deletion:   "\x0304✗\x03 El apodo \x02%nickname%\x02 ya está pendiente de eliminación. Usa DROP <apodo> FORCE para eliminarlo permanentemente."
-  cannot_drop_service: "\x0304✗\x03 No se puede eliminar el apodo de servicio \x02%nickname%\x02."
+  cannot_drop_self:    "\x0304✗\x03 No puedes eliminar tu propio nick."
+  success:            "\x0303✓\x03 El nick \x02%nickname%\x02 ha sido marcado para eliminación y puede ser restaurado durante el periodo de gracia."
+  force_success:      "\x0303✓\x03 El nick \x02%nickname%\x02 ha sido eliminado permanentemente."
+  pending_deletion:   "\x0304✗\x03 El nick \x02%nickname%\x02 ya está pendiente de eliminación. Usa DROP <nick> FORCE para eliminarlo permanentemente."
+  cannot_drop_service: "\x0304✗\x03 No se puede eliminar el nick de servicio \x02%nickname%\x02."
 
 # --- RESTORE (IRCop) -----------------------------------------------------------
 restore:
-  syntax:           "RESTORE <apodo>"
-  short:            "Restaurar un apodo pendiente de eliminación."
-  help:             "Restaura un apodo que fue eliminado manualmente y aún está dentro del periodo de gracia. Requiere permiso IRCop: nickserv.restore."
-  example:          "/msg %bot% RESTORE apodo"
-  success:          "\x0303✓\x03 El apodo \x02%nickname%\x02 ha sido restaurado."
-  not_registered:   "\x0304✗\x03 El apodo \x02%nickname%\x02 no está registrado."
-  not_pending_deletion: "\x0304✗\x03 El apodo \x02%nickname%\x02 no está pendiente de eliminación."
+  syntax:           "RESTORE <nick>"
+  short:            "Restaurar un nick pendiente de eliminación."
+  help:             "Restaura un nick que fue eliminado manualmente y aún está dentro del periodo de gracia. Requiere permiso IRCop: nickserv.restore."
+  example:          "/msg %bot% RESTORE nick"
+  success:          "\x0303✓\x03 El nick \x02%nickname%\x02 ha sido restaurado."
+  not_registered:   "\x0304✗\x03 El nick \x02%nickname%\x02 no está registrado."
+  not_pending_deletion: "\x0304✗\x03 El nick \x02%nickname%\x02 no está pendiente de eliminación."
 
 # --- FORBID (IRCop) --------------------------------------------------------------
 forbid:
-  syntax:           "FORBID <apodo> <razón>"
-  short:            "Prohíbe permanentemente el uso de un apodo."
+  syntax:           "FORBID <nick> <razón>"
+  short:            "Prohíbe permanentemente el uso de un nick."
   help:             |
-    Prohíbe el uso de un apodo en la red.
-    El apodo no podrá ser registrado ni usado por nadie.
+    Prohíbe el uso de un nick en la red.
+    El nick no podrá ser registrado ni usado por nadie.
 
-    Si el apodo está registrado, será eliminado primero.
-    Si alguien lo está usando, será forzado a cambiar a un apodo Guest-.
+    Si el nick está registrado, será eliminado primero.
+    Si alguien lo está usando, será forzado a cambiar a un nick Guest-.
 
-    Los usuarios root, operadores IRC y apodos de servicio no pueden ser prohibidos.
+    Los usuarios root, operadores IRC y nicks de servicio no pueden ser prohibidos.
 
     Este comando requiere permiso de IRCop: nickserv.forbid
   example:          "/msg %bot% FORBID MalUsuario Violaciones repetidas de política"
-  success:            "\x0303✔\x03 El apodo \x02%nickname%\x02 ha sido prohibido."
+  success:            "\x0303✔\x03 El nick \x02%nickname%\x02 ha sido prohibido."
   updated:            "\x0303✔\x03 Se ha actualizado la razón de prohibición para \x02%nickname%\x02."
   reason_required:    "\x0304✗\x03 Debes proporcionar una razón para la prohibición."
   cannot_forbid_root:  "\x0304✗\x03 No se puede prohibir al usuario root \x02%nickname%\x02."
   cannot_forbid_oper:  "\x0304✗\x03 No se puede prohibir al IRC operator \x02%nickname%\x02."
-  cannot_forbid_service: "\x0304✗\x03 No se puede prohibir el apodo de servicio \x02%nickname%\x02."
+  cannot_forbid_service: "\x0304✗\x03 No se puede prohibir el nick de servicio \x02%nickname%\x02."
 
 # --- UNFORBID (IRCop) ------------------------------------------------------------
 unforbid:
-  syntax:           "UNFORBID <apodo>"
-  short:            "Elimina la prohibición de un apodo."
+  syntax:           "UNFORBID <nick>"
+  short:            "Elimina la prohibición de un nick."
   help:             |
-    Elimina la prohibición de un apodo, permitiendo que pueda usarse nuevamente.
+    Elimina la prohibición de un nick, permitiendo que pueda usarse nuevamente.
 
     Este comando requiere permiso de IRCop: nickserv.forbid
   example:          "/msg %bot% UNFORBID AlgunNick"
-  success:          "\x0303✔\x03 El apodo \x02%nickname%\x02 ya no está prohibido."
-  not_forbidden:    "\x0304✗\x03 El apodo \x02%nickname%\x02 no está prohibido."
+  success:          "\x0303✔\x03 El nick \x02%nickname%\x02 ya no está prohibido."
+  not_forbidden:    "\x0304✗\x03 El nick \x02%nickname%\x02 no está prohibido."
 
 # --- FORBIDVHOST (IRCop) ---------------------------------------------------------
 forbidvhost:
@@ -542,10 +542,10 @@ forbidvhost:
 
 # --- HISTORY (IRCop) ---------------------------------------------------------
 history:
-  syntax:           "HISTORY <apodo> {ADD|DEL|VIEW|CLEAR}"
-  short:            "Ver o gestionar el historial de acciones de un apodo."
+  syntax:           "HISTORY <nick> {ADD|DEL|VIEW|CLEAR}"
+  short:            "Ver o gestionar el historial de acciones de un nick."
   help:             |
-    Gestiona el historial de acciones de un apodo.
+    Gestiona el historial de acciones de un nick.
     Solo IRCops con permiso 'nickserv.history' pueden usar este comando.
 
     Acciones registradas automáticamente:
@@ -559,19 +559,19 @@ history:
     Usa DEL para eliminar una entrada específica por ID.
     Usa CLEAR para eliminar todo el historial.
   example:          "/msg %bot% HISTORY UnNick VIEW"
-  not_registered:   "\x0304✗\x03 El apodo \x02%nickname%\x02 no está registrado."
+  not_registered:   "\x0304✗\x03 El nick \x02%nickname%\x02 no está registrado."
   unknown_operator: "(desconocido)"
 
   add:
-    syntax:     "HISTORY <apodo> ADD <mensaje>"
+    syntax:     "HISTORY <nick> ADD <mensaje>"
     short:      "Añadir una entrada manual al historial."
     help:        |
-      Añade una entrada manual al historial del apodo.
+      Añade una entrada manual al historial del nick.
     example:     "/msg %bot% HISTORY UnNick ADD Usuario reportado por spam"
     success:    "\x0303✔\x03 Entrada de historial añadida para \x02%nickname%\x02."
 
   del:
-    syntax:     "HISTORY <apodo> DEL <id>"
+    syntax:     "HISTORY <nick> DEL <id>"
     short:      "Eliminar una entrada del historial por ID."
     help:        |
       Elimina una entrada específica del historial por su ID.
@@ -581,10 +581,10 @@ history:
     invalid_id: "\x0304✗\x03 ID de entrada inválido: \x02%id%\x02."
 
   view:
-    syntax:     "HISTORY <apodo> VIEW [PÁGINA|ALL]"
-    short:      "Ver historial de acciones del apodo."
+    syntax:     "HISTORY <nick> VIEW [PÁGINA|ALL]"
+    short:      "Ver historial de acciones del nick."
     help:        |
-      Muestra el historial de acciones del apodo.
+      Muestra el historial de acciones del nick.
 
       Por defecto muestra 3 entradas a la vez.
       Usa VIEW 2 para ver la segunda página.
@@ -597,10 +597,10 @@ history:
     page_hint:   "Usa \x0303HISTORY %nickname% VIEW %next_page%\x03 para más entradas."
 
   clear:
-    syntax:     "HISTORY <apodo> CLEAR"
-    short:      "Eliminar todo el historial de un apodo."
+    syntax:     "HISTORY <nick> CLEAR"
+    short:      "Eliminar todo el historial de un nick."
     help:        |
-      Elimina todas las entradas de historial del apodo especificado.
+      Elimina todas las entradas de historial del nick especificado.
       Esta acción no se puede deshacer.
     example:     "/msg %bot% HISTORY UnNick CLEAR"
     success:    "\x0303✔\x03 Eliminadas \x02%count%\x02 entradas de historial para \x02%nickname%\x02."
@@ -626,31 +626,31 @@ history.extra:
 
 # --- NOEXPIRE (IRCop) ---------------------------------------------------------
 noexpire:
-  syntax:           "NOEXPIRE <apodo> {ON|OFF}"
-  short:            "Activa o desactiva la protección de expiración para un apodo."
+  syntax:           "NOEXPIRE <nick> {ON|OFF}"
+  short:            "Activa o desactiva la protección de expiración para un nick."
   help:             |
-    Controla si un apodo expirará por inactividad.
-    Con ON, el apodo nunca expira independientemente de su última actividad.
+    Controla si un nick expirará por inactividad.
+    Con ON, el nick nunca expira independientemente de su última actividad.
     Con OFF, se aplican las reglas normales de expiración.
 
     Solo los IRCops con permiso 'nickserv.noexpire' pueden usar este comando.
   example:          "/msg %bot% NOEXPIRE UsuarioImportante ON"
-  success_on:       "\x0303✔\x03 El apodo \x02%nickname%\x02 está ahora protegido contra expiración."
-  success_off:      "\x0303✔\x03 El apodo \x02%nickname%\x02 expirará normalmente."
-  not_registered:   "\x0304✗\x03 El apodo \x02%nickname%\x02 no está registrado."
-  forbidden:         "\x0304✗\x03 El apodo \x02%nickname%\x02 está prohibido."
-  suspended:         "\x0304✗\x03 El apodo \x02%nickname%\x02 está suspendido."
+  success_on:       "\x0303✔\x03 El nick \x02%nickname%\x02 está ahora protegido contra expiración."
+  success_off:      "\x0303✔\x03 El nick \x02%nickname%\x02 expirará normalmente."
+  not_registered:   "\x0304✗\x03 El nick \x02%nickname%\x02 no está registrado."
+  forbidden:         "\x0304✗\x03 El nick \x02%nickname%\x02 está prohibido."
+  suspended:         "\x0304✗\x03 El nick \x02%nickname%\x02 está suspendido."
 
 # --- LIST (IRCOP) ------------------------------------------------------------
 list:
   syntax: "LIST <patrón> [página]"
-  short: "Lista apodos registrados que coinciden con un patrón."
-  help: "Lista los apodos registrados que coinciden con el patrón indicado. El comodín * coincide con cualquier secuencia de caracteres. La página es opcional y empieza en 1."
-  example: "/msg %bot% LIST apodo*"
-  header: "Apodo | Registro | Última conexión | IP | Estado"
+  short: "Lista nicks registrados que coinciden con un patrón."
+  help: "Lista los nicks registrados que coinciden con el patrón indicado. El comodín * coincide con cualquier secuencia de caracteres. La página es opcional y empieza en 1."
+  example: "/msg %bot% LIST nick*"
+  header: "Nick | Registro | Última conexión | IP | Estado"
   row: "%nickname% | %registered% | %last_seen% | %ip% | %status%"
   page: "Página %page%/%pages% — %total% coincidencias"
-  empty: "Ningún apodo coincide con el patrón %pattern%."
+  empty: "Ningún nick coincide con el patrón %pattern%."
   status_pending: "Pendiente"
   status_registered: "Registrado"
   status_suspended: "Suspendido"
@@ -665,27 +665,27 @@ debug:
   prefix_reason: "Razón: %reason%"
 
 saregister:
-  syntax:           "SAREGISTER <apodo> <contraseña> <email>"
-  short:            "Registra un apodo en nombre de otro usuario."
-  help:             "Registra un apodo en nombre de otro usuario. La cuenta se crea ya activa:\nse saltan la verificación por correo y el límite de frecuencia.\nLa dirección sigue validándose y debe estar libre.\nEste comando requiere permiso de operador."
-  example:          "/msg %bot% SAREGISTER apodo s3cret ana@example.com"
-  done:             "\x0303✔\x03 El apodo \x02%nickname%\x02 ha sido registrado."
+  syntax:           "SAREGISTER <nick> <contraseña> <email>"
+  short:            "Registra un nick en nombre de otro usuario."
+  help:             "Registra un nick en nombre de otro usuario. La cuenta se crea ya activa:\nse saltan la verificación por correo y el límite de frecuencia.\nLa dirección sigue validándose y debe estar libre.\nEste comando requiere permiso de operador."
+  example:          "/msg %bot% SAREGISTER nick s3cret ana@example.com"
+  done:             "\x0303✔\x03 El nick \x02%nickname%\x02 ha sido registrado."
 
 vreg:
   syntax:           "VREG {ON|OFF|STATUS}"
-  short:            "Define la política de verificación de correo para el registro de apodos en toda la red."
-  help:             "Define la política de toda la red para el registro de apodos.\nON deja cada apodo nuevo pendiente hasta que se confirma su token de correo.\nOFF registra los apodos nuevos de inmediato; la dirección se sigue guardando para recuperar la cuenta.\nSTATUS muestra la política actual.\nEste comando requiere el permiso de IRCop nickserv.vreg."
+  short:            "Define la política de verificación de correo para el registro de nicks en toda la red."
+  help:             "Define la política de toda la red para el registro de nicks.\nON deja cada nick nuevo pendiente hasta que se confirma su token de correo.\nOFF registra los nicks nuevos de inmediato; la dirección se sigue guardando para recuperar la cuenta.\nSTATUS muestra la política actual.\nEste comando requiere el permiso de IRCop nickserv.vreg."
   example:          "/msg %bot% VREG STATUS"
   on:               "\x0303✔\x03 La verificación de correo ahora es \x02obligatoria\x02 para registrarse."
-  off:              "\x0303✔\x03 La verificación de correo está ahora \x02desactivada\x02; los apodos se registran de inmediato."
+  off:              "\x0303✔\x03 La verificación de correo está ahora \x02desactivada\x02; los nicks se registran de inmediato."
   status_on:        "La verificación de correo está actualmente \x0303activada\x03 para registrarse."
-  status_off:       "La verificación de correo está actualmente \x0304desactivada\x03; los apodos se registran de inmediato."
+  status_off:       "La verificación de correo está actualmente \x0304desactivada\x03; los nicks se registran de inmediato."
   usage:            "\x0304✗\x03 Acción desconocida. Uso: \x02%syntax%\x02"
 
 blackmail:
   syntax:           "BLACKMAIL {ADD|DEL|LIST} [argument]"
   short:            "Gestiona los dominios de correo bloqueados para el registro de usuarios."
-  help:             "Gestiona los dominios de correo en los que se rechaza el registro de apodos de usuario.\nADD añade un dominio, DEL elimina uno por su posición en la lista o vacía toda la lista,\ny LIST muestra las entradas actuales.\nUn dominio bloquea también sus subdominios (ejemplo.com cubre mail.ejemplo.com).\nLa lista solo afecta al registro de usuarios; SAREGISTER (registro forzado por el personal) no se ve afectado.\nEste comando requiere el permiso de IRCop nickserv.blackmail."
+  help:             "Gestiona los dominios de correo en los que se rechaza el registro de nicks de usuario.\nADD añade un dominio, DEL elimina uno por su posición en la lista o vacía toda la lista,\ny LIST muestra las entradas actuales.\nUn dominio bloquea también sus subdominios (ejemplo.com cubre mail.ejemplo.com).\nLa lista solo afecta al registro de usuarios; SAREGISTER (registro forzado por el personal) no se ve afectado.\nEste comando requiere el permiso de IRCop nickserv.blackmail."
   example:          "/msg %bot% BLACKMAIL LIST"
   added:            "\x0303✔\x03 El dominio de correo \x02%domain%\x02 ahora está bloqueado para el registro."
   already_listed:   "\x0307ℹ\x03 El dominio de correo \x02%domain%\x02 ya está bloqueado."
@@ -703,7 +703,7 @@ blackmail:
   add:
     syntax:         "BLACKMAIL ADD <dominio>"
     short:          "Bloquea los registros desde un dominio de correo."
-    help:           "Añade un dominio de correo a la lista de bloqueo. Se rechaza el registro\nde apodos que usen una dirección de ese dominio.\nEl dominio se recorta y se convierte a minúsculas antes de guardarlo.\nSAREGISTER no se ve afectado."
+    help:           "Añade un dominio de correo a la lista de bloqueo. Se rechaza el registro\nde nicks que usen una dirección de ese dominio.\nEl dominio se recorta y se convierte a minúsculas antes de guardarlo.\nSAREGISTER no se ve afectado."
     example:        "/msg %bot% BLACKMAIL ADD example.com"
   del:
     syntax:         "BLACKMAIL DEL <número|all>"
