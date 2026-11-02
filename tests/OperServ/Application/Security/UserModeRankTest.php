@@ -36,7 +36,7 @@ final class UserModeRankTest extends TestCase
     /** @return iterable<string, array{string, UserModeRank}> */
     public static function modes(): iterable
     {
-        foreach (['i', 'w', 'x', 'p', 'R', 'Z', 'D', 'G', 'T', 'B', 'd', 'I'] as $mode) {
+        foreach (['i', 'w', 'x', 'n', 'R', 'Z', 'D', 'G', 'T', 'B', 'd', 'I'] as $mode) {
             yield 'user ' . $mode => [$mode, UserModeRank::Ircop];
         }
         yield 'snomask' => ['s', UserModeRank::Operator];

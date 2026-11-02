@@ -38,7 +38,7 @@ final class SetAutoModesHandlerTest extends TestCase
     {
         yield 'with plus' => ['+B', '+B'];
         yield 'without plus' => ['B', '+B'];
-        yield 'several letters, duplicates removed' => ['+BpB', '+Bp'];
+        yield 'several letters, duplicates removed' => ['+BnB', '+Bn'];
     }
 
     #[Test]
@@ -147,6 +147,13 @@ final class SetAutoModesHandlerTest extends TestCase
         // @phpstan-ignore staticMethod.alreadyNarrowedType
         self::assertSame(UdbSchema::USER_MODES, SetAutoModesHandler::ALLOWED_MODES);
         self::assertNotContains('o', SetAutoModesHandler::ALLOWED_MODES);
+    }
+
+    #[Test]
+    public function privacyIsUserModeNOnSitioChat(): void
+    {
+        self::assertContains('n', UdbSchema::USER_MODES);
+        self::assertNotContains('p', UdbSchema::USER_MODES);
     }
 
     /** @return list<array{nickId: int, nickname: string, modes: ?string}> */

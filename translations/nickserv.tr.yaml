@@ -719,7 +719,7 @@ blackmail:
 automode:
   syntax:             "AUTOMODE <rumuz> [+modlar]"
   short:              "Bir rumuzun kimlik doğrularken aldığı kullanıcı modlarını ayarlar."
-  help:               "Sunucunun rumuza her kimlik doğrulamada uyguladığı kullanıcı modlarını kaydeder (örneğin bir bot için +B).\nModsuz kullanılırsa siler. Rumuz bağlı ve kimliği doğrulanmışsa değişiklik hemen uygulanır.\nİzin verilen modlar: iswBSTGWpqRZD. +o asla kabul edilmez; Root, IRCop veya servislerde kullanılamaz.\nBu komut IRCop iznini gerektirir: nickserv.automode."
+  help:               "Sunucunun rumuza her kimlik doğrulamada uyguladığı kullanıcı modlarını kaydeder (örneğin bir bot için +B).\nModsuz kullanılırsa siler. Rumuz bağlı ve kimliği doğrulanmışsa değişiklik hemen uygulanır.\nİzin verilen modlar: iswBSTGWnqRZD. +o asla kabul edilmez; Root, IRCop veya servislerde kullanılamaz.\nBu komut IRCop iznini gerektirir: nickserv.automode."
   example:            "/msg %bot% AUTOMODE Pedro +B"
   set:                "\x0303✔\x03 \x02%nickname%\x02 için otomatik modlar: \x02%modes%\x02."
   cleared:            "\x0303✔\x03 \x02%nickname%\x02 için otomatik modlar silindi."

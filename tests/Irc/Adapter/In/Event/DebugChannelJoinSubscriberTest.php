@@ -116,13 +116,19 @@ final class DebugChannelJoinSubscriberTest extends TestCase
     }
 
     #[Test]
-    public function seatsEveryServiceBotNotYetInTheChannelWithItsHighestPrefix(): void
+    public function seatsEveryServiceBotWithOpAndTurnsHigherPrefixesIntoOp(): void
     {
         $joined = [];
         $actions = $this->createStub(ProtocolServiceActionsInterface::class);
         $actions->method('joinChannelAsService')->willReturnCallback(
             static function (string $sid, string $channel, string $uid, string $prefix, ?int $ts) use (&$joined): void {
                 $joined[] = [$sid, $channel, $uid, $prefix, $ts];
+            },
+        );
+        $memberModes = [];
+        $actions->method('setChannelMemberMode')->willReturnCallback(
+            static function (string $sid, string $channel, string $uid, string $letter, bool $add, string $source = '', ?int $ts = null) use (&$memberModes): void {
+                $memberModes[] = [$channel, $uid, $letter, $add, $ts];
             },
         );
         $holder = new ActiveConnectionHolder();
@@ -148,13 +154,17 @@ final class DebugChannelJoinSubscriberTest extends TestCase
         $subscriber->onSyncComplete(new NetworkSyncCompleteEvent($this->createStub(ConnectionInterface::class), '001'));
 
         self::assertSame([
-            ['001', '#DeBuG', '001A00001', 'q', 1234],
-            ['001', '#DeBuG', '001Z00002', 'q', 1234],
+            ['001', '#DeBuG', '001A00001', 'o', 1234],
+            ['001', '#DeBuG', '001Z00002', 'o', 1234],
         ], $joined);
+        self::assertSame([
+            ['#DeBuG', '001B00001', 'q', false, 1234],
+            ['#DeBuG', '001B00001', 'o', true, 1234],
+        ], $memberModes);
     }
 
     #[Test]
-    public function seatsBotsWithOpInANewChannelWhenNoKnownPrefixIsSupported(): void
+    public function seatsBotsWithOpInANewChannel(): void
     {
         $actions = $this->createMock(ProtocolServiceActionsInterface::class);
         $actions->expects(self::once())->method('joinChannelAsService')

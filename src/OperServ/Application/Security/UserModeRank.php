@@ -31,7 +31,7 @@ enum UserModeRank: int
 
     /** Minimum rank per mode letter; letters not listed need Root. */
     private const array MINIMUM = [
-        'i' => 0, 'w' => 0, 'x' => 0, 'p' => 0, 'R' => 0, 'Z' => 0, 'D' => 0, 'G' => 0, 'T' => 0, 'B' => 0, 'd' => 0, 'I' => 0,
+        'i' => 0, 'w' => 0, 'x' => 0, 'n' => 0, 'R' => 0, 'Z' => 0, 'D' => 0, 'G' => 0, 'T' => 0, 'B' => 0, 'd' => 0, 'I' => 0,
         's' => 1, 'W' => 1,
         'H' => 2, 'q' => 2, 'o' => 2,
     ];

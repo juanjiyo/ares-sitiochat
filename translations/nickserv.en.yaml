@@ -719,7 +719,7 @@ blackmail:
 automode:
   syntax:             "AUTOMODE <nickname> [+modes]"
   short:              "Sets the user modes a nickname gets when it identifies."
-  help:               "Stores the user modes the server applies to the nickname every time it identifies (for example, +B for a bot).\nWithout modes, clears them. If the nickname is online and identified, the change applies at once.\nAllowed modes: iswBSTGWpqRZD. +o is never accepted; it cannot be used on Roots, IRCops or services.\nThis command requires the IRCop permission: nickserv.automode."
+  help:               "Stores the user modes the server applies to the nickname every time it identifies (for example, +B for a bot).\nWithout modes, clears them. If the nickname is online and identified, the change applies at once.\nAllowed modes: iswBSTGWnqRZD. +o is never accepted; it cannot be used on Roots, IRCops or services.\nThis command requires the IRCop permission: nickserv.automode."
   example:            "/msg %bot% AUTOMODE Pedro +B"
   set:                "\x0303✔\x03 Automatic modes of \x02%nickname%\x02: \x02%modes%\x02."
   cleared:            "\x0303✔\x03 Automatic modes of \x02%nickname%\x02 cleared."

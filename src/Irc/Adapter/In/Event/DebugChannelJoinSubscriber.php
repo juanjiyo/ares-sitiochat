@@ -15,19 +15,19 @@ use App\Irc\Application\Port\In\ServiceUidProviderInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use function array_column;
-use function array_find;
+use function array_keys;
 use function in_array;
 use function time;
 
 /**
  * Joins the debug channel when services connect (if configured), applies
  * registered channel policies after sync completes, and seats every service
- * bot there with its highest prefix: the service bots live in the debug
- * channel, as they did with the original dBoTs.
+ * bot there with op (@): the service bots live in the debug channel, as
+ * they did with the original dBoTs.
  */
 final readonly class DebugChannelJoinSubscriber implements EventSubscriberInterface
 {
-    private const array PREFIX_ORDER = ['q', 'a', 'o', 'h', 'v'];
+    private const string PREFIX = 'o';
 
     /**
      * @param iterable<ServiceDebugNotifierInterface> $debugNotifiers
@@ -75,21 +75,35 @@ final readonly class DebugChannelJoinSubscriber implements EventSubscriberInterf
             return;
         }
 
-        $supported = $module->getChannelModeSupport()->getSupportedPrefixModes();
-        $prefix = array_find(self::PREFIX_ORDER, static fn (string $letter): bool => in_array($letter, $supported, true)) ?? 'o';
         $view = $this->channelLookup->findByChannelName($channel);
-        $seated = array_column($view->members ?? [], 'uid');
+        $roles = array_column($view->members ?? [], 'roleLetter', 'uid');
+        $seated = array_keys($roles);
         $timestamp = $view->timestamp ?? time();
+        $actions = $module->getServiceActions();
 
         foreach ($this->serviceBots as $bot) {
             $uid = $bot->getUid();
-            if ('' === $uid || in_array($uid, $seated, true)) {
+            if ('' === $uid) {
                 continue;
             }
 
-            $module->getServiceActions()->joinChannelAsService($serverSid, $channel, $uid, $prefix, $timestamp);
-            $this->channelRegistration->registerServiceChannelJoin($channel, $uid, $prefix, $timestamp);
+            if (in_array($uid, $seated, true)) {
+                $role = $roles[$uid] ?? '';
+                if (self::PREFIX !== $role) {
+                    if ('' !== $role) {
+                        $actions->setChannelMemberMode($serverSid, $channel, $uid, $role, false, '', $timestamp);
+                    }
+                    $actions->setChannelMemberMode($serverSid, $channel, $uid, self::PREFIX, true, '', $timestamp);
+                    $roles[$uid] = self::PREFIX;
+                }
+
+                continue;
+            }
+
+            $actions->joinChannelAsService($serverSid, $channel, $uid, self::PREFIX, $timestamp);
+            $this->channelRegistration->registerServiceChannelJoin($channel, $uid, self::PREFIX, $timestamp);
             $seated[] = $uid;
+            $roles[$uid] = self::PREFIX;
         }
     }
 }

@@ -25,7 +25,7 @@ use function trim;
 final readonly class SetAutoModesHandler implements SetAutoModesHandlerInterface
 {
     /** Profile user modes accepted by the UDB module in N::<nick>::modes ('o' is never allowed). */
-    public const array ALLOWED_MODES = ['i', 's', 'w', 'B', 'S', 'T', 'G', 'W', 'p', 'q', 'R', 'Z', 'D'];
+    public const array ALLOWED_MODES = ['i', 's', 'w', 'B', 'S', 'T', 'G', 'W', 'n', 'q', 'R', 'Z', 'D'];
 
     public function __construct(
         private RegisteredNickRepositoryInterface $nicks,

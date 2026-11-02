@@ -13,11 +13,11 @@ use function sprintf;
 final readonly class UnrealStandaloneServiceIntroductionFormatter
 {
     private const array SERVICE_UMODES = [
-        'nickserv' => '+BHdIopqrSz',
-        'chanserv' => '+BHdIopqrSz',
-        'memoserv' => '+BHdIopqrRSz',
-        'cregserv' => '+BHdIopqrSz',
-        'operserv' => '+BHdIopqrRSz',
+        'nickserv' => '+BHsdIonq',
+        'chanserv' => '+BHsdIonq',
+        'memoserv' => '+BHsdIonq',
+        'cregserv' => '+BHsdIonq',
+        'operserv' => '+BHsdIonq',
     ];
 
     /** @param string $botSwhois extra WHOIS line for every service bot ('' for none) */
@@ -35,7 +35,7 @@ final readonly class UnrealStandaloneServiceIntroductionFormatter
         string $serviceName,
     ): string {
         $ts = time();
-        $umodes = self::SERVICE_UMODES[$serviceName] ?? '+BHSdioqrz';
+        $umodes = self::SERVICE_UMODES[$serviceName] ?? '+BHsdIonq';
 
         return sprintf(
             ':%s UID %s 1 %d %s %s %s 0 %s * * * :%s',

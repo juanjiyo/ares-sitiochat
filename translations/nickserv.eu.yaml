@@ -719,7 +719,7 @@ blackmail:
 automode:
   syntax:             "AUTOMODE <nick> [+moduak]"
   short:              "Nick batek identifikatzean jasotzen dituen erabiltzaile-moduak ezartzen ditu."
-  help:               "Zerbitzariak nickari identifikatzen den bakoitzean aplikatzen dizkion erabiltzaile-moduak gordetzen ditu (adibidez, +B bot batentzat).\nModurik gabe, ezabatu egiten ditu. Nicka konektatuta eta identifikatuta badago, aldaketa berehala aplikatzen da.\nOnartutako moduak: iswBSTGWpqRZD. +o ez da inoiz onartzen; ezin da Root, IRCop edo zerbitzuen gainean erabili.\nKomando honek IRCop baimena behar du: nickserv.automode."
+  help:               "Zerbitzariak nickari identifikatzen den bakoitzean aplikatzen dizkion erabiltzaile-moduak gordetzen ditu (adibidez, +B bot batentzat).\nModurik gabe, ezabatu egiten ditu. Nicka konektatuta eta identifikatuta badago, aldaketa berehala aplikatzen da.\nOnartutako moduak: iswBSTGWnqRZD. +o ez da inoiz onartzen; ezin da Root, IRCop edo zerbitzuen gainean erabili.\nKomando honek IRCop baimena behar du: nickserv.automode."
   example:            "/msg %bot% AUTOMODE Pedro +B"
   set:                "\x0303✔\x03 \x02%nickname%\x02 nickaren modu automatikoak: \x02%modes%\x02."
   cleared:            "\x0303✔\x03 \x02%nickname%\x02 nickaren modu automatikoak ezabatu dira."

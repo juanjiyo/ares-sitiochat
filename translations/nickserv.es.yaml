@@ -719,7 +719,7 @@ blackmail:
 automode:
   syntax:             "AUTOMODE <nick> [+modos]"
   short:              "Define los modos de usuario que recibe un nick al identificarse."
-  help:               "Guarda los modos de usuario que el servidor aplica al nick cada vez que se identifica (por ejemplo, +B para un bot).\nSin modos, los borra. Si el nick está conectado e identificado, el cambio se aplica al momento.\nModos permitidos: iswBSTGWpqRZD. Nunca se admite +o; no se puede usar sobre Root, IRCops ni servicios.\nEste comando requiere permiso IRCop: nickserv.automode."
+  help:               "Guarda los modos de usuario que el servidor aplica al nick cada vez que se identifica (por ejemplo, +B para un bot).\nSin modos, los borra. Si el nick está conectado e identificado, el cambio se aplica al momento.\nModos permitidos: iswBSTGWnqRZD. Nunca se admite +o; no se puede usar sobre Root, IRCops ni servicios.\nEste comando requiere permiso IRCop: nickserv.automode."
   example:            "/msg %bot% AUTOMODE Pedro +B"
   set:                "\x0303✔\x03 Modos automáticos de \x02%nickname%\x02: \x02%modes%\x02."
   cleared:            "\x0303✔\x03 Modos automáticos de \x02%nickname%\x02 borrados."
