@@ -15,8 +15,6 @@ use App\Irc\Application\Port\In\ServiceUidProviderInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use function array_column;
-use function array_keys;
-use function in_array;
 use function time;
 
 /**
@@ -77,32 +75,18 @@ final readonly class DebugChannelJoinSubscriber implements EventSubscriberInterf
 
         $view = $this->channelLookup->findByChannelName($channel);
         $roles = array_column($view->members ?? [], 'roleLetter', 'uid');
-        $seated = array_keys($roles);
         $timestamp = $view->timestamp ?? time();
         $actions = $module->getServiceActions();
 
         foreach ($this->serviceBots as $bot) {
             $uid = $bot->getUid();
-            if ('' === $uid) {
+            if ('' === $uid || self::PREFIX === ($roles[$uid] ?? null)) {
                 continue;
             }
 
-            if (in_array($uid, $seated, true)) {
-                $role = $roles[$uid] ?? '';
-                if (self::PREFIX !== $role) {
-                    if ('' !== $role) {
-                        $actions->setChannelMemberMode($serverSid, $channel, $uid, $role, false, '', $timestamp);
-                    }
-                    $actions->setChannelMemberMode($serverSid, $channel, $uid, self::PREFIX, true, '', $timestamp);
-                    $roles[$uid] = self::PREFIX;
-                }
-
-                continue;
-            }
-
+            // An SJOIN with the channel timestamp also ops a bot that is already in.
             $actions->joinChannelAsService($serverSid, $channel, $uid, self::PREFIX, $timestamp);
             $this->channelRegistration->registerServiceChannelJoin($channel, $uid, self::PREFIX, $timestamp);
-            $seated[] = $uid;
             $roles[$uid] = self::PREFIX;
         }
     }

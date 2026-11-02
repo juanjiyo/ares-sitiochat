@@ -125,28 +125,22 @@ final class DebugChannelJoinSubscriberTest extends TestCase
                 $joined[] = [$sid, $channel, $uid, $prefix, $ts];
             },
         );
-        $memberModes = [];
-        $actions->method('setChannelMemberMode')->willReturnCallback(
-            static function (string $sid, string $channel, string $uid, string $letter, bool $add, string $source = '', ?int $ts = null) use (&$memberModes): void {
-                $memberModes[] = [$channel, $uid, $letter, $add, $ts];
-            },
-        );
         $holder = new ActiveConnectionHolder();
         $holder->setProtocolModule($this->module($actions, ['q', 'o', 'v']));
 
         $channels = $this->createStub(ChannelLookupPort::class);
         $channels->method('findByChannelName')->willReturn(
-            new ChannelView('#DeBuG', '+nt', null, 1, [['uid' => '001B00001', 'roleLetter' => 'q']], 1234),
+            new ChannelView('#DeBuG', '+nt', null, 1, [['uid' => '001B00001', 'roleLetter' => 'q'], ['uid' => '001C00003', 'roleLetter' => 'o']], 1234),
         );
         $registration = $this->createMock(ServiceChannelRegistrationPort::class);
-        $registration->expects(self::exactly(2))->method('registerServiceChannelJoin');
+        $registration->expects(self::exactly(3))->method('registerServiceChannelJoin');
 
         $subscriber = new DebugChannelJoinSubscriber(
             [],
             '#DeBuG',
             $this->createStub(RegisteredChannelSetup::class),
-            // CHaN is already in, a bot without UID is not introduced, NiCK twice joins once.
-            [$this->bot('001A00001'), $this->bot('001B00001'), $this->bot(''), $this->bot('001Z00002'), $this->bot('001A00001')],
+            // CHaN is in without op, OPeR already has op, a bot without UID is not introduced, NiCK twice joins once.
+            [$this->bot('001A00001'), $this->bot('001B00001'), $this->bot('001C00003'), $this->bot(''), $this->bot('001Z00002'), $this->bot('001A00001')],
             $holder,
             $channels,
             $registration,
@@ -155,12 +149,9 @@ final class DebugChannelJoinSubscriberTest extends TestCase
 
         self::assertSame([
             ['001', '#DeBuG', '001A00001', 'o', 1234],
+            ['001', '#DeBuG', '001B00001', 'o', 1234],
             ['001', '#DeBuG', '001Z00002', 'o', 1234],
         ], $joined);
-        self::assertSame([
-            ['#DeBuG', '001B00001', 'q', false, 1234],
-            ['#DeBuG', '001B00001', 'o', true, 1234],
-        ], $memberModes);
     }
 
     #[Test]
