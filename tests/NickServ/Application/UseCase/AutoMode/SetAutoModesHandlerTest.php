@@ -54,7 +54,7 @@ final class SetAutoModesHandlerTest extends TestCase
         self::assertSame($stored, $result->modes);
         self::assertSame($stored, $account->getAutoModes());
         self::assertSame(1, $this->saves);
-        self::assertSame([new NickAutoModesChangedEvent(7, 'Pedro', $stored)], $this->events);
+        self::assertSame([['nickId' => 7, 'nickname' => 'Pedro', 'modes' => $stored]], $this->publishedChanges());
     }
 
     #[Test]
@@ -68,7 +68,7 @@ final class SetAutoModesHandlerTest extends TestCase
         self::assertSame(SetAutoModesOutcome::Cleared, $result->outcome);
         self::assertNull($account->getAutoModes());
         self::assertSame(1, $this->saves);
-        self::assertSame([new NickAutoModesChangedEvent(7, 'Pedro', null)], $this->events);
+        self::assertSame([['nickId' => 7, 'nickname' => 'Pedro', 'modes' => null]], $this->publishedChanges());
     }
 
     /** @return iterable<string, array{string, string}> */
@@ -143,8 +143,25 @@ final class SetAutoModesHandlerTest extends TestCase
     #[Test]
     public function allowedModesAreTheUdbProfileModes(): void
     {
+        // Guards the copy of UdbSchema::USER_MODES that Deptrac keeps out of Application.
+        // @phpstan-ignore staticMethod.alreadyNarrowedType
         self::assertSame(UdbSchema::USER_MODES, SetAutoModesHandler::ALLOWED_MODES);
         self::assertNotContains('o', SetAutoModesHandler::ALLOWED_MODES);
+    }
+
+    /** @return list<array{nickId: int, nickname: string, modes: ?string}> */
+    private function publishedChanges(): array
+    {
+        self::assertContainsOnlyInstancesOf(NickAutoModesChangedEvent::class, $this->events);
+
+        return array_map(
+            static fn (NickAutoModesChangedEvent $event): array => [
+                'nickId' => $event->nickId,
+                'nickname' => $event->nickname,
+                'modes' => $event->modes,
+            ],
+            $this->events,
+        );
     }
 
     private function account(): RegisteredNick

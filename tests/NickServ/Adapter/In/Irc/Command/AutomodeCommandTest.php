@@ -44,7 +44,6 @@ final class AutomodeCommandTest extends TestCase
         self::assertSame(76, $command->getOrder());
         self::assertTrue($command->isOperOnly());
         self::assertSame(NickServPermission::AUTOMODE, $command->getRequiredPermission());
-        self::assertSame('nickserv.automode', NickServPermission::AUTOMODE);
         self::assertContains(NickServPermission::AUTOMODE, NickServPermission::allIrcop());
     }
 
@@ -77,8 +76,9 @@ final class AutomodeCommandTest extends TestCase
         self::assertTrue($outcome->success);
         self::assertSame(['automode.set'], $messages);
         self::assertSame(['%nickname%' => 'Pedro', '%modes%' => '+B'], array_intersect_key($params[0], ['%nickname%' => 1, '%modes%' => 1]));
-        self::assertSame('Pedro', $outcome->auditData?->target);
-        self::assertSame(['modes' => '+B'], $outcome->auditData?->extra);
+        self::assertNotNull($outcome->auditData);
+        self::assertSame('Pedro', $outcome->auditData->target);
+        self::assertSame(['modes' => '+B'], $outcome->auditData->extra);
     }
 
     #[Test]
