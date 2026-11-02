@@ -76,7 +76,7 @@ enum StaffRank: string
             self::ADMIN => [
                 'operserv.eline', 'operserv.geoip', 'operserv.motd', 'operserv.umode', 'operserv.staff',
                 'nickserv.drop', 'nickserv.forbid', 'nickserv.forbidvhost', 'nickserv.noexpire', 'nickserv.restore',
-                'nickserv.saregister', 'nickserv.vreg', 'nickserv.blackmail',
+                'nickserv.saregister', 'nickserv.vreg', 'nickserv.blackmail', 'nickserv.automode',
                 'chanserv.drop', 'chanserv.forbid', 'chanserv.noexpire', 'chanserv.restore', 'chanserv.clearaccess',
                 'chanserv.level_founder', 'chanserv.ircoponly',
                 'cregserv.drop', 'cregserv.saregister', 'cregserv.oficial', 'cregserv.apodera', 'cregserv.ig',

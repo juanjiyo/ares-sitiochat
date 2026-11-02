@@ -66,6 +66,8 @@ final class StaffRankTest extends TestCase
         }
         self::assertSame([], StaffRank::ROOT->ownPermissions());
         self::assertContains('operserv.staff', StaffRank::ADMIN->ownPermissions());
+        self::assertContains('nickserv.automode', StaffRank::ADMIN->ownPermissions());
+        self::assertNotContains('nickserv.automode', StaffRank::OPER->ownPermissions());
         self::assertNotContains('operserv.staff.admin', $all);
         self::assertNotContains('operserv.set', $all);
         self::assertNotContains('operserv.raw', $all);

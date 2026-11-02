@@ -135,6 +135,18 @@ final class UdbRecordExporterTest extends TestCase
     }
 
     #[Test]
+    public function nickRecordsIncludeTheAutomaticModes(): void
+    {
+        $bcryptHash = '$2y$12$V1fmubjfLQd.sMvEU4x.5.hjN6wtGG1aNhiJqy.dc0O0sfKFzyLGe';
+        $nick = $this->createNick('pedro', passwordHash: $bcryptHash, autoModes: '+B');
+
+        self::assertSame([
+            'pedro::pass' => 'crypt:' . $bcryptHash,
+            'pedro::modes' => '+B',
+        ], $this->createExporterWithOperators($this->createStub(OperatorNetworkProjectionQuery::class))->nickRecords($nick));
+    }
+
+    #[Test]
     public function nickRecordsSkipIncompatibleHashesAndMissingVhost(): void
     {
         $nick = $this->createNick('plainnick', passwordHash: '$2y$10$bcrypt');
@@ -501,8 +513,9 @@ final class UdbRecordExporterTest extends TestCase
         bool $suspended = false,
         ?string $suspensionReason = null,
         ?DateTimeImmutable $suspendedUntil = null,
+        ?string $autoModes = null,
     ): NickProjection {
-        return new NickProjection(42, $nickname, $passwordHash ?? 'argon2id:$argon2id$hash', $vhost, $forbidden, $forbiddenReason, $pendingVerification, $suspended, $suspensionReason, $suspendedUntil);
+        return new NickProjection(42, $nickname, $passwordHash ?? 'argon2id:$argon2id$hash', $vhost, $forbidden, $forbiddenReason, $pendingVerification, $suspended, $suspensionReason, $suspendedUntil, $autoModes);
     }
 
     /**

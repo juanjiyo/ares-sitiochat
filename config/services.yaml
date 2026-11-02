@@ -1883,6 +1883,12 @@ services:
     App\NickServ\Adapter\In\Irc\Command\SasetCommand:
         tags: ['nickserv.command']
 
+    App\NickServ\Adapter\In\Irc\Command\AutomodeCommand:
+        tags: ['nickserv.command']
+
+    App\NickServ\Application\UseCase\AutoMode\SetAutoModesHandlerInterface:
+        alias: App\NickServ\Application\UseCase\AutoMode\SetAutoModesHandler
+
     App\NickServ\Adapter\In\Irc\TimezoneHelpProvider: ~
 
     App\NickServ\Adapter\In\Irc\Command\HelpCommand:

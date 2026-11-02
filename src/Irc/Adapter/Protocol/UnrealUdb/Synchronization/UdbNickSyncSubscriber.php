@@ -7,6 +7,7 @@ namespace App\Irc\Adapter\Protocol\UnrealUdb\Synchronization;
 use App\Irc\Adapter\Protocol\UnrealUdb\Session\UdbSessionStateInterface;
 use App\NickServ\Application\Port\In\NickProjection;
 use App\NickServ\Application\Port\In\NickProjectionQuery;
+use App\NickServ\Application\PublishedEvent\NickAutoModesChangedEvent;
 use App\NickServ\Application\PublishedEvent\NickDropEvent;
 use App\NickServ\Application\PublishedEvent\NickPasswordHashAvailable;
 use App\NickServ\Application\PublishedEvent\NickSuspendedEvent;
@@ -44,6 +45,7 @@ final class UdbNickSyncSubscriber implements EventSubscriberInterface
         return [
             NickPasswordHashAvailable::class => 'onPasswordHashAvailable',
             NickVhostChangedEvent::class => 'onVhostChanged',
+            NickAutoModesChangedEvent::class => 'onAutoModesChanged',
             NickSuspendedEvent::class => 'onNickSuspended',
             NickUnsuspendedEvent::class => 'onNickUnsuspended',
             NickDropEvent::class => 'onNickDrop',
@@ -91,6 +93,18 @@ final class UdbNickSyncSubscriber implements EventSubscriberInterface
         }
 
         $this->writeVhost($event->nickname, $account);
+    }
+
+    public function onAutoModesChanged(NickAutoModesChangedEvent $event): void
+    {
+        $path = sprintf('%s::modes', $event->nickname);
+        if (null === $event->modes) {
+            $this->recordWriter->delete(self::BLOCK, $path);
+
+            return;
+        }
+
+        $this->recordWriter->insert(self::BLOCK, $path, $event->modes);
     }
 
     public function onNickSuspended(NickSuspendedEvent $event): void

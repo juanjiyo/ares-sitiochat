@@ -715,3 +715,14 @@ blackmail:
     short:          "Blokeatutako posta-domeinuak zerrendatzen ditu."
     help:           "Eredurik gabe, zenbat domeinu dauden blokeatuta erakusten du. Eredu batekin (* eta ? onartzen ditu)\nbat datozen domeinuak erakusten ditu. Erakutsitako zenbakiak BLACKMAIL DEL-ekin erabil daitezke."
     example:        "/msg %bot% BLACKMAIL LIST *chat*"
+
+automode:
+  syntax:             "AUTOMODE <nick> [+moduak]"
+  short:              "Nick batek identifikatzean jasotzen dituen erabiltzaile-moduak ezartzen ditu."
+  help:               "Zerbitzariak nickari identifikatzen den bakoitzean aplikatzen dizkion erabiltzaile-moduak gordetzen ditu (adibidez, +B bot batentzat).\nModurik gabe, ezabatu egiten ditu. Nicka konektatuta eta identifikatuta badago, aldaketa berehala aplikatzen da.\nOnartutako moduak: iswBSTGWpqRZD. +o ez da inoiz onartzen; ezin da Root, IRCop edo zerbitzuen gainean erabili.\nKomando honek IRCop baimena behar du: nickserv.automode."
+  example:            "/msg %bot% AUTOMODE Pedro +B"
+  set:                "\x0303✔\x03 \x02%nickname%\x02 nickaren modu automatikoak: \x02%modes%\x02."
+  cleared:            "\x0303✔\x03 \x02%nickname%\x02 nickaren modu automatikoak ezabatu dira."
+  invalid_modes:      "\x0304✗\x03 Modu baliogabeak: \x02%modes%\x02. Onartuak: \x02+%allowed%\x02 (inoiz ez +o)."
+  not_registered:     "\x0304✗\x03 \x02%nickname%\x02 nicka ez dago erregistratuta."
+  cannot_modify_oper: "\x0304✗\x03 Ezin dituzu Root, IRC Operadore edo zerbitzu baten modu automatikoak aldatu."

@@ -167,7 +167,7 @@ final readonly class UdbRecordExporter
     }
 
     /**
-     * Full N-block profile of one nick (pass/vhost/oper/suspend).
+     * Full N-block profile of one nick (pass/vhost/modes/oper/suspend).
      * Forbidden nicks export only their forbid record.
      *
      * @return array<string, string>
@@ -197,6 +197,10 @@ final readonly class UdbRecordExporter
         $vhost = $this->effectiveVhost($nick);
         if (null !== $vhost) {
             $records[sprintf('%s::vhost', $nick->nickname)] = $vhost;
+        }
+
+        if (null !== $nick->autoModes) {
+            $records[sprintf('%s::modes', $nick->nickname)] = $nick->autoModes;
         }
 
         $operclass = $this->operators->findForNick($nick->id, $nick->nickname)?->operclass;

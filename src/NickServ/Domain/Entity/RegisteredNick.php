@@ -79,6 +79,9 @@ class RegisteredNick
     /** Custom virtual host (displayed hostname). Null = use default/cloak. */
     private ?string $vhost = null;
 
+    /** User modes the IRCd applies on every identification (AUTOMODE), e.g. "+B". */
+    private ?string $autoModes = null;
+
     /** PHP timezone identifier for date display (e.g. Europe/Madrid). Null = use services default. */
     private ?string $timezone = null;
 
@@ -374,6 +377,17 @@ class RegisteredNick
     public function getVhost(): ?string
     {
         return $this->vhost;
+    }
+
+    public function getAutoModes(): ?string
+    {
+        return $this->autoModes;
+    }
+
+    /** Set or clear (null) the user modes applied on every identification. */
+    public function changeAutoModes(?string $modes): void
+    {
+        $this->autoModes = $modes;
     }
 
     public function getTimezone(): ?string

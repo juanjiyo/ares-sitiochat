@@ -7,6 +7,7 @@ namespace App\NickServ\Application\Port\Out;
 use App\NickServ\Application\Event\NickEmailChangedEvent;
 use App\NickServ\Application\Event\NickPasswordChangedEvent;
 use App\NickServ\Application\PublishedEvent\NickDropCleanupEvent;
+use App\NickServ\Application\PublishedEvent\NickAutoModesChangedEvent;
 use App\NickServ\Application\PublishedEvent\NickDropEvent;
 use App\NickServ\Application\PublishedEvent\NickIdentifiedEvent;
 use App\NickServ\Application\PublishedEvent\NickPasswordHashAvailable;
@@ -18,6 +19,6 @@ use App\NickServ\Application\PublishedEvent\UserDeidentifiedEvent;
 interface NickServEventPublisher
 {
     public function publish(
-        NickDropCleanupEvent|NickDropEvent|NickEmailChangedEvent|NickIdentifiedEvent|NickPasswordChangedEvent|NickPasswordHashAvailable|NickSuspendedEvent|NickUnsuspendedEvent|NickVhostChangedEvent|UserDeidentifiedEvent $event,
+        NickAutoModesChangedEvent|NickDropCleanupEvent|NickDropEvent|NickEmailChangedEvent|NickIdentifiedEvent|NickPasswordChangedEvent|NickPasswordHashAvailable|NickSuspendedEvent|NickUnsuspendedEvent|NickVhostChangedEvent|UserDeidentifiedEvent $event,
     ): void;
 }

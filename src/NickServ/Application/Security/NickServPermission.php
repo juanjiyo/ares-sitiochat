@@ -61,6 +61,9 @@ final readonly class NickServPermission
     /** IRCop permission to manage the e-mail domains blocked from user registration. */
     public const string BLACKMAIL = 'nickserv.blackmail';
 
+    /** IRCop permission to set the user modes applied to a nick on every identification. */
+    public const string AUTOMODE = 'nickserv.automode';
+
     /** @return list<string> */
     public static function allIrcop(): array
     {
@@ -81,6 +84,7 @@ final readonly class NickServPermission
             self::SAREGISTER,
             self::VREG,
             self::BLACKMAIL,
+            self::AUTOMODE,
         ];
     }
 

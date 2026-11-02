@@ -715,3 +715,14 @@ blackmail:
     short:          "Liste les domaines de messagerie bloqués."
     help:           "Sans motif, affiche le nombre de domaines bloqués. Avec un motif (* et ? acceptés),\naffiche les domaines correspondants. Les numéros affichés peuvent être utilisés avec BLACKMAIL DEL."
     example:        "/msg %bot% BLACKMAIL LIST *chat*"
+
+automode:
+  syntax:             "AUTOMODE <pseudo> [+modes]"
+  short:              "Définit les modes utilisateur qu'un pseudo reçoit en s'identifiant."
+  help:               "Enregistre les modes utilisateur que le serveur applique au pseudo à chaque identification (par exemple, +B pour un bot).\nSans modes, les efface. Si le pseudo est connecté et identifié, le changement s'applique aussitôt.\nModes autorisés : iswBSTGWpqRZD. +o n'est jamais accepté ; inutilisable sur les Root, IRCops et services.\nCette commande requiert la permission IRCop : nickserv.automode."
+  example:            "/msg %bot% AUTOMODE Pedro +B"
+  set:                "\x0303✔\x03 Modes automatiques de \x02%nickname%\x02 : \x02%modes%\x02."
+  cleared:            "\x0303✔\x03 Modes automatiques de \x02%nickname%\x02 effacés."
+  invalid_modes:      "\x0304✗\x03 Modes invalides : \x02%modes%\x02. Autorisés : \x02+%allowed%\x02 (jamais +o)."
+  not_registered:     "\x0304✗\x03 Le pseudo \x02%nickname%\x02 n'est pas enregistré."
+  cannot_modify_oper: "\x0304✗\x03 Vous ne pouvez pas changer les modes automatiques d'un Root, d'un Opérateur IRC ou d'un service."

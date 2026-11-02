@@ -590,6 +590,12 @@ final class RegisteredNickTest extends TestCase
         $nick->changeVhost(null);
         self::assertNull($nick->getVhost());
 
+        self::assertNull($nick->getAutoModes());
+        $nick->changeAutoModes('+B');
+        self::assertSame('+B', $nick->getAutoModes());
+        $nick->changeAutoModes(null);
+        self::assertNull($nick->getAutoModes());
+
         $nick->changeTimezone('UTC');
         self::assertSame('UTC', $nick->getTimezone());
 

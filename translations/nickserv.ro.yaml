@@ -715,3 +715,14 @@ blackmail:
     short:          "Listează domeniile de e-mail blocate."
     help:           "Fără model arată câte domenii sunt blocate. Cu un model (sunt permise * și ?)\narată domeniile care se potrivesc. Numerele afișate pot fi folosite cu BLACKMAIL DEL."
     example:        "/msg %bot% BLACKMAIL LIST *chat*"
+
+automode:
+  syntax:             "AUTOMODE <nick> [+moduri]"
+  short:              "Setează modurile de utilizator pe care un nick le primește la identificare."
+  help:               "Salvează modurile de utilizator pe care serverul le aplică nickului la fiecare identificare (de exemplu, +B pentru un bot).\nFără moduri, le șterge. Dacă nickul este conectat și identificat, schimbarea se aplică imediat.\nModuri permise: iswBSTGWpqRZD. +o nu este acceptat niciodată; nu se poate folosi pe Root, IRCopi sau servicii.\nAceastă comandă necesită permisiunea IRCop: nickserv.automode."
+  example:            "/msg %bot% AUTOMODE Pedro +B"
+  set:                "\x0303✔\x03 Modurile automate ale \x02%nickname%\x02: \x02%modes%\x02."
+  cleared:            "\x0303✔\x03 Modurile automate ale \x02%nickname%\x02 au fost șterse."
+  invalid_modes:      "\x0304✗\x03 Moduri invalide: \x02%modes%\x02. Permise: \x02+%allowed%\x02 (niciodată +o)."
+  not_registered:     "\x0304✗\x03 Nickul \x02%nickname%\x02 nu este înregistrat."
+  cannot_modify_oper: "\x0304✗\x03 Nu poți schimba modurile automate ale unui Root, Operator IRC sau serviciu."

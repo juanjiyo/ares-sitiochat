@@ -715,3 +715,14 @@ blackmail:
     short:          "Toont de geblokkeerde e-maildomeinen."
     help:           "Zonder patroon toont dit hoeveel domeinen geblokkeerd zijn. Met een patroon (* en ? toegestaan)\nworden de overeenkomende domeinen getoond. De getoonde nummers kunnen met BLACKMAIL DEL worden gebruikt."
     example:        "/msg %bot% BLACKMAIL LIST *chat*"
+
+automode:
+  syntax:             "AUTOMODE <nick> [+modi]"
+  short:              "Stelt de gebruikersmodi in die een nick krijgt bij het identificeren."
+  help:               "Slaat de gebruikersmodi op die de server bij elke identificatie op de nick zet (bijvoorbeeld +B voor een bot).\nZonder modi worden ze gewist. Is de nick verbonden en geïdentificeerd, dan geldt de wijziging meteen.\nToegestane modi: iswBSTGWpqRZD. +o wordt nooit geaccepteerd; niet bruikbaar op Roots, IRCops of services.\nDit commando vereist de IRCop-permissie: nickserv.automode."
+  example:            "/msg %bot% AUTOMODE Pedro +B"
+  set:                "\x0303✔\x03 Automatische modi van \x02%nickname%\x02: \x02%modes%\x02."
+  cleared:            "\x0303✔\x03 Automatische modi van \x02%nickname%\x02 gewist."
+  invalid_modes:      "\x0304✗\x03 Ongeldige modi: \x02%modes%\x02. Toegestaan: \x02+%allowed%\x02 (nooit +o)."
+  not_registered:     "\x0304✗\x03 De nick \x02%nickname%\x02 is niet geregistreerd."
+  cannot_modify_oper: "\x0304✗\x03 Je kunt de automatische modi van een Root, IRC-operator of service niet wijzigen."

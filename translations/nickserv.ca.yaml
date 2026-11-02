@@ -715,3 +715,14 @@ blackmail:
     short:          "Llista els dominis de correu bloquejats."
     help:           "Sense patró mostra quants dominis hi ha bloquejats. Amb un patró (admet * i ?)\nmostra els dominis que hi coincideixen. Els números mostrats es poden fer servir amb BLACKMAIL DEL."
     example:        "/msg %bot% BLACKMAIL LIST *chat*"
+
+automode:
+  syntax:             "AUTOMODE <nick> [+modes]"
+  short:              "Defineix els modes d'usuari que rep un nick en identificar-se."
+  help:               "Desa els modes d'usuari que el servidor aplica al nick cada vegada que s'identifica (per exemple, +B per a un bot).\nSense modes, els esborra. Si el nick està connectat i identificat, el canvi s'aplica al moment.\nModes permesos: iswBSTGWpqRZD. Mai s'admet +o; no es pot fer servir sobre Root, IRCops ni serveis.\nAquesta ordre requereix el permís IRCop: nickserv.automode."
+  example:            "/msg %bot% AUTOMODE Pedro +B"
+  set:                "\x0303✔\x03 Modes automàtics de \x02%nickname%\x02: \x02%modes%\x02."
+  cleared:            "\x0303✔\x03 Modes automàtics de \x02%nickname%\x02 esborrats."
+  invalid_modes:      "\x0304✗\x03 Modes no vàlids: \x02%modes%\x02. Permesos: \x02+%allowed%\x02 (mai +o)."
+  not_registered:     "\x0304✗\x03 El nick \x02%nickname%\x02 no està registrat."
+  cannot_modify_oper: "\x0304✗\x03 No pots canviar els modes automàtics d'un Root, un Operador IRC o un servei."

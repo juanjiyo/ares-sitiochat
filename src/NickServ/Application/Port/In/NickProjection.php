@@ -19,5 +19,6 @@ final readonly class NickProjection
         public bool $suspended = false,
         public ?string $suspensionReason = null,
         public ?DateTimeImmutable $suspendedUntil = null,
+        public ?string $autoModes = null,
     ) {}
 }

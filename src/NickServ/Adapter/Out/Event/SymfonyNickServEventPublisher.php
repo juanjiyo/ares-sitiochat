@@ -8,6 +8,7 @@ use App\NickServ\Application\Event\NickEmailChangedEvent;
 use App\NickServ\Application\Event\NickPasswordChangedEvent;
 use App\NickServ\Application\Port\Out\NickServEventPublisher;
 use App\NickServ\Application\PublishedEvent\NickDropCleanupEvent;
+use App\NickServ\Application\PublishedEvent\NickAutoModesChangedEvent;
 use App\NickServ\Application\PublishedEvent\NickDropEvent;
 use App\NickServ\Application\PublishedEvent\NickIdentifiedEvent;
 use App\NickServ\Application\PublishedEvent\NickPasswordHashAvailable;
@@ -22,7 +23,7 @@ final readonly class SymfonyNickServEventPublisher implements NickServEventPubli
     public function __construct(private EventBusInterface $eventBus) {}
 
     public function publish(
-        NickDropCleanupEvent|NickDropEvent|NickEmailChangedEvent|NickIdentifiedEvent|NickPasswordChangedEvent|NickPasswordHashAvailable|NickSuspendedEvent|NickUnsuspendedEvent|NickVhostChangedEvent|UserDeidentifiedEvent $event,
+        NickAutoModesChangedEvent|NickDropCleanupEvent|NickDropEvent|NickEmailChangedEvent|NickIdentifiedEvent|NickPasswordChangedEvent|NickPasswordHashAvailable|NickSuspendedEvent|NickUnsuspendedEvent|NickVhostChangedEvent|UserDeidentifiedEvent $event,
     ): void {
         $this->eventBus->dispatch($event);
     }

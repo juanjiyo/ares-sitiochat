@@ -715,3 +715,14 @@ blackmail:
     short:          "Listet die gesperrten E-Mail-Domains auf."
     help:           "Ohne Muster wird die Anzahl gesperrter Domains angezeigt. Mit einem Muster (* und ? erlaubt)\nwerden die passenden Domains angezeigt. Die angezeigten Nummern können mit BLACKMAIL DEL verwendet werden."
     example:        "/msg %bot% BLACKMAIL LIST *chat*"
+
+automode:
+  syntax:             "AUTOMODE <nick> [+modi]"
+  short:              "Legt die Benutzermodi fest, die ein Nick beim Identifizieren erhält."
+  help:               "Speichert die Benutzermodi, die der Server dem Nick bei jeder Identifizierung setzt (zum Beispiel +B für einen Bot).\nOhne Modi werden sie gelöscht. Ist der Nick verbunden und identifiziert, gilt die Änderung sofort.\nErlaubte Modi: iswBSTGWpqRZD. +o wird nie akzeptiert; nicht für Roots, IRCops oder Dienste nutzbar.\nDieser Befehl erfordert die IRCop-Berechtigung: nickserv.automode."
+  example:            "/msg %bot% AUTOMODE Pedro +B"
+  set:                "\x0303✔\x03 Automatische Modi von \x02%nickname%\x02: \x02%modes%\x02."
+  cleared:            "\x0303✔\x03 Automatische Modi von \x02%nickname%\x02 gelöscht."
+  invalid_modes:      "\x0304✗\x03 Ungültige Modi: \x02%modes%\x02. Erlaubt: \x02+%allowed%\x02 (nie +o)."
+  not_registered:     "\x0304✗\x03 Der Nick \x02%nickname%\x02 ist nicht registriert."
+  cannot_modify_oper: "\x0304✗\x03 Du kannst die automatischen Modi eines Roots, IRC-Operators oder Dienstes nicht ändern."

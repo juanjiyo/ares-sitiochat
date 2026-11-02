@@ -15,6 +15,7 @@ use App\Irc\Application\Port\In\ActiveChannelModeSupportProviderInterface;
 use App\Irc\Application\Port\In\ChannelLookupPort;
 use App\NickServ\Application\Port\In\NickProjection;
 use App\NickServ\Application\Port\In\NickProjectionQuery;
+use App\NickServ\Application\PublishedEvent\NickAutoModesChangedEvent;
 use App\NickServ\Application\PublishedEvent\NickDropEvent;
 use App\NickServ\Application\PublishedEvent\NickPasswordHashAvailable;
 use App\NickServ\Application\PublishedEvent\NickSuspendedEvent;
@@ -82,6 +83,7 @@ final class UdbNickSyncSubscriberTest extends TestCase
         self::assertSame([
             NickPasswordHashAvailable::class => 'onPasswordHashAvailable',
             NickVhostChangedEvent::class => 'onVhostChanged',
+            NickAutoModesChangedEvent::class => 'onAutoModesChanged',
             NickSuspendedEvent::class => 'onNickSuspended',
             NickUnsuspendedEvent::class => 'onNickUnsuspended',
             NickDropEvent::class => 'onNickDrop',
@@ -210,6 +212,26 @@ final class UdbNickSyncSubscriberTest extends TestCase
 
         $sub = $this->createSubscriber(repo: $repo, writer: $writer);
         $sub->onVhostChanged(new NickVhostChangedEvent(7, 'nick', null));
+    }
+
+    #[Test]
+    public function onAutoModesChangedWritesTheModesRecord(): void
+    {
+        $writer = $this->createMock(UdbRecordWriterInterface::class);
+        $writer->expects($this->once())->method('insert')->willReturn(true)->with('N', 'pedro::modes', '+B');
+        $writer->expects($this->never())->method('delete');
+
+        $this->createSubscriber(writer: $writer)->onAutoModesChanged(new NickAutoModesChangedEvent(7, 'pedro', '+B'));
+    }
+
+    #[Test]
+    public function onAutoModesChangedDeletesTheModesRecordWhenCleared(): void
+    {
+        $writer = $this->createMock(UdbRecordWriterInterface::class);
+        $writer->expects($this->once())->method('delete')->willReturn(true)->with('N', 'pedro::modes');
+        $writer->expects($this->never())->method('insert');
+
+        $this->createSubscriber(writer: $writer)->onAutoModesChanged(new NickAutoModesChangedEvent(7, 'pedro', null));
     }
 
     #[Test]

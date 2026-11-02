@@ -41,6 +41,7 @@ final readonly class NickProjectionResolver implements NickProjectionQuery
             $suspended,
             $suspended ? $nick->getReason() : null,
             $suspended ? $nick->getSuspendedUntil() : null,
+            $nick->getAutoModes(),
         );
     }
 }
