@@ -181,7 +181,7 @@ parameters:
     # Domain of the staff rank vhosts: <nick>.<rank>.<domain> (e.g. pedro.oper.sitiochat.es).
     operserv.staff_vhost_domain_default: 'sitiochat.es'
     operserv.staff_vhost_domain: '%env(string:default:operserv.staff_vhost_domain_default:OPERSERV_STAFF_VHOST_DOMAIN)%'
-    # Channels a removed staff member is parted from (SVSPART); ADMIN and ROOT also leave the admin channels.
+    # Channels a removed staff member is parted from (SVSPART); ADMIN and ROOT also join (SAJOIN) and leave the admin channels.
     operserv.staff_channels_default: '#OPers,#DeBuG'
     operserv.staff_channels: '%env(string:default:operserv.staff_channels_default:OPERSERV_STAFF_CHANNELS)%'
     operserv.admin_channels_default: '#ADMINs'

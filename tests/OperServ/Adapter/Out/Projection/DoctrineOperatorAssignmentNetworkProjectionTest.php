@@ -105,16 +105,48 @@ final class DoctrineOperatorAssignmentNetworkProjectionTest extends TestCase
         self::assertSame(array_map(static fn (string $c): array => ['001', 'U42', $c], $expected), $parted);
     }
 
+    /** @return iterable<string, array{string, list<string>}> */
+    public static function adminChannelsByRank(): iterable
+    {
+        yield 'PREOPER' => ['PREOPER', []];
+        yield 'OPER' => ['OPER', []];
+        yield 'ADMIN' => ['ADMIN', ['#ADMINs']];
+        yield 'ROOT' => ['ROOT', ['#ADMINs']];
+    }
+
+    /** @param list<string> $expected */
     #[Test]
-    public function removingAnAssignmentOfAnOfflineNickPartsNothing(): void
+    #[DataProvider('adminChannelsByRank')]
+    public function applyingAnAssignmentJoinsTheConnectedNickToTheAdminChannels(string $rank, array $expected): void
+    {
+        $roles = $this->createStub(OperRoleRepositoryInterface::class);
+        $roles->method('findByName')->willReturn(OperRole::create($rank));
+        $joined = [];
+        $actions = $this->createStub(ProtocolServiceActionsInterface::class);
+        $actions->method('forceJoin')->willReturnCallback(static function (string $sid, string $uid, string $channel) use (&$joined): void {
+            $joined[] = [$sid, $uid, $channel];
+        });
+        $sessions = new IdentifiedSessionRegistry();
+        $sessions->register('U42', 'Alice');
+
+        $this->projection($roles, $this->createStub(EventBusInterface::class), $sessions, $actions)
+            ->apply(42, 'Alice', new OperatorRoleRecord(1, $rank, '', false));
+
+        self::assertSame(array_map(static fn (string $c): array => ['001', 'U42', $c], $expected), $joined);
+    }
+
+    #[Test]
+    public function anOfflineNickIsNeitherJoinedNorParted(): void
     {
         $roles = $this->createStub(OperRoleRepositoryInterface::class);
         $roles->method('findByName')->willReturn(OperRole::create('ADMIN'));
         $actions = $this->createMock(ProtocolServiceActionsInterface::class);
         $actions->expects(self::never())->method('forcePart');
+        $actions->expects(self::never())->method('forceJoin');
+        $projection = $this->projection($roles, $this->createStub(EventBusInterface::class), new IdentifiedSessionRegistry(), $actions);
 
-        $this->projection($roles, $this->createStub(EventBusInterface::class), new IdentifiedSessionRegistry(), $actions)
-            ->remove(42, 'Alice', new OperatorRoleRecord(1, 'ADMIN', '', false));
+        $projection->apply(42, 'Alice', new OperatorRoleRecord(1, 'ADMIN', '', false));
+        $projection->remove(42, 'Alice', new OperatorRoleRecord(1, 'ADMIN', '', false));
     }
 
     private function projection(OperRoleRepositoryInterface $roles, EventBusInterface $events, ?IdentifiedSessionRegistry $sessions = null, ?ProtocolServiceActionsInterface $actions = null): DoctrineOperatorAssignmentNetworkProjection

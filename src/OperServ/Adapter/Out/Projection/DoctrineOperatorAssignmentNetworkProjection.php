@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\OperServ\Adapter\Out\Projection;
 
 use App\Irc\Application\Port\In\ActiveProtocolModuleHolderInterface;
+use App\Irc\Application\Port\In\ProtocolServiceActionsInterface;
 use App\NickServ\Application\Port\In\IdentifiedSessionQuery;
 use App\OperServ\Adapter\In\Event\IrcopModeApplier;
 use App\OperServ\Adapter\In\Event\IrcopOperclassApplier;
@@ -27,7 +28,7 @@ final readonly class DoctrineOperatorAssignmentNetworkProjection implements Oper
 {
     /**
      * @param string $staffChannels comma-separated channels every staff member leaves when removed
-     * @param string $adminChannels comma-separated channels ADMIN and ROOT also leave when removed
+     * @param string $adminChannels comma-separated channels ADMIN and ROOT join when added and leave when removed
      */
     public function __construct(
         private IrcopModeApplier $modes,
@@ -45,6 +46,7 @@ final readonly class DoctrineOperatorAssignmentNetworkProjection implements Oper
         $r = $this->role($role->name);
         $this->modes->applyModesForNick($nick, $r);
         $this->operclass->applyForNick($nick, $r);
+        $this->joinAdminChannels($nick, $role->name);
         $this->events->dispatch(new OperIrcopChangedEvent($nickId, $nick));
     }
 
@@ -68,22 +70,49 @@ final readonly class DoctrineOperatorAssignmentNetworkProjection implements Oper
         $this->events->dispatch(new OperIrcopChangedEvent($nickId, $nick));
     }
 
-    private function partStaffChannels(string $nick, string $roleName): void
+    private function joinAdminChannels(string $nick, string $roleName): void
     {
-        $uid = $this->sessions->findUidByNick($nick);
-        $actions = $this->connection->getProtocolModule()?->getServiceActions();
-        $serverSid = $this->connection->getServerSid();
-        if (null === $uid || null === $actions || null === $serverSid) {
+        $target = $this->connectedTarget($nick);
+        if (null === $target || !$this->isAdminRank($roleName)) {
             return;
         }
 
+        [$actions, $serverSid, $uid] = $target;
+        foreach ($this->channelList($this->adminChannels) as $channel) {
+            $actions->forceJoin($serverSid, $uid, $channel);
+        }
+    }
+
+    private function partStaffChannels(string $nick, string $roleName): void
+    {
+        $target = $this->connectedTarget($nick);
+        if (null === $target) {
+            return;
+        }
+
+        [$actions, $serverSid, $uid] = $target;
         $channels = $this->channelList($this->staffChannels);
-        if (in_array(StaffRank::fromName($roleName), [StaffRank::ADMIN, StaffRank::ROOT], true)) {
+        if ($this->isAdminRank($roleName)) {
             $channels = [...$channels, ...$this->channelList($this->adminChannels)];
         }
         foreach ($channels as $channel) {
             $actions->forcePart($serverSid, $uid, $channel);
         }
+    }
+
+    /** @return array{ProtocolServiceActionsInterface, string, string}|null */
+    private function connectedTarget(string $nick): ?array
+    {
+        $uid = $this->sessions->findUidByNick($nick);
+        $actions = $this->connection->getProtocolModule()?->getServiceActions();
+        $serverSid = $this->connection->getServerSid();
+
+        return null === $uid || null === $actions || null === $serverSid ? null : [$actions, $serverSid, $uid];
+    }
+
+    private function isAdminRank(string $roleName): bool
+    {
+        return in_array(StaffRank::fromName($roleName), [StaffRank::ADMIN, StaffRank::ROOT], true);
     }
 
     /** @return list<string> */
