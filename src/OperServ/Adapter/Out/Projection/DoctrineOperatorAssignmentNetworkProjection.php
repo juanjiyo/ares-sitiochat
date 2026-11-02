@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\OperServ\Adapter\Out\Projection;
 
 use App\Irc\Application\Port\In\ActiveProtocolModuleHolderInterface;
+use App\Irc\Application\Port\In\DelayedTaskPort;
 use App\Irc\Application\Port\In\ProtocolServiceActionsInterface;
 use App\NickServ\Application\Port\In\IdentifiedSessionQuery;
 use App\OperServ\Adapter\In\Event\IrcopModeApplier;
 use App\OperServ\Adapter\In\Event\IrcopOperclassApplier;
+use App\OperServ\Adapter\In\Event\StaffChannels;
 use App\OperServ\Application\Port\Out\OperatorAssignmentNetworkProjection;
 use App\OperServ\Application\Port\Out\OperatorRoleRecord;
 use App\OperServ\Application\PublishedEvent\OperIrcopChangedEvent;
@@ -27,8 +29,9 @@ use function in_array;
 final readonly class DoctrineOperatorAssignmentNetworkProjection implements OperatorAssignmentNetworkProjection
 {
     /**
-     * @param string $staffChannels comma-separated channels every staff member leaves when removed
-     * @param string $adminChannels comma-separated channels ADMIN and ROOT join when added and leave when removed
+     * @param string $staffChannels    comma-separated channels every staff member leaves when removed
+     * @param string $adminChannels    comma-separated channels ADMIN and ROOT join when added and leave when removed
+     * @param float  $joinDelaySeconds wait before the SAJOIN, so the IRCd has made the nick an IRCop
      */
     public function __construct(
         private IrcopModeApplier $modes,
@@ -39,6 +42,8 @@ final readonly class DoctrineOperatorAssignmentNetworkProjection implements Oper
         private ActiveProtocolModuleHolderInterface $connection,
         private string $staffChannels,
         private string $adminChannels,
+        private DelayedTaskPort $later,
+        private float $joinDelaySeconds = 5.0,
     ) {}
 
     public function apply(int $nickId, string $nick, OperatorRoleRecord $role): void
@@ -46,7 +51,7 @@ final readonly class DoctrineOperatorAssignmentNetworkProjection implements Oper
         $r = $this->role($role->name);
         $this->modes->applyModesForNick($nick, $r);
         $this->operclass->applyForNick($nick, $r);
-        $this->joinAdminChannels($nick, $role->name);
+        $this->joinStaffChannelsLater($nick, $role->name);
         $this->events->dispatch(new OperIrcopChangedEvent($nickId, $nick));
     }
 
@@ -67,20 +72,28 @@ final readonly class DoctrineOperatorAssignmentNetworkProjection implements Oper
         $this->operclass->removeForNick($nick);
         $this->modes->applyModesForNick($nick, $new);
         $this->operclass->applyForNick($nick, $new);
+        $this->joinStaffChannelsLater($nick, $newRole->name);
         $this->events->dispatch(new OperIrcopChangedEvent($nickId, $nick));
     }
 
-    private function joinAdminChannels(string $nick, string $roleName): void
+    private function joinStaffChannelsLater(string $nick, string $roleName): void
     {
-        $target = $this->connectedTarget($nick);
-        if (null === $target || !$this->isAdminRank($roleName)) {
+        $rank = StaffRank::fromName($roleName);
+        if (null === $rank || !$rank->joinsStaffChannels()) {
             return;
         }
 
-        [$actions, $serverSid, $uid] = $target;
-        foreach ($this->channelList($this->adminChannels) as $channel) {
-            $actions->forceJoin($serverSid, $uid, $channel);
-        }
+        $this->later->runLater($this->joinDelaySeconds, function () use ($nick, $rank): void {
+            $target = $this->connectedTarget($nick);
+            if (null === $target) {
+                return;
+            }
+
+            [$actions, $serverSid, $uid] = $target;
+            foreach (StaffChannels::forRank($rank, $this->staffChannels, $this->adminChannels) as $channel) {
+                $actions->forceJoin($serverSid, $uid, $channel);
+            }
+        });
     }
 
     private function partStaffChannels(string $nick, string $roleName): void

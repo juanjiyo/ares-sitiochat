@@ -582,6 +582,7 @@ services:
     App\Irc\Adapter\Runtime\RevoltLoopScheduler: ~
 
     App\Irc\Adapter\Runtime\LoopSchedulerInterface: '@App\Irc\Adapter\Runtime\RevoltLoopScheduler'
+    App\Irc\Application\Port\In\DelayedTaskPort: '@App\Irc\Adapter\Runtime\RevoltLoopScheduler'
 
     App\Irc\Adapter\Runtime\IRCClientFactoryInterface: '@App\Irc\Adapter\Runtime\IRCClientFactory'
 
@@ -2415,6 +2416,11 @@ services:
             $clonesContactEmail: '%operserv.clones_contact_email%'
 
     App\OperServ\Adapter\Out\Projection\DoctrineOperatorAssignmentNetworkProjection:
+        arguments:
+            $staffChannels: '%operserv.staff_channels%'
+            $adminChannels: '%operserv.admin_channels%'
+
+    App\OperServ\Adapter\In\Event\StaffChannelsOnOperUpSubscriber:
         arguments:
             $staffChannels: '%operserv.staff_channels%'
             $adminChannels: '%operserv.admin_channels%'

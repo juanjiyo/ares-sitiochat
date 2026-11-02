@@ -38,6 +38,18 @@ final class RevoltLoopSchedulerTest extends TestCase
     }
 
     #[Test]
+    public function runLaterRunsTheTaskAfterTheDelay(): void
+    {
+        $invoked = false;
+        $this->scheduler->runLater(0.01, static function () use (&$invoked): void {
+            $invoked = true;
+        });
+
+        \Amp\delay(0.03);
+        self::assertTrue($invoked);
+    }
+
+    #[Test]
     public function delayExecutesCallbackWhenNotCancelled(): void
     {
         $invoked = false;

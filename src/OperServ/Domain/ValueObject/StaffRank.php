@@ -86,6 +86,18 @@ enum StaffRank: string
         };
     }
 
+    /** OPER, ADMIN and ROOT sit in the staff channels. */
+    public function joinsStaffChannels(): bool
+    {
+        return self::PREOPER !== $this;
+    }
+
+    /** ADMIN and ROOT also sit in the admin channels. */
+    public function joinsAdminChannels(): bool
+    {
+        return self::ADMIN === $this || self::ROOT === $this;
+    }
+
     public static function fromName(string $name): ?self
     {
         return self::tryFrom(strtoupper($name));

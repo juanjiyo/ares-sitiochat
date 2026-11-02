@@ -24,6 +24,19 @@ use function array_merge;
 final class StaffRankTest extends TestCase
 {
     #[Test]
+    public function operAndAboveSitInTheStaffChannelsAndAdminAndAboveInTheAdminChannels(): void
+    {
+        self::assertFalse(StaffRank::PREOPER->joinsStaffChannels());
+        self::assertTrue(StaffRank::OPER->joinsStaffChannels());
+        self::assertTrue(StaffRank::ADMIN->joinsStaffChannels());
+        self::assertTrue(StaffRank::ROOT->joinsStaffChannels());
+        self::assertFalse(StaffRank::PREOPER->joinsAdminChannels());
+        self::assertFalse(StaffRank::OPER->joinsAdminChannels());
+        self::assertTrue(StaffRank::ADMIN->joinsAdminChannels());
+        self::assertTrue(StaffRank::ROOT->joinsAdminChannels());
+    }
+
+    #[Test]
     public function mapsEveryRankToItsOperclassAndVhostLabel(): void
     {
         self::assertSame(['locop', 'globop', 'admin', 'netadmin'], array_map(static fn (StaffRank $r): string => $r->operclass(), StaffRank::cases()));
