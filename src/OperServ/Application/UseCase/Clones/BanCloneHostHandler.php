@@ -17,6 +17,7 @@ use App\OperServ\Application\UseCase\ManageGline\ManageGlineHandlerInterface;
 use App\OperServ\Application\UseCase\ManageGline\ManageGlineOutcome;
 
 use function count;
+use function mb_strtoupper;
 use function trim;
 
 /**
@@ -25,15 +26,25 @@ use function trim;
  * with a Root identity or an identified IRC operator with a role are never G-Lined.
  *
  * GLINE ADD also disconnects every session already on the host, as the original KILLCLONES and BLOCK did.
+ *
+ * Reasons follow dbots (free text) and pulsar (BLOCK presets SPAM, BADUSER and ILEGAL, and the KILLCLONES
+ * default pointing to the clones contact address).
  */
 final readonly class BanCloneHostHandler
 {
+    private const array BLOCK_PRESETS = [
+        'SPAM' => 'Por la seguridad de los usuarios, está prohibido facilitar datos personales como teléfonos, cuentas de e-mail o webs comerciales en el general de una sala.',
+        'BADUSER' => 'Por amenazar, atormentar, acosar, importunar o reincidir en conductas inaceptables a otros usuarios, causándoles molestias. Por favor, corrija su actitud.',
+        'ILEGAL' => 'Actividades ilegales en la red. Sus datos han sido registrados.',
+    ];
+
     public function __construct(
         private NetworkUserLookup $users,
         private ConnectionHosts $hosts,
         private ProtectedNetworkTargets $protectedTargets,
         private ManageGlineHandlerInterface $glines,
         private CommandAuditRecorder $audit,
+        private string $clonesContactEmail,
     ) {}
 
     public function handle(BanCloneHost $command): BanCloneHostResult
@@ -60,7 +71,7 @@ final readonly class BanCloneHostHandler
 
         $mask = '*@' . $host;
         $duration = $command->ban->duration();
-        $reason = $this->reasonFor($command, $target->nickname);
+        $reason = $this->reasonFor($command);
         $gline = $this->glines->handle(new ManageGline(
             GlineAction::Add,
             $command->actorNickname,
@@ -99,16 +110,16 @@ final readonly class BanCloneHostHandler
         return BanCloneHostResult::banned($target->nickname, $host, $mask, $duration, $reason, count($sessions));
     }
 
-    private function reasonFor(BanCloneHost $command, string $targetNickname): string
+    private function reasonFor(BanCloneHost $command): string
     {
         $reason = trim($command->reason);
-        if ('' !== $reason) {
-            return $reason;
+        if (CloneHostBan::Block === $command->ban) {
+            return self::BLOCK_PRESETS[mb_strtoupper($reason)]
+                ?? ('' !== $reason ? $reason : 'Bloqueado por ' . $command->serviceNickname);
         }
 
-        return match ($command->ban) {
-            CloneHostBan::KillClones => 'Clones of ' . $targetNickname,
-            CloneHostBan::Block => 'Blocked by ' . $command->serviceNickname,
-        };
+        return '' !== $reason
+            ? $reason
+            : 'Has excedido el límite de clones para tu host. Para solicitar el servicio de clones envía un mail a ' . $this->clonesContactEmail;
     }
 }

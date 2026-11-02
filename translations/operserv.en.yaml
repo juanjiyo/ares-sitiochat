@@ -312,9 +312,9 @@ killclones:
 
 # --- BLOCK -----------------------------------------------------------------------
 block:
-  syntax:   "BLOCK <nickname> [reason]"
+  syntax:   "BLOCK <nickname> [SPAM|BADUSER|ILEGAL|reason]"
   short:    "Block the host of a nickname with a 5-hour G-Line."
-  help:     "Sets a 5-hour G-Line on *@host of the given nickname, disconnecting every session from that host.\nThe G-Line is listed by GLINE LIST and can be removed with GLINE DEL.\nLocalhost and hosts shared with Root users or IRCops with a role are never G-Lined.\nThis command requires the operserv.clones permission."
+  help:     "Sets a 5-hour G-Line on *@host of the given nickname, disconnecting every session from that host.\nThe G-Line is listed by GLINE LIST and can be removed with GLINE DEL.\nLocalhost and hosts shared with Root users or IRCops with a role are never G-Lined.\nSPAM, BADUSER and ILEGAL use predefined reasons; without a reason, «Bloqueado por <bot>» is used.\nThis command requires the operserv.clones permission."
   example:  "/msg %bot% BLOCK BadUser Spam"
   done:     "\x0303✓\x03 \x02%nickname%\x02 has been blocked: G-Line \x02%mask%\x02 for %duration% (sessions: %count%). Reason: %reason%"
 

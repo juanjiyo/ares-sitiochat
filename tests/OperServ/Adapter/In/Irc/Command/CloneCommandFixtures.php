@@ -73,6 +73,7 @@ trait CloneCommandFixtures
             new ProtectedNetworkTargets($roots, $this->createStub(OperatorAccountLookup::class), $this->createStub(OperatorRoleAccess::class)),
             $glines,
             $audit ?? new RecordingCommandAuditRecorder(),
+            'glines@sitiochat.es',
         );
     }
 }

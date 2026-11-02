@@ -87,10 +87,10 @@ final class BanCloneHostHandlerTest extends TestCase
         $audit = new RecordingCommandAuditRecorder();
         $glines = $this->createMock(ManageGlineHandlerInterface::class);
         $glines->expects(self::once())->method('handle')
-            ->with(self::callback(static fn (ManageGline $command): bool => '5h' === $command->expiry && 'Spam' === $command->reason))
-            ->willReturn(new ManageGlineResult(ManageGlineOutcome::Added, '*@' . self::HOST, expiry: '5h', reason: 'Spam'));
+            ->with(self::callback(static fn (ManageGline $command): bool => '5h' === $command->expiry && 'Flood' === $command->reason))
+            ->willReturn(new ManageGlineResult(ManageGlineOutcome::Added, '*@' . self::HOST, expiry: '5h', reason: 'Flood'));
 
-        $result = $this->handler($glines, $audit)->handle($this->command(CloneHostBan::Block, 'Spam'));
+        $result = $this->handler($glines, $audit)->handle($this->command(CloneHostBan::Block, 'Flood'));
 
         self::assertSame(BanCloneHostOutcome::Banned, $result->outcome);
         self::assertSame('5h', $result->duration);
@@ -98,23 +98,28 @@ final class BanCloneHostHandlerTest extends TestCase
         self::assertSame('5h', $audit->records[0]->metadata['duration']);
     }
 
-    /** @return iterable<string, array{CloneHostBan, string}> */
+    /** @return iterable<string, array{CloneHostBan, string, string}> */
     public static function defaultReasons(): iterable
     {
-        yield 'killclones' => [CloneHostBan::KillClones, 'Clones of Target'];
-        yield 'block' => [CloneHostBan::Block, 'Blocked by OperServ'];
+        yield 'killclones without reason' => [CloneHostBan::KillClones, '   ', 'Has excedido el límite de clones para tu host. Para solicitar el servicio de clones envía un mail a glines@sitiochat.es'];
+        yield 'block without reason' => [CloneHostBan::Block, '   ', 'Bloqueado por OperServ'];
+        yield 'block SPAM' => [CloneHostBan::Block, ' spam ', 'Por la seguridad de los usuarios, está prohibido facilitar datos personales como teléfonos, cuentas de e-mail o webs comerciales en el general de una sala.'];
+        yield 'block BADUSER' => [CloneHostBan::Block, 'BADUSER', 'Por amenazar, atormentar, acosar, importunar o reincidir en conductas inaceptables a otros usuarios, causándoles molestias. Por favor, corrija su actitud.'];
+        yield 'block ILEGAL' => [CloneHostBan::Block, 'Ilegal', 'Actividades ilegales en la red. Sus datos han sido registrados.'];
+        yield 'block free reason starting with a preset word' => [CloneHostBan::Block, 'spam en #canal', 'spam en #canal'];
+        yield 'killclones keeps a preset word as free reason' => [CloneHostBan::KillClones, 'SPAM', 'SPAM'];
     }
 
     #[Test]
     #[DataProvider('defaultReasons')]
-    public function usesADefaultReasonWhenNoneIsGiven(CloneHostBan $ban, string $expectedReason): void
+    public function resolvesTheReasonFromDefaultsAndPresets(CloneHostBan $ban, string $givenReason, string $expectedReason): void
     {
         $glines = $this->createMock(ManageGlineHandlerInterface::class);
         $glines->expects(self::once())->method('handle')
             ->with(self::callback(static fn (ManageGline $command): bool => $expectedReason === $command->reason))
             ->willReturn(new ManageGlineResult(ManageGlineOutcome::Added, '*@' . self::HOST, expiry: $ban->duration(), reason: $expectedReason));
 
-        $result = $this->handler($glines)->handle($this->command($ban, '   '));
+        $result = $this->handler($glines)->handle($this->command($ban, $givenReason));
 
         self::assertSame($expectedReason, $result->reason);
     }
@@ -253,6 +258,7 @@ final class BanCloneHostHandlerTest extends TestCase
             new ProtectedNetworkTargets($rootRegistry, $accounts, $roles),
             $glines,
             $audit ?? new RecordingCommandAuditRecorder(),
+            'glines@sitiochat.es',
         );
     }
 }

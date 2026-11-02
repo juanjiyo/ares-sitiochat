@@ -186,6 +186,9 @@ parameters:
     operserv.staff_channels: '%env(string:default:operserv.staff_channels_default:OPERSERV_STAFF_CHANNELS)%'
     operserv.admin_channels_default: '#ADMINs'
     operserv.admin_channels: '%env(string:default:operserv.admin_channels_default:OPERSERV_ADMIN_CHANNELS)%'
+    # Address the default KILLCLONES reason tells users to write to for a clones allowance.
+    operserv.clones_contact_email_default: 'glines@sitiochat.es'
+    operserv.clones_contact_email: '%env(string:default:operserv.clones_contact_email_default:OPERSERV_CLONES_CONTACT_EMAIL)%'
     operserv.max_glines_default: 1000
     operserv.max_glines: '%env(int:default:operserv.max_glines_default:OPERSERV_MAX_GLINES)%'
     # OPeR JAIL: channel jailed users are kept in
@@ -2400,6 +2403,10 @@ services:
 
     App\OperServ\Application\Port\Out\OperatorAssignmentNetworkProjection:
         alias: App\OperServ\Adapter\Out\Projection\DoctrineOperatorAssignmentNetworkProjection
+
+    App\OperServ\Application\UseCase\Clones\BanCloneHostHandler:
+        arguments:
+            $clonesContactEmail: '%operserv.clones_contact_email%'
 
     App\OperServ\Adapter\Out\Projection\DoctrineOperatorAssignmentNetworkProjection:
         arguments:

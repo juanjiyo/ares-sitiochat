@@ -312,9 +312,9 @@ killclones:
 
 # --- BLOCK -----------------------------------------------------------------------
 block:
-  syntax:   "BLOCK <rumuz> [sebep]"
+  syntax:   "BLOCK <rumuz> [SPAM|BADUSER|ILEGAL|sebep]"
   short:    "Bir rumuzun hostunu 5 saatlik G-Line ile engeller."
-  help:     "Belirtilen rumuzun *@host adresine 5 saatlik G-Line koyar ve o hosttan gelen tüm bağlantıları keser.\nG-Line, GLINE LIST içinde görünür ve GLINE DEL ile kaldırılabilir.\nLocalhost ve Root kullanıcıları ya da rolü olan IRCop'larla paylaşılan hostlara asla G-Line uygulanmaz.\nBu komut operserv.clones iznini gerektirir."
+  help:     "Belirtilen rumuzun *@host adresine 5 saatlik G-Line koyar ve o hosttan gelen tüm bağlantıları keser.\nG-Line, GLINE LIST içinde görünür ve GLINE DEL ile kaldırılabilir.\nLocalhost ve Root kullanıcıları ya da rolü olan IRCop'larla paylaşılan hostlara asla G-Line uygulanmaz.\nSPAM, BADUSER ve ILEGAL önceden tanımlı sebepler kullanır; sebep verilmezse «Bloqueado por <bot>» kullanılır.\nBu komut operserv.clones iznini gerektirir."
   example:  "/msg %bot% BLOCK BadUser Spam"
   done:     "\x0303✓\x03 \x02%nickname%\x02 engellendi: G-Line \x02%mask%\x02, süre %duration% (%count% bağlantı). Sebep: %reason%"
 

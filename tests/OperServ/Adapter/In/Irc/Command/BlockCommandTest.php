@@ -64,8 +64,8 @@ final class BlockCommandTest extends TestCase
         $glines->expects(self::once())->method('handle')
             ->with(self::callback(static fn (ManageGline $command): bool => '*@198.51.100.7' === $command->mask
                 && '5h' === $command->expiry
-                && 'Blocked by OperServ' === $command->reason))
-            ->willReturn(new ManageGlineResult(ManageGlineOutcome::Added, '*@198.51.100.7', expiry: '5h', reason: 'Blocked by OperServ'));
+                && 'Bloqueado por OperServ' === $command->reason))
+            ->willReturn(new ManageGlineResult(ManageGlineOutcome::Added, '*@198.51.100.7', expiry: '5h', reason: 'Bloqueado por OperServ'));
         $harness = new ChannelOverrideCommandHarness();
 
         new BlockCommand($this->banHandler($glines, $audit))
@@ -74,7 +74,7 @@ final class BlockCommandTest extends TestCase
         self::assertSame(['block.done'], array_column($harness->replies, 0));
         self::assertSame('Clone', $harness->replies[0][1]['%nickname%']);
         self::assertSame('5h', $harness->replies[0][1]['%duration%']);
-        self::assertSame('Blocked by OperServ', $harness->replies[0][1]['%reason%']);
+        self::assertSame('Bloqueado por OperServ', $harness->replies[0][1]['%reason%']);
         self::assertSame('BLOCK', $audit->records[0]->operation);
     }
 

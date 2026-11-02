@@ -313,9 +313,9 @@ killclones:
 
 # --- BLOCK -----------------------------------------------------------------------
 block:
-  syntax:   "BLOCK <nick> [motivo]"
+  syntax:   "BLOCK <nick> [SPAM|BADUSER|ILEGAL|motivo]"
   short:    "Bloquea el host de un nick con una G-Line de 5 horas."
-  help:     "Pone una G-Line de 5 horas sobre *@host del nick indicado, lo que desconecta todas las conexiones de ese host.\nLa G-Line aparece en GLINE LIST y se puede quitar con GLINE DEL.\nNunca se aplica a localhost ni a hosts compartidos con usuarios Root o IRCops con rol.\nEste comando requiere el permiso operserv.clones."
+  help:     "Pone una G-Line de 5 horas sobre *@host del nick indicado, lo que desconecta todas las conexiones de ese host.\nLa G-Line aparece en GLINE LIST y se puede quitar con GLINE DEL.\nNunca se aplica a localhost ni a hosts compartidos con usuarios Root o IRCops con rol.\nSPAM, BADUSER e ILEGAL usan motivos predefinidos; sin motivo se usa «Bloqueado por <bot>».\nEste comando requiere el permiso operserv.clones."
   example:  "/msg %bot% BLOCK Usuario Spam"
   done:     "\x0303✓\x03 El usuario \x02%nickname%\x02 ha sido expulsado: G-Line \x02%mask%\x02 durante %duration% (conexiones: %count%). Motivo: %reason%"
 
