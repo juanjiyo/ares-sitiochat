@@ -23,10 +23,11 @@ Design: keep the role/assignment model (`oper_roles`, `oper_ircops`, permissions
 - T1 — S2, S4, S5 — `StaffRank` (operclass, vhost, cumulative permissions; ROOT = whole catalog), role sync on link, new permissions, SET → `operserv.set` — inline — done `19379f97`.
 - T2 — S1, S3, S6 — `PREOPER|OPER|ADMIN|ROOT ADD|DEL|LIST <nick>` on top of `ManageIrcopHandler`; reject a nick that is already staff; help group; 14 locales — inline — done `4a17f9d6`.
 - T3 — S1 — remove `IRCOP` and `ROLE` commands (and the `ManageRole` use case, its texts and tests) — inline — done (see git log `refactor(operserv): remove IRCOP and ROLE`); also removed the ROLE-only ports/adapters, kept and trimmed `OperatorRoleNetworkProjection` (refreshVhost/refreshOperclass) so the rank sync applies changed vhost/operclass to existing holders.
-- T4 — S1–S6 — deploy, live test, push — pending.
+- T4 — S1–S6 — deploy, live test, push — done (tested live, pushed).
 
 ## Log
 
 - L1 (2026-11-01, user): S1. L2: S2.
 - L3: evidence — VPS DB today: one role `ROOT` (operclass `netadmin`, no vhost/modes) with 2 IRCops (`oper_roles`, `oper_ircops`, `oper_role_permissions`). GlobalServ already maps ranks to operclasses: Pre-Operador = any, Operador = globop+, Administrador = admin (`OperServOperatorRankLookup.php`). Permission catalog: ~70 IRCop permissions across OperServ, NickServ, ChanServ, CRegServ, GlobalServ (+ MemoServ provider).
+- L4 (2026-11-04, user): ranks done and tested live; task closed.
 - Engram mirror: pending.

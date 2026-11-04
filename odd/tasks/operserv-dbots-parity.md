@@ -29,12 +29,12 @@ Assumption: not ported because Ares already covers them — `UNGLINE` (= `GLINE 
 | T1 | S1, S11 | Channel override commands + channel action port | delegated (context backstop) | done | `0d632d9`…`63b01fa` |
 | T2 | S2, S11 | STATS, IRCOPS | delegated (context backstop) | done | `f3a5d6f`, `55c7c20` |
 | T3 | S3, S11 | LISTCLONES, KILLCLONES, BLOCK, CONEXIONES + users-by-host query | delegated (context backstop) | done | `40e09bf`…`ea65ebf` |
-| T4 | S4, S11 | JAIL, UMODE (needs force-part action in the 3 protocols) | delegated (context backstop) | pending | |
-| T5 | S5, S11 | APODERA, DROPNDB (cross-context ports to ChanServ/NickServ) | delegated (context backstop) | pending | |
-| T6 | S6, S11 | SERVERMAP (needs a server link registry in Irc) | delegated (context backstop) | pending | |
-| T7 | S7, S11 | ELINE (migration + TKL E action) — Risk item 1 | delegated (context backstop) | pending | |
+| T4 | S4, S11 | JAIL, UMODE (needs force-part action in the 3 protocols) | delegated (context backstop) | done | `d98e12c7`, `ada1e241`, `33067393`, `4ca41f50` |
+| T5 | S5, S11 | APODERA, DROPNDB (cross-context ports to ChanServ/NickServ) | delegated (context backstop) | done (APODERA in CRegServ; DROPNDB not ported) | `43eb188c`, `0d4bea68` |
+| T6 | S6, S11 | SERVERMAP (needs a server link registry in Irc) | delegated (context backstop) | dropped | |
+| T7 | S7, S11 | ELINE (migration + TKL E action) — Risk item 1 | delegated (context backstop) | done | `aa84e526` |
 | T8 | S8, S11 | SPAM (UDB K::F) — Risk item 3 | delegated (context backstop) | pending | |
-| T9 | S9, S10, S11 | SET (UDB S::), SETTIME — Risk item 3 | delegated (context backstop) | pending | |
+| T9 | S9, S10, S11 | SET (UDB S::), SETTIME — Risk item 3 | delegated (context backstop) | done (PASSPROTECT only; PREFIJOS not ported, SETTIME not requested) | `c824cc55` |
 | T10 | S12 | Final gates on Linux + coverage | inline | pending | |
 
 ## Log
@@ -49,3 +49,4 @@ L7: T3 done in `40e09bf`…`ea65ebf`. Decisions: clones are grouped by the **rea
 L8: Live-test fixes, all deployed: `ee7c838` (command log named the new commands UNKNOWN), `0628336` (no "1 conexiones" plural), `3a6b465` then `3dd1c77` (with UnrealUdb a G-Line is a UDB record that only blocks new connections; every G-Line now also KILLs the matching connected users, by host and real IP, and Root/role-IRCop protection also checks the real IP).
 L9: `91dc170d`: the command log reads command names from the OPeR registry, so T4–T9 commands are named without editing a list.
 L10 (2026-10-29): full CI on Linux green with 100% coverage (`40871933015` on `8d68349`); the 2 `LayerDependencyTest` cases pass on Linux.
+L11 (2026-11-04, user): T4, T5 and T7 closed as done on `main`; T6 (SERVERMAP) dropped; T9 closed (PASSPROTECT only).
