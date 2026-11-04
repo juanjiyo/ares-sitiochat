@@ -30,7 +30,7 @@ Assumption: not ported because Ares already covers them — `UNGLINE` (= `GLINE 
 | T2 | S2, S11 | STATS, IRCOPS | delegated (context backstop) | done | `f3a5d6f`, `55c7c20` |
 | T3 | S3, S11 | LISTCLONES, KILLCLONES, BLOCK, CONEXIONES + users-by-host query | delegated (context backstop) | done | `40e09bf`…`ea65ebf` |
 | T4 | S4, S11 | JAIL, UMODE (needs force-part action in the 3 protocols) | delegated (context backstop) | done | `d98e12c7`, `ada1e241`, `33067393`, `4ca41f50` |
-| T5 | S5, S11 | APODERA, DROPNDB (cross-context ports to ChanServ/NickServ) | delegated (context backstop) | done (APODERA in CRegServ; DROPNDB not ported) | `43eb188c`, `0d4bea68` |
+| T5 | S5, S11 | APODERA, DROPNDB (cross-context ports to ChanServ/NickServ) | delegated (context backstop) | done (APODERA in CRegServ; DROPNDB dropped) | `43eb188c`, `0d4bea68` |
 | T6 | S6, S11 | SERVERMAP (needs a server link registry in Irc) | delegated (context backstop) | dropped | |
 | T7 | S7, S11 | ELINE (migration + TKL E action) — Risk item 1 | delegated (context backstop) | done | `aa84e526` |
 | T8 | S8, S11 | SPAM (UDB K::F) — Risk item 3 | delegated (context backstop) | pending | |
